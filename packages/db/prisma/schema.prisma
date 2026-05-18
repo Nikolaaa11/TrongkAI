@@ -1,0 +1,331 @@
+// Trongkai DB — Spec en SUPER_PROMPT §3 + ajustes ADR-002 y ADR-004.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// Catálogos
+// ============================================================================
+
+enum MMPPCodigo {
+  ALPERUJO
+  TOMASA
+  POMASA
+  ORUJO_UVA
+  LEVADURA
+}
+
+enum CasoLogistico {
+  CASO_1 // Pagamos flete + cobramos por recepción
+  CASO_2 // Pagamos flete + nos pagan por recepción
+  CASO_3 // Sin flete, sin pago (al lado)
+  CASO_4 // Sin flete, nos pagan por recepción
+}
+
+enum SupplierStatus {
+  ACTIVO
+  PROSPECT
+  INACTIVO
+}
+
+enum EstadoSupuesto {
+  PD
+  OK_PROVISORIO
+  OK_VALIDADO_JOSE
+  OK_VALIDADO_CLAUDIO
+  OK_VALIDADO_JAIME
+  OK_VALIDADO_DIRECTORIO
+  NO_APLICA
+}
+
+enum SensibilidadSupuesto {
+  BAJA
+  MEDIA
+  ALTA
+  CRITICA
+}
+
+enum EtapaProceso {
+  RECEPCION
+  ALIMENTACION
+  HOMOG_1
+  PEF
+  PRENSADO_MECANICO
+  TRICANTER
+  EXTRACCION
+  SECADO
+  HOMOG_2
+  ENSACADO
+}
+
+enum TipoProducto {
+  BASE
+  AGREGADO
+  PTEC
+}
+
+enum BalanceMode {
+  A_INITIAL_BASE
+  B_DEHYDRATED_BASE
+}
+
+enum EscenarioPlan {
+  BASE
+  OPTIMISTA
+  PESIMISTA
+}
+
+enum TipoOpex {
+  ENERGIA
+  MO
+  MANTENCION
+  ENVASE
+  ALMACEN
+  CALIDAD
+  CERTIFICACIONES
+  ADMIN
+  TRANSPORTE_CLIENTE
+}
+
+// ============================================================================
+// Entidades core
+// ============================================================================
+
+model MateriaPrima {
+  id                      Int        @id @default(autoincrement())
+  codigo                  MMPPCodigo @unique
+  nombre                  String
+  temporadaInicioMes      Int // 1..12
+  temporadaFinMes         Int
+  humedadInicialPct       Float? // 0..1
+  materiaSolidaPct        Float?
+  aceiteExtraiblePct      Float?     @default(0)
+  licopenoPct             Float?     @default(0)
+  pectinaPct              Float?     @default(0)
+  tiempoDescomposicionH   Float? // PD para la mayoría
+  notas                   String?
+  suppliers               Supplier[]
+  recepciones             Recepcion[]
+  productos               Producto[]
+}
+
+model Supplier {
+  id                          Int             @id @default(autoincrement())
+  nombre                      String          @unique
+  mmppId                      Int
+  mmpp                        MateriaPrima    @relation(fields: [mmppId], references: [id])
+  distanciaKm                 Float
+  tarifaFleteClpKm            Float
+  casoLogistico               CasoLogistico
+  pagoRecepcionClpKg          Float           @default(0) // negativo = le cobramos, positivo = nos paga
+  volumenAnualComprometidoTon Float
+  capacidadCamionTon          Float           @default(22.5)
+  contacto                    String?
+  certificaciones             String[]        @default([])
+  status                      SupplierStatus  @default(ACTIVO)
+  notas                       String?
+  recepciones                 Recepcion[]
+  createdAt                   DateTime        @default(now())
+  updatedAt                   DateTime        @updatedAt
+}
+
+model Recepcion {
+  id                  Int          @id @default(autoincrement())
+  supplierId          Int
+  supplier            Supplier     @relation(fields: [supplierId], references: [id])
+  mmppId              Int
+  mmpp                MateriaPrima @relation(fields: [mmppId], references: [id])
+  fechaHora           DateTime
+  pesoNetoTon         Float
+  humedadMedidaPct    Float? // medición de calidad al ingreso
+  calidadAceptada     Boolean      @default(true)
+  motivoRechazo       String?
+  costoFleteClp       Float
+  ingresoRecepcionClp Float // positivo = nos pagan, negativo = pagamos al proveedor
+  createdAt           DateTime     @default(now())
+
+  @@index([fechaHora])
+  @@index([mmppId, fechaHora])
+}
+
+model CapacidadEquipo {
+  id                       Int           @id @default(autoincrement())
+  etapa                    EtapaProceso  @unique
+  capacidadTonHora         Float? // null = PD
+  tiempoResidenciaH        Float?
+  capacidadKgKwh           Float?
+  horasEntreMantenciones   Float?
+  costoMantencionClp       Float?
+  costoEnergiaUnitarioClp  Float?
+  aplicaAMMPP              MMPPCodigo[]  @default([])
+  opcional                 Boolean       @default(false)
+  notas                    String?
+  updatedAt                DateTime      @updatedAt
+}
+
+model Producto {
+  id                     Int           @id @default(autoincrement())
+  codigo                 String        @unique
+  nombre                 String
+  mmppOrigenId           Int?
+  mmppOrigen             MateriaPrima? @relation(fields: [mmppOrigenId], references: [id])
+  tipo                   TipoProducto
+  precioVentaClpKg       Float? // PD para todos al cierre Fase 0
+  rendimientoPctMs       Float? // sobre base elegida (modo A o B en VersionPlan)
+  anoLanzamiento         Int
+  notas                  String?
+  mixesProduccion        MixProduccionMensual[]
+}
+
+model Supuesto {
+  id                     Int                  @id @default(autoincrement())
+  clave                  String               @unique
+  valorActual            String? // serializado (puede ser número, fecha, JSON)
+  unidad                 String?
+  fuente                 String
+  estado                 EstadoSupuesto
+  sensibilidad           SensibilidadSupuesto @default(MEDIA)
+  owner                  String?
+  fechaActualizacion     DateTime             @updatedAt
+  tag                    String?
+  audits                 SupuestoAudit[]
+
+  @@index([estado])
+  @@index([sensibilidad, estado])
+}
+
+model SupuestoAudit {
+  id              Int      @id @default(autoincrement())
+  supuestoId      Int
+  supuesto        Supuesto @relation(fields: [supuestoId], references: [id])
+  valorAnterior   String?
+  valorNuevo      String?
+  razon           String
+  changedBy       String
+  changedAt       DateTime @default(now())
+}
+
+// ============================================================================
+// Planificación
+// ============================================================================
+
+model PlanAnual {
+  id            Int           @id @default(autoincrement())
+  ano           Int // 1..5
+  escenario     EscenarioPlan @default(BASE)
+  balanceMode   BalanceMode   @default(A_INITIAL_BASE)
+  waccAnual     Float? // PD inicialmente
+  aprobadoPor   String?
+  fechaCreacion DateTime      @default(now())
+  fechaAprobacion DateTime?
+  mixes         MixProduccionMensual[]
+  capex         CapEx[]
+  opex         OpEx[]
+  flujos        FlujoCaja[]
+  versiones     VersionPlan[]
+
+  @@unique([ano, escenario])
+}
+
+model MixProduccionMensual {
+  id              Int       @id @default(autoincrement())
+  planAnualId     Int
+  planAnual       PlanAnual @relation(fields: [planAnualId], references: [id])
+  mes             Int // 1..12
+  productoId      Int
+  producto        Producto  @relation(fields: [productoId], references: [id])
+  mmppCodigo      MMPPCodigo
+  tonProcesadas   Float
+  tonProductoFinal Float
+  detalles        Json? // payload extra (rendimiento aplicado, pérdidas, etc.)
+}
+
+model CapEx {
+  id                       Int          @id @default(autoincrement())
+  planAnualId              Int
+  planAnual                PlanAnual    @relation(fields: [planAnualId], references: [id])
+  descripcion              String
+  montoClp                 Float
+  ano                      Int // año fiscal del desembolso
+  etapaProcesoRelacionada  EtapaProceso?
+  depreciacionAnos         Int          @default(10)
+  aaceClase                Int          @default(5) // ADR §8 SUPER_PROMPT
+}
+
+model OpEx {
+  id                Int       @id @default(autoincrement())
+  planAnualId       Int
+  planAnual         PlanAnual @relation(fields: [planAnualId], references: [id])
+  tipo              TipoOpex
+  ano               Int
+  mensualClp        Float
+  formulaReferencia String? // ej: "kwh × tarifa", expresión simbólica
+}
+
+model FlujoCaja {
+  id                          Int       @id @default(autoincrement())
+  planAnualId                 Int
+  planAnual                   PlanAnual @relation(fields: [planAnualId], references: [id])
+  mes                         Int // 1..60
+  ingresosVentas              Float     @default(0)
+  ingresosMaquilas            Float     @default(0)
+  ingresosRecepcion           Float     @default(0)
+  ingresosTransferenciaTec    Float     @default(0)
+  costosDirectos              Float     @default(0)
+  gastosFijos                 Float     @default(0)
+  capexPeriodo                Float     @default(0)
+  // calculados
+  ebitda                      Float
+  flujoNeto                   Float
+
+  @@unique([planAnualId, mes])
+}
+
+// ============================================================================
+// Trazabilidad
+// ============================================================================
+
+model AuditLog {
+  id          Int      @id @default(autoincrement())
+  entidad     String
+  entidadId   String
+  campo       String
+  valorAnterior String?
+  valorNuevo  String?
+  razon       String?
+  usuario     String
+  createdAt   DateTime @default(now())
+
+  @@index([entidad, entidadId])
+}
+
+model VersionPlan {
+  id            Int       @id @default(autoincrement())
+  planAnualId   Int
+  planAnual     PlanAnual @relation(fields: [planAnualId], references: [id])
+  snapshot      Json
+  aprobadoPor   String
+  fechaAprobacion DateTime
+  hash          String    @unique // SHA-256 del snapshot para detectar tampering
+  comentario    String?
+}
+
+// ============================================================================
+// Tipo de cambio (ADR-005 — vigencia por fecha)
+// ============================================================================
+
+model TipoCambio {
+  id          Int      @id @default(autoincrement())
+  codigo      String // USD, UF, EUR
+  valorClp    Float
+  vigenciaDesde DateTime
+  vigenciaHasta DateTime?
+
+  @@index([codigo, vigenciaDesde])
+}

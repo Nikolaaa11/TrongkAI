@@ -1,0 +1,56 @@
+name: ci
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  engine:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .[dev]
+      - name: Tests
+        run: pytest -v --tb=short
+      - name: Ruff
+        run: ruff check .
+        continue-on-error: true
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --silent
+      - run: npm run lint
+      - run: npm run type-check
+        continue-on-error: true
+
+  lint-confidentiality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ADR-008 — buscar jerga de transcripts en código (no en /contexto)
+        run: |
+          set +e
+          PATTERN='hue[oó]n|chucha|cachai|hue[aá]'
+          MATCHES=$(grep -RnE "$PATTERN" --include='*.ts' --include='*.tsx' --include='*.py' \
+            --exclude-dir=node_modules --exclude-dir=contexto --exclude-dir=.next \
+            --exclude-dir=docs apps packages scripts 2>/dev/null || true)
+          if [ -n "$MATCHES" ]; then
+            echo "::error::Jerga de transcripts detectada en código (ADR-008):"
+            echo "$MATCHES"
+            exit 1
+          fi

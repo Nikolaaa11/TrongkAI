@@ -1,0 +1,28 @@
+{
+  "name": "trongkai-platform",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Plataforma inteligente Trongkai - Biorrefinería Agrosphere",
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --parallel --filter '@trongkai/*' dev",
+    "build": "pnpm --filter '@trongkai/*' build",
+    "lint": "pnpm --filter '@trongkai/*' lint",
+    "test": "pnpm --filter '@trongkai/*' test",
+    "db:migrate": "pnpm --filter @trongkai/db prisma migrate dev",
+    "db:seed": "python scripts/seed-from-excel.py",
+    "engine:dev": "cd apps/engine && uv run uvicorn trongkai_engine.main:app --reload --port 8000"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

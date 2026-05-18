@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-fondo: #f5f1e8;
+  --color-oliva: #3f4a2b;
+  --color-trigo: #c8a961;
+  --color-tierra: #8b5a3c;
+  --color-borgona: #7a1f1f;
+}
+
+html, body {
+  background-color: var(--color-fondo);
+  color: var(--color-oliva);
+  font-feature-settings: 'cv11', 'ss01';
+}

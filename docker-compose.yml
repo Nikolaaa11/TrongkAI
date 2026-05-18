@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: trongkai_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: trongkai
+      POSTGRES_PASSWORD: trongkai_dev
+      POSTGRES_DB: trongkai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trongkai"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: trongkai_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  engine:
+    build: ./apps/engine
+    container_name: trongkai_engine
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://trongkai:trongkai_dev@postgres:5432/trongkai
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "8000:8000"
+    profiles: ["full"]
+
+  web:
+    build: ./apps/web
+    container_name: trongkai_web
+    restart: unless-stopped
+    depends_on:
+      - engine
+    environment:
+      DATABASE_URL: postgresql://trongkai:trongkai_dev@postgres:5432/trongkai
+      ENGINE_URL: http://engine:8000
+    ports:
+      - "3000:3000"
+    profiles: ["full"]
+
+volumes:
+  postgres_data:
