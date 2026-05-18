@@ -10,12 +10,11 @@ from pydantic import BaseModel, Field
 
 from . import __version__
 from .bottleneck import (
-    BottleneckResult,
     CapacidadEtapa,
     EtapaProceso,
     compute_bottleneck,
 )
-from .financial import FlujoMes, KPIsFinancieros, calcular_kpis
+from .financial import FlujoMes, calcular_kpis
 from .mass_balance import (
     BalanceMode,
     MassBalanceError,

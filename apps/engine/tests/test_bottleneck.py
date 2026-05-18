@@ -8,7 +8,6 @@ from __future__ import annotations
 import pytest
 
 from trongkai_engine.bottleneck import (
-    BottleneckResult,
     CapacidadEtapa,
     EtapaProceso,
     compute_bottleneck,

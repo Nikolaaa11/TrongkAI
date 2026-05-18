@@ -7,6 +7,9 @@ Todo cambio relevante se registra acá. Formato basado en [Keep a Changelog](htt
 ### Changed
 - `apps/engine/trongkai_engine/main.py`: los 4 endpoints REST ahora declaran `tags`, `summary` y `description` para una documentación OpenAPI/Swagger autocontenida.
 
+### Fixed
+- Limpieza de lint en `apps/engine`: removidos 4 imports no usados (`BottleneckResult` en `main.py` y `tests/test_bottleneck.py`, `KPIsFinancieros` en `main.py`, `dataclasses.field` en `financial.py`) y migrado `typing.Iterable` → `collections.abc.Iterable` (UP035). Ruff baja de 7 a 2 errores; tests 21/21 verdes.
+
 ## [0.0.1] — 2026-05-18 — Fase 0 cerrada
 
 ### Added
