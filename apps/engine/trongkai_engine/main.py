@@ -32,7 +32,12 @@ app = FastAPI(
 )
 
 
-@app.get("/health")
+@app.get(
+    "/health",
+    tags=["meta"],
+    summary="Health check",
+    description="Liveness probe del motor. Devuelve estado y versión del paquete.",
+)
 def health() -> dict:
     return {"status": "ok", "version": __version__}
 
@@ -69,7 +74,18 @@ class MassBalanceResponse(BaseModel):
     sankey: dict
 
 
-@app.post("/mass-balance", response_model=MassBalanceResponse)
+@app.post(
+    "/mass-balance",
+    response_model=MassBalanceResponse,
+    tags=["balance-de-masa"],
+    summary="Calcular balance de masa de un lote",
+    description=(
+        "Calcula el balance de masa para un lote de MMPP en modo A (base inicial) o B "
+        "(base deshidratada). Devuelve toneladas de cada fracción, % de materia seca "
+        "neta entregada y el grafo Sankey listo para ECharts. Falla con 422 si el "
+        "cierre supera ±0.5% o si las extracciones exceden la materia sólida disponible."
+    ),
+)
 def mass_balance_endpoint(req: MassBalanceRequest) -> MassBalanceResponse:
     try:
         spec = MateriaPrimaSpec(
@@ -125,7 +141,17 @@ class BottleneckRequest(BaseModel):
     horas_operativas_dia: float = Field(default=24.0, gt=0, le=24)
 
 
-@app.post("/bottleneck")
+@app.post(
+    "/bottleneck",
+    tags=["operacion"],
+    summary="Detectar cuello de botella del proceso",
+    description=(
+        "Dado un set de capacidades por etapa y el tiempo de descomposición de la MMPP, "
+        "calcula el flujo máximo (ton/h), identifica la etapa cuello de botella, evalúa "
+        "si la planta puede recibir un nuevo camión y devuelve un semáforo de alerta "
+        "(verde / amarilla / roja)."
+    ),
+)
 def bottleneck_endpoint(req: BottleneckRequest) -> dict:
     capacidades = [
         CapacidadEtapa(
@@ -179,7 +205,16 @@ class FinancialRequest(BaseModel):
     wacc_anual: float = Field(ge=0, lt=1)
 
 
-@app.post("/financial/kpis")
+@app.post(
+    "/financial/kpis",
+    tags=["financiero"],
+    summary="KPIs financieros de un plan de flujos",
+    description=(
+        "Recibe el flujo de caja mensual proyectado y la WACC anual; devuelve TIR "
+        "anualizada del proyecto, VAN, payback descontado en meses, margen EBITDA "
+        "promedio y ratio CapEx/Ventas. Base para el dashboard de directorio (Módulo 3)."
+    ),
+)
 def financial_kpis_endpoint(req: FinancialRequest) -> dict:
     flujos = [
         FlujoMes(

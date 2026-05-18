@@ -2,6 +2,11 @@
 
 Todo cambio relevante se registra acá. Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+- `apps/engine/trongkai_engine/main.py`: los 4 endpoints REST ahora declaran `tags`, `summary` y `description` para una documentación OpenAPI/Swagger autocontenida.
+
 ## [0.0.1] — 2026-05-18 — Fase 0 cerrada
 
 ### Added
