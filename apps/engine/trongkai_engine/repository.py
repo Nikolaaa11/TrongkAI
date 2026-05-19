@@ -29,16 +29,20 @@ except ImportError:  # pragma: no cover - opcional en tests sin DB
     dict_row = None  # type: ignore[assignment]
 
 
-class DatabaseUnavailable(RuntimeError):
+class DatabaseUnavailableError(RuntimeError):
     """psycopg no está instalado o DATABASE_URL no está definido."""
+
+
+# Alias retro-compatible (uso interno previo); puede removerse en próxima major.
+DatabaseUnavailable = DatabaseUnavailableError
 
 
 def _require_dsn() -> str:
     dsn = os.environ.get("DATABASE_URL")
     if not dsn:
-        raise DatabaseUnavailable("DATABASE_URL no está definido en el entorno.")
+        raise DatabaseUnavailableError("DATABASE_URL no está definido en el entorno.")
     if psycopg is None:
-        raise DatabaseUnavailable(
+        raise DatabaseUnavailableError(
             "psycopg no instalado. Reinstalá con `pip install -e .[dev]` en apps/engine."
         )
     return dsn
