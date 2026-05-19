@@ -260,7 +260,7 @@ def stats_resumen(conn) -> dict:
 def snapshot_plan(conn, plan_anual_id: int, aprobado_por: str, comentario: str | None = None) -> dict:
     """Crea VersionPlan con el snapshot completo del PlanAnual."""
     import hashlib
-    from datetime import datetime, timezone
+    from datetime import datetime
 
     with conn.cursor() as cur:
         cur.execute(

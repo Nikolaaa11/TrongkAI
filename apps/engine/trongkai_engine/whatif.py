@@ -139,5 +139,5 @@ class Snapshot:
 
 
 def create_snapshot(nombre: str, comparacion: ComparacionWhatIf) -> Snapshot:
-    from datetime import datetime, timezone
+    from datetime import datetime
     return Snapshot(nombre=nombre, timestamp_iso=datetime.now(UTC).isoformat(), comparacion=comparacion)
