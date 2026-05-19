@@ -59,3 +59,57 @@ def test_escenario_sin_overrides_replica_base():
     base_van = cmp.to_dict()["base"]["kpis"]["van"]
     esc_van = cmp.to_dict()["escenarios"][0]["resumen"]["kpis"]["van"]
     assert base_van == esc_van
+
+
+def test_override_path_invalido_lanza_value_error():
+    """Cobertura: dot-path sobre campo no-dict debe levantar ValueError (línea 109)."""
+    # wacc_anual es float, no dict → no se puede aplicar override anidado
+    escenarios = [Escenario(nombre="bad", overrides={"wacc_anual.foo": 0.1})]
+    with pytest.raises(ValueError, match="override no aplicable"):
+        comparar_escenarios(escenarios)
+
+
+def test_override_dict_path_no_numerico_se_mantiene_como_string():
+    """Cobertura: tail no-numérico en dict de int-keys cae al except y se usa
+    tal cual (líneas 114-117). El override NO matchea ningún año pero igual
+    debe completar sin error."""
+    escenarios = [
+        Escenario(
+            nombre="key string",
+            overrides={"capex_anual_clp.no_es_int": 12345},
+        ),
+    ]
+    # No debe lanzar excepción
+    cmp = comparar_escenarios(escenarios)
+    assert len(cmp.escenarios) == 1
+    # Como la key 'no_es_int' no matchea con ningún año entero (1..5),
+    # capex anual base se mantiene
+    base_capex = cmp.base.capex_anuales
+    esc_capex = cmp.escenarios[0][1].capex_anuales
+    assert esc_capex == base_capex
+
+
+def test_override_dict_path_string_keys_no_castea():
+    """Cobertura línea 117: dict de str-keys → tail_key se mantiene como string."""
+    # precios_clp_kg arranca vacío pero acepta keys string
+    base = ParametrosPlan(precios_clp_kg={"LICOPENO": 12000.0})
+    escenarios = [
+        Escenario(
+            nombre="precio nuevo SKU",
+            overrides={"precios_clp_kg.LICOPENO": 9000.0},
+        ),
+    ]
+    from trongkai_engine.whatif import comparar_escenarios as cmp_fn
+    cmp = cmp_fn(escenarios, base_params=base)
+    # No debe explotar; el escenario corre
+    assert len(cmp.escenarios) == 1
+
+
+def test_snapshot_hash_es_comparable_entre_runs():
+    """Snapshot reproducible: corre 2 veces y verifica hashes idénticos."""
+    esc = [Escenario(nombre="repetible", overrides={"wacc_anual": 0.12})]
+    cmp1 = comparar_escenarios(esc)
+    cmp2 = comparar_escenarios(esc)
+    s1 = create_snapshot("snap", cmp1)
+    s2 = create_snapshot("snap", cmp2)
+    assert s1.hash == s2.hash

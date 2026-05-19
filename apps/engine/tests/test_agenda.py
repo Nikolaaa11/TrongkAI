@@ -78,3 +78,43 @@ def test_temporada_genera_fechas_correctas():
     assert fechas[0].month == 4 and fechas[0].day == 1
     assert fechas[-1].month == 6 and fechas[-1].day == 30
     assert len(fechas) == 91  # abr 30 + may 31 + jun 30 = 91
+
+
+def test_temporada_diciembre_termina_31(caps_baseline):
+    """Cobertura: rama mes_fin >= 12 en TemporadaMMPP.fechas (línea 56)."""
+    temp = TemporadaMMPP(mmpp_codigo="ALPERUJO", mes_inicio=11, mes_fin=12, tiempo_descomposicion_h=8.0)
+    fechas = list(temp.fechas(2027))
+    # Nov 1 -> Dic 31 = 30 + 31 = 61 días
+    assert fechas[0].month == 11 and fechas[0].day == 1
+    assert fechas[-1].month == 12 and fechas[-1].day == 31
+    assert len(fechas) == 61
+
+
+def test_agenda_temporada_diciembre_se_ejecuta(caps_baseline):
+    """Build agenda con temporada terminando en diciembre, ejerce línea 56."""
+    temp = TemporadaMMPP(mmpp_codigo="ALPERUJO", mes_inicio=12, mes_fin=12, tiempo_descomposicion_h=8.0)
+    suppliers = {
+        "ALPERUJO": [SupplierTarget("Olivero X", "ALPERUJO", 600, 20)],
+    }
+    result = build_agenda(2027, caps_baseline, [temp], suppliers)
+    # Diciembre tiene 31 días; debe planificar slots
+    assert len(result.slots) > 0
+    for s in result.slots:
+        assert s.fecha.month == 12
+
+
+def test_agenda_inverso_meses_no_genera_dias(caps_baseline):
+    """Cobertura: si mes_inicio > mes_fin (config inválida) genera lista vacía y
+    `build_agenda` toma la rama `if not dias: continue` (línea 119)."""
+    # mes_inicio 8 > mes_fin 3 → fechas vacío
+    temp = TemporadaMMPP(mmpp_codigo="ALPERUJO", mes_inicio=8, mes_fin=3, tiempo_descomposicion_h=8.0)
+    fechas = list(temp.fechas(2027))
+    assert fechas == []  # rama vacía garantizada
+
+    suppliers = {
+        "ALPERUJO": [SupplierTarget("Olivero Z", "ALPERUJO", 500, 20)],
+    }
+    result = build_agenda(2027, caps_baseline, [temp], suppliers)
+    # No se generan slots porque dias está vacío
+    assert result.slots == []
+    assert result.total_camiones == 0
