@@ -4,6 +4,9 @@ Todo cambio relevante se registra acá. Formato basado en [Keep a Changelog](htt
 
 ## [Unreleased]
 
+### Tests
+- `apps/engine/tests/test_escenarios.py`: +3 tests cubriendo branches que estaban sin tocar en `recomendacion_estrategica` — rama `wacc > 0.20` (fuerza PILOTO), rama `else` cuando ningún escenario da VAN positivo (cae a PILOTO), y assert sobre el campo `tirs_pct` del dict de salida. Stubs construidos directo con `KPIsFinancieros`/`ResumenPlan` para no depender de `build_plan` real. 86 tests verdes (era 83), ruff `check .` limpio. — 2026-05-19
+
 ### Docs
 - `apps/engine/trongkai_engine/escenarios.py`: docstring de `recomendacion_estrategica` desalineado del código — decía "WACC > 0.15" pero el branch real es `wacc > 0.20`. Actualizada para reflejar las 4 ramas reales (PILOTO por WACC alto, EXPANSION por VAN 1.5×, INDUSTRIAL fallback positivo, PILOTO fallback negativo). 83 tests verdes, ruff `check .` limpio. — 2026-05-19
 
