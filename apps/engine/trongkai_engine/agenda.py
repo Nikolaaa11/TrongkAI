@@ -14,15 +14,18 @@ Output: lista de slots `(fecha, supplier, ton, camiones)`.
 
 from __future__ import annotations
 
-from collections.abc import Iterable
 from dataclasses import dataclass, field
 from datetime import date, timedelta
+from typing import TYPE_CHECKING
 
 from .bottleneck import (
     BottleneckResult,
     CapacidadEtapa,
     compute_bottleneck,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 @dataclass(frozen=True)

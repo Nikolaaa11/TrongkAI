@@ -5,6 +5,7 @@ Todo cambio relevante se registra acá. Formato basado en [Keep a Changelog](htt
 ## [Unreleased]
 
 ### Chore
+- `apps/engine/trongkai_engine/agenda.py`: `collections.abc.Iterable` movido bajo `TYPE_CHECKING` (sólo usado como anotación de retorno de `TemporadaMMPP.fechas`). Mismo patrón que el refactor previo en `excel_export.py`. 78 tests verdes, ruff `check .` limpio. — 2026-05-19
 - `apps/engine/pyproject.toml`: removida la opción `asyncio_mode = "auto"` que generaba `PytestConfigWarning` en cada corrida (el plugin `pytest-asyncio` no está instalado en el entorno y el repo no tiene tests async). 78 tests verdes sin warnings, ruff `check .` limpio. — 2026-05-19
 - `apps/engine/trongkai_engine/whatif.py`: hoist `datetime` import al top-level (estaba dentro de `create_snapshot`), consistente con el refactor previo en `repository.py`. 78 tests verdes, ruff `check .` limpio. — 2026-05-19
 - `apps/engine/trongkai_engine/plan_builder.py`: loop sobre `por_marca.items()` reemplazado por `.values()` ya que la clave `marca` no se usaba (lint B007). 78 tests verdes, ruff `check .` limpio. — 2026-05-19
