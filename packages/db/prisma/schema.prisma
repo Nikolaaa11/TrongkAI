@@ -70,6 +70,12 @@ enum TipoProducto {
   PTEC
 }
 
+enum MarcaProducto {
+  FEED       // Acuicultura + pet food
+  FOOD       // Humanos (panadería, snacks)
+  SERVICIOS  // Maquila, licenciamiento, transferencia tecnológica
+}
+
 enum BalanceMode {
   A_INITIAL_BASE
   B_DEHYDRATED_BASE
@@ -176,6 +182,7 @@ model Producto {
   mmppOrigenId           Int?
   mmppOrigen             MateriaPrima? @relation(fields: [mmppOrigenId], references: [id])
   tipo                   TipoProducto
+  marca                  MarcaProducto @default(FEED)
   precioVentaClpKg       Float? // PD para todos al cierre Fase 0
   rendimientoPctMs       Float? // sobre base elegida (modo A o B en VersionPlan)
   anoLanzamiento         Int

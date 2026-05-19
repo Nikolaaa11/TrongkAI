@@ -8,7 +8,7 @@
       "humedadInicialPct": 0.65,
       "materiaSolidaPct": 0.35,
       "aceiteExtraiblePct": 0.02,
-      "notas": "Subproducto almazaras de oliva. Objetivo aceite 2% con PEF (competencia 1.3-1.45)."
+      "notas": "Subproducto almazaras de oliva. Objetivo aceite 2% con Opticept (competencia 1.3-1.45)."
     },
     {
       "codigo": "TOMASA",
@@ -154,6 +154,7 @@
       "nombre": "Harina de Alperujo",
       "mmppOrigen": "ALPERUJO",
       "tipo": "BASE",
+      "marca": "FOOD",
       "anoLanzamiento": 1
     },
     {
@@ -161,6 +162,7 @@
       "nombre": "Aceite de Alperujo",
       "mmppOrigen": "ALPERUJO",
       "tipo": "BASE",
+      "marca": "FOOD",
       "anoLanzamiento": 1
     },
     {
@@ -168,6 +170,7 @@
       "nombre": "Harina de Orujo",
       "mmppOrigen": "ORUJO_UVA",
       "tipo": "BASE",
+      "marca": "FEED",
       "anoLanzamiento": 1
     },
     {
@@ -175,6 +178,7 @@
       "nombre": "Harina de Tomasa",
       "mmppOrigen": "TOMASA",
       "tipo": "BASE",
+      "marca": "FOOD",
       "anoLanzamiento": 1
     },
     {
@@ -182,6 +186,7 @@
       "nombre": "Harina de Pomasa",
       "mmppOrigen": "POMASA",
       "tipo": "BASE",
+      "marca": "FEED",
       "anoLanzamiento": 1
     },
     {
@@ -189,6 +194,7 @@
       "nombre": "Pectina",
       "mmppOrigen": "POMASA",
       "tipo": "AGREGADO",
+      "marca": "FOOD",
       "anoLanzamiento": 2
     },
     {
@@ -196,6 +202,7 @@
       "nombre": "Licopeno",
       "mmppOrigen": "TOMASA",
       "tipo": "AGREGADO",
+      "marca": "FOOD",
       "anoLanzamiento": 2
     },
     {
@@ -203,6 +210,7 @@
       "nombre": "Proteína Unicelular",
       "mmppOrigen": "LEVADURA",
       "tipo": "PTEC",
+      "marca": "FEED",
       "anoLanzamiento": 3
     },
     {
@@ -210,6 +218,7 @@
       "nombre": "Antioxidante",
       "mmppOrigen": "ALPERUJO",
       "tipo": "PTEC",
+      "marca": "FEED",
       "anoLanzamiento": 3
     },
     {
@@ -217,6 +226,7 @@
       "nombre": "Aglomerante",
       "mmppOrigen": null,
       "tipo": "PTEC",
+      "marca": "FEED",
       "anoLanzamiento": 4
     },
     {
@@ -224,6 +234,7 @@
       "nombre": "Umami",
       "mmppOrigen": null,
       "tipo": "PTEC",
+      "marca": "FOOD",
       "anoLanzamiento": 5
     },
     {
@@ -231,6 +242,7 @@
       "nombre": "Aceite de Orujo (eventual)",
       "mmppOrigen": "ORUJO_UVA",
       "tipo": "BASE",
+      "marca": "FOOD",
       "anoLanzamiento": 2
     }
   ],
@@ -242,7 +254,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.acalperujo",
@@ -251,7 +264,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.horujo",
@@ -260,7 +274,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.htomasa",
@@ -269,7 +284,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.hpomasa",
@@ -278,7 +294,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.pectina*",
@@ -287,7 +304,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.licopeno*",
@@ -296,7 +314,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.proteina_unicel",
@@ -305,7 +324,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.antioxidante",
@@ -314,7 +334,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.aglomerante",
@@ -323,7 +344,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_subproductos.umami",
@@ -332,7 +354,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.h_alperujo",
@@ -341,7 +364,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.acalperujo",
@@ -350,7 +374,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.horujo",
@@ -359,7 +384,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.htomasa",
@@ -368,7 +394,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.hpomasa",
@@ -377,7 +404,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.pectina*",
@@ -386,7 +414,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.licopeno*",
@@ -395,7 +424,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.proteina_unicel",
@@ -404,7 +434,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.antioxidante",
@@ -413,7 +444,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.aglomerante",
@@ -422,7 +454,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_subproducto.umami",
@@ -431,7 +464,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.h_alperujo",
@@ -440,7 +474,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.acalperujo",
@@ -449,7 +484,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.horujo",
@@ -458,7 +494,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.htomasa",
@@ -467,7 +504,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.hpomasa",
@@ -476,7 +514,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.pectina*",
@@ -485,7 +524,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.licopeno*",
@@ -494,7 +534,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.proteina_unicel",
@@ -503,7 +544,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.antioxidante",
@@ -512,7 +554,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.aglomerante",
@@ -521,7 +564,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "precio_recepción_subproducto.umami",
@@ -530,7 +574,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.h_alperujo",
@@ -539,7 +584,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.acalperujo",
@@ -548,7 +594,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.horujo",
@@ -557,7 +604,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.htomasa",
@@ -566,7 +614,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.hpomasa",
@@ -575,7 +624,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.pectina*",
@@ -584,7 +634,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.licopeno*",
@@ -593,7 +644,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.proteina_unicel",
@@ -602,7 +654,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.antioxidante",
@@ -611,7 +664,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.aglomerante",
@@ -620,7 +674,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "rendimiento.umami",
@@ -629,7 +684,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.h_alperujo",
@@ -638,7 +694,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.acalperujo",
@@ -647,7 +704,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.horujo",
@@ -656,7 +714,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.htomasa",
@@ -665,7 +724,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.hpomasa",
@@ -674,7 +734,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.pectina*",
@@ -683,7 +744,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.licopeno*",
@@ -692,7 +754,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.proteina_unicel",
@@ -701,7 +764,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.antioxidante",
@@ -710,7 +774,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.aglomerante",
@@ -719,7 +784,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "volumen_producto_final.umami",
@@ -728,7 +794,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.h_alperujo",
@@ -737,7 +804,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.acalperujo",
@@ -746,7 +814,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.horujo",
@@ -755,7 +824,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.htomasa",
@@ -764,7 +834,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.hpomasa",
@@ -773,7 +844,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.pectina*",
@@ -782,7 +854,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.licopeno*",
@@ -791,7 +864,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.proteina_unicel",
@@ -800,7 +874,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.antioxidante",
@@ -809,7 +884,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.aglomerante",
@@ -818,7 +894,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_produccion*.umami",
@@ -827,7 +904,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.h_alperujo",
@@ -836,7 +914,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.acalperujo",
@@ -845,7 +924,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.horujo",
@@ -854,7 +934,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.htomasa",
@@ -863,7 +944,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.hpomasa",
@@ -872,7 +954,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.pectina*",
@@ -881,7 +964,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.licopeno*",
@@ -890,7 +974,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.proteina_unicel",
@@ -899,7 +984,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.antioxidante",
@@ -908,7 +994,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.aglomerante",
@@ -917,7 +1004,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "material_de_envase.umami",
@@ -926,7 +1014,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.h_alperujo",
@@ -935,7 +1024,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.acalperujo",
@@ -944,7 +1034,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.horujo",
@@ -953,7 +1044,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.htomasa",
@@ -962,7 +1054,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.hpomasa",
@@ -971,7 +1064,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.pectina*",
@@ -980,7 +1074,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.licopeno*",
@@ -989,7 +1084,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.proteina_unicel",
@@ -998,7 +1094,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.antioxidante",
@@ -1007,7 +1104,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.aglomerante",
@@ -1016,7 +1114,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_almacenamiento.umami",
@@ -1025,7 +1124,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.h_alperujo",
@@ -1034,7 +1134,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.acalperujo",
@@ -1043,7 +1144,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.horujo",
@@ -1052,7 +1154,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.htomasa",
@@ -1061,7 +1164,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.hpomasa",
@@ -1070,7 +1174,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.pectina*",
@@ -1079,7 +1184,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.licopeno*",
@@ -1088,7 +1194,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.proteina_unicel",
@@ -1097,7 +1204,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.antioxidante",
@@ -1106,7 +1214,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.aglomerante",
@@ -1115,7 +1224,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_transporte_almac.y_clientes.umami",
@@ -1124,7 +1234,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "OK_PROVISORIO",
       "sensibilidad": "MEDIA",
-      "owner": "Matías"
+      "owner": "Matías",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.h_alperujo",
@@ -1133,7 +1244,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.acalperujo",
@@ -1142,7 +1254,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.horujo",
@@ -1151,7 +1264,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.htomasa",
@@ -1160,7 +1274,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.hpomasa",
@@ -1169,7 +1284,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.pectina*",
@@ -1178,7 +1294,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.licopeno*",
@@ -1187,7 +1304,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.proteina_unicel",
@@ -1196,7 +1314,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.antioxidante",
@@ -1205,7 +1324,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.aglomerante",
@@ -1214,7 +1334,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_laboratorio.umami",
@@ -1223,7 +1344,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.h_alperujo",
@@ -1232,7 +1354,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.acalperujo",
@@ -1241,7 +1364,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.horujo",
@@ -1250,7 +1374,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.htomasa",
@@ -1259,7 +1384,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.hpomasa",
@@ -1268,7 +1394,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.pectina*",
@@ -1277,7 +1404,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.licopeno*",
@@ -1286,7 +1414,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.proteina_unicel",
@@ -1295,7 +1424,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.antioxidante",
@@ -1304,7 +1434,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.aglomerante",
@@ -1313,7 +1444,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_administración.umami",
@@ -1322,7 +1454,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.h_alperujo",
@@ -1331,7 +1464,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.acalperujo",
@@ -1340,7 +1474,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.horujo",
@@ -1349,7 +1484,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.htomasa",
@@ -1358,7 +1494,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.hpomasa",
@@ -1367,7 +1504,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.pectina*",
@@ -1376,7 +1514,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.licopeno*",
@@ -1385,7 +1524,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.proteina_unicel",
@@ -1394,7 +1534,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.antioxidante",
@@ -1403,7 +1544,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.aglomerante",
@@ -1412,7 +1554,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_energía.umami",
@@ -1421,7 +1564,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.h_alperujo",
@@ -1430,7 +1574,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.acalperujo",
@@ -1439,7 +1584,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.horujo",
@@ -1448,7 +1594,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.htomasa",
@@ -1457,7 +1604,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.hpomasa",
@@ -1466,7 +1614,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.pectina*",
@@ -1475,7 +1624,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.licopeno*",
@@ -1484,7 +1634,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.proteina_unicel",
@@ -1493,7 +1644,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.antioxidante",
@@ -1502,7 +1654,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.aglomerante",
@@ -1511,7 +1664,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_servicios_generales.umami",
@@ -1520,7 +1674,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.h_alperujo",
@@ -1529,7 +1684,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.acalperujo",
@@ -1538,7 +1694,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.horujo",
@@ -1547,7 +1704,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.htomasa",
@@ -1556,7 +1714,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.hpomasa",
@@ -1565,7 +1724,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.pectina*",
@@ -1574,7 +1734,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.licopeno*",
@@ -1583,7 +1744,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.proteina_unicel",
@@ -1592,7 +1754,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.antioxidante",
@@ -1601,7 +1764,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.aglomerante",
@@ -1610,7 +1774,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "costo_mantención_industrial.umami",
@@ -1619,7 +1784,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.h_alperujo",
@@ -1628,7 +1794,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.acalperujo",
@@ -1637,7 +1804,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.horujo",
@@ -1646,7 +1814,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.htomasa",
@@ -1655,7 +1824,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.hpomasa",
@@ -1664,7 +1834,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.pectina*",
@@ -1673,7 +1844,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.licopeno*",
@@ -1682,7 +1854,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.proteina_unicel",
@@ -1691,7 +1864,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.antioxidante",
@@ -1700,7 +1874,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.aglomerante",
@@ -1709,7 +1884,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     },
     {
       "clave": "estructuración_modelo_ppto-plan.umami",
@@ -1718,7 +1894,8 @@
       "fuente": "Cuadro_PPTO_Variables_PD_Plan_5_Anos_A.xlsx",
       "estado": "PD",
       "sensibilidad": "MEDIA",
-      "owner": "Jaime"
+      "owner": "Jaime",
+      "tag": null
     }
   ],
   "capacidades": [

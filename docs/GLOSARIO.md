@@ -35,3 +35,13 @@
 | **Sankey** | Diagrama de flujo proporcional, obligatorio para visualizar balance de masa. |
 | **Modo A (Balance)** | Cálculo de rendimiento sobre la **base inicial** (masa que entra a planta). |
 | **Modo B (Balance)** | Cálculo de rendimiento sobre la **base deshidratada** (materia seca post-secado). Diferencia material vs modo A (35% vs 38.5% en ejemplo alperujo). |
+| **Trongkai Feed** | Marca comercial de ingredientes para nutrición animal (acuicultura + pet food). Compite contra harina de pescado y aditivos sintéticos. |
+| **Trongkai Food** | Marca comercial de harinas funcionales 100% vegetales para humanos (panadería, snacks). Insumos clave: tomate y oliva. |
+| **Opticept** | Marca registrada del equipo PEF (Pulsed Electric Field) usado por Trongkai. Alianza estratégica. Mantención cada 300 h. |
+| **Axolot** | Tecnología de extracción/separación aliada con Trongkai (junto con Opticept). |
+| **ACV** | Análisis de Ciclo de Vida — cuantifica impacto ambiental end-to-end del proceso. Credencial obligatoria para mercados ESG. |
+| **SOPs** | Standard Operating Procedures — protocolos de calidad estandarizados por etapa, requeridos para acceso a mercados globales. |
+| **Valorización en cascada** | Filosofía operativa: cada flujo de subproducto encuentra su valor óptimo antes de descartarse. "Residuo cero". |
+| **Fraccionamiento inteligente** | Etapa del proceso que separa líquidos y sólidos del subproducto, dirigiendo cada componente a su ruta de mayor valor. |
+| **Harina de pescado** | Benchmark de precio para Trongkai Feed. Insumo dominante en acuicultura mundial cuya sustitución es la tesis comercial principal. |
+| **Hoja de Ruta Circular Chile 2040** | Marco regulatorio nacional que prohíbe prácticas obsoletas (quemas agrícolas) y empuja la valorización de residuos agroindustriales. |

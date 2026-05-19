@@ -4,17 +4,27 @@ from __future__ import annotations
 
 from typing import Literal
 
+from pathlib import Path
 import structlog
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from . import __version__
+from .agenda import (
+    SupplierTarget,
+    TemporadaMMPP,
+    build_agenda,
+)
 from .bottleneck import (
     CapacidadEtapa,
     EtapaProceso,
     compute_bottleneck,
 )
+from .excel_export import export_plan_to_excel
 from .financial import FlujoMes, calcular_kpis
+from .plan_builder import ParametrosPlan, build_plan
+from .whatif import Escenario, comparar_escenarios
 from .mass_balance import (
     BalanceMode,
     MassBalanceError,
@@ -185,6 +195,106 @@ def bottleneck_endpoint(req: BottleneckRequest) -> dict:
     }
 
 
+# ----- Agenda de camiones -----
+
+
+class TemporadaInput(BaseModel):
+    mmpp_codigo: str
+    mes_inicio: int = Field(ge=1, le=12)
+    mes_fin: int = Field(ge=1, le=12)
+    tiempo_descomposicion_h: float = Field(gt=0)
+
+
+class SupplierTargetInput(BaseModel):
+    nombre: str
+    mmpp_codigo: str
+    volumen_anual_ton: float = Field(gt=0)
+    capacidad_camion_ton: float = Field(default=22.5, gt=0)
+
+
+class AgendaRequest(BaseModel):
+    ano: int = Field(ge=2026, le=2035)
+    capacidades: list[CapacidadInput]
+    temporadas: list[TemporadaInput]
+    suppliers: list[SupplierTargetInput]
+    horas_operativas_dia: float = Field(default=24.0, gt=0, le=24)
+
+
+@app.post(
+    "/agenda",
+    tags=["operacion"],
+    summary="Planificar agenda de camiones de un año",
+    description=(
+        "Recibe capacidades por etapa, temporadas por MMPP y suppliers con su volumen "
+        "comprometido. Devuelve la lista de slots (fecha, supplier, ton, camiones) "
+        "respetando el bottleneck. Entregable del Módulo 1: 'cuántos camiones puedo recibir'."
+    ),
+)
+def agenda_endpoint(req: AgendaRequest) -> dict:
+    capacidades = [
+        CapacidadEtapa(
+            etapa=EtapaProceso(c.etapa),
+            ton_por_hora=c.ton_por_hora,
+            tiempo_residencia_h=c.tiempo_residencia_h,
+            aplica=c.aplica,
+        )
+        for c in req.capacidades
+    ]
+    temporadas = [
+        TemporadaMMPP(
+            mmpp_codigo=t.mmpp_codigo,
+            mes_inicio=t.mes_inicio,
+            mes_fin=t.mes_fin,
+            tiempo_descomposicion_h=t.tiempo_descomposicion_h,
+        )
+        for t in req.temporadas
+    ]
+    suppliers_por_mmpp: dict[str, list[SupplierTarget]] = {}
+    for s in req.suppliers:
+        suppliers_por_mmpp.setdefault(s.mmpp_codigo, []).append(
+            SupplierTarget(
+                nombre=s.nombre,
+                mmpp_codigo=s.mmpp_codigo,
+                volumen_anual_ton=s.volumen_anual_ton,
+                capacidad_camion_ton=s.capacidad_camion_ton,
+            )
+        )
+
+    result = build_agenda(
+        ano=req.ano,
+        capacidades=capacidades,
+        temporadas=temporadas,
+        suppliers_por_mmpp=suppliers_por_mmpp,
+        horas_operativas_dia=req.horas_operativas_dia,
+    )
+
+    return {
+        "total_ton_planificadas": result.total_ton_planificadas,
+        "total_camiones": result.total_camiones,
+        "advertencias": result.advertencias,
+        "bottleneck": (
+            {
+                "etapa": result.bottleneck.etapa_bottleneck.value,
+                "flujo_max_ton_h": result.bottleneck.flujo_max_ton_h,
+                "camiones_max_dia": result.bottleneck.camiones_max_dia,
+                "alerta": result.bottleneck.alerta,
+            }
+            if result.bottleneck
+            else None
+        ),
+        "slots": [
+            {
+                "fecha": s.fecha.isoformat(),
+                "supplier": s.supplier_nombre,
+                "mmpp": s.mmpp_codigo,
+                "ton_dia": s.ton_dia,
+                "camiones_dia": s.camiones_dia,
+            }
+            for s in result.slots
+        ],
+    }
+
+
 # ----- Financiero -----
 
 
@@ -236,3 +346,134 @@ def financial_kpis_endpoint(req: FinancialRequest) -> dict:
         "ebitda_margin_promedio": kpis.ebitda_margin_promedio,
         "ratio_capex_ventas": kpis.ratio_capex_ventas,
     }
+
+
+# ----- Plan 5 Años -----
+
+
+class PlanRequest(BaseModel):
+    wacc_anual: float = Field(default=0.12, ge=0, lt=1)
+    volumen_total_ton_ano: float = Field(default=50_000, gt=0)
+    opex_mensual_clp: float = Field(default=35_000_000, ge=0)
+    costo_mmpp_clp_kg: float = Field(default=50, ge=0)
+
+
+@app.post(
+    "/plan",
+    tags=["financiero"],
+    summary="Generar Plan 5 Años con KPIs",
+    description=(
+        "Construye el plan financiero de 60 meses con precios y rendimientos por defecto, "
+        "y devuelve flujos mensuales + KPIs + resumen anual. Si querés un export Excel, "
+        "usá POST /plan/export en su lugar."
+    ),
+)
+def plan_endpoint(req: PlanRequest) -> dict:
+    params = ParametrosPlan(
+        wacc_anual=req.wacc_anual,
+        volumen_total_ton_ano=req.volumen_total_ton_ano,
+        opex_mensual_clp=req.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.costo_mmpp_clp_kg,
+    )
+    plan = build_plan(params)
+    return {
+        "kpis": {
+            "tir_proyecto_anual": plan.kpis.tir_proyecto_anual,
+            "van": plan.kpis.van,
+            "payback_meses": plan.kpis.payback_meses,
+            "ebitda_margin_promedio": plan.kpis.ebitda_margin_promedio,
+            "ratio_capex_ventas": plan.kpis.ratio_capex_ventas,
+        },
+        "resumen_anual": [
+            {
+                "ano": i + 1,
+                "ingresos": plan.ingresos_anuales[i],
+                "ebitda": plan.ebitda_anuales[i],
+                "capex": plan.capex_anuales[i],
+                "ebitda_margin": (plan.ebitda_anuales[i] / plan.ingresos_anuales[i]) if plan.ingresos_anuales[i] else 0,
+            }
+            for i in range(5)
+        ],
+        "flujos_meses": [
+            {
+                "mes": f.mes,
+                "ingresos_ventas": f.ingresos_ventas,
+                "ingresos_maquilas": f.ingresos_maquilas,
+                "ingresos_transferencia_tec": f.ingresos_transferencia_tec,
+                "costos_directos": f.costos_directos,
+                "gastos_fijos": f.gastos_fijos,
+                "ebitda": f.ebitda,
+                "capex_periodo": f.capex_periodo,
+                "flujo_neto": f.flujo_neto,
+            }
+            for f in plan.flujos
+        ],
+    }
+
+
+@app.post(
+    "/plan/export",
+    tags=["financiero"],
+    summary="Exportar Plan 5 Años a Excel formato directorio",
+    description=(
+        "Genera el Excel con hojas Supuestos, EERR_Mensual (60 meses), KPIs y Resumen_Anual. "
+        "Color coding industry-standard: azul inputs, verde links, negativos en paréntesis."
+    ),
+    response_class=FileResponse,
+)
+def plan_export_endpoint(req: PlanRequest) -> FileResponse:
+    params = ParametrosPlan(
+        wacc_anual=req.wacc_anual,
+        volumen_total_ton_ano=req.volumen_total_ton_ano,
+        opex_mensual_clp=req.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.costo_mmpp_clp_kg,
+    )
+    plan = build_plan(params)
+    exports_dir = Path("/tmp/trongkai-exports")
+    exports_dir.mkdir(parents=True, exist_ok=True)
+    out = exports_dir / "Plan_5_Anos_Trongkai.xlsx"
+    export_plan_to_excel(plan, out)
+    return FileResponse(
+        out,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        filename="Plan_5_Anos_Trongkai.xlsx",
+    )
+
+
+# ----- What-If -----
+
+
+class EscenarioInput(BaseModel):
+    nombre: str
+    descripcion: str | None = None
+    overrides: dict = Field(default_factory=dict)
+
+
+class WhatIfRequest(BaseModel):
+    base: PlanRequest = Field(default_factory=PlanRequest)
+    escenarios: list[EscenarioInput]
+
+
+@app.post(
+    "/whatif",
+    tags=["financiero"],
+    summary="Comparar escenarios what-if",
+    description=(
+        "Recibe un set de escenarios con overrides sobre ParametrosPlan y devuelve "
+        "los KPIs de cada uno + los deltas vs el plan base. Pensado para responder "
+        "las 5 preguntas tipo del SUPER_PROMPT (no procesar tomasa, licopeno -30%, etc.)."
+    ),
+)
+def whatif_endpoint(req: WhatIfRequest) -> dict:
+    base_params = ParametrosPlan(
+        wacc_anual=req.base.wacc_anual,
+        volumen_total_ton_ano=req.base.volumen_total_ton_ano,
+        opex_mensual_clp=req.base.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.base.costo_mmpp_clp_kg,
+    )
+    escenarios = [
+        Escenario(nombre=e.nombre, descripcion=e.descripcion, overrides=e.overrides)
+        for e in req.escenarios
+    ]
+    cmp = comparar_escenarios(escenarios, base_params=base_params)
+    return cmp.to_dict()

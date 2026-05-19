@@ -80,6 +80,32 @@
 **Razón**: regla §6 SUPER_PROMPT.
 **Consecuencias**: i18n no necesario hoy. Si mañana hay que internacionalizar, se hace contra `messages.es-CL.json` ya estructurado.
 
+## ADR-009 — Estrategia de marca dual: Feed y Food
+
+**Fecha**: 2026-05-18
+**Estado**: Aceptado
+**Decisión**: Trongkai opera bajo dos sub-marcas comerciales que comparten plataforma productiva:
+- **Trongkai Feed** — nutrición animal (acuicultura + pet food).
+- **Trongkai Food** — humanos (panadería, snacks).
+
+Plus la línea de **Servicios de Plataforma Tecnológica** (maquila + licenciamiento + transferencia + alianzas Opticept/Axolot).
+
+**Razón**: la presentación corporativa (2025-10-22) define explícitamente las dos marcas con audiencias y reguladores distintos (Sernapesca + INDAP para Feed, ISP/Aduanas para Food). Plus el directorio aprobó nombres comerciales.
+
+**Consecuencias**:
+- En DB: cada `Producto` lleva campo `marca` (`FEED` | `FOOD` | `SERVICIOS`). Se sembra en seed Fase 1.
+- En UI: `/plan` agrupa por marca; exports a directorio respetan el agrupamiento.
+- En finanzas: el modelo financiero distingue precio target Feed vs Food. Para Feed, el benchmark es precio mayorista de harina de pescado en Chile (variable nueva en `RIESGO-SUPUESTOS.md`).
+- En glosario: agregadas las entradas FEED, FOOD, Opticept, Axolot, ACV, SOPs.
+
+## ADR-010 — Identidad visual
+
+**Fecha**: 2026-05-18
+**Estado**: Aceptado
+**Decisión**: usar logos oficiales provistos por el usuario en `apps/web/public/logo-trongkai-*`. Versión color sobre fondos claros, versión blanco sobre fondos oscuros. Icono aislado para favicon y elementos chicos.
+**Razón**: la presentación corporativa fija la identidad. Cualquier deriva (paleta, tipografía custom) genera fricción con el material que ya circula en directorio.
+**Consecuencias**: header del sitio muestra el logo en lugar del placeholder de texto. La paleta tierra/oliva del ADR-001 sigue activa para todas las UI internas (dashboard operacional, supuestos), porque combina con el verde oliva del logo.
+
 ## ADR-008 — Confidencialidad de transcripts
 
 **Fecha**: 2026-05-18

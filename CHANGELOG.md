@@ -2,6 +2,60 @@
 
 Todo cambio relevante se registra acá. Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [0.2.0] — 2026-05-18 — Fases 1-6 completas
+
+### Added — Fase 1 (Modelo de datos + seed)
+- Migración SQL inicial `packages/db/prisma/migrations/0001_init/migration.sql` con 13 tablas, 11 enums y trigger de inmutabilidad de `VersionPlan`.
+- Módulo de repositorio Python (`apps/engine/trongkai_engine/repository.py`) con psycopg3 + UPSERTs idempotentes + snapshot ADR-005.
+- Seed escribe a Postgres real con `--apply`. Modo `--dry-run` para iterar sin DB.
+- Campo `marca` en Producto (FEED / FOOD / SERVICIOS) — ADR-009.
+- 11 tests `test_seed.py` validan integridad referencial sin DB.
+
+### Added — Fase 2 (Módulo 1)
+- Motor de planificación de agenda (`agenda.py`) que respeta el bottleneck por MMPP/temporada.
+- Endpoint REST `/agenda` con respuesta JSON estructurada.
+- Página `/agenda` con sliders + tabla de slots por mes (drill-down expandible).
+- Dashboard `/` rediseñado: cuota contractual, suppliers ACTIVOS, capacidades, bloqueantes.
+- 5 tests `test_agenda.py`.
+
+### Added — Fase 3 (Módulo 2 UI)
+- Componente `<SankeyChart>` con ECharts (`apps/web/components/SankeyChart.tsx`).
+- `/balance` con comparador A vs B side-by-side + Sankey individual + alerta si delta > 5pp.
+- Presets por MMPP que cargan parámetros validados del SUPUESTOS.md.
+
+### Added — Fase 4 (Módulo 3)
+- `plan_builder.py` con Plan 5 Años: 60 flujos mensuales, KPIs, ramp-up, ingresos accesorios.
+- `excel_export.py` con export formato directorio (azul inputs, verde links, paréntesis para negativos, 4 hojas).
+- Endpoints `/plan` y `/plan/export` (FileResponse).
+- Página `/plan` con parámetros editables + 5 KPIs + tabla anual + descarga Excel.
+- 6 tests `test_plan_builder.py` + 4 tests `test_excel_export.py`. Incluye **entregable M3** verificando caso Olivero 1 ($147.600 flete / 5.904 CLP/kg).
+
+### Added — Fase 5 (Módulo 4)
+- `whatif.py` con motor de simulación de escenarios + snapshots no destructivos con hash SHA-256.
+- Soporte de overrides dot-path con casting automático de keys numéricas (CapEx por año).
+- Endpoint `/whatif`.
+- Página `/whatif` con 3 paneles comparativos + 5 preguntas tipo precargadas + tabla comparativa completa.
+- 5 tests `test_whatif.py`.
+
+### Added — Fase 6 (Endurecimiento)
+- `scripts/backup_db.ps1` con retención 14 días daily + 12 meses monthly.
+- `scripts/audit_hardcodes.py` que falla CI si hay TODO sin ref a SUPUESTOS.md.
+- Playwright config + 5 smoke tests e2e (`apps/web/e2e/smoke.spec.ts`).
+- `RUNBOOK.md` extendido: levantar entorno, backup/restore, recuperación incidentes, schedules, deploy.
+
+### Added — Presentación corporativa integrada
+- `docs/PRESENTACION-INSIGHTS.md` con tesis comercial, 3 líneas de negocio (Feed / Food / Servicios), equipo, mercado 800k ton/año.
+- Logos oficiales en `apps/web/public/` + página `/about` con equipo, directorio, asesores, modelo circular en 3 pasos y compromiso ACV+SOPs.
+- ADR-009 (estrategia de marca dual) + ADR-010 (identidad visual).
+- Glosario ampliado: Trongkai Feed, Trongkai Food, Opticept, Axolot, ACV, SOPs, valorización en cascada, fraccionamiento inteligente, harina de pescado como benchmark.
+- Top 10 RIESGO-SUPUESTOS actualizado con precio harina de pescado como variable #11.
+
+### Stats finales
+- **Tests**: 52/52 verdes (engine) + 5 e2e (web).
+- **Endpoints REST**: 8 (`/health`, `/mass-balance`, `/bottleneck`, `/agenda`, `/financial/kpis`, `/plan`, `/plan/export`, `/whatif`).
+- **Páginas Next.js**: 7 (`/`, `/agenda`, `/balance`, `/plan`, `/whatif`, `/supuestos`, `/about`).
+- **Líneas Python**: ~1.500 producto + 380 tests.
+
 ## [Unreleased]
 
 ### Changed

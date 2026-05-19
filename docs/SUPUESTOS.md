@@ -130,6 +130,31 @@ Jaime dio una banda mental: total entre $100 y $250/kg. Esto es supuesto puro:
 | `aace.clase_default_equipo_no_cotizado` | 5 | enum | OK_VALIDADO (regla SUPER_PROMPT §8) | arquitecto |
 | `corfo.patin_visita_tec_clp` | 350000000 | CLP | OK_PROVISORIO | Jaime "300-400M" | Jaime |
 
+## H. Mercado y comerciales (origen: presentación corporativa 2025-10-22)
+
+| Clave | Valor actual | Unidad | Estado | Fuente | Owner | Sensibilidad |
+|---|---|---|---|---|---|---|
+| `mercado.subproductos_total_chile_ton_ano` | 800000 | ton/año | OK_VALIDADO_JAIME | Presentación slide 3 | Jaime | Baja (ancla narrativa) |
+| `mercado.cuota_trongkai_pct` | 0.0625 | fracción | OK_PROVISORIO | derivado 50.000/800.000 | Jaime | Baja |
+| `feed.benchmark_harina_pescado_clp_kg` | null | CLP/kg | PD | ProChile / SalmonChile data | Comercial | **Crítica** — top 10 RIESGO |
+| `feed.premium_sostenibilidad_pct` | 0.15 | fracción | PD | "+15% vs harina pescado" hipótesis | Comercial | Alta |
+| `food.precio_target_harina_tomate_clp_kg` | null | CLP/kg | PD | benchmark panadería gourmet | Comercial | Alta |
+| `food.precio_target_harina_oliva_clp_kg` | null | CLP/kg | PD | benchmark snacks saludables | Comercial | Alta |
+| `marca.linea_feed_skus` | [HARINA_TOMASA, HARINA_POMASA, PROTEINA_UNICEL, ANTIOXIDANTE] | array | OK_PROVISORIO | ADR-009 | Comercial | n/a |
+| `marca.linea_food_skus` | [HARINA_ALPERUJO, HARINA_TOMASA, ACEITE_ALPERUJO] | array | OK_PROVISORIO | ADR-009 (algunos SKUs son cross-brand) | Comercial | n/a |
+| `marca.servicios_lineas` | [MAQUILA, LICENCIAMIENTO, TRANSFERENCIA_TEC] | array | OK_VALIDADO_JAIME | Presentación slide 5 | Jaime | n/a |
+
+## I. Directorio y gobernanza (origen: presentación slide 12)
+
+| Clave | Valor actual | Estado |
+|---|---|---|
+| `directorio.presidente` | Guido Rietta | OK_VALIDADO_DIRECTORIO |
+| `directorio.miembros` | Juan Pablo Velasco, Ester Sáez, Andrés Fernández | OK_VALIDADO_DIRECTORIO |
+| `equipo.fundador` | José Cuevas (ex Concha y Toro, The Not Company) | OK_VALIDADO_DIRECTORIO |
+| `equipo.gerente_general` | Jaime Echeverría (ex Traverso, Parmalat, Danone) | OK_VALIDADO_DIRECTORIO |
+| `equipo.gerente_logistica` | Claudia Gotschlich (ex CORFO) | OK_VALIDADO_DIRECTORIO |
+| `alianzas.tecnologia` | Opticept (PEF), Axolot | OK_VALIDADO_DIRECTORIO |
+
 ---
 
 **Total de PDs activos al cierre Fase 0**: ~70 claves (de las cuales ~25 son `Crítica` por sensibilidad). Ver [`PREGUNTAS-ABIERTAS.md`](./PREGUNTAS-ABIERTAS.md) para el orden de resolución propuesto y [`RIESGO-SUPUESTOS.md`](./RIESGO-SUPUESTOS.md) para el mapa de riesgo top 10.

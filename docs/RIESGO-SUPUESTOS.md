@@ -14,6 +14,7 @@
 | 8 | **Volumen comprometido de Olivero 3 (gratis, al lado)** | 2.000 ton | Es el proveedor más grande con costo logístico cero. Si se cae, hay que reemplazarlo con oliveros lejanos pagando $1.800-2.500/km. | ±2-3 pp TIR | Matías |
 | 9 | **CapEx total año 1 (planta piloto + industrial)** | PD | Driver del payback. Si CapEx real es 30% sobre estimado, payback se extiende del año 4 al 6+. Combinado con régimen de depreciación. | ±3-5 pp TIR | Jaime + ingeniería |
 | 10 | **Precios de los 4 PTEC (proteína unicelular, antioxidante, aglomerante, umami)** | PD (Jaime: "del umami no tengo idea") | Estos productos entran año 3-5 y son el upside del plan. Si los precios son la mitad de lo modelado, el plan se vuelve aceitero puro. | ±3-6 pp TIR (asimétrica: upside) | Jaime + I+D + Comercial |
+| 11 | **Precio mayorista de harina de pescado en Chile** (benchmark para Trongkai Feed) | PD | Es el ancla competitiva de toda la línea Feed (acuicultura + pet food). Si harina de pescado se abarata 20%, Trongkai Feed debe bajar precio o perder volumen. Driver del 70% del revenue Feed año 1-3. | ±4-7 pp TIR de la línea Feed | Comercial + ProChile data |
 
 ## Top 5 variables con efecto cruzado (no independientes)
 
