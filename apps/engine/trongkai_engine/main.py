@@ -23,6 +23,7 @@ from .bottleneck import (
     compute_bottleneck,
 )
 from .config import get_settings
+from .escenarios import comparar_escenarios_estrategicos, recomendacion_estrategica
 from .excel_export import export_plan_to_excel
 from .financial import FlujoMes, calcular_kpis
 from .mass_balance import (
@@ -533,6 +534,55 @@ def plan_tornado_endpoint(req: PlanRequest) -> dict:
             }
             for r in resultados
         ]
+    }
+
+
+# ----- Escenarios estratégicos -----
+
+
+@app.get(
+    "/plan/escenarios-estrategicos",
+    tags=["financiero"],
+    summary="3 escenarios estratégicos de planta",
+    description=(
+        "Ejecuta los 3 escenarios canónicos (PILOTO 25k ton, INDUSTRIAL 50k ton, "
+        "EXPANSION 80k ton) y devuelve TIR/VAN/CapEx/Payback de cada uno + recomendación "
+        "basada en heurística de risk-adjusted VAN. Pensado para decisión de directorio "
+        "sobre estrategia de escalamiento."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def escenarios_estrategicos_endpoint() -> dict:
+    escs = comparar_escenarios_estrategicos()
+    return {
+        "escenarios": [
+            {
+                "nombre": e.nombre,
+                "descripcion": e.descripcion,
+                "volumen_objetivo_ton_ano": e.parametros.volumen_total_ton_ano,
+                "kpis": {
+                    "tir": e.resumen.kpis.tir_proyecto_anual,
+                    "van": e.resumen.kpis.van,
+                    "payback_meses": e.resumen.kpis.payback_meses,
+                    "ebitda_margin": e.resumen.kpis.ebitda_margin_promedio,
+                    "ratio_capex": e.resumen.kpis.ratio_capex_ventas,
+                },
+                "ingresos_anuales": e.resumen.ingresos_anuales,
+                "ebitda_anuales": e.resumen.ebitda_anuales,
+                "capex_anuales": e.resumen.capex_anuales,
+                "capex_total": sum(e.resumen.capex_anuales),
+                "por_marca": {
+                    marca: {
+                        "ingresos_anuales": r.ingresos_anuales,
+                        "volumen_ton_anuales": r.volumen_ton_anuales,
+                        "penetracion_pct_ano5": r.penetracion_pct_ano5,
+                    }
+                    for marca, r in e.resumen.por_marca.items()
+                },
+            }
+            for e in escs
+        ],
+        "recomendacion": recomendacion_estrategica(escs),
     }
 
 

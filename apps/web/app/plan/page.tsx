@@ -52,6 +52,16 @@ export default function PlanPage() {
   const [data, setData] = useState<PlanResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [estrategicos, setEstrategicos] = useState<any>(null);
+
+  async function cargarEstrategicos() {
+    try {
+      const r = await fetch(`${ENGINE_URL}/plan/escenarios-estrategicos`);
+      if (r.ok) setEstrategicos(await r.json());
+    } catch {
+      /* silent */
+    }
+  }
 
   async function generar() {
     setLoading(true);
@@ -289,6 +299,67 @@ export default function PlanPage() {
               </div>
             </section>
           )}
+
+          <section>
+            <h2 className="font-serif text-xl text-oliva-900">3 escenarios estratégicos de planta</h2>
+            <p className="mt-1 text-xs text-oliva-600">
+              Comparación CapEx escalonado: PILOTO (25k ton/año, riesgo bajo), INDUSTRIAL (50k, plan base), EXPANSION (80k, máximo upside).
+            </p>
+            {!estrategicos && (
+              <button
+                onClick={cargarEstrategicos}
+                className="mt-3 rounded border border-oliva-900 px-4 py-2 text-sm text-oliva-900 hover:bg-oliva-50"
+              >
+                Cargar escenarios estratégicos
+              </button>
+            )}
+            {estrategicos && (
+              <>
+                <div className="mt-3 overflow-x-auto rounded-lg border border-oliva/10 bg-white">
+                  <table className="w-full text-sm">
+                    <thead className="bg-oliva-50 text-xs uppercase tracking-wide text-oliva-600">
+                      <tr>
+                        <th className="px-3 py-2 text-left">Escenario</th>
+                        <th className="px-3 py-2 text-right">Vol target A5</th>
+                        <th className="px-3 py-2 text-right">CapEx total</th>
+                        <th className="px-3 py-2 text-right">TIR</th>
+                        <th className="px-3 py-2 text-right">VAN</th>
+                        <th className="px-3 py-2 text-right">Payback</th>
+                        <th className="px-3 py-2 text-right">EBITDA%</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {estrategicos.escenarios.map((e: any) => {
+                        const isRec = e.nombre === estrategicos.recomendacion.elegido;
+                        return (
+                          <tr
+                            key={e.nombre}
+                            className={`border-t border-oliva/5 ${isRec ? 'bg-trigo/10 font-medium' : ''}`}
+                          >
+                            <td className="px-3 py-2">
+                              {e.nombre} {isRec && <span className="ml-1 text-xs text-trigo">★ recomendado</span>}
+                            </td>
+                            <td className="px-3 py-2 text-right">
+                              {(e.volumen_objetivo_ton_ano / 1000).toFixed(0)}k ton
+                            </td>
+                            <td className="px-3 py-2 text-right">${(e.capex_total / 1e9).toFixed(1)}B</td>
+                            <td className="px-3 py-2 text-right">{pct(e.kpis.tir)}</td>
+                            <td className="px-3 py-2 text-right">${(e.kpis.van / 1e9).toFixed(2)}B</td>
+                            <td className="px-3 py-2 text-right">{e.kpis.payback_meses ?? '—'} m</td>
+                            <td className="px-3 py-2 text-right">{pct(e.kpis.ebitda_margin)}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="mt-2 rounded-lg border border-trigo/40 bg-trigo/10 p-3 text-xs text-oliva-900">
+                  <strong>Recomendación heurística:</strong> {estrategicos.recomendacion.elegido}.{' '}
+                  {estrategicos.recomendacion.razon}
+                </div>
+              </>
+            )}
+          </section>
 
           <section className="rounded-lg border border-trigo/40 bg-trigo/10 p-4 text-sm text-oliva-900">
             <strong>Notas:</strong> precios por SKU y WACC actuales son <strong>OK_PROVISORIO</strong> con
