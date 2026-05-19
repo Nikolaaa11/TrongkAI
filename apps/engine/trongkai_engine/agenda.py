@@ -14,9 +14,9 @@ Output: lista de slots `(fecha, supplier, ton, camiones)`.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from datetime import date, timedelta
-from typing import Iterable
 
 from .bottleneck import (
     BottleneckResult,
