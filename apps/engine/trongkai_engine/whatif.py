@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass, field
-from datetime import UTC
+from datetime import UTC, datetime
 from hashlib import sha256
 from typing import Any
 
@@ -139,5 +139,4 @@ class Snapshot:
 
 
 def create_snapshot(nombre: str, comparacion: ComparacionWhatIf) -> Snapshot:
-    from datetime import datetime
     return Snapshot(nombre=nombre, timestamp_iso=datetime.now(UTC).isoformat(), comparacion=comparacion)
