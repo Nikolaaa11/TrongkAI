@@ -14,11 +14,12 @@ evita escrituras accidentales contra un Postgres no intencional.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from collections.abc import Iterator
 from contextlib import contextmanager
-from datetime import UTC
+from datetime import UTC, datetime
 from typing import Any
 
 try:
@@ -263,9 +264,6 @@ def stats_resumen(conn) -> dict:
 
 def snapshot_plan(conn, plan_anual_id: int, aprobado_por: str, comentario: str | None = None) -> dict:
     """Crea VersionPlan con el snapshot completo del PlanAnual."""
-    import hashlib
-    from datetime import datetime
-
     with conn.cursor() as cur:
         cur.execute(
             'SELECT row_to_json(p) AS plan FROM "PlanAnual" p WHERE id = %s', (plan_anual_id,)
