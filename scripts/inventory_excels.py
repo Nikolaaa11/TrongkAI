@@ -12,7 +12,6 @@ import sys
 from pathlib import Path
 
 import openpyxl
-from openpyxl.utils import get_column_letter
 
 CTX = Path("C:/Users/nicol/OneDrive/Documentos/0.1.1 TrongkAI/trongkai-platform/contexto")
 OUT = Path("C:/Users/nicol/OneDrive/Documentos/0.1.1 TrongkAI/trongkai-platform/docs")
