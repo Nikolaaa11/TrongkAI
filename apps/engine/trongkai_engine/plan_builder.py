@@ -18,7 +18,6 @@ from typing import Literal
 
 from .financial import FlujoMes, KPIsFinancieros, calcular_kpis
 
-
 # ============================================================================
 # Catálogo de SKUs — fuente única para precio, marca, año de lanzamiento y peso
 # en el mix de productos finales.

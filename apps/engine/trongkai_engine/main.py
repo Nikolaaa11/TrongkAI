@@ -2,16 +2,16 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Literal
 
-from pathlib import Path
 import structlog
 from fastapi import Depends, FastAPI, Header, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from . import __version__
-from .config import get_settings
 from .agenda import (
     SupplierTarget,
     TemporadaMMPP,
@@ -22,18 +22,17 @@ from .bottleneck import (
     EtapaProceso,
     compute_bottleneck,
 )
+from .config import get_settings
 from .excel_export import export_plan_to_excel
 from .financial import FlujoMes, calcular_kpis
-from .plan_builder import ParametrosPlan, build_plan, tornado_sensibilidades
-from .whatif import Escenario, comparar_escenarios
 from .mass_balance import (
     BalanceMode,
     MassBalanceError,
     MateriaPrimaSpec,
     compute_mass_balance,
 )
-
-from fastapi.middleware.cors import CORSMiddleware
+from .plan_builder import ParametrosPlan, build_plan, tornado_sensibilidades
+from .whatif import Escenario, comparar_escenarios
 
 log = structlog.get_logger()
 

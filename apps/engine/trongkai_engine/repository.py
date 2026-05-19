@@ -18,6 +18,7 @@ import json
 import os
 from collections.abc import Iterator
 from contextlib import contextmanager
+from datetime import UTC
 from typing import Any
 
 try:
@@ -294,7 +295,7 @@ def snapshot_plan(conn, plan_anual_id: int, aprobado_por: str, comentario: str |
                 plan_anual_id,
                 json.dumps(snapshot, default=str),
                 aprobado_por,
-                datetime.now(timezone.utc),
+                datetime.now(UTC),
                 digest,
                 comentario,
             ),
