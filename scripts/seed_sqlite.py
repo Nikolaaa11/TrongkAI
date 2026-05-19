@@ -155,7 +155,7 @@ def main() -> int:
     conn.execute("PRAGMA foreign_keys = ON")
 
     setup_schema(conn)
-    counts = insert_payload(conn, payload)
+    insert_payload(conn, payload)
     s = stats(conn)
     conn.close()
 
