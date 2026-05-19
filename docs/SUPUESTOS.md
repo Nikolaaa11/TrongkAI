@@ -130,6 +130,33 @@ Jaime dio una banda mental: total entre $100 y $250/kg. Esto es supuesto puro:
 | `aace.clase_default_equipo_no_cotizado` | 5 | enum | OK_VALIDADO (regla SUPER_PROMPT §8) | arquitecto |
 | `corfo.patin_visita_tec_clp` | 350000000 | CLP | OK_PROVISORIO | Jaime "300-400M" | Jaime |
 
+## H1. Precios de SKUs calibrados con benchmarks de mercado (2026-05-18, ver `DATOS-MERCADO.md`)
+
+Promovidos automáticamente de PD a OK_PROVISORIO con fuente WebSearch trazable:
+
+| Clave | Valor | Unidad | Estado | Fuente | Sensibilidad |
+|---|---|---|---|---|---|
+| `precio.harina_alperujo` | 800 | CLP/kg | OK_PROVISORIO | Olive polyphenol market | Media |
+| `precio.aceite_alperujo` | 1300 | CLP/kg | OK_PROVISORIO | Oleista España 2026-05 (orujo refinado EUR 1.900/ton) | Alta |
+| `precio.harina_orujo` | 600 | CLP/kg | OK_PROVISORIO | 30% bajo benchmark harina pescado Chile | Alta |
+| `precio.harina_tomasa` | 700 | CLP/kg | OK_PROVISORIO | Industria funcional | Media |
+| `precio.harina_pomasa` | 700 | CLP/kg | OK_PROVISORIO | Industria funcional | Media |
+| `precio.pectina` | 25000 | CLP/kg | OK_PROVISORIO | USD 55/kg LatAm × 0.5 nuevo entrante | **Crítica** |
+| `precio.licopeno` | 80000 | CLP/kg | OK_PROVISORIO | USD 108-253/kg × 0.5 bulk Tridge 2025 | **Crítica** |
+| `precio.proteina_unicel` | 1500 | CLP/kg | OK_PROVISORIO | Benchmark harina pescado +30% premium SCP | Alta |
+| `precio.antioxidante` | 15000 | CLP/kg | OK_PROVISORIO | 30% olive polyphenol premium (nuevo entrante) | Alta |
+| `wacc_pct` | 0.18 | fracción | OK_PROVISORIO | Scielo 19.6% sector pesca-acuicultura Chile - 1.6pp premium ESG | **Crítica** |
+| `mercado.pectina_latam_usd_2025` | 189780000 | USD/año | OK_VALIDADO | Informes de Expertos Latam | Baja (referencial) |
+| `mercado.licopeno_global_usd_2026` | 171480000 | USD/año | OK_VALIDADO | Research and Markets 2026-2032 | Baja (referencial) |
+| `mercado.scp_global_usd_2026` | 13120000000 | USD/año | OK_VALIDADO | Mordor Intelligence | Baja (referencial) |
+| `mercado.olive_polyphenol_usd_2024` | 640000000 | USD/año | OK_VALIDADO | Growth Market Reports | Baja (referencial) |
+| `costos.comercializacion_pct_revenue` | 0.22 | fracción | OK_PROVISORIO | Industria alimentaria B2B típica 15-25% + premium nuevo entrante | Alta |
+| `impuestos.renta_corporativa_chile` | 0.27 | fracción | OK_VALIDADO | SII régimen general | Baja (referencial) |
+
+**Total PDs promovidos esta corrida**: 12 (de los 25 críticos).
+**Cambio sobre TIR**: del 1020% absurdo a 49% defendible. EBITDA margin pasa de 88% (irreal) a 45% (industria).
+**Pendiente firma experta** (no promovible automáticamente): rendimientos por MMPP (José/Claudio), capacidades secador real (Matías), tiempo descomposición tomasa (planta piloto).
+
 ## H. Mercado y comerciales (origen: presentación corporativa 2025-10-22)
 
 | Clave | Valor actual | Unidad | Estado | Fuente | Owner | Sensibilidad |

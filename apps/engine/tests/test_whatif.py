@@ -47,9 +47,9 @@ def test_snapshot_genera_hash_estable():
 
 
 def test_deltas_se_calculan():
-    cmp = comparar_escenarios([Escenario(nombre="opex doble", overrides={"opex_mensual_clp": 70_000_000})])
+    """OpEx muy superior al default (80M) debe bajar la TIR."""
+    cmp = comparar_escenarios([Escenario(nombre="opex muy alto", overrides={"opex_mensual_clp": 300_000_000})])
     deltas = cmp.to_dict()["escenarios"][0]["deltas"]
-    # OpEx doble → TIR debería caer (delta_tir_pp < 0)
     assert deltas["tir_pp"] is not None
     assert deltas["tir_pp"] < 0
 
