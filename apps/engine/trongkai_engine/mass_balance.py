@@ -15,10 +15,10 @@ Modos:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 
 
-class BalanceMode(str, Enum):
+class BalanceMode(StrEnum):
     A_INITIAL_BASE = "A"
     B_DEHYDRATED_BASE = "B"
 

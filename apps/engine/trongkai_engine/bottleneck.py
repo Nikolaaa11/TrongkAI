@@ -12,10 +12,10 @@ Determina:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 
-class EtapaProceso(str, Enum):
+class EtapaProceso(StrEnum):
     RECEPCION = "RECEPCION"
     ALIMENTACION = "ALIMENTACION"
     HOMOG_1 = "HOMOG_1"
