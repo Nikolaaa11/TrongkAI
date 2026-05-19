@@ -1,0 +1,14 @@
+# Excluir todo lo que no es Next.js para que Vercel no autodetecte FastAPI
+apps/engine
+apps/engine/**
+scripts/
+infra/
+tests/
+docs/
+contexto/
+logs/
+docker-compose.yml
+*.py
+pyproject.toml
+**/pyproject.toml
+**/Dockerfile
