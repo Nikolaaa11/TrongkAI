@@ -12,7 +12,9 @@ se vuelven defendibles.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from collections.abc import Callable
+from copy import deepcopy
+from dataclasses import dataclass, field, replace
 from typing import Literal
 
 from .financial import FlujoMes, KPIsFinancieros, calcular_kpis
@@ -191,3 +193,97 @@ def caso_olivero_1_costo_unitario_kg(distancia_km: float = 82, tarifa_clp_km: fl
         "pago_recepcion_clp_kg": pago_recepcion_clp_kg,
         "costo_neto_clp_kg": round(costo_unitario_flete + pago_recepcion_clp_kg, 3),
     }
+
+
+# ============================================================================
+# Tornado de sensibilidades — Módulo 4 (extensión)
+# ============================================================================
+
+
+@dataclass
+class TornadoSensibilidad:
+    """Resultado del tornado para una variable (corrida baja + alta)."""
+
+    variable: str
+    delta_pct: float
+    tir_baja: float | None
+    tir_alta: float | None
+    van_baja: float
+    van_alta: float
+
+    @property
+    def magnitud_tir(self) -> float:
+        """Magnitud absoluta del swing TIR (alta - baja) para ordenamiento."""
+        if self.tir_baja is None or self.tir_alta is None:
+            return 0.0
+        return abs(self.tir_alta - self.tir_baja)
+
+
+# Mapeo declarativo de variable -> función que aplica el delta multiplicativo
+# sobre una copia de ParametrosPlan. Cada variable se shockea ±delta_pct.
+_VARIABLES_TORNADO: dict[str, Callable[[ParametrosPlan, float], ParametrosPlan]] = {
+    "wacc_anual": lambda p, mult: _set_wacc(p, mult),
+    "precio_promedio": lambda p, mult: _scale_precios(p, mult),
+    "costo_mmpp": lambda p, mult: replace(p, costo_mmpp_clp_kg=p.costo_mmpp_clp_kg * mult),
+    "opex_mensual": lambda p, mult: replace(p, opex_mensual_clp=p.opex_mensual_clp * mult),
+    "rendimiento_promedio": lambda p, mult: _scale_rendimientos(p, mult),
+}
+
+
+def _set_wacc(p: ParametrosPlan, mult: float) -> ParametrosPlan:
+    nuevo = p.wacc_anual * mult
+    # Clamp al rango [0, 1) que requiere calcular_kpis
+    nuevo = max(0.0, min(nuevo, 0.99))
+    return replace(p, wacc_anual=nuevo)
+
+
+def _scale_precios(p: ParametrosPlan, mult: float) -> ParametrosPlan:
+    base = p.precios_clp_kg or dict(PRECIOS_REFERENCIA)
+    return replace(p, precios_clp_kg={k: v * mult for k, v in base.items()})
+
+
+def _scale_rendimientos(p: ParametrosPlan, mult: float) -> ParametrosPlan:
+    nuevos = {k: min(1.0, max(0.0, v * mult)) for k, v in p.rendimiento_por_mmpp.items()}
+    return replace(p, rendimiento_por_mmpp=nuevos)
+
+
+def tornado_sensibilidades(
+    base_params: ParametrosPlan | None = None,
+    deltas_pct: dict[str, float] | None = None,
+) -> list[TornadoSensibilidad]:
+    """Genera el tornado de sensibilidades sobre las 5 variables clave.
+
+    Para cada variable corre el plan con factor (1 - delta) y (1 + delta),
+    captura TIR/VAN y devuelve la lista ordenada por magnitud de swing TIR
+    (mayor impacto primero) — formato gráfico tornado estándar.
+
+    `deltas_pct` permite override por variable (default 20% para todas).
+    """
+    base_params = base_params or ParametrosPlan()
+    # Construye base fresh para que el plan use defaults sin contaminar params
+    base_for_run = deepcopy(base_params)
+    if not base_for_run.precios_clp_kg:
+        base_for_run.precios_clp_kg = dict(PRECIOS_REFERENCIA)
+
+    defaults = {var: 0.20 for var in _VARIABLES_TORNADO}
+    if deltas_pct:
+        defaults.update(deltas_pct)
+
+    resultados: list[TornadoSensibilidad] = []
+    for var, fn in _VARIABLES_TORNADO.items():
+        delta = defaults[var]
+        plan_baja = build_plan(fn(deepcopy(base_for_run), 1 - delta))
+        plan_alta = build_plan(fn(deepcopy(base_for_run), 1 + delta))
+        resultados.append(
+            TornadoSensibilidad(
+                variable=var,
+                delta_pct=delta,
+                tir_baja=plan_baja.kpis.tir_proyecto_anual,
+                tir_alta=plan_alta.kpis.tir_proyecto_anual,
+                van_baja=plan_baja.kpis.van,
+                van_alta=plan_alta.kpis.van,
+            )
+        )
+
+    resultados.sort(key=lambda r: r.magnitud_tir, reverse=True)
+    return resultados

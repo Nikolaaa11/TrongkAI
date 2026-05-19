@@ -42,12 +42,26 @@ app = FastAPI(
 )
 
 
+DEFAULT_API_KEY = "changeme-internal-only"
+
+
 def require_api_key(x_api_key: str | None = Header(default=None)) -> None:
     """Valida header X-API-Key contra ENGINE_API_KEY env var.
 
+    Modo "graceful auth":
+    - Si `ENGINE_API_KEY` env var no está seteada o vale el default
+      ("changeme-internal-only"), el endpoint queda abierto. Esto permite
+      desarrollar localmente sin headers y deployar a Fly sin romper el
+      frontend público hasta que se decida el modelo de auth definitivo.
+    - Si está seteada a un valor distinto del default, el header X-API-Key
+      es OBLIGATORIO y debe matchear.
+
+    Para activar auth en prod: `fly secrets set ENGINE_API_KEY=<valor-fuerte>`.
     Aplica a todos los endpoints excepto /health (liveness probe de Fly).
     """
     expected = get_settings().engine_api_key
+    if expected == DEFAULT_API_KEY or not expected:
+        return  # modo abierto — auth desactivada
     if not x_api_key or x_api_key != expected:
         log.warning("auth_failed", has_header=bool(x_api_key))
         raise HTTPException(

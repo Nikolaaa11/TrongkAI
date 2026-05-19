@@ -58,9 +58,13 @@ pnpm --filter @trongkai/web dev
 
 ## Estado
 
-- **Fase 0** — Inventario y supuestos. ✅ Completada
-- **Fase 1** — Modelo de datos + seed. 🚧 En curso
-- **Fase 2-6** — Pendientes
+- **Fases 0-6** — ✅ Completadas (2026-05-18). Tests 52+/52 verde + 5 e2e Playwright. 8 endpoints REST. 7 páginas Next.js.
+
+## Deploy
+
+- **Engine** (FastAPI): https://trongkai-engine.fly.dev — fly.io región gru. Healthcheck en `/health`, OpenAPI en `/docs`.
+- **Frontend** (Next.js): proyecto Vercel `nicolasrietta-1798s-projects/trongkai` linkeado al repo. `NEXT_PUBLIC_ENGINE_URL` apuntando al engine en Fly. Deploy automático en cada push a `main` (cuando se restablece el rate limit Vercel free).
+- **Schedules autónomos**: 4 tareas en Windows Task Scheduler (`TrongkAI-Improver` cada 1h, `TrongkAI-SupuestosAudit` lunes 09:00, `TrongkAI-ValidateBalance` diario 08:00, `TrongkAI-Backup` diario 03:00).
 
 ## Documentación clave
 

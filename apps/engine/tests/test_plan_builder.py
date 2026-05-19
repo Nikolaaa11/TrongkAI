@@ -8,6 +8,7 @@ from trongkai_engine.plan_builder import (
     ParametrosPlan,
     build_plan,
     caso_olivero_1_costo_unitario_kg,
+    tornado_sensibilidades,
 )
 
 
@@ -58,3 +59,30 @@ def test_capex_se_aplica_solo_en_enero_de_cada_ano():
     for mes in range(2, 13):
         f = plan.flujos[mes - 1]
         assert f.capex_periodo == 0
+
+
+def test_tornado_genera_cinco_variables_ordenadas_por_magnitud():
+    """El tornado debe shockear las 5 variables clave y ordenarlas por impacto TIR."""
+    resultados = tornado_sensibilidades()
+    variables = {r.variable for r in resultados}
+    assert variables == {"wacc_anual", "precio_promedio", "costo_mmpp", "opex_mensual", "rendimiento_promedio"}
+    # Cada entry debe tener TIR baja/alta y VAN baja/alta numéricos
+    for r in resultados:
+        assert r.delta_pct == pytest.approx(0.20)
+        assert r.van_baja != r.van_alta, f"{r.variable} sin swing VAN"
+    # Orden descendente por magnitud absoluta del swing TIR
+    magnitudes = [r.magnitud_tir for r in resultados]
+    assert magnitudes == sorted(magnitudes, reverse=True)
+
+
+def test_tornado_precio_sube_tir_y_costo_baja_tir():
+    """Sanity: subir precios mejora TIR; subir costo MMPP la empeora."""
+    resultados = {r.variable: r for r in tornado_sensibilidades()}
+    # Precio alto (+20%) => TIR alta > TIR baja
+    precio = resultados["precio_promedio"]
+    assert precio.tir_alta is not None and precio.tir_baja is not None
+    assert precio.tir_alta > precio.tir_baja
+    # Costo MMPP alto (+20%) => TIR alta < TIR baja (mayor costo => peor TIR)
+    costo = resultados["costo_mmpp"]
+    assert costo.tir_alta is not None and costo.tir_baja is not None
+    assert costo.tir_alta < costo.tir_baja
