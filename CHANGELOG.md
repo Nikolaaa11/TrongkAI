@@ -4,6 +4,9 @@ Todo cambio relevante se registra acá. Formato basado en [Keep a Changelog](htt
 
 ## [Unreleased]
 
+### Docs
+- `apps/engine/trongkai_engine/escenarios.py`: docstring de `recomendacion_estrategica` desalineado del código — decía "WACC > 0.15" pero el branch real es `wacc > 0.20`. Actualizada para reflejar las 4 ramas reales (PILOTO por WACC alto, EXPANSION por VAN 1.5×, INDUSTRIAL fallback positivo, PILOTO fallback negativo). 83 tests verdes, ruff `check .` limpio. — 2026-05-19
+
 ### Chore
 - `apps/engine/trongkai_engine/agenda.py`: `collections.abc.Iterable` movido bajo `TYPE_CHECKING` (sólo usado como anotación de retorno de `TemporadaMMPP.fechas`). Mismo patrón que el refactor previo en `excel_export.py`. 78 tests verdes, ruff `check .` limpio. — 2026-05-19
 - `apps/engine/pyproject.toml`: removida la opción `asyncio_mode = "auto"` que generaba `PytestConfigWarning` en cada corrida (el plugin `pytest-asyncio` no está instalado en el entorno y el repo no tiene tests async). 78 tests verdes sin warnings, ruff `check .` limpio. — 2026-05-19

@@ -102,9 +102,10 @@ def comparar_escenarios_estrategicos() -> list[EscenarioEstrategico]:
 def recomendacion_estrategica(escenarios: list[EscenarioEstrategico]) -> dict:
     """Aplica una heurística simple para elegir escenario por perfil de riesgo:
 
-    - Si WACC base > 0.15 → PILOTO (riesgo alto en tasa)
-    - Si VAN(EXPANSION) > 1.5× VAN(INDUSTRIAL) → EXPANSION
-    - Else → INDUSTRIAL
+    - Si WACC base > 0.20 → PILOTO (riesgo alto en tasa)
+    - Si VAN(EXPANSION) > 1.5× VAN(INDUSTRIAL) y VAN(EXPANSION) > 0 → EXPANSION
+    - Si VAN(INDUSTRIAL) > 0 → INDUSTRIAL
+    - Else → PILOTO (bajar exposición cuando ningún escenario da VAN positivo)
     """
     by_name = {e.nombre: e for e in escenarios}
     van_ind = by_name["INDUSTRIAL"].resumen.kpis.van
