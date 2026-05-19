@@ -33,12 +33,31 @@ from .mass_balance import (
     compute_mass_balance,
 )
 
+from fastapi.middleware.cors import CORSMiddleware
+
 log = structlog.get_logger()
 
 app = FastAPI(
     title="Trongkai Engine",
     version=__version__,
     description="Motor de cálculo de la biorrefinería Trongkai",
+)
+
+# CORS: permite localhost dev + dominios oficiales del frontend (Vercel + custom).
+# Para producción, restringir a dominios específicos seteando env CORS_ORIGINS.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3010",
+        "http://localhost:3011",
+        "https://trongkai.vercel.app",
+        "https://trongkai-nicolasrietta-1798s-projects.vercel.app",
+    ],
+    allow_origin_regex=r"https://.*\.vercel\.app",
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=False,
 )
 
 
@@ -428,6 +447,13 @@ def plan_endpoint(req: PlanRequest) -> dict:
             }
             for i in range(5)
         ],
+        "por_marca": {
+            marca: {
+                "ingresos_anuales": r.ingresos_anuales,
+                "volumen_ton_anuales": r.volumen_ton_anuales,
+            }
+            for marca, r in plan.por_marca.items()
+        },
         "flujos_meses": [
             {
                 "mes": f.mes,

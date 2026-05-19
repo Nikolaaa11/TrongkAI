@@ -20,9 +20,15 @@ type ResumenAno = {
   ebitda_margin: number;
 };
 
+type PorMarca = {
+  ingresos_anuales: number[];
+  volumen_ton_anuales: number[];
+};
+
 type PlanResponse = {
   kpis: Kpis;
   resumen_anual: ResumenAno[];
+  por_marca?: Record<string, PorMarca>;
   flujos_meses: any[];
 };
 
@@ -37,10 +43,10 @@ function pct(n: number | null | undefined): string {
 }
 
 export default function PlanPage() {
-  const [wacc, setWacc] = useState(0.12);
+  const [wacc, setWacc] = useState(0.18);  // sector pesca-acuícola Chile + premium ESG
   const [volumen, setVolumen] = useState(50_000);
-  const [opex, setOpex] = useState(35_000_000);
-  const [costoMmpp, setCostoMmpp] = useState(50);
+  const [opex, setOpex] = useState(80_000_000);  // planta industrial 50k ton/año
+  const [costoMmpp, setCostoMmpp] = useState(30);  // promedio ponderado Olivero 1-4
   const [data, setData] = useState<PlanResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -207,10 +213,63 @@ export default function PlanPage() {
             </div>
           </section>
 
+          {data.por_marca && (
+            <section>
+              <h2 className="font-serif text-xl text-oliva-900">Desglose por marca comercial</h2>
+              <p className="mt-1 text-xs text-oliva-600">
+                Segmentación Trongkai Feed / Food / Servicios — útil para EERR por línea (ADR-009).
+              </p>
+              <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
+                {Object.entries(data.por_marca)
+                  .filter(([, r]) => r.ingresos_anuales.some((v) => v > 0))
+                  .map(([marca, r]) => {
+                    const totalIngresos = r.ingresos_anuales.reduce((a, b) => a + b, 0);
+                    const totalTon = r.volumen_ton_anuales.reduce((a, b) => a + b, 0);
+                    const colorMarca =
+                      marca === 'FEED'
+                        ? 'border-l-4 border-tierra'
+                        : marca === 'FOOD'
+                        ? 'border-l-4 border-trigo'
+                        : 'border-l-4 border-oliva-400';
+                    return (
+                      <div
+                        key={marca}
+                        className={`rounded-lg border border-oliva/10 bg-white p-4 ${colorMarca}`}
+                      >
+                        <h3 className="font-medium text-oliva-900">Trongkai {marca}</h3>
+                        <div className="mt-2 text-xs text-oliva-600">Ingresos 5 años</div>
+                        <div className="text-2xl font-semibold text-oliva-900">
+                          ${fmt(totalIngresos)}
+                        </div>
+                        {totalTon > 0 && (
+                          <>
+                            <div className="mt-2 text-xs text-oliva-600">Volumen 5 años</div>
+                            <div className="text-sm text-oliva-700">
+                              {totalTon.toLocaleString('es-CL', { maximumFractionDigits: 0 })} ton
+                            </div>
+                          </>
+                        )}
+                        <div className="mt-3 grid grid-cols-5 gap-1 text-xs">
+                          {r.ingresos_anuales.map((v, i) => (
+                            <div key={i} className="text-center">
+                              <div className="text-oliva-400">A{i + 1}</div>
+                              <div className="font-medium text-oliva-700">
+                                ${(v / 1e9).toFixed(1)}B
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </section>
+          )}
+
           <section className="rounded-lg border border-trigo/40 bg-trigo/10 p-4 text-sm text-oliva-900">
-            <strong>Notas:</strong> precios por SKU y WACC actuales son <strong>PD provisorios</strong>.
+            <strong>Notas:</strong> precios por SKU y WACC actuales son <strong>OK_PROVISORIO</strong> con
+            benchmarks de mercado verificados (ver <code className="font-mono">docs/DATOS-MERCADO.md</code>).
             Para versión defendible a directorio (ADR-002), promover supuestos del top 10 a OK_VALIDADO_DIRECTORIO.
-            Ver <code className="font-mono">/supuestos</code>.
           </section>
         </>
       )}
