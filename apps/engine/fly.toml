@@ -1,8 +1,8 @@
 # fly.toml para trongkai-engine
-# Region scl (Santiago) para baja latencia con cehta-platform en Chile
+# Region gru (Sao Paulo) - scl deprecated en Fly. gru es la mas cercana a Chile.
 
 app = "trongkai-engine"
-primary_region = "scl"
+primary_region = "gru"
 
 [build]
 
