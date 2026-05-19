@@ -144,7 +144,8 @@ def _write_eerr(wb: Workbook, plan: ResumenPlan) -> None:
 
     # Fila de totales
     ws.append([])
-    ws.append(["TOTAL"] + [
+    ws.append([
+        "TOTAL",
         f"=SUM(B4:B{last_row})",
         f"=SUM(C4:C{last_row})",
         f"=SUM(D4:D{last_row})",

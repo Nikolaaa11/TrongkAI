@@ -109,7 +109,7 @@ def _apply_overrides(base: ParametrosPlan, overrides: dict[str, Any]) -> Paramet
             if not isinstance(target, dict):
                 raise ValueError(f"override no aplicable: {k}")
             # Detectar si las keys del dict son int y castear si tail es número
-            if target and all(isinstance(key, int) for key in target.keys()):
+            if target and all(isinstance(key, int) for key in target):
                 try:
                     tail_key: Any = int(tail)
                 except ValueError:
