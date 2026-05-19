@@ -163,6 +163,55 @@ class ResumenMarca:
     marca: str
     ingresos_anuales: list[float] = field(default_factory=lambda: [0.0] * 5)
     volumen_ton_anuales: list[float] = field(default_factory=lambda: [0.0] * 5)
+    tam_clp_anual: float = 0.0  # Total Addressable Market en CLP
+    penetracion_pct_ano5: float = 0.0  # % capturado del TAM en año 5
+
+
+# ============================================================================
+# TAM por marca (basado en docs/INTELIGENCIA-COMPETITIVA.md)
+# ============================================================================
+
+# Tipo de cambio referencial CLP/USD (puede sobrescribirse con supuesto OK_VALIDADO)
+TC_USD_CLP_REFERENCIA: float = 920.0
+
+
+def _tam_feed_chile_clp() -> float:
+    """TAM Feed Chile = sustitución de ingredientes marinos en feed salmón.
+
+    Producción salmón Chile ≈ 850k ton; FCR 1.4 → 1.2M ton feed/año.
+    Ingredientes marinos 15% = 180k ton/año.
+    Precio mayorista ~ USD 1.000/ton = CLP 920/kg → 180k × 1.000 × 920 = CLP 165.6B/año.
+    """
+    return 180_000 * 1_000 * 920
+
+
+def _tam_food_chile_clp() -> float:
+    """TAM Food Chile (mercado accesible local + export):
+
+    - Pectina Chile (10% Latam USD 190M) = USD 19M ≈ CLP 17,5B
+    - Licopeno accesible Chile (10% mundial USD 171M) = USD 17M ≈ CLP 15,6B
+    - Polifenoles oliva accesible (5% mundial USD 640M) = USD 32M ≈ CLP 29,4B
+    - Aceite oliva Chile especialidades (50% del USD 44M) = USD 22M ≈ CLP 20,2B
+    - Harinas funcionales premium estimado = USD 30M ≈ CLP 27,6B
+    Total: CLP 110B/año.
+    """
+    return 110_000_000_000
+
+
+def _tam_servicios_clp() -> float:
+    """TAM Servicios = subsidios CORFO + ANID + maquilas regionales.
+
+    Patines CORFO 300-400M CLP × 5/año (sector circular) + 5 contratos
+    maquila × 200M = CLP 3B/año techo.
+    """
+    return 3_000_000_000
+
+
+TAM_POR_MARCA_CLP: dict[str, float] = {
+    "FEED": _tam_feed_chile_clp(),
+    "FOOD": _tam_food_chile_clp(),
+    "SERVICIOS": _tam_servicios_clp(),
+}
 
 
 @dataclass
@@ -224,7 +273,8 @@ def build_plan(parametros: ParametrosPlan | None = None) -> ResumenPlan:
     ebitda_anuales = [0.0] * 5
     capex_anuales = [0.0] * 5
     por_marca = {
-        m: ResumenMarca(marca=m) for m in ("FEED", "FOOD", "SERVICIOS")
+        m: ResumenMarca(marca=m, tam_clp_anual=TAM_POR_MARCA_CLP.get(m, 0.0))
+        for m in ("FEED", "FOOD", "SERVICIOS")
     }
 
     for ano in range(1, 6):
@@ -299,6 +349,11 @@ def build_plan(parametros: ParametrosPlan | None = None) -> ResumenPlan:
                     capex_periodo=capex_mes,
                 )
             )
+
+    # Calcular penetración año 5 vs TAM
+    for marca, r in por_marca.items():
+        if r.tam_clp_anual > 0:
+            r.penetracion_pct_ano5 = r.ingresos_anuales[4] / r.tam_clp_anual
 
     kpis = calcular_kpis(flujos, wacc_anual=p.wacc_anual)
     return ResumenPlan(

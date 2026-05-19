@@ -23,6 +23,8 @@ type ResumenAno = {
 type PorMarca = {
   ingresos_anuales: number[];
   volumen_ton_anuales: number[];
+  tam_clp_anual?: number;
+  penetracion_pct_ano5?: number;
 };
 
 type PlanResponse = {
@@ -259,6 +261,28 @@ export default function PlanPage() {
                             </div>
                           ))}
                         </div>
+                        {r.tam_clp_anual && r.tam_clp_anual > 0 && (
+                          <div className="mt-3 border-t border-oliva/10 pt-2">
+                            <div className="flex items-baseline justify-between text-xs">
+                              <span className="text-oliva-600">TAM anual</span>
+                              <span className="text-oliva-700">
+                                ${(r.tam_clp_anual / 1e9).toFixed(1)}B CLP
+                              </span>
+                            </div>
+                            <div className="flex items-baseline justify-between text-xs">
+                              <span className="text-oliva-600">Penetración A5</span>
+                              <span
+                                className={`font-medium ${
+                                  (r.penetracion_pct_ano5 ?? 0) > 0.15
+                                    ? 'text-borgoña'
+                                    : 'text-oliva-900'
+                                }`}
+                              >
+                                {((r.penetracion_pct_ano5 ?? 0) * 100).toFixed(2)}%
+                              </span>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     );
                   })}

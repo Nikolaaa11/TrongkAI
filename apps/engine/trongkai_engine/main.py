@@ -450,6 +450,8 @@ def plan_endpoint(req: PlanRequest) -> dict:
             marca: {
                 "ingresos_anuales": r.ingresos_anuales,
                 "volumen_ton_anuales": r.volumen_ton_anuales,
+                "tam_clp_anual": r.tam_clp_anual,
+                "penetracion_pct_ano5": r.penetracion_pct_ano5,
             }
             for marca, r in plan.por_marca.items()
         },
