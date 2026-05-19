@@ -6,11 +6,12 @@ from typing import Literal
 
 from pathlib import Path
 import structlog
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from . import __version__
+from .config import get_settings
 from .agenda import (
     SupplierTarget,
     TemporadaMMPP,
@@ -23,7 +24,7 @@ from .bottleneck import (
 )
 from .excel_export import export_plan_to_excel
 from .financial import FlujoMes, calcular_kpis
-from .plan_builder import ParametrosPlan, build_plan
+from .plan_builder import ParametrosPlan, build_plan, tornado_sensibilidades
 from .whatif import Escenario, comparar_escenarios
 from .mass_balance import (
     BalanceMode,
@@ -39,6 +40,20 @@ app = FastAPI(
     version=__version__,
     description="Motor de cálculo de la biorrefinería Trongkai",
 )
+
+
+def require_api_key(x_api_key: str | None = Header(default=None)) -> None:
+    """Valida header X-API-Key contra ENGINE_API_KEY env var.
+
+    Aplica a todos los endpoints excepto /health (liveness probe de Fly).
+    """
+    expected = get_settings().engine_api_key
+    if not x_api_key or x_api_key != expected:
+        log.warning("auth_failed", has_header=bool(x_api_key))
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or missing X-API-Key header",
+        )
 
 
 @app.get(
@@ -94,6 +109,7 @@ class MassBalanceResponse(BaseModel):
         "neta entregada y el grafo Sankey listo para ECharts. Falla con 422 si el "
         "cierre supera ±0.5% o si las extracciones exceden la materia sólida disponible."
     ),
+    dependencies=[Depends(require_api_key)],
 )
 def mass_balance_endpoint(req: MassBalanceRequest) -> MassBalanceResponse:
     try:
@@ -160,6 +176,7 @@ class BottleneckRequest(BaseModel):
         "si la planta puede recibir un nuevo camión y devuelve un semáforo de alerta "
         "(verde / amarilla / roja)."
     ),
+    dependencies=[Depends(require_api_key)],
 )
 def bottleneck_endpoint(req: BottleneckRequest) -> dict:
     capacidades = [
@@ -229,6 +246,7 @@ class AgendaRequest(BaseModel):
         "comprometido. Devuelve la lista de slots (fecha, supplier, ton, camiones) "
         "respetando el bottleneck. Entregable del Módulo 1: 'cuántos camiones puedo recibir'."
     ),
+    dependencies=[Depends(require_api_key)],
 )
 def agenda_endpoint(req: AgendaRequest) -> dict:
     capacidades = [
@@ -323,6 +341,7 @@ class FinancialRequest(BaseModel):
         "anualizada del proyecto, VAN, payback descontado en meses, margen EBITDA "
         "promedio y ratio CapEx/Ventas. Base para el dashboard de directorio (Módulo 3)."
     ),
+    dependencies=[Depends(require_api_key)],
 )
 def financial_kpis_endpoint(req: FinancialRequest) -> dict:
     flujos = [
@@ -367,6 +386,7 @@ class PlanRequest(BaseModel):
         "y devuelve flujos mensuales + KPIs + resumen anual. Si querés un export Excel, "
         "usá POST /plan/export en su lugar."
     ),
+    dependencies=[Depends(require_api_key)],
 )
 def plan_endpoint(req: PlanRequest) -> dict:
     params = ParametrosPlan(
@@ -420,6 +440,7 @@ def plan_endpoint(req: PlanRequest) -> dict:
         "Color coding industry-standard: azul inputs, verde links, negativos en paréntesis."
     ),
     response_class=FileResponse,
+    dependencies=[Depends(require_api_key)],
 )
 def plan_export_endpoint(req: PlanRequest) -> FileResponse:
     params = ParametrosPlan(
@@ -438,6 +459,40 @@ def plan_export_endpoint(req: PlanRequest) -> FileResponse:
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         filename="Plan_5_Anos_Trongkai.xlsx",
     )
+
+
+@app.post(
+    "/plan/tornado",
+    tags=["financiero"],
+    summary="Tornado de sensibilidades del Plan 5 Años",
+    description=(
+        "Shockea ±20% (default) cada una de las 5 variables clave (WACC, precio promedio, "
+        "costo MMPP, OpEx, rendimiento) y devuelve TIR y VAN baja/alta por variable, "
+        "ordenado por magnitud de swing TIR. Output listo para gráfico tornado en el dashboard."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def plan_tornado_endpoint(req: PlanRequest) -> dict:
+    params = ParametrosPlan(
+        wacc_anual=req.wacc_anual,
+        volumen_total_ton_ano=req.volumen_total_ton_ano,
+        opex_mensual_clp=req.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.costo_mmpp_clp_kg,
+    )
+    resultados = tornado_sensibilidades(params)
+    return {
+        "tornado": [
+            {
+                "variable": r.variable,
+                "delta_pct": r.delta_pct,
+                "tir_baja": r.tir_baja,
+                "tir_alta": r.tir_alta,
+                "van_baja": r.van_baja,
+                "van_alta": r.van_alta,
+            }
+            for r in resultados
+        ]
+    }
 
 
 # ----- What-If -----
@@ -463,6 +518,7 @@ class WhatIfRequest(BaseModel):
         "los KPIs de cada uno + los deltas vs el plan base. Pensado para responder "
         "las 5 preguntas tipo del SUPER_PROMPT (no procesar tomasa, licopeno -30%, etc.)."
     ),
+    dependencies=[Depends(require_api_key)],
 )
 def whatif_endpoint(req: WhatIfRequest) -> dict:
     base_params = ParametrosPlan(
