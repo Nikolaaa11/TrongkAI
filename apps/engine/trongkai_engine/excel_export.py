@@ -10,13 +10,16 @@ Reglas (SUPER_PROMPT §4 M3):
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 from .plan_builder import ResumenPlan
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 AZUL_INPUT = PatternFill("solid", fgColor="DCE6F1")
 VERDE_LINK = PatternFill("solid", fgColor="EAF2D3")
