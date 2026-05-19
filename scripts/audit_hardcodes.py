@@ -37,9 +37,8 @@ def audit() -> int:
         for path in ROOT.glob(glob):
             text = path.read_text(encoding="utf-8")
             for i, line in enumerate(text.splitlines(), 1):
-                if PATTERN_TODO.search(line):
-                    if "SUPUESTOS.md" not in line:
-                        issues.append(f"{path.relative_to(ROOT)}:{i}: TODO parametrizar sin ref SUPUESTOS.md")
+                if PATTERN_TODO.search(line) and "SUPUESTOS.md" not in line:
+                    issues.append(f"{path.relative_to(ROOT)}:{i}: TODO parametrizar sin ref SUPUESTOS.md")
 
     if issues:
         print("AUDITORÍA: HARDCODES PENDIENTES")

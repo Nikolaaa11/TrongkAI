@@ -6,6 +6,7 @@ Todo cambio relevante se registra acá. Formato basado en [Keep a Changelog](htt
 
 ### Chore
 - `scripts/seed_sqlite.py`: eliminada variable `counts` no usada (lint F841). Ruff `check .` queda limpio. — 2026-05-19
+- `scripts/audit_hardcodes.py`: `if` anidados colapsados con `and` (SIM102). 78 tests verdes. — 2026-05-19
 
 ## [0.2.0] — 2026-05-18 — Fases 1-6 completas
 
