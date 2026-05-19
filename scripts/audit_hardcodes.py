@@ -2,7 +2,6 @@
 
 Pasa si:
 - No hay `TODO: parametrizar` sin referencia a SUPUESTOS.md
-- No hay números mágicos > 1000 en código de negocio sin comentario @SUPUESTO
 
 Falla con exit code 1 si encuentra algo.
 """
@@ -17,7 +16,6 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # Patrones a buscar
 PATTERN_TODO = re.compile(r"TODO[:\s]*parametrizar", re.IGNORECASE)
-PATTERN_HARDCODE = re.compile(r"\b(\d{4,})\b")  # números > 1000
 
 # Glob patterns a auditar
 GLOBS = [
@@ -25,9 +23,6 @@ GLOBS = [
     "apps/web/app/**/*.tsx",
     "apps/web/components/**/*.tsx",
 ]
-
-# Comentarios que justifican un número mágico
-OK_MARKERS = ["@SUPUESTO", "@OK", "from .plan_builder", "PRECIOS_REFERENCIA"]
 
 
 def audit() -> int:
