@@ -77,7 +77,7 @@ def compute_bottleneck(
     # Bottleneck = etapa con menor ton/h (ignorando None = PD)
     con_capacidad = [c for c in aplicables if c.ton_por_hora is not None]
     incertidumbres = [
-        f"Capacidad de {c.etapa.value} aún PD; usando valor conservador 0.1 ton/h"
+        f"Capacidad de {c.etapa.value} aún PD; excluida del cálculo de bottleneck"
         for c in aplicables
         if c.ton_por_hora is None
     ]
