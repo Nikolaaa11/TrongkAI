@@ -77,25 +77,14 @@ def _params_expansion() -> ParametrosPlan:
 
 def comparar_escenarios_estrategicos() -> list[EscenarioEstrategico]:
     """Ejecuta los 3 escenarios y devuelve lista ordenada para tabla comparativa."""
+    specs = [
+        ("PILOTO", "Validar tecnología 25k ton/año máx. Menor riesgo, payback temprano.", _params_piloto()),
+        ("INDUSTRIAL", "Plan base contractual 50k ton/año. Industria estándar.", _params_industrial()),
+        ("EXPANSION", "Sobrescalar a 80k ton/año. Maximiza VAN si financiamiento disponible.", _params_expansion()),
+    ]
     return [
-        EscenarioEstrategico(
-            nombre="PILOTO",
-            descripcion="Validar tecnología 25k ton/año máx. Menor riesgo, payback temprano.",
-            parametros=_params_piloto(),
-            resumen=build_plan(_params_piloto()),
-        ),
-        EscenarioEstrategico(
-            nombre="INDUSTRIAL",
-            descripcion="Plan base contractual 50k ton/año. Industria estándar.",
-            parametros=_params_industrial(),
-            resumen=build_plan(_params_industrial()),
-        ),
-        EscenarioEstrategico(
-            nombre="EXPANSION",
-            descripcion="Sobrescalar a 80k ton/año. Maximiza VAN si financiamiento disponible.",
-            parametros=_params_expansion(),
-            resumen=build_plan(_params_expansion()),
-        ),
+        EscenarioEstrategico(nombre=nombre, descripcion=desc, parametros=params, resumen=build_plan(params))
+        for nombre, desc, params in specs
     ]
 
 
