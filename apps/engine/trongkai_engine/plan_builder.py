@@ -13,7 +13,6 @@ todo el volumen fuera licopeno.
 
 from __future__ import annotations
 
-from copy import deepcopy
 from dataclasses import dataclass, field, replace
 from typing import Literal
 
@@ -324,7 +323,6 @@ def tornado_sensibilidades(
 ) -> list[TornadoSensibilidad]:
     """Shockea ±delta_pct sobre 5 variables clave y mide impacto en TIR."""
     base = base_params or ParametrosPlan()
-    base_plan = build_plan(base)
     out: list[TornadoSensibilidad] = []
 
     def shock_var(nombre: str, baja: ParametrosPlan, alta: ParametrosPlan) -> TornadoSensibilidad:
