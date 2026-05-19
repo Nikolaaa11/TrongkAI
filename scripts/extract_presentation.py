@@ -8,8 +8,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from pypdf import PdfReader
 from pptx import Presentation
+from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parent.parent
 CTX = ROOT / "contexto"
