@@ -351,7 +351,7 @@ def build_plan(parametros: ParametrosPlan | None = None) -> ResumenPlan:
             )
 
     # Calcular penetración año 5 vs TAM
-    for marca, r in por_marca.items():
+    for r in por_marca.values():
         if r.tam_clp_anual > 0:
             r.penetracion_pct_ano5 = r.ingresos_anuales[4] / r.tam_clp_anual
 
