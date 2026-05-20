@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from trongkai_engine.financial import FlujoMes, calcular_kpis
+from trongkai_engine.financial import FlujoMes, KPIsFinancieros, calcular_kpis, tornado_chart
 
 
 def make_flujos_baseline(capex_inicial: float, ebitda_mensual: float, meses: int = 60) -> list[FlujoMes]:
@@ -73,3 +73,54 @@ def test_ebitda_margin_se_promedia():
 def test_wacc_invalido_falla():
     with pytest.raises(ValueError):
         calcular_kpis([], wacc_anual=1.5)
+
+
+def _kpis_stub(tir: float | None) -> KPIsFinancieros:
+    return KPIsFinancieros(
+        tir_proyecto_anual=tir,
+        van=0.0,
+        payback_meses=None,
+        ebitda_margin_promedio=0.0,
+        ratio_capex_ventas=0.0,
+    )
+
+
+def test_tornado_chart_ordena_por_magnitud_de_impacto():
+    """Caso normal: base_tir + kpis_baja/alta con TIR válidas, ordena por magnitud absoluta del delta."""
+    base = _kpis_stub(0.20)
+    # variable A: impacto chico (0.18-0.20=-0.02 vs 0.22-0.20=+0.02) → magnitud 0.04
+    # variable B: impacto grande (0.10-0.20=-0.10 vs 0.30-0.20=+0.10) → magnitud 0.20
+    sens = [
+        ("A", 0.10, _kpis_stub(0.18), _kpis_stub(0.22)),
+        ("B", 0.20, _kpis_stub(0.10), _kpis_stub(0.30)),
+    ]
+    out = tornado_chart(base, sens)
+    assert [e.variable for e in out] == ["B", "A"]
+    assert out[0].impacto_tir_baja == pytest.approx(-0.10)
+    assert out[0].impacto_tir_alta == pytest.approx(0.10)
+    assert out[0].delta_baja_pct == -0.20
+    assert out[0].delta_alta_pct == 0.20
+
+
+def test_tornado_chart_base_tir_none_deja_impactos_none():
+    """Branch: si base_tir es None, ambos impactos quedan en None aunque las TIRs de los kpis existan."""
+    base = _kpis_stub(None)
+    sens = [("X", 0.10, _kpis_stub(0.18), _kpis_stub(0.22))]
+    out = tornado_chart(base, sens)
+    assert len(out) == 1
+    assert out[0].impacto_tir_baja is None
+    assert out[0].impacto_tir_alta is None
+
+
+def test_tornado_chart_tir_lado_none_deja_solo_ese_lado_en_none():
+    """Branch: si kpis_baja.tir es None pero kpis_alta.tir existe, sólo impacto_tir_baja es None."""
+    base = _kpis_stub(0.15)
+    sens = [("Y", 0.05, _kpis_stub(None), _kpis_stub(0.20))]
+    out = tornado_chart(base, sens)
+    assert out[0].impacto_tir_baja is None
+    assert out[0].impacto_tir_alta == pytest.approx(0.05)
+
+
+def test_tornado_chart_lista_vacia():
+    base = _kpis_stub(0.20)
+    assert tornado_chart(base, []) == []
