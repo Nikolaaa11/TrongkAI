@@ -175,3 +175,49 @@ def test_plan_tornado_endpoint_devuelve_5_variables_con_shape_completo(monkeypat
         assert expected_keys.issubset(it.keys())
         # delta_pct default es 0.20 (±20%)
         assert it["delta_pct"] == 0.20
+
+
+def test_whatif_endpoint_devuelve_base_escenarios_y_deltas(monkeypatch):
+    """POST /whatif: contrato del wrapper FastAPI sobre comparar_escenarios.
+
+    Cubre lines 614-626 de main.py — el wrapper no estaba ejercitado (los tests
+    de whatif atacan comparar_escenarios directo). Smoke + shape mínimo que
+    consume el dashboard de simulación.
+    """
+    client = _open_client(monkeypatch)
+    payload = {
+        # base usa defaults (PlanRequest vacío válido por construcción)
+        "base": {},
+        "escenarios": [
+            {
+                "nombre": "WACC +200bps",
+                "descripcion": "Subida de tasa",
+                "overrides": {"wacc_anual": 0.14},
+            },
+            {
+                "nombre": "Volumen -30%",
+                "overrides": {"volumen_total_ton_ano": 700.0},
+            },
+        ],
+    }
+    r = client.post("/whatif", json=payload)
+    assert r.status_code == 200, r.text
+
+    body = r.json()
+    # Contrato to_dict() de ComparacionWhatIf
+    assert {"base", "escenarios"}.issubset(body.keys())
+    assert {"kpis", "ingresos_anuales", "ebitda_anuales", "capex_anuales"}.issubset(
+        body["base"].keys()
+    )
+
+    # 2 escenarios entran → 2 escenarios salen, con shape completo (resumen + deltas)
+    assert len(body["escenarios"]) == 2
+    for esc in body["escenarios"]:
+        assert {"nombre", "descripcion", "overrides", "resumen", "deltas"}.issubset(
+            esc.keys()
+        )
+        assert {"tir_pp", "van_pct", "payback_meses_delta"}.issubset(esc["deltas"].keys())
+
+    # Los overrides se propagan tal cual al payload de respuesta
+    nombres = {e["nombre"] for e in body["escenarios"]}
+    assert nombres == {"WACC +200bps", "Volumen -30%"}
