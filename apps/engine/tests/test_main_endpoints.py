@@ -47,3 +47,67 @@ def test_escenarios_estrategicos_devuelve_3_escenarios_y_recomendacion(monkeypat
         assert "capex_total" in e
         assert "por_marca" in e
         assert e["volumen_objetivo_ton_ano"] > 0
+
+
+def test_bottleneck_endpoint_devuelve_secador_y_contrato_completo(monkeypatch):
+    """POST /bottleneck: contrato HTTP del endpoint que envuelve compute_bottleneck.
+
+    Cubre lines 215-234 de main.py — el wrapper FastAPI no estaba ejercitado
+    (los tests de bottleneck atacan compute_bottleneck directo). Smoke + shape
+    del response que consume el frontend del Módulo 1.
+    """
+    client = _open_client(monkeypatch)
+    # Baseline tomasa: secador es bottleneck a 2.5 ton/h (ver test_bottleneck.py).
+    payload = {
+        "capacidades": [
+            {"etapa": "RECEPCION", "ton_por_hora": 10, "tiempo_residencia_h": 0.2},
+            {"etapa": "ALIMENTACION", "ton_por_hora": 8, "tiempo_residencia_h": 0.1},
+            {"etapa": "HOMOG_1", "ton_por_hora": 8, "tiempo_residencia_h": 0.1},
+            {"etapa": "PEF", "ton_por_hora": 6, "tiempo_residencia_h": 0.1},
+            {"etapa": "PRENSADO_MECANICO", "ton_por_hora": 5, "tiempo_residencia_h": 0.2},
+            {"etapa": "SECADO", "ton_por_hora": 2.5, "tiempo_residencia_h": 1.5},
+            {"etapa": "ENSACADO", "ton_por_hora": 5, "tiempo_residencia_h": 0.1},
+        ],
+        "tiempo_descomposicion_h": 3.0,
+        "capacidad_camion_ton": 20.0,
+    }
+    r = client.post("/bottleneck", json=payload)
+    assert r.status_code == 200, r.text
+
+    body = r.json()
+    # Contrato mínimo que el frontend consume
+    expected_keys = {
+        "flujo_max_ton_h",
+        "etapa_bottleneck",
+        "tiempo_proceso_total_h",
+        "tiempo_descomposicion_h",
+        "ventana_segura_h",
+        "puede_recibir",
+        "camiones_max_dia",
+        "horas_operativas_dia",
+        "incertidumbres",
+        "alerta",
+    }
+    assert expected_keys.issubset(body.keys())
+
+    # Valores load-bearing: secador es bottleneck, planta puede recibir.
+    assert body["etapa_bottleneck"] == "SECADO"
+    assert body["flujo_max_ton_h"] == 2.5
+    assert body["puede_recibir"] is True
+    assert body["camiones_max_dia"] == 3  # 2.5 × 24 / 20 = 3
+
+
+def test_bottleneck_endpoint_devuelve_422_con_input_invalido(monkeypatch):
+    """POST /bottleneck: la rama except ValueError → HTTPException 422 (line 231-232).
+
+    Capacidades vacías hace que compute_bottleneck eleve ValueError, que el
+    endpoint mapea a 422 para no exponer 500 al frontend.
+    """
+    client = _open_client(monkeypatch)
+    payload = {
+        "capacidades": [],  # ValueError: "Se requiere al menos una etapa..."
+        "tiempo_descomposicion_h": 3.0,
+    }
+    r = client.post("/bottleneck", json=payload)
+    assert r.status_code == 422, r.text
+    assert "detail" in r.json()
