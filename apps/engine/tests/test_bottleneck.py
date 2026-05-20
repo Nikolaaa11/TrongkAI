@@ -68,3 +68,44 @@ def test_todas_pd_no_se_recibe():
 def test_tiempo_descomposicion_negativo_falla(caps_tomasa_baseline):
     with pytest.raises(ValueError):
         compute_bottleneck(caps_tomasa_baseline, tiempo_descomposicion_h=-1)
+
+
+def test_capacidad_camion_negativa_falla(caps_tomasa_baseline):
+    with pytest.raises(ValueError):
+        compute_bottleneck(
+            caps_tomasa_baseline,
+            tiempo_descomposicion_h=3.0,
+            capacidad_camion_ton=0,
+        )
+
+
+def test_sin_etapas_aplicables_falla():
+    """Si todas las etapas tienen aplica=False, no se puede calcular bottleneck."""
+    caps = [
+        CapacidadEtapa(
+            EtapaProceso.SECADO, ton_por_hora=2.5, tiempo_residencia_h=1.5, aplica=False
+        ),
+    ]
+    with pytest.raises(ValueError):
+        compute_bottleneck(caps, tiempo_descomposicion_h=3.0)
+
+
+def test_alerta_amarilla_por_pd_aun_con_ventana_amplia(caps_tomasa_baseline):
+    """Con ventana amplia pero alguna capacidad PD, sigue siendo AMARILLA."""
+    caps = [c for c in caps_tomasa_baseline if c.etapa != EtapaProceso.ENSACADO]
+    caps.append(CapacidadEtapa(EtapaProceso.ENSACADO, ton_por_hora=None, tiempo_residencia_h=0.1))
+    r = compute_bottleneck(caps, tiempo_descomposicion_h=24.0)
+    assert r.puede_recibir is True
+    assert r.ventana_segura_h >= 1
+    assert r.incertidumbres != []
+    assert r.alerta == "AMARILLA"
+
+
+def test_alerta_verde_cuando_ventana_amplia_y_sin_pd(caps_tomasa_baseline):
+    """Con ventana >= 1h y sin capacidades PD, la alerta es VERDE."""
+    # tiempo_total ≈ 2.3 h, descomposicion = 24 h → ventana ≈ 21.7 h
+    r = compute_bottleneck(caps_tomasa_baseline, tiempo_descomposicion_h=24.0)
+    assert r.puede_recibir is True
+    assert r.incertidumbres == []
+    assert r.ventana_segura_h >= 1
+    assert r.alerta == "VERDE"

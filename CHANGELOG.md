@@ -5,6 +5,7 @@ Todo cambio relevante se registra acá. Formato basado en [Keep a Changelog](htt
 ## [Unreleased]
 
 ### Tests
+- `apps/engine/tests/test_bottleneck.py`: +4 tests para cerrar gaps de cobertura — `capacidad_camion_ton=0` levanta ValueError (línea 71), todas las etapas con `aplica=False` levanta ValueError (línea 75), branch AMARILLA por PD aun con ventana amplia (línea 58 del property `alerta`), y branch VERDE puro sin PD y ventana >= 1 (línea 59). Cobertura de `bottleneck.py` 92% → 100%; suite 91 verdes (era 87). — 2026-05-19
 - `apps/engine/tests/test_escenarios.py`: +3 tests cubriendo branches que estaban sin tocar en `recomendacion_estrategica` — rama `wacc > 0.20` (fuerza PILOTO), rama `else` cuando ningún escenario da VAN positivo (cae a PILOTO), y assert sobre el campo `tirs_pct` del dict de salida. Stubs construidos directo con `KPIsFinancieros`/`ResumenPlan` para no depender de `build_plan` real. 86 tests verdes (era 83), ruff `check .` limpio. — 2026-05-19
 
 ### Docs
