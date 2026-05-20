@@ -6,6 +6,8 @@ import pytest
 
 from trongkai_engine.plan_builder import (
     ParametrosPlan,
+    TornadoSensibilidad,
+    _precio_promedio_ponderado,
     build_plan,
     caso_olivero_1_costo_unitario_kg,
     tornado_sensibilidades,
@@ -73,6 +75,24 @@ def test_tornado_genera_cinco_variables_ordenadas_por_magnitud():
     # Orden descendente por magnitud absoluta del swing TIR
     magnitudes = [r.magnitud_tir for r in resultados]
     assert magnitudes == sorted(magnitudes, reverse=True)
+
+
+def test_magnitud_tir_es_cero_cuando_alguna_tir_es_none():
+    """Si una de las TIRs es None, magnitud_tir devuelve 0.0. Cubre línea 240."""
+    s = TornadoSensibilidad(
+        variable="x", delta_pct=0.2, tir_baja=None, tir_alta=0.15, van_baja=0.0, van_alta=0.0
+    )
+    assert s.magnitud_tir == 0.0
+    s2 = TornadoSensibilidad(
+        variable="x", delta_pct=0.2, tir_baja=0.10, tir_alta=None, van_baja=0.0, van_alta=0.0
+    )
+    assert s2.magnitud_tir == 0.0
+
+
+def test_precio_promedio_ponderado_con_pesos_cero():
+    """Si la suma de pesos es 0, el promedio es 0.0 (división protegida). Cubre línea 262."""
+    assert _precio_promedio_ponderado({"A": 100.0, "B": 200.0}, {"A": 0.0, "B": 0.0}) == 0.0
+    assert _precio_promedio_ponderado({}, {}) == 0.0
 
 
 def test_tornado_precio_sube_tir_y_costo_baja_tir():
