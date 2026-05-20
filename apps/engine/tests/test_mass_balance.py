@@ -106,3 +106,80 @@ def test_extracciones_no_pueden_superar_ms(alperujo_spec):
     )
     with pytest.raises(MassBalanceError):
         compute_mass_balance(spec, input_ton=1.0, mode=BalanceMode.A_INITIAL_BASE)
+
+
+def test_humedad_mas_ms_no_suman_uno_falla():
+    """Constructor exige humedad + ms ≈ 1 (tolerancia 0.02). Cubre línea 48."""
+    with pytest.raises(MassBalanceError, match="debe ≈ 1"):
+        MateriaPrimaSpec(
+            codigo="X",
+            humedad_inicial_pct=0.5,
+            materia_solida_pct=0.2,  # suma 0.7, fuera de tolerancia
+        )
+
+
+def test_perdidas_pct_fuera_de_rango(alperujo_spec):
+    """`perdidas_pct >= 1` levanta error. Cubre línea 145."""
+    with pytest.raises(MassBalanceError, match="perdidas_pct"):
+        compute_mass_balance(alperujo_spec, input_ton=1.0, perdidas_pct=1.0)
+
+
+def test_extracciones_modo_b_no_pueden_superar_ms_pura():
+    """En modo B las extracciones sobre MS pura no pueden exceder la MS. Cubre línea 119."""
+    spec = MateriaPrimaSpec(
+        codigo="IMPOSIBLE_B",
+        humedad_inicial_pct=0.65,
+        materia_solida_pct=0.35,
+        aceite_extraible_pct=0.6,
+        licopeno_pct=0.5,  # 0.6 + 0.5 > 1 (de la MS) → imposible en modo B
+    )
+    with pytest.raises(MassBalanceError, match="modo B"):
+        compute_mass_balance(spec, input_ton=1.0, mode=BalanceMode.B_DEHYDRATED_BASE)
+
+
+def test_humedad_final_muy_alta_genera_agua_negativa(alperujo_spec):
+    """Humedad final tan alta que la harina supera el input → agua_evaporada negativa. Cubre línea 157."""
+    with pytest.raises(MassBalanceError, match="Agua evaporada negativa"):
+        compute_mass_balance(
+            alperujo_spec,
+            input_ton=1.0,
+            humedad_final_pct=0.99,
+            perdidas_pct=0.0,
+        )
+
+
+def test_sankey_incluye_links_de_licopeno_y_pectina():
+    """Si la MMPP tiene licopeno y/o pectina extraíbles, el sankey suma esos links. Cubre líneas 218 y 222."""
+    spec = MateriaPrimaSpec(
+        codigo="TOMASA_RICA",
+        humedad_inicial_pct=0.82,
+        materia_solida_pct=0.18,
+        licopeno_pct=0.01,
+        pectina_pct=0.02,
+    )
+    r = compute_mass_balance(spec, input_ton=10.0, mode=BalanceMode.A_INITIAL_BASE)
+    targets = {link["target"] for link in r.sankey["links"]}
+    assert "Licopeno" in targets
+    assert "Pectina" in targets
+
+
+def test_materia_seca_neta_pct_con_input_cero():
+    """La property devuelve 0.0 cuando input_ton=0 (división protegida). Cubre línea 79."""
+    from trongkai_engine.mass_balance import MassBalanceResult
+
+    r = MassBalanceResult(
+        mmpp="X",
+        mode=BalanceMode.A_INITIAL_BASE,
+        input_ton=0.0,
+        humedad_final_pct=0.10,
+        materia_seca_pura_ton=0.0,
+        aceite_extraido_ton=0.0,
+        licopeno_extraido_ton=0.0,
+        pectina_extraida_ton=0.0,
+        harina_final_ton=0.0,
+        agua_evaporada_ton=0.0,
+        perdidas_ton=0.0,
+        suma_outputs_ton=0.0,
+        delta_balance_pct=0.0,
+    )
+    assert r.materia_seca_neta_pct == 0.0
