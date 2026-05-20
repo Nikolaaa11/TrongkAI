@@ -49,6 +49,20 @@ def test_proyecto_invertido_no_tiene_tir():
     assert kpis.tir_proyecto_anual is None
 
 
+def test_tir_none_cuando_npv_no_cruza_cero_en_rango():
+    """Si los flujos tienen signos mixtos pero NPV no cambia de signo en [-0.99, 10.0]
+    (p.ej. ingreso enorme al inicio y costo chico después), _tir devuelve None.
+    Cubre el branch n_low*n_high > 0 en financial._tir."""
+    flujos = [
+        FlujoMes(mes=1, ingresos_ventas=1000.0),
+        FlujoMes(mes=2, costos_directos=1.0),
+    ]
+    kpis = calcular_kpis(flujos, wacc_anual=0.10)
+    assert kpis.tir_proyecto_anual is None
+    # VAN igualmente se computa y debe ser positivo
+    assert kpis.van > 0
+
+
 def test_ebitda_margin_se_promedia():
     flujos = make_flujos_baseline(capex_inicial=100_000_000, ebitda_mensual=10_000_000)
     kpis = calcular_kpis(flujos, wacc_anual=0.10)
