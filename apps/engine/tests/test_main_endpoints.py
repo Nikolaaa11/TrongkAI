@@ -145,3 +145,33 @@ def test_plan_endpoint_devuelve_kpis_resumen_y_flujos(monkeypatch):
 
     # Invariante Plan: año 5 (100% volumen) > año 1 (30% volumen)
     assert body["resumen_anual"][4]["ingresos"] > body["resumen_anual"][0]["ingresos"]
+
+
+def test_plan_tornado_endpoint_devuelve_5_variables_con_shape_completo(monkeypatch):
+    """POST /plan/tornado: contrato del wrapper sobre tornado_sensibilidades.
+
+    Cubre lines 518-525 de main.py — el wrapper FastAPI no estaba ejercitado
+    (los tests de financial atacan tornado_chart, no este endpoint que envuelve
+    tornado_sensibilidades de plan_builder). Smoke + shape mínimo que consume
+    el gráfico tornado del dashboard de directorio.
+    """
+    client = _open_client(monkeypatch)
+    # Body vacío → defaults del PlanRequest (válidos por construcción).
+    r = client.post("/plan/tornado", json={})
+    assert r.status_code == 200, r.text
+
+    body = r.json()
+    assert "tornado" in body
+    items = body["tornado"]
+
+    # tornado_sensibilidades shockea 5 variables canónicas
+    assert len(items) == 5
+    variables = {it["variable"] for it in items}
+    assert {"wacc_anual", "precio_promedio", "costo_mmpp", "opex_mensual"}.issubset(variables)
+
+    # Shape por item — keys que consume el gráfico tornado del frontend
+    expected_keys = {"variable", "delta_pct", "tir_baja", "tir_alta", "van_baja", "van_alta"}
+    for it in items:
+        assert expected_keys.issubset(it.keys())
+        # delta_pct default es 0.20 (±20%)
+        assert it["delta_pct"] == 0.20
