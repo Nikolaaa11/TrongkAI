@@ -183,3 +183,9 @@ def test_materia_seca_neta_pct_con_input_cero():
         delta_balance_pct=0.0,
     )
     assert r.materia_seca_neta_pct == 0.0
+
+
+def test_balance_no_cuadra_con_tolerancia_negativa(alperujo_spec):
+    """Con tolerancia negativa, cualquier delta >= 0 dispara el error. Cubre línea 164."""
+    with pytest.raises(MassBalanceError, match="Balance no cuadra"):
+        compute_mass_balance(alperujo_spec, input_ton=1.0, tolerancia_pct=-0.01)
