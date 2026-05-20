@@ -117,3 +117,15 @@ def test_recomendacion_incluye_tirs_pct_por_escenario():
     rec = recomendacion_estrategica(out)
     assert "tirs_pct" in rec
     assert set(rec["tirs_pct"].keys()) == {"PILOTO", "INDUSTRIAL", "EXPANSION"}
+
+
+def test_recomendacion_expansion_cuando_van_supera_1_5x_industrial():
+    """Si VAN(EXPANSION) > 1.5× VAN(INDUSTRIAL) > 0 y WACC ≤ 0.20, elige EXPANSION."""
+    stubs = [
+        _stub_escenario("PILOTO", van=5e9),
+        _stub_escenario("INDUSTRIAL", van=20e9),
+        _stub_escenario("EXPANSION", van=40e9),  # 2.0× industrial
+    ]
+    rec = recomendacion_estrategica(stubs)
+    assert rec["elegido"] == "EXPANSION"
+    assert "EXPANSION" in rec["razon"] and "INDUSTRIAL" in rec["razon"]
