@@ -111,3 +111,37 @@ def test_bottleneck_endpoint_devuelve_422_con_input_invalido(monkeypatch):
     r = client.post("/bottleneck", json=payload)
     assert r.status_code == 422, r.text
     assert "detail" in r.json()
+
+
+def test_plan_endpoint_devuelve_kpis_resumen_y_flujos(monkeypatch):
+    """POST /plan: contrato del wrapper FastAPI sobre build_plan.
+
+    Cubre lines 425-473 de main.py — el wrapper no estaba ejercitado (los tests
+    de plan_builder atacan build_plan directo). Smoke + shape mínimo que el
+    dashboard de directorio (Módulo 3) consume.
+    """
+    client = _open_client(monkeypatch)
+    # Body vacío usa defaults del PlanRequest — válido por construcción.
+    r = client.post("/plan", json={})
+    assert r.status_code == 200, r.text
+
+    body = r.json()
+    assert {"kpis", "resumen_anual", "por_marca", "flujos_meses"}.issubset(body.keys())
+
+    # KPIs shape — keys que consume el tornado/dashboard
+    assert {
+        "tir_proyecto_anual",
+        "van",
+        "payback_meses",
+        "ebitda_margin_promedio",
+        "ratio_capex_ventas",
+    }.issubset(body["kpis"].keys())
+
+    # Plan 5 Años → 5 años resumidos, 60 flujos mensuales
+    assert len(body["resumen_anual"]) == 5
+    assert len(body["flujos_meses"]) == 60
+    assert body["resumen_anual"][0]["ano"] == 1
+    assert body["resumen_anual"][4]["ano"] == 5
+
+    # Invariante Plan: año 5 (100% volumen) > año 1 (30% volumen)
+    assert body["resumen_anual"][4]["ingresos"] > body["resumen_anual"][0]["ingresos"]
