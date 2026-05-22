@@ -38,6 +38,7 @@ from .financing import (
     coverage_ratios,
     estructurar_financiamiento,
 )
+from .carbon_footprint import comparar_escenarios_footprint
 from .climate_risk import simular_clima_n_corridas
 from .macro_chile import get_indicadores, snapshot_resumen
 from .compliance_rep import (
@@ -1087,3 +1088,32 @@ def macro_chile_full_endpoint() -> dict:
         }
         for codigo, ind in inds.items()
     }
+
+
+# ----- Footprint carbono + créditos CO2 -----
+
+
+class CarbonRequest(BaseModel):
+    base: PlanRequest = Field(default_factory=PlanRequest)
+
+
+@app.post(
+    "/plan/carbon-footprint",
+    tags=["esg"],
+    summary="LCA 3 escenarios (baseline/renovable/BECCS) + revenue créditos CO₂",
+    description=(
+        "Calcula footprint carbono según literatura (0.79 kg CO₂eq baseline → "
+        "0.35 con renovables → -1.05 con BECCS). Suma emisiones EVITADAS por "
+        "residuos no descompuestos en vertedero (0.5 ton CO₂eq/ton MMPP). "
+        "Revenue potencial de créditos en mercado voluntario (USD 15-80/ton CO₂eq)."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def carbon_footprint_endpoint(req: CarbonRequest) -> dict:
+    params = ParametrosPlan(volumen_total_ton_ano=req.base.volumen_total_ton_ano)
+    rendimiento_prom = sum(params.rendimiento_por_mmpp.values()) / len(params.rendimiento_por_mmpp)
+    vols_anuales = [
+        params.volumen_total_ton_ano * params.volumen_pct_por_ano.get(ano, 1.0)
+        for ano in range(1, 6)
+    ]
+    return comparar_escenarios_footprint(vols_anuales, rendimiento_promedio=rendimiento_prom)
