@@ -38,7 +38,14 @@ from .financing import (
     coverage_ratios,
     estructurar_financiamiento,
 )
+from .compliance_rep import (
+    HITOS_LEY_REP,
+    costo_compliance_total_clp,
+    hitos_por_estado,
+    proximos_hitos,
+)
 from .learning_curve import ahorro_por_aprendizaje_clp
+from .slb import KPIS_DEFAULT, SlbBondSpec, simular_kpis_optimista_pesimista
 from .monte_carlo import run_monte_carlo
 from .valuation import valuar_proyecto_ev_ebitda
 from .excel_export import export_plan_to_excel
@@ -886,4 +893,74 @@ def financing_endpoint(req: FinanciamientoRequest) -> dict:
         "coverage": coverage,
         "tir_equity_apalancado": tir_equity,
         "valor_residual_proxy_clp": plan.ebitda_anuales[4] * 5,
+    }
+
+
+# ----- Sustainability-Linked Bond -----
+
+
+class SlbRequest(BaseModel):
+    monto_clp: float = Field(default=5_000_000_000, gt=0)
+    tasa_base_anual: float = Field(default=0.085, ge=0.05, le=0.20)
+    plazo_anos: int = Field(default=7, ge=3, le=15)
+
+
+@app.post(
+    "/plan/slb-simulation",
+    tags=["financiero"],
+    summary="Sustainability-Linked Bond: caso optimista vs pesimista",
+    description=(
+        "Simula un Sustainability-Linked Bond con 3 KPIs ESG (toneladas CO2 evitadas, "
+        "cuota mercado feed sostenible Chile, reducción uso harina pescado clientes). "
+        "Cada KPI fallido suma 20-25 bps al spread (permanente). Devuelve costo extra "
+        "entre caso pesimista (todos fallan) y optimista (todos cumplen) — el 'precio "
+        "ESG' de la ejecución."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def slb_endpoint(req: SlbRequest) -> dict:
+    bond = SlbBondSpec(
+        monto_clp=req.monto_clp,
+        tasa_base_anual=req.tasa_base_anual,
+        plazo_anos=req.plazo_anos,
+        kpis=list(KPIS_DEFAULT),
+    )
+    return simular_kpis_optimista_pesimista(bond, horizonte=5)
+
+
+# ----- Compliance Ley REP -----
+
+
+@app.get(
+    "/compliance/rep-calendar",
+    tags=["compliance"],
+    summary="Calendario de obligaciones Ley REP + Hoja Ruta Circular 2040",
+    description=(
+        "Hitos regulatorios chilenos relevantes para Trongkai con fecha de vigor, "
+        "severidad, acción requerida y costo estimado. Categorizado en VIGENTE/CERCANA/"
+        "FUTURA/LEJANA según ventana temporal."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def rep_calendar_endpoint() -> dict:
+    estado = hitos_por_estado()
+    proximos = proximos_hitos(n=5)
+    costo = costo_compliance_total_clp(ventana_anos=5)
+
+    def hito_to_dict(h):
+        return {
+            "nombre": h.nombre,
+            "fecha_vigor": h.fecha_vigor.isoformat(),
+            "fuente": h.fuente,
+            "severidad": h.severidad.value,
+            "impacto_trongkai": h.impacto_trongkai,
+            "accion_requerida": h.accion_requerida,
+            "costo_estimado_clp": h.costo_estimado_clp,
+        }
+
+    return {
+        "total_hitos": len(HITOS_LEY_REP),
+        "por_estado": {k: [hito_to_dict(h) for h in v] for k, v in estado.items()},
+        "proximos": [hito_to_dict(h) for h in proximos],
+        "costo_compliance_5y_clp": costo,
     }
