@@ -188,7 +188,7 @@ export default function RiesgoPage() {
             <div className="text-[10px] uppercase tracking-[0.08em] text-oliva-600">Riesgo climático</div>
             <p className="mt-1 text-oliva-900">
               {st.climaDetalle && `${(st.climaDetalle.probabilidad_evento_critico * 100).toFixed(0)}%`} de los años hay evento
-              crítico (>15% pérdida). Pérdida P95 acumulada: {st.climaDetalle && fmtPct(st.climaDetalle.perdida_acumulada_p95_pct)}.
+              crítico (&gt;15% pérdida). Pérdida P95 acumulada: {st.climaDetalle && fmtPct(st.climaDetalle.perdida_acumulada_p95_pct)}.
             </p>
           </div>
           <div>

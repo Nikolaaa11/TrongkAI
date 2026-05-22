@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
 
@@ -1117,3 +1118,123 @@ def carbon_footprint_endpoint(req: CarbonRequest) -> dict:
         for ano in range(1, 6)
     ]
     return comparar_escenarios_footprint(vols_anuales, rendimiento_promedio=rendimiento_prom)
+
+
+# ----- Snapshot único — agregador para tearsheet PDF / APIs externas -----
+
+
+@app.get(
+    "/api/snapshot",
+    tags=["meta"],
+    summary="Snapshot completo del plan en una sola llamada",
+    description=(
+        "Devuelve el estado consolidado: KPIs base + valuation + escenarios estratégicos + "
+        "carbon footprint + REP calendar + macro Chile + monte carlo integrado + tornado. "
+        "Pensado para tearsheet PDF y APIs externas. Una sola request, todo el modelo."
+    ),
+)
+def snapshot_endpoint() -> dict:
+    base = ParametrosPlan()
+    plan = build_plan(base)
+    val = valuar_proyecto_ev_ebitda(plan)
+    escs = comparar_escenarios_estrategicos()
+    rec = recomendacion_estrategica(escs)
+
+    rendimiento_prom = sum(base.rendimiento_por_mmpp.values()) / len(base.rendimiento_por_mmpp)
+    vols_anuales = [
+        base.volumen_total_ton_ano * base.volumen_pct_por_ano.get(ano, 1.0)
+        for ano in range(1, 6)
+    ]
+    carbon = comparar_escenarios_footprint(vols_anuales, rendimiento_promedio=rendimiento_prom)
+
+    # Compliance + macro
+    rep_hitos = hitos_por_estado()
+    proximos = proximos_hitos(n=3)
+    costo_compliance = costo_compliance_total_clp(ventana_anos=5)
+    macro = snapshot_resumen()
+
+    # Monte Carlo light (300 corridas para no demorar el snapshot)
+    mc = run_monte_carlo_con_clima(base, n_runs=300, seed=42, incluir_clima=True)
+    tornado = tornado_sensibilidades(base, delta_pct=0.20)
+
+    return {
+        "version": __version__,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "plan": {
+            "kpis": {
+                "tir": plan.kpis.tir_proyecto_anual,
+                "van": plan.kpis.van,
+                "payback_meses": plan.kpis.payback_meses,
+                "ebitda_margin_promedio": plan.kpis.ebitda_margin_promedio,
+                "ratio_capex_ventas": plan.kpis.ratio_capex_ventas,
+            },
+            "ingresos_anuales": plan.ingresos_anuales,
+            "ebitda_anuales": plan.ebitda_anuales,
+            "capex_anuales": plan.capex_anuales,
+            "nwc_anuales": plan.nwc_anuales,
+        },
+        "valuation": {
+            "ebitda_ano5_clp": val.ebitda_ano5_clp,
+            "ev_base_clp": val.ev_clp_base,
+            "ev_rango_clp": [val.ev_clp_low, val.ev_clp_high],
+            "moic": val.moic_estimado,
+            "multiplo_base": val.multiple_base,
+        },
+        "escenarios_estrategicos": {
+            "escenarios": [
+                {
+                    "nombre": e.nombre,
+                    "capex_total": sum(e.resumen.capex_anuales),
+                    "tir": e.resumen.kpis.tir_proyecto_anual,
+                    "van": e.resumen.kpis.van,
+                    "payback_meses": e.resumen.kpis.payback_meses,
+                }
+                for e in escs
+            ],
+            "recomendacion": rec,
+        },
+        "carbon_footprint": {
+            "baseline": {
+                "emisiones_netas_5y_ton": carbon["baseline"]["emisiones_netas_5y_ton"],
+                "revenue_creditos_5y_clp": carbon["baseline"]["revenue_creditos_5y_clp"],
+                "es_carbono_negativo": carbon["baseline"]["es_carbono_negativo"],
+            },
+            "beccs": {
+                "emisiones_netas_5y_ton": carbon["beccs"]["emisiones_netas_5y_ton"],
+                "revenue_creditos_5y_clp": carbon["beccs"]["revenue_creditos_5y_clp"],
+            },
+        },
+        "compliance_rep": {
+            "total_hitos": len(HITOS_LEY_REP),
+            "vigentes": len(rep_hitos["VIGENTE"]),
+            "cercanas": len(rep_hitos["CERCANA"]),
+            "proximos_3": [
+                {
+                    "nombre": h.nombre,
+                    "fecha_vigor": h.fecha_vigor.isoformat(),
+                    "severidad": h.severidad.value,
+                }
+                for h in proximos
+            ],
+            "costo_compliance_5y_clp": costo_compliance["total_clp"],
+        },
+        "macro_chile": macro,
+        "monte_carlo_integrado": {
+            "n_runs": mc["n_runs"],
+            "tir_p5": mc["tir_p5"],
+            "tir_p50": mc["tir_p50"],
+            "tir_p95": mc["tir_p95"],
+            "prob_tir_supera_wacc": mc["prob_tir_supera_wacc"],
+            "prob_van_positivo": mc["prob_van_positivo"],
+            "promedio_anos_critico": mc["promedio_anos_critico_por_corrida"],
+        },
+        "top_3_tornado": [
+            {
+                "variable": s.variable,
+                "tir_baja": s.tir_baja,
+                "tir_alta": s.tir_alta,
+                "magnitud_tir": s.magnitud_tir,
+            }
+            for s in tornado[:3]
+        ],
+    }

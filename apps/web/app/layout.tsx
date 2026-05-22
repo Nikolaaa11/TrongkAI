@@ -22,6 +22,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/slb', label: 'SLB' },
   { href: '/compliance', label: 'Compliance' },
   { href: '/riesgo', label: 'Riesgo' },
+  { href: '/stress', label: 'Stress' },
   { href: '/carbono', label: 'Carbono' },
   { href: '/macro', label: 'Macro' },
   { href: '/whatif', label: 'What-if' },
