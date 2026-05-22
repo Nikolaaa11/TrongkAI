@@ -5,13 +5,65 @@
 :root {
   --color-fondo: #f5f1e8;
   --color-oliva: #3f4a2b;
+  --color-oliva-oscuro: #2a3219;
   --color-trigo: #c8a961;
   --color-tierra: #8b5a3c;
   --color-borgona: #7a1f1f;
+  --color-papel: #fefcf6;
 }
 
 html, body {
   background-color: var(--color-fondo);
   color: var(--color-oliva);
-  font-feature-settings: 'cv11', 'ss01';
+  font-feature-settings: 'cv11', 'ss01', 'kern';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
+
+/* Tipografía editorial para headings serif */
+.font-serif {
+  letter-spacing: -0.015em;
+}
+
+/* Numeric tabular for KPI cards */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* Sutil acento de borde en cards al hover */
+.card-hover {
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+.card-hover:hover {
+  border-color: rgba(63, 74, 43, 0.25);
+  box-shadow: 0 4px 12px -2px rgba(63, 74, 43, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Print: optimizar dashboard directorio para A4 */
+@media print {
+  html, body {
+    background: white;
+    color: black;
+    font-size: 10pt;
+  }
+  header, footer {
+    page-break-inside: avoid;
+  }
+  section {
+    page-break-inside: avoid;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Scrollbar sutil */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb {
+  background: rgba(63, 74, 43, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(63, 74, 43, 0.4); }

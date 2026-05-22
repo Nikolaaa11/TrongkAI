@@ -143,6 +143,17 @@ class ParametrosPlan:
     # Impuesto a la renta corporativo Chile (27%). Aplica sobre EBITDA - depreciación.
     impuesto_renta_pct: float = 0.27
 
+    # ---- Working capital cíclico ----
+    # Días de cobro a clientes (B2B alimentos: típico 45-60 días).
+    dso_dias: float = 50
+    # Días de pago a proveedores MMPP + insumos (típico 30-45 días).
+    dpo_dias: float = 35
+    # Días de inventario promedio (materia prima + producto terminado).
+    # Estacional: MMPP llega en 3 meses concentrados pero se procesa todo el año.
+    inventario_dias: float = 90
+    # Fracción del revenue que se inmoviliza al inicio del proyecto (capital trabajo inicial).
+    # Calculado como NWC = ingresos × (dso + inventario_dias - dpo_dias) / 365.
+
     # Fracción del volumen anual procesado (curva ramp-up de planta)
     volumen_pct_por_ano: dict[int, float] = field(
         default_factory=lambda: {1: 0.3, 2: 0.55, 3: 0.8, 4: 0.95, 5: 1.0}
@@ -223,6 +234,8 @@ class ResumenPlan:
     ebitda_anuales: list[float]
     capex_anuales: list[float]
     por_marca: dict[str, ResumenMarca] = field(default_factory=dict)
+    nwc_anuales: list[float] = field(default_factory=lambda: [0.0] * 5)
+    delta_nwc_anuales: list[float] = field(default_factory=lambda: [0.0] * 5)
 
 
 @dataclass
@@ -272,6 +285,8 @@ def build_plan(parametros: ParametrosPlan | None = None) -> ResumenPlan:
     ingresos_anuales = [0.0] * 5
     ebitda_anuales = [0.0] * 5
     capex_anuales = [0.0] * 5
+    nwc_anuales = [0.0] * 5  # working capital al cierre de cada año
+    delta_nwc_anuales = [0.0] * 5  # delta vs año anterior (cash impact)
     por_marca = {
         m: ResumenMarca(marca=m, tam_clp_anual=TAM_POR_MARCA_CLP.get(m, 0.0))
         for m in ("FEED", "FOOD", "SERVICIOS")
@@ -329,6 +344,22 @@ def build_plan(parametros: ParametrosPlan | None = None) -> ResumenPlan:
         ingresos_anuales[ano - 1] = ingreso_total_anual
         ebitda_anuales[ano - 1] = ingreso_total_anual - directos_anual - fijos_anual
 
+        # Working capital: NWC = ingresos × (DSO + INV - DPO) / 365.
+        # Costos directos representativos para la parte inventario.
+        nwc_ano = (
+            ingreso_total_anual * p.dso_dias / 365
+            + directos_anual * p.inventario_dias / 365
+            - directos_anual * p.dpo_dias / 365
+        )
+        nwc_anuales[ano - 1] = nwc_ano
+        prev_nwc = nwc_anuales[ano - 2] if ano > 1 else 0
+        delta_nwc = nwc_ano - prev_nwc  # cash NEGATIVO si NWC sube (inmoviliza plata)
+        delta_nwc_anuales[ano - 1] = delta_nwc
+
+        # El delta NWC anual se aplica como CapEx adicional en enero del año
+        # (cash leaves the business cuando crece NWC). Mejora realismo del flujo.
+        capex_mes_ano1 = delta_nwc  # cargado en enero
+
         for mes in range(1, 13):
             mes_global = (ano - 1) * 12 + mes
             stagger = min(1.0, mes / 6.0) if ano == 1 else 1.0
@@ -336,7 +367,8 @@ def build_plan(parametros: ParametrosPlan | None = None) -> ResumenPlan:
             costo_mes = (directos_anual / 12) * stagger
             maquilas_mes = p.maquilas_mensual_clp
             transferencia_mes = transferencia_anual / 12 if transferencia_anual else 0
-            capex_mes = capex_ano if mes == 1 else 0
+            # Mes 1 del año: incluye CapEx fijo + delta NWC del año.
+            capex_mes = (capex_ano + capex_mes_ano1) if mes == 1 else 0
 
             flujos.append(
                 FlujoMes(
@@ -364,6 +396,8 @@ def build_plan(parametros: ParametrosPlan | None = None) -> ResumenPlan:
         ebitda_anuales=ebitda_anuales,
         capex_anuales=capex_anuales,
         por_marca=por_marca,
+        nwc_anuales=nwc_anuales,
+        delta_nwc_anuales=delta_nwc_anuales,
     )
 
 

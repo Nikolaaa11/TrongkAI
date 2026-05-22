@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { HistogramaChart, type HistogramaBin } from '@/components/HistogramaChart';
 import { SankeyChart, type SankeyData } from '@/components/SankeyChart';
 import { TornadoChart, type TornadoEntry } from '@/components/TornadoChart';
 import { seed, stats, suppliersActivos } from '@/lib/seed-data';
@@ -17,6 +18,8 @@ type PlanData = {
   };
   por_marca: Record<string, { ingresos_anuales: number[]; tam_clp_anual?: number; penetracion_pct_ano5?: number }>;
   resumen_anual: { ano: number; ingresos: number; ebitda: number; ebitda_margin: number; capex: number }[];
+  nwc_anuales?: number[];
+  delta_nwc_anuales?: number[];
 };
 
 type Escenarios = {
@@ -46,6 +49,7 @@ type MonteCarlo = {
   van_p95: number;
   prob_tir_supera_wacc: number;
   prob_van_positivo: number;
+  histograma_tir?: HistogramaBin[];
 };
 
 const fmtB = (n: number) => `$${(n / 1e9).toFixed(2)}B`;
@@ -191,6 +195,19 @@ export default function DashboardDirectorioPage() {
               </div>
             </div>
           </div>
+          {montecarlo.histograma_tir && montecarlo.histograma_tir.length > 0 && (
+            <div className="mt-4 rounded border border-oliva/10 bg-white p-2">
+              <HistogramaChart
+                bins={montecarlo.histograma_tir}
+                p5={montecarlo.tir_p5}
+                p50={montecarlo.tir_p50}
+                p95={montecarlo.tir_p95}
+                baseValue={plan?.kpis.tir_proyecto_anual ?? undefined}
+                title="Distribución de TIR (con P5/P50/P95 y base)"
+                height={240}
+              />
+            </div>
+          )}
         </section>
       )}
 
@@ -311,9 +328,15 @@ export default function DashboardDirectorioPage() {
 
 function BigKpi({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
-    <div className={`rounded-lg border p-4 ${highlight ? 'border-trigo/40 bg-trigo/5' : 'border-oliva/10 bg-white'}`}>
-      <div className="text-xs uppercase tracking-wide text-oliva-600">{label}</div>
-      <div className={`mt-1 text-2xl font-bold ${highlight ? 'text-trigo' : 'text-oliva-900'}`}>{value}</div>
+    <div
+      className={`card-hover rounded-lg border p-4 ${
+        highlight ? 'border-trigo/40 bg-trigo/5' : 'border-oliva/10 bg-white'
+      }`}
+    >
+      <div className="text-[10px] uppercase tracking-[0.08em] text-oliva-600">{label}</div>
+      <div className={`tabular mt-1.5 text-3xl font-bold leading-tight ${highlight ? 'text-trigo' : 'text-oliva-900'}`}>
+        {value}
+      </div>
     </div>
   );
 }

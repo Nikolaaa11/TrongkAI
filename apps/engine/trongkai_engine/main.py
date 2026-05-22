@@ -458,6 +458,8 @@ def plan_endpoint(req: PlanRequest) -> dict:
             }
             for marca, r in plan.por_marca.items()
         },
+        "nwc_anuales": plan.nwc_anuales,
+        "delta_nwc_anuales": plan.delta_nwc_anuales,
         "flujos_meses": [
             {
                 "mes": f.mes,
