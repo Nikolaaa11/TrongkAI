@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 const nav: { href: string; label: string }[] = [
   { href: '/', label: 'Operacional' },
+  { href: '/dashboard-directorio', label: 'Directorio' },
   { href: '/agenda', label: 'Agenda camiones' },
   { href: '/balance', label: 'Balance de masa' },
   { href: '/plan', label: 'Plan 5 años' },

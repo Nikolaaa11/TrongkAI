@@ -24,6 +24,8 @@ from .bottleneck import (
 )
 from .config import get_settings
 from .escenarios import comparar_escenarios_estrategicos, recomendacion_estrategica
+from .monte_carlo import run_monte_carlo
+from .valuation import valuar_proyecto_ev_ebitda
 from .excel_export import export_plan_to_excel
 from .financial import FlujoMes, calcular_kpis
 from .mass_balance import (
@@ -583,6 +585,88 @@ def escenarios_estrategicos_endpoint() -> dict:
             for e in escs
         ],
         "recomendacion": recomendacion_estrategica(escs),
+    }
+
+
+# ----- Valoración EV/EBITDA -----
+
+
+@app.post(
+    "/plan/valuation",
+    tags=["financiero"],
+    summary="Valoración EV/EBITDA año 5 (exit múltiple)",
+    description=(
+        "Aplica múltiplos EV/EBITDA verificados (food processing 9,63x global Damodaran, "
+        "rango ingredientes funcionales 8-12x) al EBITDA año 5 para estimar el valor de "
+        "salida del proyecto y MOIC (Multiple Of Invested Capital)."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def plan_valuation_endpoint(req: PlanRequest) -> dict:
+    params = ParametrosPlan(
+        wacc_anual=req.wacc_anual,
+        volumen_total_ton_ano=req.volumen_total_ton_ano,
+        opex_mensual_clp=req.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.costo_mmpp_clp_kg,
+    )
+    plan = build_plan(params)
+    v = valuar_proyecto_ev_ebitda(plan)
+    return {
+        "ebitda_ano5_clp": v.ebitda_ano5_clp,
+        "multiple_base": v.multiple_base,
+        "multiple_low": v.multiple_low,
+        "multiple_high": v.multiple_high,
+        "ev_clp_base": v.ev_clp_base,
+        "ev_clp_low": v.ev_clp_low,
+        "ev_clp_high": v.ev_clp_high,
+        "moic_estimado": v.moic_estimado,
+        "capex_total_5y_clp": v.capex_total_5y_clp,
+        "nota": v.nota,
+    }
+
+
+# ----- Monte Carlo -----
+
+
+class MonteCarloRequest(BaseModel):
+    base: PlanRequest = Field(default_factory=PlanRequest)
+    n_runs: int = Field(default=2_000, ge=100, le=20_000)
+    seed: int = Field(default=42)
+
+
+@app.post(
+    "/plan/monte-carlo",
+    tags=["financiero"],
+    summary="Monte Carlo 10k corridas con bandas de confianza TIR",
+    description=(
+        "Sortea precios SKU (lognormal σ=0.20), WACC (normal σ=0.02), rendimientos por MMPP "
+        "(normal σ=0.05), costo MMPP (normal σ=8) y OpEx (normal σ=15M). Devuelve P5/P50/P95 "
+        "de TIR y VAN + probabilidad de que el proyecto supere la WACC + histograma TIR. "
+        "Default 2.000 corridas (≈4s); para presentación 10.000 (≈20s)."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def monte_carlo_endpoint(req: MonteCarloRequest) -> dict:
+    base_params = ParametrosPlan(
+        wacc_anual=req.base.wacc_anual,
+        volumen_total_ton_ano=req.base.volumen_total_ton_ano,
+        opex_mensual_clp=req.base.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.base.costo_mmpp_clp_kg,
+    )
+    r = run_monte_carlo(base_params=base_params, n_runs=req.n_runs, seed=req.seed)
+    return {
+        "n_runs": r.n_runs,
+        "tir_p5": r.tir_p5,
+        "tir_p50": r.tir_p50,
+        "tir_p95": r.tir_p95,
+        "van_p5": r.van_p5,
+        "van_p50": r.van_p50,
+        "van_p95": r.van_p95,
+        "payback_p50": r.payback_p50,
+        "prob_tir_supera_wacc": r.prob_tir_supera_wacc,
+        "prob_van_positivo": r.prob_van_positivo,
+        "histograma_tir": r.histograma_tir,
+        "seed": r.seed,
     }
 
 

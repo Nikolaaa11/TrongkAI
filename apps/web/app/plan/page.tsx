@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { TornadoChart, type TornadoEntry } from '@/components/TornadoChart';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -53,6 +54,28 @@ export default function PlanPage() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [estrategicos, setEstrategicos] = useState<any>(null);
+  const [tornado, setTornado] = useState<TornadoEntry[] | null>(null);
+
+  async function cargarTornado() {
+    try {
+      const r = await fetch(`${ENGINE_URL}/plan/tornado`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          wacc_anual: wacc,
+          volumen_total_ton_ano: volumen,
+          opex_mensual_clp: opex,
+          costo_mmpp_clp_kg: costoMmpp,
+        }),
+      });
+      if (r.ok) {
+        const j = await r.json();
+        setTornado(j.tornado ?? j);
+      }
+    } catch {
+      /* silent */
+    }
+  }
 
   async function cargarEstrategicos() {
     try {
@@ -299,6 +322,27 @@ export default function PlanPage() {
               </div>
             </section>
           )}
+
+          <section>
+            <h2 className="font-serif text-xl text-oliva-900">Tornado de sensibilidades (±20%)</h2>
+            <p className="mt-1 text-xs text-oliva-600">
+              Impacto de un shock ±20% en las 5 variables clave sobre la TIR del proyecto. Las barras
+              naranja indican el escenario adverso, las verdes el favorable.
+            </p>
+            {!tornado && (
+              <button
+                onClick={cargarTornado}
+                className="mt-3 rounded border border-oliva-900 px-4 py-2 text-sm text-oliva-900 hover:bg-oliva-50"
+              >
+                Calcular tornado
+              </button>
+            )}
+            {tornado && data?.kpis.tir_proyecto_anual && (
+              <div className="mt-3 rounded-lg border border-oliva/10 bg-white p-3 shadow-sm">
+                <TornadoChart entries={tornado} baseTir={data.kpis.tir_proyecto_anual} height={300} />
+              </div>
+            )}
+          </section>
 
           <section>
             <h2 className="font-serif text-xl text-oliva-900">3 escenarios estratégicos de planta</h2>
