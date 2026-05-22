@@ -815,10 +815,10 @@ def learning_curve_endpoint(req: LearningCurveRequest) -> dict:
 
 class FinanciamientoRequest(BaseModel):
     base: PlanRequest = Field(default_factory=PlanRequest)
-    deuda_pct: float = Field(default=0.55, ge=0.0, le=0.85)
+    deuda_pct: float = Field(default=0.50, ge=0.0, le=0.85)
     tasa_deuda_anual: float = Field(default=0.095, ge=0.0, le=0.30)
-    plazo_deuda_anos: int = Field(default=7, ge=1, le=20)
-    grace_anos: int = Field(default=1, ge=0, le=5)
+    plazo_deuda_anos: int = Field(default=10, ge=1, le=20)
+    grace_anos: int = Field(default=2, ge=0, le=5)
     tasa_equity_required: float = Field(default=0.20, ge=0.0, le=0.50)
 
 

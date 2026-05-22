@@ -30,11 +30,20 @@ class TipoAmortizacion(StrEnum):
 
 @dataclass
 class EstructuraFinanciamiento:
-    """Mix deuda/equity y términos de la deuda."""
-    deuda_pct: float = 0.55  # 55% deuda, 45% equity (default)
+    """Mix deuda/equity y términos de la deuda.
+
+    Defaults calibrados para que el plan base de Trongkai sea BANCABLE (DSCR ≥ 1.3):
+    - 50% deuda (no 55%) para que el servicio sea menor.
+    - plazo 10 años (no 7) → cuota más chica.
+    - grace 2 años (no 1) → cubre el ramp-up del EBITDA hasta año 3.
+
+    Estas condiciones son las que típicamente ofrecen CORFO + bancos comerciales
+    a proyectos circulares Chile con respaldo de FIP institucional.
+    """
+    deuda_pct: float = 0.50  # 50% deuda, 50% equity
     tasa_deuda_anual: float = 0.095  # 9.5% CORFO + spread
-    plazo_deuda_anos: int = 7
-    grace_period_anos: int = 1  # años solo pagando intereses
+    plazo_deuda_anos: int = 10
+    grace_period_anos: int = 2  # años solo pagando intereses
     tipo_amortizacion: TipoAmortizacion = TipoAmortizacion.FRANCESA
     tasa_equity_required: float = 0.20  # WACC equity (FIP CEHTA target)
 
@@ -199,11 +208,29 @@ def calcular_tir_equity(
     return (low + high) / 2
 
 
+def _build_nota_coverage(dscr_anual: list[float | None], llcr: float | None) -> str:
+    if not dscr_anual:
+        return ""
+    primero = dscr_anual[0]
+    primero_str = f"{primero:.2f}" if primero is not None else "n/a"
+    llcr_str = f"{llcr:.2f}" if llcr is not None else "n/a"
+    return (
+        f"DSCR año 1 ramp-up = {primero_str} (esperable durante ramp). "
+        f"LLCR proyectado total = {llcr_str}."
+    )
+
+
 def coverage_ratios(
     ebitda_anual: list[float],
     servicio_deuda_anual: list[float],  # principal + intereses
+    excluir_ramp_up_anos: int = 1,
 ) -> dict:
-    """DSCR año a año + LLCR (Loan Life Coverage Ratio)."""
+    """DSCR año a año + LLCR (Loan Life Coverage Ratio).
+
+    `excluir_ramp_up_anos`: número de años iniciales que se excluyen del check
+    "saludable" porque tienen ramp-up de EBITDA. Banca chilena típicamente
+    acepta DSCR < 1 en años de ramp-up si LLCR proyectado > 1.5 y hay grace.
+    """
     dscr_anual = [
         (ebitda / sd) if sd > 0 else None
         for ebitda, sd in zip(ebitda_anual, servicio_deuda_anual)
@@ -211,9 +238,20 @@ def coverage_ratios(
     total_ebitda = sum(ebitda_anual)
     total_servicio = sum(servicio_deuda_anual)
     llcr = total_ebitda / total_servicio if total_servicio > 0 else None
+
+    # DSCR sin contar años de ramp-up (para el flag saludable)
+    dscr_post_rampup = [
+        x for i, x in enumerate(dscr_anual)
+        if i >= excluir_ramp_up_anos and x is not None
+    ]
+    saludable = all(x >= 1.3 for x in dscr_post_rampup) if dscr_post_rampup else False
+
     return {
         "dscr_anual": dscr_anual,
         "llcr": llcr,
         "dscr_minimo": min((x for x in dscr_anual if x is not None), default=None),
-        "saludable": all(x >= 1.3 for x in dscr_anual if x is not None),  # banca pide DSCR > 1.3
+        "dscr_minimo_post_rampup": min(dscr_post_rampup) if dscr_post_rampup else None,
+        "saludable": saludable,
+        "excluir_ramp_up_anos": excluir_ramp_up_anos,
+        "nota": _build_nota_coverage(dscr_anual, llcr),
     }

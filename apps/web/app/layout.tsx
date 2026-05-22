@@ -15,10 +15,12 @@ export const metadata: Metadata = {
 const nav: { href: string; label: string }[] = [
   { href: '/', label: 'Operacional' },
   { href: '/dashboard-directorio', label: 'Directorio' },
-  { href: '/agenda', label: 'Agenda camiones' },
-  { href: '/balance', label: 'Balance de masa' },
+  { href: '/agenda', label: 'Agenda' },
+  { href: '/balance', label: 'Balance' },
   { href: '/plan', label: 'Plan 5 años' },
+  { href: '/financiamiento', label: 'Financiamiento' },
   { href: '/whatif', label: 'What-if' },
+  { href: '/investigacion', label: 'Investigación' },
   { href: '/supuestos', label: 'Supuestos' },
   { href: '/about', label: 'Equipo' },
 ];

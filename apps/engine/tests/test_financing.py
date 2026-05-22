@@ -45,12 +45,13 @@ def test_servicio_deuda_grace_anos_solo_intereses():
     assert out["interes_anual"][0] == pytest.approx(100_000_000, rel=0.001)
 
 
-def test_estructurar_financiamiento_55_45_default():
+def test_estructurar_financiamiento_50_50_default():
+    """Defaults bancable (DSCR ≥ 1.3): 50% deuda + 50% equity, plazo 10y, grace 2y."""
     capex_anual = [3_000_000_000, 5_000_000_000, 4_000_000_000, 2_000_000_000, 1_000_000_000]
     out = estructurar_financiamiento(capex_anual)
     assert out["capex_total_clp"] == 15_000_000_000
-    assert abs(out["monto_deuda_clp"] - 8_250_000_000) < 1  # 55%
-    assert abs(out["monto_equity_clp"] - 6_750_000_000) < 1  # 45%
+    assert abs(out["monto_deuda_clp"] - 7_500_000_000) < 1  # 50%
+    assert abs(out["monto_equity_clp"] - 7_500_000_000) < 1  # 50%
 
 
 def test_estructurar_solo_equity_sin_deuda():
