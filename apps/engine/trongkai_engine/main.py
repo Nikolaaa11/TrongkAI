@@ -39,6 +39,7 @@ from .financing import (
     estructurar_financiamiento,
 )
 from .climate_risk import simular_clima_n_corridas
+from .macro_chile import get_indicadores, snapshot_resumen
 from .compliance_rep import (
     HITOS_LEY_REP,
     costo_compliance_total_clp,
@@ -1051,3 +1052,38 @@ def monte_carlo_integrado_endpoint(req: MonteCarloIntegradoRequest) -> dict:
         seed=req.seed,
         incluir_clima=req.incluir_clima,
     )
+
+
+# ----- Datos macroeconómicos Chile -----
+
+
+@app.get(
+    "/macro/chile",
+    tags=["macro"],
+    summary="Indicadores económicos Chile en vivo (Banco Central via mindicador.cl)",
+    description=(
+        "Devuelve los 6 indicadores clave: dólar observado CLP, UF, IPC mensual, "
+        "TPM, UTM y tasa desempleo. Cache 24h. Fallback a snapshot si la API "
+        "externa cae. Permite recalcular el plan en USD para inversionistas externos."
+    ),
+)
+def macro_chile_endpoint() -> dict:
+    return snapshot_resumen()
+
+
+@app.get(
+    "/macro/chile/full",
+    tags=["macro"],
+    summary="Todos los indicadores macro disponibles",
+)
+def macro_chile_full_endpoint() -> dict:
+    inds = get_indicadores()
+    return {
+        codigo: {
+            "valor": ind.valor,
+            "fecha": ind.fecha,
+            "unidad_medida": ind.unidad_medida,
+            "fuente": ind.fuente,
+        }
+        for codigo, ind in inds.items()
+    }
