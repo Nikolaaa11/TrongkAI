@@ -47,7 +47,7 @@ from .compliance_rep import (
 )
 from .learning_curve import ahorro_por_aprendizaje_clp
 from .slb import KPIS_DEFAULT, SlbBondSpec, simular_kpis_optimista_pesimista
-from .monte_carlo import run_monte_carlo
+from .monte_carlo import run_monte_carlo, run_monte_carlo_con_clima
 from .valuation import valuar_proyecto_ev_ebitda
 from .excel_export import export_plan_to_excel
 from .financial import FlujoMes, calcular_kpis
@@ -1014,3 +1014,40 @@ def climate_risk_endpoint(req: ClimateRequest) -> dict:
             for e in r.eventos_ejemplo_corrida_1
         ],
     }
+
+
+# ----- Monte Carlo INTEGRADO precios + clima -----
+
+
+class MonteCarloIntegradoRequest(BaseModel):
+    base: PlanRequest = Field(default_factory=PlanRequest)
+    n_runs: int = Field(default=2_000, ge=100, le=20_000)
+    seed: int = Field(default=42)
+    incluir_clima: bool = True
+
+
+@app.post(
+    "/plan/monte-carlo-integrado",
+    tags=["financiero"],
+    summary="Monte Carlo integrado: precios + WACC + rendimientos + clima",
+    description=(
+        "Sortea JUNTOS los riesgos financieros (precios lognormal σ=0.20, WACC normal "
+        "σ=0.02, rendimientos σ=0.05, costos σ=8M, OpEx σ=15M) Y los riesgos climáticos "
+        "(4 eventos chilenos con probabilidad histórica). Devuelve TIR P5/P50/P95 "
+        "considerando ambos riesgos juntos. Esto es lo que un directorio serio quiere ver."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def monte_carlo_integrado_endpoint(req: MonteCarloIntegradoRequest) -> dict:
+    base_params = ParametrosPlan(
+        wacc_anual=req.base.wacc_anual,
+        volumen_total_ton_ano=req.base.volumen_total_ton_ano,
+        opex_mensual_clp=req.base.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.base.costo_mmpp_clp_kg,
+    )
+    return run_monte_carlo_con_clima(
+        base_params=base_params,
+        n_runs=req.n_runs,
+        seed=req.seed,
+        incluir_clima=req.incluir_clima,
+    )

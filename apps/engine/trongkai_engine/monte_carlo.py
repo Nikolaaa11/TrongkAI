@@ -19,6 +19,7 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 
+from .climate_risk import simular_eventos_un_ano, aplicar_afectacion_a_volumen
 from .plan_builder import ParametrosPlan, build_plan
 
 
@@ -165,3 +166,80 @@ def run_monte_carlo(
         histograma_tir=_histograma(tirs, bins=40),
         seed=seed,
     )
+
+
+def run_monte_carlo_con_clima(
+    base_params: ParametrosPlan | None = None,
+    n_runs: int = 5_000,
+    seed: int = 42,
+    incluir_clima: bool = True,
+) -> dict:
+    """Monte Carlo INTEGRADO: sortea precios + WACC + rendimientos + clima JUNTOS.
+
+    Cada corrida:
+    1. Sortea params financieros como en run_monte_carlo.
+    2. Sortea eventos climáticos año por año.
+    3. Aplica afectación al volumen procesado.
+    4. Recalcula el plan con volumen efectivo.
+    5. Registra TIR + VAN + payback.
+
+    Devuelve estadísticos comparables a run_monte_carlo() pero CON riesgo climático.
+    Esto es lo que el directorio realmente necesita ver.
+    """
+    base = base_params or ParametrosPlan()
+    rng = random.Random(seed)
+
+    tirs: list[float] = []
+    vans: list[float] = []
+    paybacks: list[int] = []
+    waccs_sample: list[float] = []
+    n_anos_con_clima_critico = 0
+
+    for _ in range(n_runs):
+        params = _sample_params(base, rng)
+        waccs_sample.append(params.wacc_anual)
+
+        if incluir_clima:
+            # Sortear eventos por año y aplicar al volumen total
+            volumen_pct_efectivo: dict[int, float] = {}
+            for ano in range(1, 6):
+                eventos = simular_eventos_un_ano(rng)
+                vol_base_ano = params.volumen_total_ton_ano * params.volumen_pct_por_ano.get(ano, 1.0)
+                vol_efect, perdida = aplicar_afectacion_a_volumen(vol_base_ano, eventos)
+                volumen_pct_efectivo[ano] = vol_efect / params.volumen_total_ton_ano if params.volumen_total_ton_ano else 0
+                if perdida > 0.15:
+                    n_anos_con_clima_critico += 1
+            # Reemplazar volumen_pct_por_ano con valores afectados
+            from dataclasses import replace
+            params = replace(params, volumen_pct_por_ano=volumen_pct_efectivo)
+
+        plan = build_plan(params)
+        if plan.kpis.tir_proyecto_anual is not None:
+            tirs.append(plan.kpis.tir_proyecto_anual)
+        vans.append(plan.kpis.van)
+        if plan.kpis.payback_meses is not None:
+            paybacks.append(plan.kpis.payback_meses)
+
+    tir_supera_wacc = (
+        sum(1 for t, w in zip(tirs, waccs_sample[: len(tirs)]) if t > w) / len(tirs)
+        if tirs
+        else 0.0
+    )
+    van_positivo = sum(1 for v in vans if v > 0) / len(vans) if vans else 0.0
+
+    return {
+        "n_runs": n_runs,
+        "incluye_clima": incluir_clima,
+        "tir_p5": _percentil(tirs, 5),
+        "tir_p50": _percentil(tirs, 50),
+        "tir_p95": _percentil(tirs, 95),
+        "van_p5": _percentil(vans, 5) or 0.0,
+        "van_p50": _percentil(vans, 50) or 0.0,
+        "van_p95": _percentil(vans, 95) or 0.0,
+        "payback_p50": int(_percentil(paybacks, 50)) if paybacks else None,
+        "prob_tir_supera_wacc": tir_supera_wacc,
+        "prob_van_positivo": van_positivo,
+        "histograma_tir": _histograma(tirs, bins=40),
+        "promedio_anos_critico_por_corrida": n_anos_con_clima_critico / n_runs if incluir_clima else 0,
+        "seed": seed,
+    }
