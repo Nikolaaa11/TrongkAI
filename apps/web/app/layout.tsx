@@ -21,6 +21,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/financiamiento', label: 'Financiamiento' },
   { href: '/slb', label: 'SLB' },
   { href: '/compliance', label: 'Compliance' },
+  { href: '/riesgo', label: 'Riesgo' },
   { href: '/whatif', label: 'What-if' },
   { href: '/investigacion', label: 'Investigación' },
   { href: '/supuestos', label: 'Supuestos' },
