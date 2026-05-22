@@ -38,6 +38,7 @@ from .financing import (
     coverage_ratios,
     estructurar_financiamiento,
 )
+from .climate_risk import simular_clima_n_corridas
 from .compliance_rep import (
     HITOS_LEY_REP,
     costo_compliance_total_clp,
@@ -963,4 +964,53 @@ def rep_calendar_endpoint() -> dict:
         "por_estado": {k: [hito_to_dict(h) for h in v] for k, v in estado.items()},
         "proximos": [hito_to_dict(h) for h in proximos],
         "costo_compliance_5y_clp": costo,
+    }
+
+
+# ----- Riesgo climático -----
+
+
+class ClimateRequest(BaseModel):
+    base: PlanRequest = Field(default_factory=PlanRequest)
+    n_runs: int = Field(default=1_000, ge=100, le=10_000)
+    seed: int = Field(default=42)
+
+
+@app.post(
+    "/plan/climate-risk",
+    tags=["financiero"],
+    summary="Riesgo climático: simula impacto en volumen MMPP",
+    description=(
+        "Sortea ocurrencia anual de 4 eventos climáticos (sequía, helada, granizo, ola de calor) "
+        "con probabilidades históricas Chile + afectación por MMPP. Devuelve volumen efectivo "
+        "P5/P50/P95 anual + probabilidad de año con evento crítico (>15% pérdida)."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def climate_risk_endpoint(req: ClimateRequest) -> dict:
+    params = ParametrosPlan(
+        volumen_total_ton_ano=req.base.volumen_total_ton_ano,
+    )
+    vols_anuales = [
+        params.volumen_total_ton_ano * params.volumen_pct_por_ano.get(ano, 1.0)
+        for ano in range(1, 6)
+    ]
+    r = simular_clima_n_corridas(vols_anuales, n_runs=req.n_runs, seed=req.seed)
+    return {
+        "n_runs": r.n_runs,
+        "volumen_base_anual": vols_anuales,
+        "volumen_p5_anual": r.volumen_p5_anual,
+        "volumen_p50_anual": r.volumen_p50_anual,
+        "volumen_p95_anual": r.volumen_p95_anual,
+        "perdida_acumulada_p50_pct": r.perdida_acumulada_p50_pct,
+        "perdida_acumulada_p95_pct": r.perdida_acumulada_p95_pct,
+        "probabilidad_evento_critico": r.probabilidad_anyear_con_evento_critico,
+        "eventos_ejemplo_corrida_1": [
+            {
+                "ano": e.ano,
+                "evento": e.nombre_evento,
+                "afectacion": e.afectacion_pct_por_mmpp,
+            }
+            for e in r.eventos_ejemplo_corrida_1
+        ],
     }

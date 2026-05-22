@@ -19,6 +19,8 @@ const nav: { href: string; label: string }[] = [
   { href: '/balance', label: 'Balance' },
   { href: '/plan', label: 'Plan 5 años' },
   { href: '/financiamiento', label: 'Financiamiento' },
+  { href: '/slb', label: 'SLB' },
+  { href: '/compliance', label: 'Compliance' },
   { href: '/whatif', label: 'What-if' },
   { href: '/investigacion', label: 'Investigación' },
   { href: '/supuestos', label: 'Supuestos' },
