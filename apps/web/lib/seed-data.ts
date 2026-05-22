@@ -3,7 +3,7 @@
  * del JSON statico; en Fase 4+ migramos a tRPC contra DB real.
  */
 
-import seedRaw from '../../../scripts/seed_dryrun.json';
+import seedRaw from './seed-data.json';
 
 export type MMPP = {
   codigo: string;
