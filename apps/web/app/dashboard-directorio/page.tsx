@@ -33,6 +33,7 @@ type Valuation = {
   ev_clp_low: number;
   ev_clp_high: number;
   moic_estimado: number | null;
+  capex_total_5y_clp: number;
 };
 
 type MonteCarlo = {
