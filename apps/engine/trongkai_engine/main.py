@@ -23,7 +23,22 @@ from .bottleneck import (
     compute_bottleneck,
 )
 from .config import get_settings
+from .depreciation import (
+    MetodoDepreciacion,
+    RegimenTributario,
+    calcular_depreciacion,
+    capex_a_activos_default,
+    tax_shield,
+)
 from .escenarios import comparar_escenarios_estrategicos, recomendacion_estrategica
+from .financing import (
+    EstructuraFinanciamiento,
+    TipoAmortizacion,
+    calcular_tir_equity,
+    coverage_ratios,
+    estructurar_financiamiento,
+)
+from .learning_curve import ahorro_por_aprendizaje_clp
 from .monte_carlo import run_monte_carlo
 from .valuation import valuar_proyecto_ev_ebitda
 from .excel_export import export_plan_to_excel
@@ -710,3 +725,165 @@ def whatif_endpoint(req: WhatIfRequest) -> dict:
     ]
     cmp = comparar_escenarios(escenarios, base_params=base_params)
     return cmp.to_dict()
+
+
+# ----- Depreciación + Tax shield -----
+
+
+class DepreciacionRequest(BaseModel):
+    base: PlanRequest = Field(default_factory=PlanRequest)
+    metodo: Literal["NORMAL", "ACELERADA", "INSTANTANEA"] = "NORMAL"
+    regimen: Literal["GENERAL", "PROPYME"] = "GENERAL"
+
+
+@app.post(
+    "/plan/depreciation",
+    tags=["financiero"],
+    summary="Depreciación + tax shield + utilidad neta",
+    description=(
+        "Aplica depreciación lineal/acelerada/instantánea según DL 824 LIR + tabla SII "
+        "Resolución 43/2002 al CapEx del plan. Devuelve cronograma de depreciación, "
+        "EBT, impuesto, utilidad neta y tax shield por año. Toggle régimen General (27%) "
+        "vs ProPyme 25%."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def depreciation_endpoint(req: DepreciacionRequest) -> dict:
+    params = ParametrosPlan(
+        wacc_anual=req.base.wacc_anual,
+        volumen_total_ton_ano=req.base.volumen_total_ton_ano,
+        opex_mensual_clp=req.base.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.base.costo_mmpp_clp_kg,
+    )
+    plan = build_plan(params)
+    metodo = MetodoDepreciacion(req.metodo)
+    regimen = RegimenTributario(req.regimen)
+    activos = capex_a_activos_default(params.capex_anual_clp, metodo=metodo)
+    dep_anual = calcular_depreciacion(activos, horizonte_anos=5)
+    shield = tax_shield(plan.ebitda_anuales, dep_anual, regimen=regimen)
+    return {
+        "metodo": req.metodo,
+        "regimen": req.regimen,
+        "depreciacion_anual": dep_anual,
+        "total_depreciacion_5y": sum(dep_anual),
+        **shield,
+    }
+
+
+# ----- Learning curve -----
+
+
+class LearningCurveRequest(BaseModel):
+    base: PlanRequest = Field(default_factory=PlanRequest)
+    learning_rate: float = Field(default=0.90, ge=0.5, le=1.0)
+
+
+@app.post(
+    "/plan/learning-curve",
+    tags=["financiero"],
+    summary="Curva de aprendizaje (Wright's Law) sobre costos de proceso",
+    description=(
+        "Calcula el ahorro acumulado en costos de etapa aplicando Wright's Law con "
+        "learning rate por defecto 0.90 (food processing típico). Cada doblamiento "
+        "de volumen acumulado reduce costos unitarios -10%."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def learning_curve_endpoint(req: LearningCurveRequest) -> dict:
+    params = ParametrosPlan(
+        wacc_anual=req.base.wacc_anual,
+        volumen_total_ton_ano=req.base.volumen_total_ton_ano,
+        opex_mensual_clp=req.base.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.base.costo_mmpp_clp_kg,
+    )
+    plan = build_plan(params)
+    rendimiento_prom = sum(params.rendimiento_por_mmpp.values()) / len(params.rendimiento_por_mmpp)
+    volumen_anual_producto = [
+        params.volumen_total_ton_ano * params.volumen_pct_por_ano.get(ano, 1.0) * rendimiento_prom
+        for ano in range(1, 6)
+    ]
+    out = ahorro_por_aprendizaje_clp(
+        params.costo_etapa_clp_kg,
+        volumen_anual_producto,
+        learning_rate=req.learning_rate,
+    )
+    return out
+
+
+# ----- Financiamiento -----
+
+
+class FinanciamientoRequest(BaseModel):
+    base: PlanRequest = Field(default_factory=PlanRequest)
+    deuda_pct: float = Field(default=0.55, ge=0.0, le=0.85)
+    tasa_deuda_anual: float = Field(default=0.095, ge=0.0, le=0.30)
+    plazo_deuda_anos: int = Field(default=7, ge=1, le=20)
+    grace_anos: int = Field(default=1, ge=0, le=5)
+    tasa_equity_required: float = Field(default=0.20, ge=0.0, le=0.50)
+
+
+@app.post(
+    "/plan/financing",
+    tags=["financiero"],
+    summary="Mix deuda/equity con escudo fiscal + TIR equity + DSCR/LLCR",
+    description=(
+        "Estructura el financiamiento del proyecto (default 55% deuda CORFO + 45% equity), "
+        "calcula servicio de la deuda (amortización francesa), tax shield de intereses, "
+        "TIR equity (apalancado) y ratios de cobertura DSCR/LLCR para banca."
+    ),
+    dependencies=[Depends(require_api_key)],
+)
+def financing_endpoint(req: FinanciamientoRequest) -> dict:
+    params = ParametrosPlan(
+        wacc_anual=req.base.wacc_anual,
+        volumen_total_ton_ano=req.base.volumen_total_ton_ano,
+        opex_mensual_clp=req.base.opex_mensual_clp,
+        costo_mmpp_clp_kg=req.base.costo_mmpp_clp_kg,
+    )
+    plan = build_plan(params)
+    capex_anual = list(plan.capex_anuales)
+    estructura = EstructuraFinanciamiento(
+        deuda_pct=req.deuda_pct,
+        tasa_deuda_anual=req.tasa_deuda_anual,
+        plazo_deuda_anos=req.plazo_deuda_anos,
+        grace_period_anos=req.grace_anos,
+        tasa_equity_required=req.tasa_equity_required,
+    )
+    fin = estructurar_financiamiento(capex_anual, estructura, horizonte=5)
+
+    # Tax shield con intereses
+    activos = capex_a_activos_default(params.capex_anual_clp)
+    dep_anual = calcular_depreciacion(activos, horizonte_anos=5)
+    shield = tax_shield(plan.ebitda_anuales, dep_anual, fin["intereses_anual"], RegimenTributario.GENERAL)
+
+    # Servicio total para coverage
+    servicio_anual = [
+        i + p for i, p in zip(fin["intereses_anual"], fin["principal_anual"])
+    ]
+    coverage = coverage_ratios(plan.ebitda_anuales, servicio_anual)
+
+    tir_equity = calcular_tir_equity(
+        equity_anual=fin["equity_anual"],
+        utilidad_neta_anual=shield["utilidad_neta_anual"],
+        principal_anual=fin["principal_anual"],
+        valor_residual=plan.ebitda_anuales[4] * 5,  # proxy valor terminal
+    )
+
+    return {
+        "estructura": fin["estructura"],
+        "capex_total_clp": fin["capex_total_clp"],
+        "monto_deuda_clp": fin["monto_deuda_clp"],
+        "monto_equity_clp": fin["monto_equity_clp"],
+        "intereses_anual": fin["intereses_anual"],
+        "principal_anual": fin["principal_anual"],
+        "saldo_deuda_anual": fin["saldo_deuda_anual"],
+        "intereses_totales_clp": fin["intereses_totales_clp"],
+        "tax_shield": {
+            "anual": shield["tax_shield_anual"],
+            "total_5y": shield["total_tax_shield_5y"],
+            "utilidad_neta_anual": shield["utilidad_neta_anual"],
+        },
+        "coverage": coverage,
+        "tir_equity_apalancado": tir_equity,
+        "valor_residual_proxy_clp": plan.ebitda_anuales[4] * 5,
+    }
