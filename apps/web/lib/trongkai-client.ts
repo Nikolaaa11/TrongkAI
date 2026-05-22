@@ -221,6 +221,43 @@ export const trongkai = {
 
   repCalendar: () => request<RepCalendar>('/compliance/rep-calendar'),
 
+  macroChile: () =>
+    request<{
+      dolar_clp: number | null;
+      uf_clp: number | null;
+      ipc_pct_mensual: number | null;
+      tpm_pct: number | null;
+      utm_clp: number | null;
+      tasa_desempleo_pct: number | null;
+      fecha_ultima_actualizacion: string | null;
+      fuente: string;
+    }>('/macro/chile'),
+
+  macroChileFull: () =>
+    request<Record<string, { valor: number; fecha: string; unidad_medida: string; fuente: string }>>(
+      '/macro/chile/full',
+    ),
+
+  carbonFootprint: (base: PlanRequest = {}) =>
+    request<
+      Record<
+        'baseline' | 'renovable' | 'beccs',
+        {
+          emisiones_netas_5y_ton: number;
+          emisiones_evitadas_5y_ton: number;
+          revenue_creditos_5y_clp: number;
+          es_carbono_neutro: boolean;
+          es_carbono_negativo: boolean;
+          detalle_anual: {
+            brutas_ton: number[];
+            evitadas_ton: number[];
+            netas_ton: number[];
+            revenue_clp: number[];
+          };
+        }
+      >
+    >('/plan/carbon-footprint', { method: 'POST', body: JSON.stringify({ base }) }),
+
   massBalance: (params: {
     mmpp_codigo: string;
     humedad_inicial_pct: number;
