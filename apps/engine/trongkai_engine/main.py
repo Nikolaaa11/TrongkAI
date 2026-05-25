@@ -1238,3 +1238,38 @@ def snapshot_endpoint() -> dict:
             for s in tornado[:3]
         ],
     }
+
+
+# ----- Tearsheet PDF ejecutivo -----
+
+
+@app.get(
+    "/api/tearsheet.pdf",
+    tags=["meta"],
+    summary="Tearsheet PDF ejecutivo (descarga directa)",
+    description=(
+        "PDF profesional para LP roadshow / directorio. ~3 páginas con KPIs, valoración, "
+        "escenarios estratégicos, Monte Carlo, carbono, compliance y macro Chile. "
+        "Generado on-demand desde /api/snapshot con reportlab."
+    ),
+    response_class=FileResponse,
+)
+def tearsheet_pdf_endpoint() -> FileResponse:
+    from datetime import datetime
+
+    from .tearsheet_pdf import generar_tearsheet_pdf
+
+    snap = snapshot_endpoint()
+    pdf_bytes = generar_tearsheet_pdf(snap)
+
+    exports_dir = Path("/tmp/trongkai-exports")
+    exports_dir.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now().strftime("%Y%m%d-%H%M")
+    out = exports_dir / f"trongkai_tearsheet_{stamp}.pdf"
+    out.write_bytes(pdf_bytes)
+
+    return FileResponse(
+        out,
+        media_type="application/pdf",
+        filename=f"trongkai_tearsheet_{stamp}.pdf",
+    )

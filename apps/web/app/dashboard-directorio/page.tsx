@@ -115,10 +115,23 @@ export default function DashboardDirectorioPage() {
   return (
     <div className="space-y-6 print:bg-white">
       <header className="border-b border-oliva/20 pb-4 print:border-b-2">
-        <h1 className="font-serif text-3xl text-oliva-900">Dashboard Directorio · Trongkai 2026</h1>
-        <p className="mt-1 text-sm text-oliva-600">
-          Resumen ejecutivo del plan financiero, escenarios estratégicos, valoración y análisis de riesgo. Imprimible para reunión.
-        </p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="font-serif text-3xl text-oliva-900">Dashboard Directorio · Trongkai 2026</h1>
+            <p className="mt-1 text-sm text-oliva-600">
+              Resumen ejecutivo del plan financiero, escenarios estratégicos, valoración y análisis de riesgo. Imprimible para reunión.
+            </p>
+          </div>
+          <a
+            href={`${ENGINE_URL}/api/tearsheet.pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="no-print rounded-lg border border-oliva-900 bg-oliva-900 px-4 py-2 text-sm font-medium text-crema transition hover:bg-oliva-700"
+            download
+          >
+            📄 Descargar PDF tearsheet
+          </a>
+        </div>
       </header>
 
       {/* ===== KPIs grandes ===== */}
