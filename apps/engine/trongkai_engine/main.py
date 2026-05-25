@@ -1424,6 +1424,55 @@ def data_room_endpoint() -> dict:
     return checklist_completo()
 
 
+# ----- Decision Engine — cerebro central -----
+
+
+@app.get(
+    "/decisiones/top",
+    tags=["meta"],
+    summary="Top 5 acciones priorizadas por el motor de decisiones",
+    description=(
+        "Decision Engine que combina TODA la red (variables, data room, "
+        "coherencia, breakeven, readiness, sensitivity) y produce 5 acciones "
+        "priorizadas por: impacto TIR + sinergia + uplift readiness + quick-win + urgencia."
+    ),
+)
+def decisiones_top_endpoint() -> dict:
+    from .decision_engine import resumen_decisiones
+
+    return resumen_decisiones().to_dict()
+
+
+# ----- Intelligence Graph — dependencias entre módulos -----
+
+
+@app.get(
+    "/graph/modulos",
+    tags=["meta"],
+    summary="Grafo de dependencias entre módulos del modelo",
+    description=(
+        "Mapa de cómo se conectan los módulos: inputs → matrices → cálculos → "
+        "outputs. Útil para visualización tipo network graph."
+    ),
+)
+def graph_modulos_endpoint() -> dict:
+    from .intelligence_graph import grafo_completo
+
+    return grafo_completo()
+
+
+@app.get(
+    "/graph/impacto/{modulo}",
+    tags=["meta"],
+    summary="Qué otros módulos se afectan si cambia uno (cascada)",
+)
+def graph_impacto_endpoint(modulo: str, profundidad: int = 3) -> dict:
+    from .intelligence_graph import impacto_de_cambio
+
+    impactados = impacto_de_cambio(modulo, profundidad=profundidad)
+    return {"modulo_origen": modulo, "impactados": impactados, "profundidad": profundidad}
+
+
 # ----- Coherencia Cross-Matriz -----
 
 

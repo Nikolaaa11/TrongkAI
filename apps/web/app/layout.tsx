@@ -19,6 +19,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/readiness', label: 'Readiness' },
   { href: '/datos', label: 'Datos faltantes' },
   { href: '/variables', label: 'Matriz Variables' },
+  { href: '/decisiones', label: '🎯 Decisiones' },
   { href: '/coherencia', label: 'Coherencia' },
   { href: '/data-room', label: 'Data Room' },
   { href: '/lp-pack', label: 'LP Pack' },
