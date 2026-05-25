@@ -1424,6 +1424,103 @@ def data_room_endpoint() -> dict:
     return checklist_completo()
 
 
+# ----- Coherencia Cross-Matriz -----
+
+
+@app.get(
+    "/matriz/coherencia",
+    tags=["meta"],
+    summary="Auditoría cruzada entre todas las matrices del modelo",
+    description=(
+        "Detecta gaps que aparecen simultáneamente en múltiples matrices "
+        "(variables, data room, readiness, compliance). Prioriza por sinergia: "
+        "los gaps que más se resuelven con una sola acción primero."
+    ),
+)
+def matriz_coherencia_endpoint() -> dict:
+    from .matriz_coherence import resumen_coherencia
+
+    return resumen_coherencia().to_dict()
+
+
+# ----- Sensitivity 3D -----
+
+
+@app.get(
+    "/sensitivity/heatmap-3d",
+    tags=["whatif"],
+    summary="Heatmap 3D para 3 drivers simultáneos",
+    description=(
+        "TIR para combinaciones cross-3-variables. Default 5x5x5 = 125 sims (~8s)."
+    ),
+)
+def sensitivity_3d_endpoint(
+    driver_x: str = "precio",
+    driver_y: str = "costo_mmpp",
+    driver_z: str = "wacc",
+    n: int = 5,
+    hurdle_pct: float = 0.15,
+) -> dict:
+    from .sensitivity import heatmap_3d
+
+    try:
+        res = heatmap_3d(
+            driver_x=driver_x,  # type: ignore[arg-type]
+            driver_y=driver_y,  # type: ignore[arg-type]
+            driver_z=driver_z,  # type: ignore[arg-type]
+            n=n,
+            hurdle_pct=hurdle_pct,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    return res.to_dict()
+
+
+# ----- Variables Intelligence (auto-validación + sugerencias) -----
+
+
+@app.get(
+    "/variables/intelligence",
+    tags=["meta"],
+    summary="Análisis inteligente de la matriz: inconsistencias + sugerencias",
+    description=(
+        "Capa de inteligencia sobre la matriz canónica. Detecta inconsistencias "
+        "matemáticas/lógicas, sugiere valores para celdas PD basado en celdas "
+        "similares + benchmarks, y calcula confianza promedio por grupo de producto."
+    ),
+)
+def variables_intelligence_endpoint() -> dict:
+    from .variables_intelligence import analisis_inteligente
+
+    return analisis_inteligente().to_dict()
+
+
+class SimularCambioRequest(BaseModel):
+    variable: str
+    producto: str
+    valor_nuevo: float
+
+
+@app.post(
+    "/variables/simular-cambio",
+    tags=["meta"],
+    summary="Simula cambio de una celda y mide impacto TIR/VAN",
+    description=(
+        "What-if a nivel celda: cambia (variable, producto) a valor_nuevo "
+        "y devuelve el impacto en TIR (pp) y VAN (%)."
+    ),
+)
+def simular_cambio_celda_endpoint(req: SimularCambioRequest) -> dict:
+    from .variables_intelligence import simular_cambio_celda
+
+    impacto = simular_cambio_celda(
+        variable=req.variable,
+        producto=req.producto,
+        valor_nuevo=req.valor_nuevo,
+    )
+    return impacto.to_dict()
+
+
 # ----- Matriz Variables (canónica del Excel original) -----
 
 

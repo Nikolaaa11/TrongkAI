@@ -185,6 +185,99 @@ def curvas_todos_drivers(
     }
 
 
+@dataclass
+class Sensitivity3DResult:
+    driver_x: Driver
+    driver_y: Driver
+    driver_z: Driver
+    rango_x: list[float]
+    rango_y: list[float]
+    rango_z: list[float]
+    puntos: list[dict]  # [{x_pct, y_pct, z_pct, tir, supera_hurdle}]
+    tir_base: float | None
+    hurdle_pct: float
+    pct_zona_segura: float
+
+    def to_dict(self) -> dict:
+        return {
+            "driver_x": self.driver_x,
+            "driver_y": self.driver_y,
+            "driver_z": self.driver_z,
+            "rango_x": self.rango_x,
+            "rango_y": self.rango_y,
+            "rango_z": self.rango_z,
+            "puntos": self.puntos,
+            "tir_base": self.tir_base,
+            "hurdle_pct": self.hurdle_pct,
+            "pct_zona_segura": self.pct_zona_segura,
+            "n_puntos": len(self.puntos),
+        }
+
+
+def heatmap_3d(
+    driver_x: Driver = "precio",
+    driver_y: Driver = "costo_mmpp",
+    driver_z: Driver = "wacc",
+    n: int = 5,
+    hurdle_pct: float = 0.15,
+    base_params: ParametrosPlan | None = None,
+) -> Sensitivity3DResult:
+    """Heatmap 3D: TIR para todas las combinaciones de 3 drivers.
+
+    Default 5x5x5 = 125 simulaciones (~8 segundos). Útil para identificar
+    'regiones seguras' multidimensionales.
+    """
+    if len({driver_x, driver_y, driver_z}) != 3:
+        raise ValueError("driver_x, driver_y, driver_z deben ser distintos")
+    if n < 3 or n > 10:
+        raise ValueError("n debe estar entre 3 y 10")
+
+    base = base_params or ParametrosPlan()
+    plan_base = build_plan(base)
+
+    rango_x = _rango_default(driver_x, n)
+    rango_y = _rango_default(driver_y, n)
+    rango_z = _rango_default(driver_z, n)
+
+    puntos = []
+    n_seguros = 0
+
+    for sx in rango_x:
+        for sy in rango_y:
+            for sz in rango_z:
+                params = _aplicar_shock(base, driver_x, sx)
+                params = _aplicar_shock(params, driver_y, sy)
+                params = _aplicar_shock(params, driver_z, sz)
+                try:
+                    plan = build_plan(params)
+                    tir = plan.kpis.tir_proyecto_anual
+                except Exception:
+                    tir = None
+                supera = tir is not None and tir > hurdle_pct
+                if supera:
+                    n_seguros += 1
+                puntos.append({
+                    "x_pct": sx,
+                    "y_pct": sy,
+                    "z_pct": sz,
+                    "tir": tir,
+                    "supera_hurdle": supera,
+                })
+
+    return Sensitivity3DResult(
+        driver_x=driver_x,
+        driver_y=driver_y,
+        driver_z=driver_z,
+        rango_x=rango_x,
+        rango_y=rango_y,
+        rango_z=rango_z,
+        puntos=puntos,
+        tir_base=plan_base.kpis.tir_proyecto_anual,
+        hurdle_pct=hurdle_pct,
+        pct_zona_segura=n_seguros / len(puntos) if puntos else 0,
+    )
+
+
 def heatmap_2d(
     driver_x: Driver = "precio",
     driver_y: Driver = "costo_mmpp",

@@ -168,10 +168,14 @@ def construir_matriz(base: ParametrosPlan | None = None) -> MatrizVariables:
     base = base or ParametrosPlan()
     celdas: list[Celda] = []
 
-    # ===== Volumen MMPP por producto (rendimiento × peso × volumen total) =====
+    # ===== Volumen MMPP por producto (volumen final / rendimiento — coherente con balance) =====
     for p in PRODUCTOS:
         peso = _peso_volumen_maduro(p.codigo)
-        vol_mmpp = base.volumen_total_ton_ano * peso  # aproximado
+        # Volumen producto final = volumen total × peso
+        vol_final_calc = base.volumen_total_ton_ano * peso
+        # Volumen subproductos = vol_final / rendimiento (inverso del balance)
+        rend = base.rendimiento_por_mmpp.get(p.mmpp_origen, 0.25)
+        vol_mmpp = vol_final_calc / rend if rend > 0 else 0
         # Estado: OK_PROVISORIO porque está calculado desde supuesto de mix
         celdas.append(Celda(
             variable="Volumen Subproductos",
@@ -179,7 +183,7 @@ def construir_matriz(base: ParametrosPlan | None = None) -> MatrizVariables:
             valor=vol_mmpp,
             unidad="ton/año",
             estado=EstadoCelda.OK_PROVISORIO,
-            fuente=f"Plan: peso mix maduro × volumen total ({base.volumen_total_ton_ano} ton/año)",
+            fuente=f"Calculado: Volumen Final / Rendimiento (coherente con balance de masa)",
             nota="Calibrar con volumen real cuando llegue cotización MMPP",
         ))
 

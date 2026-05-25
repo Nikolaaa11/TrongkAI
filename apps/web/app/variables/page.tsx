@@ -38,6 +38,26 @@ type MatrizResp = {
   };
 };
 
+type IntelligenceResp = {
+  inconsistencias: {
+    severidad: string;
+    tipo: string;
+    descripcion: string;
+    celdas_involucradas: string[];
+  }[];
+  sugerencias: {
+    variable: string;
+    producto: string;
+    valor_sugerido: number;
+    unidad: string;
+    razonamiento: string;
+    confianza: number;
+  }[];
+  confianza_promedio: number;
+  confianza_por_grupo: Record<string, number>;
+  celdas_criticas: { variable: string; producto: string; producto_nombre: string; grupo: string }[];
+};
+
 const COLOR_GRUPO: Record<string, string> = {
   'Base Harinas y Aceite': 'bg-ink-50 text-ink-600',
   'Productos Finales II': 'bg-orange-50 text-orange-600',
@@ -46,11 +66,13 @@ const COLOR_GRUPO: Record<string, string> = {
 
 export default function VariablesPage() {
   const [data, setData] = useState<MatrizResp | null>(null);
+  const [intelligence, setIntelligence] = useState<IntelligenceResp | null>(null);
   const [celdaSel, setCeldaSel] = useState<Celda | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     void cargar();
+    void cargarIntelligence();
   }, []);
 
   async function cargar() {
@@ -62,6 +84,22 @@ export default function VariablesPage() {
       setErr(String(e));
     }
   }
+
+  async function cargarIntelligence() {
+    try {
+      const r = await fetch(`${ENGINE_URL}/variables/intelligence`);
+      if (r.ok) setIntelligence(await r.json());
+    } catch (e) {
+      console.error('intelligence', e);
+    }
+  }
+
+  // Encuentra sugerencia para una celda específica
+  const sugerenciaParaCelda = (variable: string, producto: string) => {
+    return intelligence?.sugerencias.find(
+      (s) => s.variable === variable && s.producto === producto,
+    );
+  };
 
   // Buscar celda por variable + producto
   const celdaIndex = useMemo(() => {
@@ -86,6 +124,104 @@ export default function VariablesPage() {
         <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
           {err}
         </div>
+      )}
+
+      {/* ===== INTELLIGENCE BANNER ===== */}
+      {intelligence && (
+        <section className="rounded-appleXl bg-brand-50 p-6 ring-1 ring-brand/20">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand">
+                🧠 Matriz Inteligente
+              </div>
+              <h2 className="mt-1 text-2xl font-semibold tracking-apple text-ink">
+                Confianza promedio: {intelligence.confianza_promedio.toFixed(0)}/100
+              </h2>
+              <p className="mt-1 text-sm text-ink-600">
+                {intelligence.inconsistencias.length === 0
+                  ? '✓ Cero inconsistencias detectadas. Matriz matemáticamente coherente.'
+                  : `⚠ ${intelligence.inconsistencias.length} inconsistencias detectadas`}
+                {' · '}
+                {intelligence.sugerencias.length} sugerencias automáticas disponibles
+                {' · '}
+                {intelligence.celdas_criticas.length} celdas críticas (PD en variables clave)
+              </p>
+            </div>
+          </div>
+
+          {/* Confianza por grupo */}
+          <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+            {Object.entries(intelligence.confianza_por_grupo).map(([grupo, score]) => (
+              <div key={grupo} className="rounded-lg bg-white p-3">
+                <div className="text-[10px] uppercase tracking-wider text-ink-400">{grupo}</div>
+                <div className="mt-1 flex items-baseline gap-2">
+                  <div className="tabular text-2xl font-semibold text-ink">{score.toFixed(0)}</div>
+                  <div className="text-xs text-ink-400">/ 100</div>
+                </div>
+                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-ink-100">
+                  <div
+                    className="h-full bg-brand transition-all"
+                    style={{ width: `${score}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ===== INCONSISTENCIAS ===== */}
+      {intelligence && intelligence.inconsistencias.length > 0 && (
+        <section className="apple-card border border-red-200 bg-red-50/40">
+          <h2 className="text-lg font-semibold text-red-600">
+            ⚠ Inconsistencias detectadas ({intelligence.inconsistencias.length})
+          </h2>
+          <ul className="mt-3 space-y-2">
+            {intelligence.inconsistencias.slice(0, 5).map((i, idx) => (
+              <li key={idx} className="rounded-lg bg-white p-3 text-sm">
+                <span className="font-semibold text-red-600">[{i.severidad}]</span>{' '}
+                <span className="text-ink-600">{i.descripcion}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* ===== CELDAS CRÍTICAS (TOP 5 PD en variables clave) ===== */}
+      {intelligence && intelligence.celdas_criticas.length > 0 && (
+        <section className="apple-card">
+          <h2 className="text-lg font-semibold text-ink">
+            🎯 Celdas críticas — atacar primero estas ({intelligence.celdas_criticas.length})
+          </h2>
+          <p className="mt-1 text-sm text-ink-400">
+            Celdas PD en variables clave (Precio, Rendimiento, Costo Producción). Cierra estas primero para máximo uplift en TIR.
+          </p>
+          <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2">
+            {intelligence.celdas_criticas.slice(0, 8).map((c, idx) => {
+              const sug = sugerenciaParaCelda(c.variable, c.producto);
+              return (
+                <div key={idx} className="rounded-lg bg-ink-50 p-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-ink">{c.producto_nombre}</div>
+                      <div className="text-xs text-ink-600">{c.variable}</div>
+                      <div className="text-[10px] uppercase tracking-wider text-ink-400">{c.grupo}</div>
+                    </div>
+                    {sug && (
+                      <div className="text-right">
+                        <div className="text-[10px] uppercase tracking-wider text-brand">Sugerido</div>
+                        <div className="tabular text-sm font-semibold text-brand">
+                          {sug.valor_sugerido.toLocaleString('es-CL', { maximumFractionDigits: 2 })}
+                        </div>
+                        <div className="text-[10px] text-ink-400">{sug.unidad}</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
       )}
 
       {data && (
@@ -206,6 +342,33 @@ export default function VariablesPage() {
                   {celdaSel.nota}
                 </div>
               )}
+
+              {/* Sugerencia inteligente si la celda es PD */}
+              {celdaSel.estado === 'PD' && (() => {
+                const sug = sugerenciaParaCelda(celdaSel.variable, celdaSel.producto);
+                if (!sug) return null;
+                return (
+                  <div className="mt-4 rounded-lg border border-brand/30 bg-brand-50 p-3 text-sm">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-[11px] font-semibold uppercase tracking-wider text-brand">
+                          🧠 Sugerencia automática
+                        </div>
+                        <div className="mt-1 tabular text-lg font-semibold text-ink">
+                          {sug.valor_sugerido.toLocaleString('es-CL', { maximumFractionDigits: 2 })} {sug.unidad}
+                        </div>
+                        <div className="text-xs text-ink-600">{sug.razonamiento}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-[10px] uppercase tracking-wider text-ink-400">Confianza</div>
+                        <div className="tabular text-base font-semibold text-brand">
+                          {(sug.confianza * 100).toFixed(0)}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </section>
           )}
 
