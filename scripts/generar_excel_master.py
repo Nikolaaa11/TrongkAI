@@ -33,10 +33,12 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 # Engine imports
+from trongkai_engine.alertas import escanear_alertas
 from trongkai_engine.breakeven import breakeven_summary
 from trongkai_engine.carbon_footprint import comparar_escenarios_footprint
 from trongkai_engine.compliance_rep import HITOS_LEY_REP
 from trongkai_engine.data_room import CHECKLIST_DD, resumen_checklist
+from trongkai_engine.decision_engine import resumen_decisiones
 from trongkai_engine.escenarios import comparar_escenarios_estrategicos
 from trongkai_engine.macro_chile import snapshot_resumen
 from trongkai_engine.plan_builder import ParametrosPlan, build_plan
@@ -716,6 +718,120 @@ def crear_data_room(wb: Workbook):
 
 
 # =====================================================================
+# Hoja: Decisiones (top 5 acciones priorizadas)
+# =====================================================================
+def crear_decisiones(wb: Workbook):
+    ws = wb.create_sheet("Decisiones")
+    ws.sheet_view.showGridLines = False
+
+    ws["A1"] = "Decision Engine - Top 5 Acciones Priorizadas"
+    estilo_titulo(ws["A1"])
+
+    r = resumen_decisiones()
+    ws["A2"] = (
+        f"{r.todas.__len__()} acciones detectadas · "
+        f"Uplift potencial Readiness: +{r.uplift_potencial_readiness:.0f} pts si se cierran todas"
+    )
+    estilo_subtitulo(ws["A2"])
+
+    headers = ["#", "Acción", "Categoría", "Owner", "Prioridad", "Impacto TIR", "Sinergia", "Uplift Score", "Quick-win", "Urgencia"]
+    for i, h in enumerate(headers, 1):
+        estilo_header_tabla(ws.cell(row=4, column=i, value=h))
+
+    for i, a in enumerate(r.top_5, 1):
+        row = 4 + i
+        ws.cell(row=row, column=1, value=i)
+        ws.cell(row=row, column=2, value=a.titulo)
+        ws.cell(row=row, column=3, value=a.categoria)
+        ws.cell(row=row, column=4, value=a.owner)
+        ws.cell(row=row, column=5, value=round(a.prioridad, 1))
+        ws.cell(row=row, column=6, value=round(a.impacto_tir, 0))
+        ws.cell(row=row, column=7, value=round(a.sinergia, 0))
+        ws.cell(row=row, column=8, value=round(a.uplift_readiness, 0))
+        ws.cell(row=row, column=9, value=round(a.quick_win, 0))
+        ws.cell(row=row, column=10, value=round(a.urgencia, 0))
+        for col in range(1, 11):
+            estilo_celda(ws.cell(row=row, column=col))
+        # Highlight top action
+        if i == 1:
+            for col in range(1, 11):
+                ws.cell(row=row, column=col).fill = PatternFill("solid", fgColor="EAF6EA")
+
+    # Acción concreta del top 1
+    if r.top_5:
+        top = r.top_5[0]
+        ws["A11"] = "→ Acción concreta del top 1:"
+        ws["A11"].font = Font(size=11, bold=True, color=VERDE_TRONGKAI)
+        ws.merge_cells("A12:J12")
+        ws["A12"] = top.accion_concreta
+        ws["A12"].alignment = Alignment(wrap_text=True, vertical="top")
+        ws.row_dimensions[12].height = 40
+
+    # Color scale prioridad
+    from openpyxl.formatting.rule import ColorScaleRule
+    ws.conditional_formatting.add(
+        f"E5:E{4 + len(r.top_5)}",
+        ColorScaleRule(
+            start_type="min", start_color="FFEBEA",
+            mid_type="percentile", mid_value=50, mid_color="FFFBEB",
+            end_type="max", end_color=VERDE_TRONGKAI,
+        ),
+    )
+
+    # Anchos
+    for col, w in zip("ABCDEFGHIJ", [4, 45, 14, 22, 11, 13, 10, 13, 11, 11]):
+        ws.column_dimensions[col].width = w
+
+
+# =====================================================================
+# Hoja: Alertas activas
+# =====================================================================
+def crear_alertas(wb: Workbook):
+    ws = wb.create_sheet("Alertas")
+    ws.sheet_view.showGridLines = False
+
+    ws["A1"] = "Alertas Activas - Sistema Inteligente"
+    estilo_titulo(ws["A1"])
+
+    a = escanear_alertas()
+    ws["A2"] = (
+        f"Total: {a.total} alertas · {a.criticas} críticas · {a.altas} altas"
+    )
+    estilo_subtitulo(ws["A2"])
+
+    headers = ["Nivel", "Tipo", "Módulo", "Alerta", "Valor actual", "Umbral", "Acción sugerida"]
+    for i, h in enumerate(headers, 1):
+        estilo_header_tabla(ws.cell(row=4, column=i, value=h))
+
+    color_nivel = {
+        "critica": "FF3B30",
+        "alta": "FF9500",
+        "media": "FFCC00",
+        "baja": "1A8A1A",
+        "info": "86868B",
+    }
+
+    for i, alerta in enumerate(a.alertas, 1):
+        row = 4 + i
+        cell_nivel = ws.cell(row=row, column=1, value=alerta.nivel.upper())
+        cell_nivel.fill = PatternFill("solid", fgColor=color_nivel.get(alerta.nivel, "CCCCCC"))
+        cell_nivel.font = Font(size=10, bold=True, color="FFFFFF" if alerta.nivel in ("critica", "alta", "info") else TEXTO)
+        ws.cell(row=row, column=2, value=alerta.tipo)
+        ws.cell(row=row, column=3, value=alerta.modulo)
+        ws.cell(row=row, column=4, value=alerta.titulo)
+        ws.cell(row=row, column=5, value=str(alerta.valor_actual) if alerta.valor_actual is not None else "—")
+        ws.cell(row=row, column=6, value=str(alerta.umbral) if alerta.umbral is not None else "—")
+        ws.cell(row=row, column=7, value=alerta.accion_sugerida)
+        for col in range(1, 8):
+            estilo_celda(ws.cell(row=row, column=col))
+            ws.cell(row=row, column=col).alignment = Alignment(wrap_text=True, vertical="center", horizontal="left" if col >= 4 else "center")
+
+    # Anchos
+    for col, w in zip("ABCDEFG", [10, 14, 14, 38, 14, 12, 45]):
+        ws.column_dimensions[col].width = w
+
+
+# =====================================================================
 # Hoja 10: Instrucciones / Cómo conectar macros
 # =====================================================================
 def crear_instrucciones(wb: Workbook):
@@ -860,6 +976,10 @@ def main():
     crear_plan_5_anos(wb, snap)
     print("-hoja Balance Masa...")
     crear_balance_masa(wb, base)
+    print("-hoja Decisiones (top 5 acciones)...")
+    crear_decisiones(wb)
+    print("-hoja Alertas (sistema inteligente)...")
+    crear_alertas(wb)
     print("-hoja Matriz Variables (canonica del Excel original)...")
     crear_matriz_canonica(wb)
     print("-hoja Data Room DD...")
