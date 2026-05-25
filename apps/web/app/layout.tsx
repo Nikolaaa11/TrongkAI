@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 // Nav agrupado por categoría visual
 const nav: { href: string; label: string }[] = [
   { href: '/', label: 'Inicio' },
+  { href: '/comando', label: '⚡ Centro de Mando' },
   { href: '/dashboard-directorio', label: 'Directorio' },
   { href: '/readiness', label: 'Readiness' },
   { href: '/datos', label: 'Datos faltantes' },

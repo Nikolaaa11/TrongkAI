@@ -443,6 +443,78 @@ def generar_tearsheet_pdf(snap: dict) -> bytes:
         )
         story.append(Paragraph(macro_text, st["body"]))
 
+    # === Sección NUEVA v3: Decision Engine + Alertas ===
+    dec = snap.get("decisiones")
+    alr = snap.get("alertas")
+    if dec or alr:
+        story.append(PageBreak())
+        story.append(Paragraph("Decision Engine + Alertas Activas", st["h2"]))
+
+        if alr and alr.get("total", 0) > 0:
+            story.append(Paragraph(
+                f"<b>Alertas activas: {alr['total']}</b> "
+                f"({alr.get('criticas', 0)} críticas · "
+                f"{alr.get('altas', 0)} altas · "
+                f"{alr.get('medias', 0)} medias)",
+                st["body"],
+            ))
+            story.append(Spacer(1, 3 * mm))
+            # Tabla top alertas
+            alertas_rows = [["Nivel", "Tipo", "Alerta", "Acción"]]
+            for a in alr.get("alertas", [])[:5]:
+                alertas_rows.append([
+                    a["nivel"].upper(),
+                    a["tipo"],
+                    a["titulo"][:50],
+                    a["accion_sugerida"][:60],
+                ])
+            if len(alertas_rows) > 1:
+                tbl_a = Table(alertas_rows, colWidths=[2 * cm, 2.5 * cm, 5 * cm, 6 * cm])
+                tbl_a.setStyle(TableStyle([
+                    ("BACKGROUND", (0, 0), (-1, 0), BORGONA),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), PAPEL),
+                    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                    ("FONTSIZE", (0, 0), (-1, -1), 8),
+                    ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 4),
+                    ("TOPPADDING", (0, 0), (-1, -1), 3),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                ]))
+                story.append(tbl_a)
+                story.append(Spacer(1, 5 * mm))
+
+        if dec and dec.get("top_5"):
+            story.append(Paragraph("Top 5 acciones priorizadas (Decision Engine)", st["h2"]))
+            story.append(Paragraph(
+                f"Uplift potencial Readiness Score: <b>+{dec.get('uplift_potencial_readiness', 0):.0f} pts</b> "
+                f"si se cierran las {dec.get('total_acciones', 0)} acciones detectadas.",
+                st["body"],
+            ))
+            story.append(Spacer(1, 3 * mm))
+            dec_rows = [["#", "Acción", "Owner", "Prioridad", "Uplift"]]
+            for i, a in enumerate(dec["top_5"], 1):
+                dec_rows.append([
+                    str(i),
+                    a["titulo"][:45],
+                    a["owner"][:25],
+                    f'{a["prioridad"]:.1f}',
+                    f'+{a["uplift_readiness"]:.0f}',
+                ])
+            tbl_d = Table(dec_rows, colWidths=[1 * cm, 6.5 * cm, 4 * cm, 2 * cm, 2 * cm])
+            tbl_d.setStyle(TableStyle([
+                ("BACKGROUND", (0, 0), (-1, 0), OLIVA_OSCURO),
+                ("TEXTCOLOR", (0, 0), (-1, 0), PAPEL),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("FONTSIZE", (0, 0), (-1, -1), 8.5),
+                ("ALIGN", (0, 0), (0, -1), "CENTER"),
+                ("ALIGN", (3, 0), (-1, -1), "RIGHT"),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 5),
+                ("TOPPADDING", (0, 0), (-1, -1), 4),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ]))
+            story.append(tbl_d)
+
     # === Sección NUEVA: Investment Readiness + Trazabilidad ===
     rs = snap.get("readiness_score")
     dr = snap.get("data_room")

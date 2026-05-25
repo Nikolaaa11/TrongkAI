@@ -1241,7 +1241,42 @@ def snapshot_endpoint() -> dict:
         "readiness_score": _safe_readiness(),
         "data_room": _safe_data_room(),
         "variables_matrix": _safe_variables_matrix(),
+        # NUEVO v2: Decision Engine + Alertas
+        "decisiones": _safe_decisiones(),
+        "alertas": _safe_alertas(),
+        "coherencia": _safe_coherencia(),
     }
+
+
+def _safe_decisiones() -> dict | None:
+    try:
+        from .decision_engine import resumen_decisiones
+        r = resumen_decisiones().to_dict()
+        # Reducir payload: solo top_5 y stats
+        return {
+            "top_5": r["top_5"],
+            "total_acciones": r["total_acciones"],
+            "uplift_potencial_readiness": r["uplift_potencial_readiness"],
+            "quick_wins": r["quick_wins"],
+        }
+    except Exception:
+        return None
+
+
+def _safe_alertas() -> dict | None:
+    try:
+        from .alertas import escanear_alertas
+        return escanear_alertas().to_dict()
+    except Exception:
+        return None
+
+
+def _safe_coherencia() -> dict | None:
+    try:
+        from .matriz_coherence import resumen_coherencia
+        return resumen_coherencia().to_dict()
+    except Exception:
+        return None
 
 
 def _safe_readiness() -> dict | None:
@@ -1422,6 +1457,24 @@ def data_room_endpoint() -> dict:
     from .data_room import checklist_completo
 
     return checklist_completo()
+
+
+# ----- Sistema de Alertas Inteligentes -----
+
+
+@app.get(
+    "/alertas",
+    tags=["meta"],
+    summary="Alertas activas detectadas en todo el sistema",
+    description=(
+        "Escanea TODOS los módulos (plan, sensitivity, breakeven, compliance, "
+        "carbon, modelo, progreso) y devuelve alertas ordenadas por severidad."
+    ),
+)
+def alertas_endpoint() -> dict:
+    from .alertas import escanear_alertas
+
+    return escanear_alertas().to_dict()
 
 
 # ----- Decision Engine — cerebro central -----
