@@ -2,6 +2,15 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
+  safelist: [
+    // Colores semánticos usados dinámicamente en /datos y otras
+    'bg-red-50', 'text-red-600', 'ring-red-200',
+    'bg-orange-50', 'text-orange-600', 'ring-orange-200',
+    'bg-yellow-50', 'text-yellow-700', 'ring-yellow-200',
+    'bg-brand-50', 'text-brand', 'ring-brand/20', 'ring-brand/30',
+    'bg-brand', 'text-brand-700', 'from-brand', 'to-brand-700',
+    'bg-ink-50', 'bg-ink-100', 'bg-ink', 'text-ink', 'text-ink-400', 'text-ink-600',
+  ],
   theme: {
     extend: {
       colors: {

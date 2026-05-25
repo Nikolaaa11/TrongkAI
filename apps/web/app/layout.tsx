@@ -17,6 +17,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/', label: 'Inicio' },
   { href: '/dashboard-directorio', label: 'Directorio' },
   { href: '/readiness', label: 'Readiness' },
+  { href: '/datos', label: 'Datos faltantes' },
   { href: '/plan', label: 'Plan 5 años' },
   { href: '/sensitivity', label: 'Sensibilidad' },
   { href: '/stress', label: 'Stress' },
