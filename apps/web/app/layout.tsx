@@ -21,6 +21,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/variables', label: 'Matriz Variables' },
   { href: '/decisiones', label: '🎯 Decisiones' },
   { href: '/coherencia', label: 'Coherencia' },
+  { href: '/red', label: '🕸 Red' },
   { href: '/data-room', label: 'Data Room' },
   { href: '/lp-pack', label: 'LP Pack' },
   { href: '/equipo', label: 'Equipo' },
