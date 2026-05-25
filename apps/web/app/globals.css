@@ -3,27 +3,48 @@
 @tailwind utilities;
 
 :root {
-  --color-fondo: #f5f1e8;
-  --color-oliva: #3f4a2b;
-  --color-oliva-oscuro: #2a3219;
-  --color-trigo: #c8a961;
-  --color-tierra: #8b5a3c;
-  --color-borgona: #7a1f1f;
-  --color-papel: #fefcf6;
+  /* ===== Apple-inspired palette ===== */
+  --color-bg: #FFFFFF;
+  --color-bg-secondary: #F5F5F7;
+  --color-text: #1D1D1F;
+  --color-text-secondary: #86868B;
+  --color-border: #E8E8ED;
+  --color-brand: #1A8A1A;
+  --color-brand-light: #EAF6EA;
+
+  /* Legacy palette (compatibilidad) */
+  --color-oliva: #3F4A2B;
+  --color-trigo: #C8A961;
+  --color-borgona: #7A1F1F;
+  --color-papel: #FEFCF6;
 }
 
 html, body {
-  background-color: var(--color-fondo);
-  color: var(--color-oliva);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-feature-settings: 'cv11', 'ss01', 'kern';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  letter-spacing: -0.011em;
 }
 
-/* Tipografía editorial para headings serif */
-.font-serif {
-  letter-spacing: -0.015em;
+/* ===== Apple-style typography ===== */
+h1, h2, h3, .font-display {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.022em;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.05;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  line-height: 1.15;
 }
 
 /* Numeric tabular for KPI cards */
@@ -32,13 +53,83 @@ html, body {
   font-feature-settings: 'tnum';
 }
 
-/* Sutil acento de borde en cards al hover */
+/* ===== Apple-style components ===== */
+.apple-card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 1.5rem;
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-card:hover {
+  border-color: rgba(29, 29, 31, 0.18);
+  box-shadow: 0 6px 24px -4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.apple-card-flat {
+  background: var(--color-bg-secondary);
+  border-radius: 18px;
+  padding: 1.5rem;
+}
+
+.apple-section {
+  padding: 4rem 0;
+}
+
+.apple-hero {
+  padding: 5rem 0 4rem;
+  text-align: center;
+}
+
+/* Buttons Apple-style: pill, glassy */
+.btn-apple {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: var(--color-brand);
+  color: white;
+  border-radius: 980px;        /* pill total Apple */
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: -0.011em;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-apple:hover:not(:disabled) {
+  background: #136913;
+  transform: scale(1.02);
+}
+
+.btn-apple:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-apple-ghost {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.btn-apple-ghost:hover:not(:disabled) {
+  background: var(--color-bg-secondary);
+  border-color: rgba(29, 29, 31, 0.2);
+  transform: scale(1.02);
+}
+
+/* Legacy classes mantenidas */
 .card-hover {
   transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
 }
 .card-hover:hover {
-  border-color: rgba(63, 74, 43, 0.25);
-  box-shadow: 0 4px 12px -2px rgba(63, 74, 43, 0.08);
+  border-color: rgba(29, 29, 31, 0.15);
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
   transform: translateY(-1px);
 }
 
@@ -49,21 +140,16 @@ html, body {
     color: black;
     font-size: 10pt;
   }
-  header, footer {
-    page-break-inside: avoid;
-  }
-  section {
-    page-break-inside: avoid;
-  }
-  .no-print {
-    display: none !important;
-  }
+  header, footer { page-break-inside: avoid; }
+  section { page-break-inside: avoid; }
+  .no-print { display: none !important; }
 }
 
-/* Scrollbar sutil */
-::-webkit-scrollbar { width: 8px; height: 8px; }
+/* Scrollbar minimal Apple */
+::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(63, 74, 43, 0.2);
-  border-radius: 4px;
+  background: rgba(29, 29, 31, 0.15);
+  border-radius: 3px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(63, 74, 43, 0.4); }
+::-webkit-scrollbar-thumb:hover { background: rgba(29, 29, 31, 0.30); }
+::-webkit-scrollbar-track { background: transparent; }

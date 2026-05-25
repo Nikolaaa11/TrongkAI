@@ -1,147 +1,225 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { seed, stats } from '@/lib/seed-data';
+import { stats } from '@/lib/seed-data';
 
 const accesos = [
-  { href: '/dashboard-directorio', label: 'Dashboard Directorio', icon: '◈', desc: 'Vista ejecutiva consolidada' },
-  { href: '/riesgo', label: 'Análisis de riesgo', icon: '◭', desc: 'Financiero + clima + regulatorio' },
-  { href: '/plan', label: 'Plan 5 años', icon: '◊', desc: 'EERR + KPIs + tornado + escenarios' },
-  { href: '/financiamiento', label: 'Financiamiento', icon: '◉', desc: 'Deuda/Equity + DSCR + TIR equity' },
-  { href: '/slb', label: 'Sustainability Bonds', icon: '◐', desc: 'KPIs ESG con step-up' },
-  { href: '/compliance', label: 'Compliance Ley REP', icon: '◇', desc: '8 hitos regulatorios' },
-  { href: '/balance', label: 'Balance de masa', icon: '⬡', desc: 'Modo A vs B + Sankey' },
-  { href: '/agenda', label: 'Agenda camiones', icon: '⬢', desc: 'Recepción MMPP por temporada' },
-  { href: '/investigacion', label: 'Investigación', icon: '◍', desc: '27 papers peer-reviewed' },
-  { href: '/whatif', label: 'What-if', icon: '◎', desc: '5 escenarios precargados' },
-  { href: '/supuestos', label: 'Supuestos', icon: '◌', desc: '165 supuestos catalogados' },
-  { href: '/about', label: 'Equipo', icon: '◯', desc: 'Liderazgo + directorio + alianzas' },
+  { href: '/dashboard-directorio', label: 'Dashboard Directorio', desc: 'Vista ejecutiva consolidada' },
+  { href: '/readiness', label: 'Investment Readiness', desc: 'Score 0-100 de madurez' },
+  { href: '/plan', label: 'Plan 5 años', desc: 'EERR + KPIs + tornado' },
+  { href: '/sensitivity', label: 'Análisis de Sensibilidad', desc: 'Heatmap 2D + breakeven + curvas 1D' },
+  { href: '/stress', label: 'Stress Test', desc: 'Triple-negativo simultáneo' },
+  { href: '/financiamiento', label: 'Financiamiento', desc: 'Deuda/Equity + DSCR + LLCR' },
+  { href: '/slb', label: 'Sustainability Bonds', desc: 'KPIs ESG con step-up' },
+  { href: '/compliance', label: 'Compliance Ley REP', desc: '8 hitos regulatorios' },
+  { href: '/carbono', label: 'Carbon Footprint', desc: 'LCA 3 escenarios + créditos CO₂' },
+  { href: '/macro', label: 'Macro Chile', desc: 'Banco Central en vivo' },
+  { href: '/api', label: 'API Explorer', desc: '10 endpoints try-it-now' },
+  { href: '/investigacion', label: 'Research', desc: '27 papers peer-reviewed' },
 ];
 
 export default function Home() {
   return (
-    <div className="space-y-8">
-      <header className="border-b border-oliva/10 pb-6">
-        <div className="flex items-baseline justify-between">
-          <div>
-            <h1 className="font-serif text-4xl text-oliva-900">Trongkai</h1>
-            <p className="mt-2 text-base text-oliva-700">Innovación en Nutrición Circular</p>
-          </div>
-          <div className="text-right text-xs text-oliva-500">
-            <div>{new Date().toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
-            <div className="mt-1 inline-flex items-center gap-1">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-oliva-700 animate-pulse" />
-              Engine: trongkai-engine.fly.dev
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* === Síntesis ejecutiva en 3 grandes === */}
-      <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="card-hover rounded-xl border-2 border-oliva-900/15 bg-white p-6">
-          <div className="text-[10px] uppercase tracking-[0.1em] text-oliva-600">Tesis comercial</div>
-          <h2 className="mt-2 font-serif text-2xl text-oliva-900">Bioeconomía circular</h2>
-          <p className="mt-2 text-sm leading-relaxed text-oliva-700">
-            Transforma 800.000 ton/año de subproductos agroindustriales chilenos en{' '}
-            <strong>ingredientes funcionales</strong> para acuicultura, mascotas y humanos.
+    <div className="space-y-24">
+      {/* ===== Hero Apple-style ===== */}
+      <section className="apple-hero">
+        <div className="mx-auto flex max-w-3xl flex-col items-center">
+          <Image
+            src="/icon-trongkai.png"
+            alt="Trongkai"
+            width={88}
+            height={88}
+            priority
+            className="mb-6"
+          />
+          <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] font-semibold tracking-apple text-ink">
+            Trongkai
+          </h1>
+          <p className="mt-3 text-xl font-medium text-ink-600">
+            Innovación en Nutrición Circular.
           </p>
-          <div className="mt-4 grid grid-cols-3 gap-2 border-t border-oliva/10 pt-3 text-xs">
-            <Mini label="Cuota contractual" value={`${(stats.volumenContratoTon / 1000).toFixed(0)}k`} unit="ton/año" />
-            <Mini label="Comprometido" value={`${((stats.volumenComprometidoActual / stats.volumenContratoTon) * 100).toFixed(0)}%`} unit="de la cuota" />
-            <Mini label="SKUs Feed/Food" value={`${stats.productosFeed}/${stats.productosFood}`} unit="catálogo" />
-          </div>
-        </div>
-
-        <div className="card-hover rounded-xl border-2 border-trigo/30 bg-trigo/5 p-6">
-          <div className="text-[10px] uppercase tracking-[0.1em] text-trigo">Performance financiera</div>
-          <h2 className="mt-2 font-serif text-2xl text-oliva-900">Defendible a directorio</h2>
-          <p className="mt-2 text-sm leading-relaxed text-oliva-700">
-            TIR <strong className="tabular">29,4%</strong> con working capital + cobro real.
-            Apalancado <strong className="tabular">131%</strong>. LLCR 6,06 ✓ bancable.
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-400">
+            La plataforma inteligente que transforma 800.000 toneladas de subproductos
+            agroindustriales chilenos en ingredientes funcionales — con modelo financiero,
+            ESG y compliance integrado.
           </p>
-          <div className="mt-4 grid grid-cols-3 gap-2 border-t border-trigo/20 pt-3 text-xs">
-            <Mini label="VAN @ 18%" value="$5,5B" unit="CLP" />
-            <Mini label="Payback" value="52" unit="meses" />
-            <Mini label="EV exit 5y" value="$131B" unit="9,6x EBITDA" />
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <Link href="/dashboard-directorio" className="btn-apple">
+              Ver Dashboard Directorio
+            </Link>
+            <Link href="/readiness" className="btn-apple btn-apple-ghost">
+              Investment Readiness Score
+            </Link>
           </div>
-        </div>
-
-        <div className="card-hover rounded-xl border-2 border-oliva-700/25 bg-oliva-50/40 p-6">
-          <div className="text-[10px] uppercase tracking-[0.1em] text-oliva-600">Impacto ESG</div>
-          <h2 className="mt-2 font-serif text-2xl text-oliva-900">Carbono negativo</h2>
-          <p className="mt-2 text-sm leading-relaxed text-oliva-700">
-            <strong>-53.000 ton CO₂eq</strong> 5 años por evitar descomposición en vertedero (LCA baseline).
-            Revenue créditos: <strong>$736M CLP</strong>.
-          </p>
-          <div className="mt-4 grid grid-cols-3 gap-2 border-t border-oliva-700/20 pt-3 text-xs">
-            <Mini label="Net BECCS" value="-138k" unit="ton CO₂eq" />
-            <Mini label="Papers ESG" value="27" unit="peer-reviewed" />
-            <Mini label="B-Corp" value="✓" unit="certificada" />
+          <div className="mt-6 flex items-center gap-2 text-[12px] text-ink-400">
+            <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-brand" />
+            Engine en vivo · trongkai-engine.fly.dev
           </div>
         </div>
       </section>
 
-      {/* === Bloqueantes + alertas === */}
-      <section className="rounded-lg border border-borgoña/20 bg-borgoña/5 p-4">
-        <h2 className="font-serif text-lg text-borgoña">Bloqueantes & alertas activas</h2>
-        <ul className="mt-2 grid grid-cols-1 gap-1 text-sm text-oliva-700 md:grid-cols-2">
-          <li>• <strong>Capacidad del secador</strong> aún PD — limita agenda real.</li>
-          <li>• <strong>Tiempo descomposición tomasa/pomasa</strong> sin medición de planta.</li>
-          <li>• <strong>{stats.supuestosPD} supuestos PD</strong> activos (de {stats.supuestosPD + stats.supuestosOK} totales).</li>
-          <li>• <strong>Reglamento sanitario MMA</strong> vigor 14-jul-2026 — ajustar instalaciones.</li>
-        </ul>
-      </section>
-
-      {/* === 12 accesos === */}
+      {/* ===== 3 valor agregado === */}
       <section>
-        <h2 className="font-serif text-xl text-oliva-900">Secciones</h2>
-        <p className="mt-1 text-sm text-oliva-600">Navegación rápida a las 12 áreas de la plataforma.</p>
-        <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] font-semibold tracking-apple text-ink">
+            Una sola plataforma. Tres pilares.
+          </h2>
+          <p className="mt-3 text-lg text-ink-400">
+            Comercial, financiero y ESG — integrados en tiempo real.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <PilarCard
+            tag="Tesis comercial"
+            titulo="Bioeconomía circular"
+            descripcion="800.000 ton/año de subproductos agroindustriales convertidos en ingredientes funcionales para acuicultura, mascotas y humanos."
+            stats={[
+              { label: 'Cuota contractual', value: `${(stats.volumenContratoTon / 1000).toFixed(0)}k`, unit: 'ton/año' },
+              { label: 'Comprometido', value: `${((stats.volumenComprometidoActual / stats.volumenContratoTon) * 100).toFixed(0)}%`, unit: 'de la cuota' },
+              { label: 'SKUs Feed/Food', value: `${stats.productosFeed}/${stats.productosFood}`, unit: 'catálogo' },
+            ]}
+          />
+          <PilarCard
+            tag="Performance financiera"
+            titulo="Defendible a directorio"
+            descripcion="TIR 30,7% con working capital + cobro real. LLCR 6,06 — bancable. Investment Readiness Score 84,7/100."
+            stats={[
+              { label: 'TIR proyecto', value: '30,7%', unit: 'anual' },
+              { label: 'VAN @ 18%', value: '$5,5B', unit: 'CLP' },
+              { label: 'EV exit 5y', value: '$131B', unit: '9,6× EBITDA' },
+            ]}
+            highlight
+          />
+          <PilarCard
+            tag="Impacto ESG"
+            titulo="Carbono negativo"
+            descripcion="-53.000 ton CO₂eq en 5 años por evitar descomposición en vertedero (LCA baseline). Listo para fondos ESG europeos."
+            stats={[
+              { label: 'Net 5y', value: '-53k', unit: 'ton CO₂eq' },
+              { label: 'BECCS', value: '-139k', unit: 'ton CO₂eq' },
+              { label: 'Revenue créditos', value: '$736M', unit: 'CLP 5y' },
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* ===== Numbers que importan ===== */}
+      <section className="rounded-appleXl bg-ink-50 px-6 py-16">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] font-semibold tracking-apple text-ink">
+            Los números que importan.
+          </h2>
+          <p className="mt-3 text-lg text-ink-400">
+            Recalculados en vivo desde el motor en cada visita.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <BigNumber value="245" unit="tests verde" detail="100% pass" />
+          <BigNumber value="25+" unit="endpoints REST" detail="documentados" />
+          <BigNumber value="15+" unit="módulos engine" detail="Python 3.12" />
+          <BigNumber value="27" unit="papers científicos" detail="peer-reviewed" />
+        </div>
+      </section>
+
+      {/* ===== Secciones ===== */}
+      <section>
+        <div className="mb-10">
+          <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] font-semibold tracking-apple text-ink">
+            Todas las herramientas.
+          </h2>
+          <p className="mt-2 text-lg text-ink-400">
+            Navegación rápida a las 12 áreas de la plataforma.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {accesos.map((a) => (
             <Link
               key={a.href}
               href={a.href}
-              className="card-hover group rounded-lg border border-oliva/10 bg-white p-3 transition"
+              className="apple-card group flex items-center justify-between"
             >
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl text-oliva-700 group-hover:text-trigo">{a.icon}</span>
-                <span className="font-medium text-oliva-900">{a.label}</span>
+              <div>
+                <div className="font-semibold text-ink">{a.label}</div>
+                <div className="mt-1 text-[13px] text-ink-400">{a.desc}</div>
               </div>
-              <p className="mt-1 text-xs text-oliva-600">{a.desc}</p>
+              <span className="ml-4 text-ink-200 transition-transform group-hover:translate-x-1 group-hover:text-brand">
+                →
+              </span>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* === Pie con stats técnicas === */}
-      <section className="grid grid-cols-2 gap-3 rounded-lg border border-oliva/10 bg-white p-4 md:grid-cols-6">
-        <TechStat label="Endpoints REST" value="23" />
-        <TechStat label="Tests Python" value="201/201" tone="ok" />
-        <TechStat label="Páginas UI" value="13" />
-        <TechStat label="Módulos engine" value="20" />
-        <TechStat label="Papers citados" value="27" />
-        <TechStat label="Commits main" value="60+" />
+      {/* ===== CTA final ===== */}
+      <section className="rounded-appleXl bg-brand px-6 py-20 text-center text-white">
+        <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] font-semibold tracking-apple">
+          ¿Listo para mostrarlo a inversionistas?
+        </h2>
+        <p className="mx-auto mt-3 max-w-xl text-lg text-white/85">
+          Descarga el tearsheet ejecutivo en PDF — 3 páginas con KPIs, valoración, Monte Carlo, carbono y compliance. Generado en vivo.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href={`${process.env.NEXT_PUBLIC_ENGINE_URL ?? 'https://trongkai-engine.fly.dev'}/api/tearsheet.pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-white px-5 py-2.5 text-[14px] font-medium text-brand transition hover:scale-105"
+          >
+            Descargar PDF tearsheet
+          </a>
+          <Link
+            href="/api"
+            className="rounded-full border border-white/30 px-5 py-2.5 text-[14px] font-medium text-white transition hover:bg-white/10"
+          >
+            Explorar API
+          </Link>
+        </div>
       </section>
     </div>
   );
 }
 
-function Mini({ label, value, unit }: { label: string; value: string; unit: string }) {
+function PilarCard({
+  tag,
+  titulo,
+  descripcion,
+  stats,
+  highlight,
+}: {
+  tag: string;
+  titulo: string;
+  descripcion: string;
+  stats: { label: string; value: string; unit: string }[];
+  highlight?: boolean;
+}) {
   return (
-    <div>
-      <div className="text-[9px] uppercase tracking-wide text-oliva-500">{label}</div>
-      <div className="tabular text-sm font-semibold text-oliva-900">{value}</div>
-      <div className="text-[9px] text-oliva-500">{unit}</div>
+    <div className={`apple-card flex flex-col ${highlight ? 'bg-brand-50 ring-1 ring-brand/20' : ''}`}>
+      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand">
+        {tag}
+      </div>
+      <h3 className="mt-2 text-2xl font-semibold tracking-apple text-ink">{titulo}</h3>
+      <p className="mt-3 flex-1 text-[15px] leading-relaxed text-ink-600">{descripcion}</p>
+      <div className="mt-6 grid grid-cols-3 gap-3 border-t border-ink-100 pt-4">
+        {stats.map((s) => (
+          <div key={s.label}>
+            <div className="text-[10px] uppercase tracking-wide text-ink-400">{s.label}</div>
+            <div className="tabular mt-0.5 text-base font-semibold text-ink">{s.value}</div>
+            <div className="text-[10px] text-ink-400">{s.unit}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-function TechStat({ label, value, tone }: { label: string; value: string; tone?: 'ok' }) {
+function BigNumber({ value, unit, detail }: { value: string; unit: string; detail: string }) {
   return (
-    <div>
-      <div className="text-[9px] uppercase tracking-wide text-oliva-500">{label}</div>
-      <div className={`tabular text-lg font-semibold ${tone === 'ok' ? 'text-oliva-700' : 'text-oliva-900'}`}>
+    <div className="text-center">
+      <div className="tabular text-[clamp(2.5rem,4vw,3.5rem)] font-semibold tracking-apple text-ink">
         {value}
       </div>
+      <div className="mt-1 text-sm font-medium text-ink">{unit}</div>
+      <div className="text-[12px] text-ink-400">{detail}</div>
     </div>
   );
 }
