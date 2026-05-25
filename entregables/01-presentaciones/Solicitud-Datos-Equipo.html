@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trongkai — Datos que necesitamos del equipo</title>
+  <link rel="icon" href="https://trongkai-web.vercel.app/icon-trongkai.png" />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --bg-secondary: #F5F5F7;
+      --text: #1D1D1F;
+      --text-secondary: #86868B;
+      --text-tertiary: #515154;
+      --border: #E8E8ED;
+      --brand: #1A8A1A;
+      --brand-light: #EAF6EA;
+      --brand-dark: #136913;
+      --red: #FF3B30;
+      --red-light: #FFEBEA;
+      --orange: #FF9500;
+      --orange-light: #FFF3E0;
+      --yellow: #FFCC00;
+      --yellow-light: #FFFBEB;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      letter-spacing: -0.011em;
+      line-height: 1.5;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .narrow { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+    /* Nav */
+    nav.top {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+    nav.top .inner { display: flex; align-items: center; justify-content: space-between; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    nav.top img { height: 24px; }
+    nav.top a { color: var(--text-tertiary); text-decoration: none; font-size: 13px; font-weight: 500; margin-left: 24px; transition: color 200ms; }
+    nav.top a:hover { color: var(--text); }
+
+    section { padding: 80px 0; }
+    section.tight { padding: 40px 0; }
+
+    h1, h2, h3 { font-weight: 600; letter-spacing: -0.022em; color: var(--text); }
+
+    /* Hero */
+    .hero { text-align: center; padding: 80px 24px 60px; }
+    .hero img.icon { width: 72px; height: 72px; margin-bottom: 28px; }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.05; }
+    .hero .subtitle { font-size: clamp(1.1rem, 1.8vw, 1.4rem); color: var(--text-secondary); margin-top: 16px; max-width: 640px; margin-left: auto; margin-right: auto; }
+    .hero .meta { display: inline-flex; gap: 8px; align-items: center; margin-top: 32px; padding: 8px 16px; background: var(--brand-light); border-radius: 980px; font-size: 13px; color: var(--brand-dark); font-weight: 500; }
+    .hero .meta .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--brand); }
+
+    /* Priority pills */
+    .priority {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 980px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .p-critica { background: var(--red-light); color: var(--red); }
+    .p-alta { background: var(--orange-light); color: var(--orange); }
+    .p-media { background: var(--yellow-light); color: #8B6F00; }
+    .p-baja { background: var(--brand-light); color: var(--brand); }
+
+    /* Section title */
+    h2.section-title {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.15;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    p.section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 48px;
+    }
+
+    /* Data Request Card */
+    .req-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 20px;
+      transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .req-card:hover {
+      border-color: rgba(29, 29, 31, 0.18);
+      box-shadow: 0 6px 24px -4px rgba(0,0,0,0.06);
+    }
+
+    .req-card .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .req-card h3 {
+      font-size: 1.2rem;
+      letter-spacing: -0.018em;
+    }
+    .req-card .desc {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .req-card .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .req-card .meta-grid div {
+      display: flex;
+      flex-direction: column;
+    }
+    .req-card .meta-grid .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .req-card .meta-grid .value {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .req-card .meta-grid code {
+      background: var(--bg-secondary);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: 'SF Mono', Menlo, monospace;
+      font-size: 12px;
+      color: var(--brand-dark);
+    }
+    .req-card .impact {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      border-left: 3px solid var(--brand);
+    }
+
+    /* Category header */
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 56px 0 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-header .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--brand-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .cat-header h2 {
+      font-size: 1.5rem;
+      letter-spacing: -0.018em;
+    }
+    .cat-header .count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: var(--bg-secondary);
+      padding: 4px 10px;
+      border-radius: 980px;
+    }
+
+    /* Cómo mandarlo */
+    .how-to {
+      background: var(--bg-secondary);
+      border-radius: 24px;
+      padding: 40px;
+    }
+    .how-to-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .how-to-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .how-to-card .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--brand-light);
+      color: var(--brand);
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .how-to-card h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .how-to-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .how-to-card code {
+      display: block;
+      background: var(--bg-secondary);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-family: 'SF Mono', Menlo, monospace;
+      font-size: 12px;
+      color: var(--brand-dark);
+      margin-top: 12px;
+    }
+
+    /* Calendar / cadence */
+    .cadence {
+      background: var(--brand-light);
+      border-radius: 24px;
+      padding: 40px;
+    }
+    .cadence-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .cadence-card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+    }
+    .cadence-card .freq {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--brand);
+      margin-bottom: 4px;
+    }
+    .cadence-card .what {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    /* CTA */
+    .cta-card {
+      background: var(--brand);
+      color: white;
+      border-radius: 32px;
+      padding: 64px 48px;
+      text-align: center;
+    }
+    .cta-card h2 { color: white; font-size: clamp(1.8rem, 3vw, 2.6rem); margin-bottom: 12px; }
+    .cta-card p { color: rgba(255,255,255,0.85); font-size: 1.1rem; max-width: 600px; margin: 0 auto 32px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 980px; font-size: 15px; font-weight: 500; text-decoration: none; transition: all 200ms; }
+    .btn-white { background: white; color: var(--brand); margin: 0 8px 8px; }
+    .btn-white:hover { transform: scale(1.03); background: rgba(255,255,255,0.95); }
+    .btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); margin: 0 8px 8px; }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+    /* Footer */
+    footer { background: var(--bg-secondary); padding: 40px 24px; text-align: center; color: var(--text-secondary); font-size: 12px; border-top: 1px solid var(--border); }
+    footer a { color: var(--brand); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      section { padding: 50px 0; }
+      .how-to-grid { grid-template-columns: 1fr; }
+      .cadence-grid { grid-template-columns: repeat(2, 1fr); }
+      .req-card .meta-grid { grid-template-columns: 1fr; gap: 12px; }
+      nav.top a { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="top">
+  <div class="inner">
+    <img src="https://trongkai-web.vercel.app/logo-trongkai-color.png" alt="Trongkai" />
+    <div>
+      <a href="#prioridades">Prioridades</a>
+      <a href="#operacionales">Operacionales</a>
+      <a href="#comerciales">Comerciales</a>
+      <a href="#regulatorios">Regulatorios</a>
+      <a href="#como-mandarlo">Cómo mandar</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <img src="https://trongkai-web.vercel.app/icon-trongkai.png" alt="Trongkai" class="icon" />
+  <h1>La plataforma necesita tu ayuda.</h1>
+  <p class="subtitle">
+    Hemos construido el modelo financiero, operativo y ESG más completo de Trongkai. Pero hay datos críticos que solo el equipo puede aportar para que la plataforma deje de usar supuestos y se base en mediciones reales.
+  </p>
+  <div class="meta"><span class="dot"></span>22 datos críticos solicitados · agrupados por área</div>
+</section>
+
+<!-- Por qué importa -->
+<section class="tight">
+  <div class="narrow">
+    <div style="background: var(--bg-secondary); border-radius: 24px; padding: 40px; text-align:center;">
+      <h2 style="font-size: 1.5rem; margin-bottom: 12px;">Por qué pedimos esto</h2>
+      <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6;">
+        Cada dato que llega permite reemplazar un supuesto <strong>PD (Por Definir)</strong> con uno
+        <strong>OK_VALIDADO</strong>, lo que sube el <strong>Investment Readiness Score</strong>,
+        mejora la defensibilidad ante directorio, y nos acerca a estar listos para LP roadshow.
+        Hoy estamos en 84,7/100 — con los datos siguientes pasamos a 92+.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Prioridades -->
+<section id="prioridades">
+  <div class="container">
+    <h2 class="section-title">Prioridades — primero lo crítico.</h2>
+    <p class="section-subtitle">4 datos que desbloquean los demás. Si llegan estos, todo lo demás se calibra solo.</p>
+
+    <div class="cat-header">
+      <div class="icon">🚨</div>
+      <h2>Crítico — bloqueantes</h2>
+      <div class="count">4 datos</div>
+    </div>
+
+    <div class="req-card">
+      <div class="header">
+        <div>
+          <h3>Capacidad real del secador</h3>
+        </div>
+        <span class="priority p-critica">Crítico</span>
+      </div>
+      <p class="desc">El secador es el cuello de botella declarado (Jaime). Necesitamos saber con cuántas toneladas por hora puede operar en régimen pleno, incluyendo periodos de calentamiento y limpieza.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién lo tiene</span><span class="value">Operaciones · Jaime</span></div>
+        <div><span class="label">Formato esperado</span><span class="value"><code>kg/hora</code> + curva de operación</span></div>
+        <div><span class="label">Cómo</span><span class="value">Excel o PDF a contexto/</span></div>
+      </div>
+      <p class="impact">Hoy se está usando 250 kWh/ton como proxy. Con el dato real, recalculamos OpEx y bottleneck.</p>
+    </div>
+
+    <div class="req-card">
+      <div class="header">
+        <div>
+          <h3>Tiempo de descomposición de tomasa y pomasa</h3>
+        </div>
+        <span class="priority p-critica">Crítico</span>
+      </div>
+      <p class="desc">Define la ventana segura entre que llega el camión y se procesa. Sin esto, no podemos optimizar la agenda de recepción ni dimensionar buffer de almacenamiento.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién lo tiene</span><span class="value">Operaciones + agrónomo</span></div>
+        <div><span class="label">Formato</span><span class="value"><code>horas</code> por MMPP</span></div>
+        <div><span class="label">Cómo</span><span class="value">Mail a info@ + medición planta</span></div>
+      </div>
+      <p class="impact">Permite definir si necesitamos cámara de frío adicional o pre-procesamiento.</p>
+    </div>
+
+    <div class="req-card">
+      <div class="header">
+        <div>
+          <h3>Cotización firme MMPP para 2026-2027</h3>
+        </div>
+        <span class="priority p-critica">Crítico</span>
+      </div>
+      <p class="desc">Tenemos un costo conservador de 30 CLP/kg neto (flete - pagos parciales). Necesitamos cotización firmada con al menos 3 proveedores principales para validar el supuesto.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién lo tiene</span><span class="value">Comercial / Sergio</span></div>
+        <div><span class="label">Formato</span><span class="value">Oferta firmada PDF</span></div>
+        <div><span class="label">Cómo</span><span class="value">contexto/cotizaciones/</span></div>
+      </div>
+      <p class="impact">El driver más sensible. Soporta +127% pero queremos baseline exacto.</p>
+    </div>
+
+    <div class="req-card">
+      <div class="header">
+        <div>
+          <h3>Carta de intención de 2 clientes principales</h3>
+        </div>
+        <span class="priority p-critica">Crítico</span>
+      </div>
+      <p class="desc">Necesitamos al menos 2 LOI (Letter of Intent) firmadas de compradores Feed o Food para mostrar tracción comercial. Idealmente con volumen mínimo y precio referencial.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién lo tiene</span><span class="value">Comercial · Sergio</span></div>
+        <div><span class="label">Formato</span><span class="value">PDF firmado</span></div>
+        <div><span class="label">Cómo</span><span class="value">contexto/loi/</span></div>
+      </div>
+      <p class="impact">Sin LOI, los LPs ven proyecto teórico. Con LOI = proyecto con demanda comprobada.</p>
+    </div>
+
+    <!-- Alta -->
+    <div class="cat-header" id="operacionales">
+      <div class="icon">⚙️</div>
+      <h2>Datos operacionales</h2>
+      <div class="count">6 datos</div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Rendimiento real medido por MMPP</h3><span class="priority p-alta">Alta</span></div>
+      <p class="desc">Cuánto producto final sale por tonelada de MMPP procesada. Hoy usamos ALPERUJO 39%, TOMASA 20%, etc — calibrado a planta industrial referencia. Necesitamos validación con muestras de tomatera y olivar reales.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Operaciones</span></div>
+        <div><span class="label">Formato</span><span class="value"><code>fracción</code> por MMPP</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">1x al iniciar planta</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>OpEx real mensual (planta operando)</h3><span class="priority p-alta">Alta</span></div>
+      <p class="desc">Costo mensual total: mano de obra (sueldos+leyes), mantención, energía (cuenta luz real), administración, seguros. Hoy estimado en CLP 80M/mes con 25 personas.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Finanzas / Contadora</span></div>
+        <div><span class="label">Formato</span><span class="value">Excel mensual desglosado</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Mensual</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Cronograma real de CapEx</h3><span class="priority p-alta">Alta</span></div>
+      <p class="desc">Cuándo llegan equipos, cuándo entra cada hito de obra. Hoy distribuido por año (A1: 3B, A2: 5B, A3: 4B, A4: 2B, A5: 1B). Necesitamos timing mensual real.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Ingeniería + proveedores</span></div>
+        <div><span class="label">Formato</span><span class="value">Gantt + cotizaciones</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Quarterly</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Consumo energético detallado por equipo</h3><span class="priority p-media">Media</span></div>
+      <p class="desc">Para refinar el LCA carbono y validar el costo de energía. Por etapa: secador, prensado, extracción, frigorífico.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Operaciones</span></div>
+        <div><span class="label">Formato</span><span class="value"><code>kWh/ton</code> por equipo</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">1x + ajustes</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Curva de aprendizaje real</h3><span class="priority p-media">Media</span></div>
+      <p class="desc">Reducción de costo unitario al duplicar volumen acumulado. Hoy usamos 90% (Wright food processing). Validar con datos propios año tras año.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Operaciones + tiempo</span></div>
+        <div><span class="label">Formato</span><span class="value">CSV trimestral</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Quarterly</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Tasa real de mermas y rechazo</h3><span class="priority p-media">Media</span></div>
+      <p class="desc">% de producto rechazado por calidad. Impacta directamente el rendimiento neto.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">QA / Operaciones</span></div>
+        <div><span class="label">Formato</span><span class="value"><code>%</code> por SKU</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Mensual</span></div>
+      </div>
+    </div>
+
+    <!-- Comerciales -->
+    <div class="cat-header" id="comerciales">
+      <div class="icon">💼</div>
+      <h2>Datos comerciales y financieros</h2>
+      <div class="count">6 datos</div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Precios firmes por SKU (12 productos)</h3><span class="priority p-alta">Alta</span></div>
+      <p class="desc">Hoy usamos benchmarks de mercado con descuentos por nuevo entrante. Validar con cotizaciones reales de clientes target: harinas, aceites, pectina, licopeno, proteína unicelular, antioxidantes.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Comercial</span></div>
+        <div><span class="label">Formato</span><span class="value"><code>CLP/kg</code> + condiciones</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Trimestral</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Términos comerciales reales (DSO/DPO)</h3><span class="priority p-alta">Alta</span></div>
+      <p class="desc">Días reales que tardan en pagar clientes (DSO) y días que damos a proveedores (DPO). Hoy 50/35 — confirmar con contratos firmados.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Comercial + Finanzas</span></div>
+        <div><span class="label">Formato</span><span class="value"><code>días</code></span></div>
+        <div><span class="label">Frecuencia</span><span class="value">1x + revisión</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Términos de financiamiento bancario propuestos</h3><span class="priority p-alta">Alta</span></div>
+      <p class="desc">Tasa, plazo, grace period real ofrecidos por bancos. Hoy modelamos 50/50 deuda-equity, 10y plazo, 2y grace, WACC 18%.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Finanzas / Ricardo</span></div>
+        <div><span class="label">Formato</span><span class="value">Term sheet PDF</span></div>
+        <div><span class="label">Cómo</span><span class="value">contexto/financiamiento/</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Comparables LATAM (M&A circular economy)</h3><span class="priority p-media">Media</span></div>
+      <p class="desc">Transacciones recientes de empresas similares en LATAM para validar múltiplo EV/EBITDA. Hoy usamos 9,63× (Damodaran global food processing).</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Banca de inversión / asesor</span></div>
+        <div><span class="label">Formato</span><span class="value">Lista + valuaciones</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Cuando ocurren deals</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Pipeline real de LPs interesados</h3><span class="priority p-media">Media</span></div>
+      <p class="desc">Lista de fondos / family offices / DFIs que han mostrado interés, con etapa de conversación. Para priorizar roadshow.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Nicolás · IR</span></div>
+        <div><span class="label">Formato</span><span class="value">CRM o Excel</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Semanal</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Información de competencia directa</h3><span class="priority p-baja">Baja</span></div>
+      <p class="desc">Empresas que hacen procesamiento similar (Olivos del Sur, Aceites Chile, etc) — volúmenes, precios, market share.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Comercial / agente investigación</span></div>
+        <div><span class="label">Formato</span><span class="value">Brief de mercado</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Semestral</span></div>
+      </div>
+    </div>
+
+    <!-- Regulatorios -->
+    <div class="cat-header" id="regulatorios">
+      <div class="icon">📜</div>
+      <h2>Regulatorios y ESG</h2>
+      <div class="count">4 datos</div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Avance certificaciones (B-Corp, HACCP, GMP+)</h3><span class="priority p-alta">Alta</span></div>
+      <p class="desc">Estado de avance de cada certificación (no iniciado / en proceso / pendiente auditoría / obtenido) con fecha esperada.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">QA / Compliance</span></div>
+        <div><span class="label">Formato</span><span class="value">Checklist + evidencias</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Mensual</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>RCA / RUP / permisos sanitarios</h3><span class="priority p-alta">Alta</span></div>
+      <p class="desc">Resolución Calificación Ambiental, Registro Único de Productos, permisos sanitarios SAG/Seremi. Estado y fecha de vigencia.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Legal / Compliance</span></div>
+        <div><span class="label">Formato</span><span class="value">PDFs originales</span></div>
+        <div><span class="label">Cómo</span><span class="value">contexto/legal/</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Plan de respuesta Ley REP firmado</h3><span class="priority p-media">Media</span></div>
+      <p class="desc">Plan operativo declarado al MMA con metas de reciclaje y trazabilidad. Hoy mostramos 8 hitos genéricos.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Compliance</span></div>
+        <div><span class="label">Formato</span><span class="value">PDF declaración MMA</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Anual</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Reporte ESG / huella carbono medida</h3><span class="priority p-media">Media</span></div>
+      <p class="desc">Si ya hay un consultor LCA midiendo huella real (no estimada), sus reportes. Hoy mostramos baseline calculado y BECCS escenario.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">ESG officer / consultor</span></div>
+        <div><span class="label">Formato</span><span class="value">PDF + datos brutos</span></div>
+        <div><span class="label">Frecuencia</span><span class="value">Anual</span></div>
+      </div>
+    </div>
+
+    <!-- Equipo -->
+    <div class="cat-header">
+      <div class="icon">👥</div>
+      <h2>Equipo, directorio y alianzas</h2>
+      <div class="count">2 datos</div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>CVs y bios actualizadas del equipo</h3><span class="priority p-media">Media</span></div>
+      <p class="desc">CV de Nicolás, Jaime, Sergio, miembros del directorio, advisors. Para el pitch deck y data room LP.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Cada uno</span></div>
+        <div><span class="label">Formato</span><span class="value">PDF + foto profesional</span></div>
+        <div><span class="label">Cómo</span><span class="value">contexto/equipo/</span></div>
+      </div>
+    </div>
+
+    <div class="req-card">
+      <div class="header"><h3>Alianzas y proveedores estratégicos</h3><span class="priority p-baja">Baja</span></div>
+      <p class="desc">Convenios con universidades (CORFO, ANID, FONDEF), distribuidores, asesores técnicos. MOUs firmados.</p>
+      <div class="meta-grid">
+        <div><span class="label">Quién</span><span class="value">Nicolás / partnerships</span></div>
+        <div><span class="label">Formato</span><span class="value">MOUs PDF</span></div>
+        <div><span class="label">Cómo</span><span class="value">contexto/alianzas/</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Cómo mandar -->
+<section id="como-mandarlo" style="background: var(--bg-secondary);">
+  <div class="container">
+    <h2 class="section-title">Cómo nos mandas la información.</h2>
+    <p class="section-subtitle">3 formas simples. Elige la que más te acomode.</p>
+
+    <div class="how-to-grid">
+      <div class="how-to-card">
+        <div class="icon">📧</div>
+        <h4>Por mail</h4>
+        <p>Manda los archivos como adjunto. Asunto: <strong>[DATOS-TRONGKAI] + categoría</strong>.</p>
+        <code>nicolasrietta@gmail.com</code>
+      </div>
+      <div class="how-to-card">
+        <div class="icon">📂</div>
+        <h4>Carpeta compartida</h4>
+        <p>Sube archivos directamente a la carpeta del proyecto. Nicolás los integra al modelo.</p>
+        <code>Drive · OneDrive · WhatsApp</code>
+      </div>
+      <div class="how-to-card">
+        <div class="icon">💬</div>
+        <h4>Reunión 15 min</h4>
+        <p>Si el dato es complejo o requiere explicación, agenda una llamada con Nicolás.</p>
+        <code>Calendly o WhatsApp</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Cadencia -->
+<section>
+  <div class="container">
+    <div class="cadence">
+      <h2 style="text-align:center; font-size: 1.6rem; margin-bottom: 8px;">Cadencia ideal de actualización</h2>
+      <p style="text-align:center; color: var(--text-secondary); font-size: 14px;">
+        Para que el modelo refleje la realidad operacional sin ser una carga.
+      </p>
+      <div class="cadence-grid">
+        <div class="cadence-card">
+          <div class="freq">Diario</div>
+          <div class="what">Macro (auto)<br/>Bug fixes</div>
+        </div>
+        <div class="cadence-card">
+          <div class="freq">Semanal</div>
+          <div class="what">Pipeline LPs<br/>Status comercial</div>
+        </div>
+        <div class="cadence-card">
+          <div class="freq">Mensual</div>
+          <div class="what">OpEx real<br/>Compliance<br/>Certificaciones</div>
+        </div>
+        <div class="cadence-card">
+          <div class="freq">Quarterly</div>
+          <div class="what">Cotizaciones<br/>CapEx Gantt<br/>Curva aprendizaje</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="container">
+    <div class="cta-card">
+      <h2>¿Tienes información que ya está lista?</h2>
+      <p>Mándala ahora. Cada dato que llega sube el Investment Readiness Score y nos acerca a estar listos para LP roadshow.</p>
+      <a href="mailto:nicolasrietta@gmail.com?subject=%5BDATOS-TRONGKAI%5D" class="btn btn-white">📧 Escribir a Nicolás</a>
+      <a href="https://trongkai-web.vercel.app/" target="_blank" rel="noopener" class="btn btn-outline">Ver la plataforma</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>Trongkai · Innovación en Nutrición Circular · 2026</p>
+  <p style="margin-top: 6px;">
+    Plataforma: <a href="https://trongkai-web.vercel.app">trongkai-web.vercel.app</a>
+    ·
+    Motor: <a href="https://trongkai-engine.fly.dev">trongkai-engine.fly.dev</a>
+  </p>
+</footer>
+
+</body>
+</html>

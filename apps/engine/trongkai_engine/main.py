@@ -1313,6 +1313,25 @@ def sensitivity_heatmap_endpoint(req: SensitivityHeatmapRequest) -> dict:
     return res.to_dict()
 
 
+# ----- Matriz Variables (canónica del Excel original) -----
+
+
+@app.get(
+    "/variables/matrix",
+    tags=["meta"],
+    summary="Matriz canónica 11 productos x 15 variables del Excel original",
+    description=(
+        "Replica la matriz del Excel 'Variables Ingredientes Plan 5 Años'. "
+        "Cada celda tiene estado PD (Por Definir) / OK_PROVISORIO / OK_VALIDADO. "
+        "Útil para trazabilidad de supuestos ante directorio y due diligence."
+    ),
+)
+def variables_matrix_endpoint() -> dict:
+    from .variables_matrix import construir_matriz
+
+    return construir_matriz().to_dict()
+
+
 # ----- Investment Readiness Score -----
 
 
