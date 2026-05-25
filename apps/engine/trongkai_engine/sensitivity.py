@@ -113,6 +113,78 @@ def _rango_default(driver: Driver, n: int) -> list[float]:
     return [round(-0.25 + i * paso, 4) for i in range(n)]
 
 
+@dataclass
+class PuntoCurva:
+    shock: float
+    tir: float | None
+    van_clp: float
+
+
+@dataclass
+class CurvaSensibilidad:
+    driver: Driver
+    puntos: list[PuntoCurva] = field(default_factory=list)
+    tir_base: float | None = None
+
+    def to_dict(self) -> dict:
+        return {
+            "driver": self.driver,
+            "tir_base": self.tir_base,
+            "puntos": [
+                {"shock": p.shock, "tir": p.tir, "van_clp": p.van_clp}
+                for p in self.puntos
+            ],
+        }
+
+
+def curva_1d(
+    driver: Driver,
+    n: int = 11,
+    base_params: ParametrosPlan | None = None,
+) -> CurvaSensibilidad:
+    """Genera una curva 1D TIR vs shock para un driver dado.
+
+    Útil para small-multiples visual de los 4 drivers.
+    """
+    if n < 3 or n > 25:
+        raise ValueError("n debe estar entre 3 y 25")
+
+    base = base_params or ParametrosPlan()
+    plan_base = build_plan(base)
+    rango = _rango_default(driver, n)
+
+    puntos: list[PuntoCurva] = []
+    for shock in rango:
+        params = _aplicar_shock(base, driver, shock)
+        try:
+            plan = build_plan(params)
+            puntos.append(
+                PuntoCurva(shock=shock, tir=plan.kpis.tir_proyecto_anual, van_clp=plan.kpis.van)
+            )
+        except Exception:
+            puntos.append(PuntoCurva(shock=shock, tir=None, van_clp=0.0))
+
+    return CurvaSensibilidad(
+        driver=driver,
+        puntos=puntos,
+        tir_base=plan_base.kpis.tir_proyecto_anual,
+    )
+
+
+def curvas_todos_drivers(
+    n: int = 11,
+    base_params: ParametrosPlan | None = None,
+) -> dict:
+    """Devuelve las 4 curvas 1D en un solo dict para el endpoint /sensitivity/curves."""
+    drivers: list[Driver] = ["precio", "costo_mmpp", "wacc", "opex"]
+    return {
+        "n": n,
+        "curvas": [
+            curva_1d(d, n=n, base_params=base_params).to_dict() for d in drivers
+        ],
+    }
+
+
 def heatmap_2d(
     driver_x: Driver = "precio",
     driver_y: Driver = "costo_mmpp",

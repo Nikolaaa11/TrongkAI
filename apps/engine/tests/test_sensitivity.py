@@ -115,6 +115,42 @@ def test_heatmap_precio_vs_wacc():
     assert len(celdas_wacc_alto) > 0
 
 
+def test_curva_1d_basica():
+    from trongkai_engine.sensitivity import curva_1d, CurvaSensibilidad
+    c = curva_1d("precio", n=11)
+    assert isinstance(c, CurvaSensibilidad)
+    assert len(c.puntos) == 11
+    assert c.driver == "precio"
+    assert c.tir_base is not None
+
+
+def test_curva_1d_monotona_precio():
+    """TIR creciente con precio."""
+    from trongkai_engine.sensitivity import curva_1d
+    c = curva_1d("precio", n=7)
+    tirs = [p.tir for p in c.puntos if p.tir is not None]
+    for i in range(len(tirs) - 1):
+        assert tirs[i] <= tirs[i + 1] + 1e-6
+
+
+def test_curva_1d_monotona_costo_decreciente():
+    """TIR decreciente con costo MMPP."""
+    from trongkai_engine.sensitivity import curva_1d
+    c = curva_1d("costo_mmpp", n=7)
+    tirs = [p.tir for p in c.puntos if p.tir is not None]
+    for i in range(len(tirs) - 1):
+        assert tirs[i] >= tirs[i + 1] - 1e-6
+
+
+def test_curvas_todos_drivers():
+    from trongkai_engine.sensitivity import curvas_todos_drivers
+    d = curvas_todos_drivers(n=5)
+    assert d["n"] == 5
+    assert len(d["curvas"]) == 4
+    drivers = {c["driver"] for c in d["curvas"]}
+    assert drivers == {"precio", "costo_mmpp", "wacc", "opex"}
+
+
 def test_heatmap_monotonia_precio():
     """Al subir el precio, la TIR debe subir (a costo MMPP constante)."""
     res = heatmap_2d(driver_x="precio", driver_y="costo_mmpp", n=5)

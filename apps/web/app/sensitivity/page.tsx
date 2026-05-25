@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { HeatmapChart, type HeatmapData } from '@/components/HeatmapChart';
+import { CurvaSensibilidadChart, type CurvaData } from '@/components/CurvaSensibilidad';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -38,12 +39,14 @@ export default function SensitivityPage() {
     }[];
     driver_mas_sensible: Driver | null;
   } | null>(null);
+  const [curvas, setCurvas] = useState<{ n: number; curvas: CurvaData[] } | null>(null);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     void cargar();
     void cargarBreakeven();
+    void cargarCurvas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -53,6 +56,15 @@ export default function SensitivityPage() {
       if (r.ok) setBreakeven(await r.json());
     } catch (e) {
       console.error('breakeven', e);
+    }
+  }
+
+  async function cargarCurvas() {
+    try {
+      const r = await fetch(`${ENGINE_URL}/sensitivity/curves?n=11`);
+      if (r.ok) setCurvas(await r.json());
+    } catch (e) {
+      console.error('curvas', e);
     }
   }
 
@@ -150,6 +162,7 @@ export default function SensitivityPage() {
           onClick={() => {
             void cargar();
             void cargarBreakeven();
+            void cargarCurvas();
           }}
           className="mt-4 rounded bg-borgoña px-4 py-2 text-sm text-crema hover:bg-tierra disabled:opacity-50"
           disabled={loading}
@@ -212,6 +225,26 @@ export default function SensitivityPage() {
               title={`TIR según ${DRIVER_LABEL[data.driver_x as Driver]} × ${DRIVER_LABEL[data.driver_y as Driver]}`}
             />
           </section>
+
+          {/* Sensitivity 1D — small multiples */}
+          {curvas && (
+            <section className="rounded-lg border border-oliva/10 bg-white p-4 shadow-sm">
+              <h2 className="font-medium text-oliva-900">
+                Curvas individuales por driver
+              </h2>
+              <p className="mt-1 text-xs text-oliva-600">
+                TIR vs shock para cada driver. Línea horizontal roja = hurdle CEHTA{' '}
+                {(hurdle * 100).toFixed(0)}%. Pendiente más empinada = driver más sensible.
+              </p>
+              <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+                {curvas.curvas.map((c) => (
+                  <div key={c.driver} className="rounded border border-oliva/10 bg-papel">
+                    <CurvaSensibilidadChart data={c} hurdlePct={hurdle} height={220} />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Break-even analysis */}
           {breakeven && (

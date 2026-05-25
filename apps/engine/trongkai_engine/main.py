@@ -1317,6 +1317,24 @@ def sensitivity_heatmap_endpoint(req: SensitivityHeatmapRequest) -> dict:
 
 
 @app.get(
+    "/sensitivity/curves",
+    tags=["whatif"],
+    summary="Curvas 1D de TIR vs shock para los 4 drivers (small multiples)",
+    description=(
+        "Genera 4 curvas TIR vs shock (precio, costo_mmpp, wacc, opex). "
+        "Útil para visualizar la elasticidad de cada driver individualmente. "
+        "Complementa el heatmap 2D y el break-even analysis."
+    ),
+)
+def sensitivity_curves_endpoint(n: int = 11) -> dict:
+    from .sensitivity import curvas_todos_drivers
+
+    if n < 3 or n > 25:
+        raise HTTPException(status_code=400, detail="n debe estar entre 3 y 25")
+    return curvas_todos_drivers(n=n)
+
+
+@app.get(
     "/sensitivity/breakeven",
     tags=["whatif"],
     summary="Análisis break-even por driver (colchón frente a hurdle)",
