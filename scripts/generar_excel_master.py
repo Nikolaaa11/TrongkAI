@@ -36,12 +36,14 @@ from openpyxl.utils import get_column_letter
 from trongkai_engine.breakeven import breakeven_summary
 from trongkai_engine.carbon_footprint import comparar_escenarios_footprint
 from trongkai_engine.compliance_rep import HITOS_LEY_REP
+from trongkai_engine.data_room import CHECKLIST_DD, resumen_checklist
 from trongkai_engine.escenarios import comparar_escenarios_estrategicos
 from trongkai_engine.macro_chile import snapshot_resumen
 from trongkai_engine.plan_builder import ParametrosPlan, build_plan
 from trongkai_engine.readiness_score import calcular_readiness_score
 from trongkai_engine.sensitivity import heatmap_2d
 from trongkai_engine.valuation import valuar_proyecto_ev_ebitda
+from trongkai_engine.variables_matrix import PRODUCTOS, VARIABLES, construir_matriz
 
 # =====================================================================
 # Paleta Trongkai
@@ -584,6 +586,136 @@ def crear_supuestos(wb: Workbook, base: ParametrosPlan):
 
 
 # =====================================================================
+# Hoja: Matriz Canónica 11 productos x 15 variables (Excel original)
+# =====================================================================
+def crear_matriz_canonica(wb: Workbook):
+    ws = wb.create_sheet("Matriz Variables")
+    ws.sheet_view.showGridLines = False
+
+    ws["A1"] = "Variables Ingredientes Plan 5 Años"
+    estilo_titulo(ws["A1"])
+    ws["A2"] = "Matriz canónica del Excel original — 11 productos x 15 variables = 165 celdas"
+    estilo_subtitulo(ws["A2"])
+
+    matriz = construir_matriz()
+
+    # Header fila 4: grupos
+    grupos_idx = {}
+    for i, p in enumerate(PRODUCTOS, 2):
+        if p.grupo not in grupos_idx:
+            grupos_idx[p.grupo] = []
+        grupos_idx[p.grupo].append(i)
+
+    # Fila 4: grupos merged
+    for grupo, indices in grupos_idx.items():
+        col_start = get_column_letter(indices[0])
+        col_end = get_column_letter(indices[-1])
+        ws.merge_cells(f"{col_start}4:{col_end}4")
+        cell = ws[f"{col_start}4"]
+        cell.value = grupo
+        estilo_header_tabla(cell)
+
+    # Fila 5: nombres productos
+    ws.cell(row=5, column=1, value="Variable / Producto")
+    estilo_header_tabla(ws.cell(row=5, column=1))
+    for i, p in enumerate(PRODUCTOS, 2):
+        cell = ws.cell(row=5, column=i, value=p.nombre_display)
+        estilo_header_tabla(cell)
+
+    # Filas 6+: cada variable
+    celda_index = {(c.variable, c.producto): c for c in matriz.celdas}
+    for row_idx, var in enumerate(VARIABLES, 6):
+        ws.cell(row=row_idx, column=1, value=var)
+        estilo_celda(ws.cell(row=row_idx, column=1), bold=True)
+        for col_idx, p in enumerate(PRODUCTOS, 2):
+            celda = celda_index.get((var, p.codigo))
+            cell = ws.cell(row=row_idx, column=col_idx)
+            if celda:
+                if celda.estado == "OK_VALIDADO":
+                    cell.value = "OK"
+                    cell.fill = PatternFill("solid", fgColor=VERDE_TRONGKAI)
+                    cell.font = Font(size=10, bold=True, color="FFFFFF")
+                elif celda.estado == "OK_PROVISORIO":
+                    cell.value = "OK*"
+                    cell.fill = PatternFill("solid", fgColor="EAF6EA")
+                    cell.font = Font(size=10, color=TEXTO)
+                else:  # PD
+                    cell.value = "PD"
+                    cell.fill = PatternFill("solid", fgColor="FFEBEA")
+                    cell.font = Font(size=10, color=ROJO)
+                cell.alignment = Alignment(horizontal="center", vertical="center")
+                cell.border = BORDER_ALL
+                # Tooltip con valor + fuente
+                if celda.valor is not None:
+                    from openpyxl.comments import Comment
+                    comment_text = f"Valor: {celda.valor} {celda.unidad}\n\nFuente: {celda.fuente}"
+                    if celda.nota:
+                        comment_text += f"\n\nNota: {celda.nota}"
+                    cell.comment = Comment(comment_text, "TrongkAI")
+
+    # Stats
+    s = matriz.to_dict()["stats"]
+    last_row = 6 + len(VARIABLES) + 2
+    ws.cell(row=last_row, column=1, value="Total celdas:").font = Font(size=10, bold=True)
+    ws.cell(row=last_row, column=2, value=s["total"])
+    ws.cell(row=last_row+1, column=1, value="OK Validado:").font = Font(size=10, bold=True, color=VERDE_TRONGKAI)
+    ws.cell(row=last_row+1, column=2, value=s["OK_VALIDADO"])
+    ws.cell(row=last_row+2, column=1, value="OK Provisorio:").font = Font(size=10, bold=True, color="6B8B23")
+    ws.cell(row=last_row+2, column=2, value=s["OK_PROVISORIO"])
+    ws.cell(row=last_row+3, column=1, value="PD (Por Definir):").font = Font(size=10, bold=True, color=ROJO)
+    ws.cell(row=last_row+3, column=2, value=s["PD"])
+    ws.cell(row=last_row+4, column=1, value="% Cubierto:").font = Font(size=10, bold=True)
+    ws.cell(row=last_row+4, column=2, value=f"{s['pct_cubierto']}%")
+
+    # Anchos
+    ws.column_dimensions["A"].width = 32
+    for col_idx in range(2, 2 + len(PRODUCTOS)):
+        ws.column_dimensions[get_column_letter(col_idx)].width = 14
+
+
+# =====================================================================
+# Hoja: Data Room — 41 items DD
+# =====================================================================
+def crear_data_room(wb: Workbook):
+    ws = wb.create_sheet("Data Room DD")
+    ws.sheet_view.showGridLines = False
+
+    ws["A1"] = "Data Room — Due Diligence Checklist"
+    estilo_titulo(ws["A1"])
+    r = resumen_checklist()
+    ws["A2"] = f"{r.total} items DD en 6 categorías · {r.pct_avance}% avance ponderado"
+    estilo_subtitulo(ws["A2"])
+
+    headers = ["Item", "Categoría", "Estado", "Must-have", "Responsable", "Formato esperado"]
+    for i, h in enumerate(headers, 1):
+        estilo_header_tabla(ws.cell(row=4, column=i, value=h))
+
+    color_estado = {
+        "completo": VERDE_TRONGKAI,
+        "parcial": "FFCC00",
+        "faltante": "FF3B30",
+    }
+
+    for i, item in enumerate(CHECKLIST_DD, 1):
+        row = 4 + i
+        ws.cell(row=row, column=1, value=item.titulo)
+        ws.cell(row=row, column=2, value=item.categoria.value)
+        cell = ws.cell(row=row, column=3, value=item.estado.value.upper())
+        cell.fill = PatternFill("solid", fgColor=color_estado.get(item.estado.value, "CCCCCC"))
+        cell.font = Font(size=10, bold=True, color="FFFFFF" if item.estado.value != "parcial" else TEXTO)
+        ws.cell(row=row, column=4, value="✓ MUST" if item.must_have else "nice")
+        ws.cell(row=row, column=5, value=item.responsable)
+        ws.cell(row=row, column=6, value=item.formato)
+        for col in range(1, 7):
+            estilo_celda(ws.cell(row=row, column=col))
+            ws.cell(row=row, column=col).alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+
+    # Anchos
+    for col, w in zip("ABCDEF", [38, 24, 12, 12, 25, 35]):
+        ws.column_dimensions[col].width = w
+
+
+# =====================================================================
 # Hoja 10: Instrucciones / Cómo conectar macros
 # =====================================================================
 def crear_instrucciones(wb: Workbook):
@@ -728,6 +860,10 @@ def main():
     crear_plan_5_anos(wb, snap)
     print("-hoja Balance Masa...")
     crear_balance_masa(wb, base)
+    print("-hoja Matriz Variables (canonica del Excel original)...")
+    crear_matriz_canonica(wb)
+    print("-hoja Data Room DD...")
+    crear_data_room(wb)
     print("-hoja Sensibilidad...")
     crear_sensibilidad(wb)
     print("-hoja Escenarios...")

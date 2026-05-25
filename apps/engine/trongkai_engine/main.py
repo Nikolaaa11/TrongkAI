@@ -1341,6 +1341,70 @@ def sensitivity_heatmap_endpoint(req: SensitivityHeatmapRequest) -> dict:
     return res.to_dict()
 
 
+# ----- LP Pack ZIP — UN solo archivo con todo -----
+
+
+@app.get(
+    "/api/lp-pack.zip",
+    tags=["meta"],
+    summary="LP Pack — ZIP con todos los entregables para LP roadshow",
+    description=(
+        "Descarga UN ZIP con: PDF tearsheet, snapshot JSON, readiness score, "
+        "data room checklist, matriz canónica + README. Ideal para mandar a LP "
+        "por mail o subir a data room virtual."
+    ),
+    response_class=FileResponse,
+)
+def lp_pack_zip_endpoint() -> FileResponse:
+    from datetime import datetime
+    from .data_room import checklist_completo
+    from .lp_pack import generar_lp_pack
+    from .sensitivity import heatmap_2d
+    from .tearsheet_pdf import generar_tearsheet_pdf
+    from .variables_matrix import construir_matriz
+
+    snap = snapshot_endpoint()
+    pdf_bytes = generar_tearsheet_pdf(snap)
+
+    # Matriz completa (no solo stats)
+    try:
+        matriz_full = construir_matriz().to_dict()
+    except Exception:
+        matriz_full = None
+
+    # Data room completo
+    try:
+        dr_full = checklist_completo()
+    except Exception:
+        dr_full = None
+
+    try:
+        sens = heatmap_2d(n=5).to_dict()
+    except Exception:
+        sens = None
+
+    zip_bytes = generar_lp_pack(
+        snap=snap,
+        readiness=snap.get("readiness_score"),
+        data_room=dr_full,
+        matriz=matriz_full,
+        sensitivity=sens,
+        pdf_bytes=pdf_bytes,
+    )
+
+    exports_dir = Path("/tmp/trongkai-exports")
+    exports_dir.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now().strftime("%Y%m%d-%H%M")
+    out = exports_dir / f"Trongkai-LP-Pack-{stamp}.zip"
+    out.write_bytes(zip_bytes)
+
+    return FileResponse(
+        out,
+        media_type="application/zip",
+        filename=f"Trongkai-LP-Pack-{stamp}.zip",
+    )
+
+
 # ----- Data Room — checklist Due Diligence para LP -----
 
 
@@ -1393,12 +1457,50 @@ def variables_matrix_endpoint() -> dict:
         "Score ≥ 80: bankable. 60-79: prometedor. 40-59: oportunidad. <40: re-think."
     ),
 )
-def readiness_score_endpoint(n_sims_mc: int = 500) -> dict:
+def readiness_score_endpoint(n_sims_mc: int = 500, save_history: bool = False) -> dict:
+    from .readiness_history import add_snapshot
     from .readiness_score import calcular_readiness_score
 
     if n_sims_mc < 100 or n_sims_mc > 5000:
         raise HTTPException(status_code=400, detail="n_sims_mc debe estar entre 100 y 5000")
-    return calcular_readiness_score(n_sims_mc=n_sims_mc).to_dict()
+    result = calcular_readiness_score(n_sims_mc=n_sims_mc).to_dict()
+    if save_history:
+        try:
+            add_snapshot(result, evento="manual /readiness/score?save_history=true")
+        except Exception:
+            pass
+    return result
+
+
+@app.get(
+    "/readiness/history",
+    tags=["meta"],
+    summary="Histórico del Investment Readiness Score",
+    description="Devuelve los últimos N snapshots del score + stats de progreso.",
+)
+def readiness_history_endpoint(limit: int = 30) -> dict:
+    from .readiness_history import get_evolucion_compacta, get_history, stats_progreso
+
+    return {
+        "evolucion_compacta": get_evolucion_compacta(limit=limit),
+        "history": get_history(limit=limit),
+        "stats": stats_progreso(),
+    }
+
+
+@app.post(
+    "/readiness/snapshot",
+    tags=["meta"],
+    summary="Guarda un snapshot del readiness score en el histórico",
+    description="Útil para marcar hitos del proyecto (LOI firmada, cotización recibida, etc).",
+)
+def readiness_snapshot_endpoint(evento: str = "") -> dict:
+    from .readiness_history import add_snapshot
+    from .readiness_score import calcular_readiness_score
+
+    rs = calcular_readiness_score(n_sims_mc=200).to_dict()
+    entry = add_snapshot(rs, evento=evento)
+    return {"saved": True, "entry": entry}
 
 
 # ----- Break-even analysis -----
