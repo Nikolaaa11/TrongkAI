@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { ReadinessHistoryChart, type HistoryPoint } from '@/components/ReadinessHistoryChart';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -20,14 +21,53 @@ type ReadinessResp = {
   interpretacion: string;
 };
 
+type HistoryResp = {
+  evolucion_compacta: HistoryPoint[];
+  stats: {
+    total_snapshots: number;
+    score_actual: number | null;
+    score_inicial: number | null;
+    delta: number | null;
+    fecha_inicio: string | null;
+  };
+};
+
 export default function ReadinessPage() {
   const [data, setData] = useState<ReadinessResp | null>(null);
+  const [history, setHistory] = useState<HistoryResp | null>(null);
   const [loading, setLoading] = useState(false);
+  const [marcandoHito, setMarcandoHito] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     void cargar();
+    void cargarHistory();
   }, []);
+
+  async function cargarHistory() {
+    try {
+      const r = await fetch(`${ENGINE_URL}/readiness/history?limit=30`);
+      if (r.ok) setHistory(await r.json());
+    } catch (e) {
+      console.error('history', e);
+    }
+  }
+
+  async function marcarHito() {
+    const evento = prompt('Descripción del hito (ej: LOI firmada con cliente XX):');
+    if (!evento) return;
+    setMarcandoHito(true);
+    try {
+      const r = await fetch(`${ENGINE_URL}/readiness/snapshot?evento=${encodeURIComponent(evento)}`, {
+        method: 'POST',
+      });
+      if (r.ok) await cargarHistory();
+    } catch (e) {
+      setErr(String(e));
+    } finally {
+      setMarcandoHito(false);
+    }
+  }
 
   async function cargar() {
     setLoading(true);
@@ -132,6 +172,64 @@ export default function ReadinessPage() {
                 <span>80 BANKABLE</span>
                 <span>100</span>
               </div>
+            </div>
+          </section>
+
+          {/* Histórico timeline */}
+          <section className="apple-card">
+            <div className="mb-3 flex items-baseline justify-between">
+              <div>
+                <h2 className="text-xl font-semibold tracking-apple text-ink">Evolución histórica</h2>
+                <p className="mt-1 text-xs text-ink-400">
+                  Snapshots guardados del score. Marca un hito cuando llegue una LOI / cotización / term sheet.
+                </p>
+              </div>
+              <button
+                onClick={marcarHito}
+                disabled={marcandoHito}
+                className="btn-apple text-xs disabled:opacity-50"
+              >
+                {marcandoHito ? 'Guardando...' : '+ Marcar hito'}
+              </button>
+            </div>
+            <ReadinessHistoryChart data={history?.evolucion_compacta ?? []} height={280} />
+            {history && history.stats.total_snapshots > 0 && (
+              <div className="mt-3 grid grid-cols-3 gap-3 border-t border-ink-100 pt-3 text-xs">
+                <div>
+                  <div className="text-[10px] uppercase tracking-wider text-ink-400">Snapshots</div>
+                  <div className="tabular text-base font-semibold text-ink">{history.stats.total_snapshots}</div>
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase tracking-wider text-ink-400">Score inicial</div>
+                  <div className="tabular text-base font-semibold text-ink">{history.stats.score_inicial?.toFixed(1)}</div>
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase tracking-wider text-ink-400">Delta</div>
+                  <div className={`tabular text-base font-semibold ${(history.stats.delta ?? 0) >= 0 ? 'text-brand' : 'text-red-600'}`}>
+                    {(history.stats.delta ?? 0) >= 0 ? '+' : ''}{history.stats.delta?.toFixed(1)} pts
+                  </div>
+                </div>
+              </div>
+            )}
+          </section>
+
+          {/* LP Pack ZIP download */}
+          <section className="apple-card bg-brand-50 ring-1 ring-brand/20">
+            <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h3 className="font-semibold text-ink">¿Listo para mandarlo a un LP?</h3>
+                <p className="mt-1 text-sm text-ink-600">
+                  Descarga el LP Pack: un ZIP con PDF tearsheet + snapshot JSON + readiness + data room + matriz + sensitivity + README. UN solo archivo, ~90KB.
+                </p>
+              </div>
+              <a
+                href={`${ENGINE_URL}/api/lp-pack.zip`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-apple shrink-0"
+              >
+                📦 Descargar LP Pack ZIP
+              </a>
             </div>
           </section>
 
