@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 const nav: { href: string; label: string }[] = [
   { href: '/', label: 'Operacional' },
   { href: '/dashboard-directorio', label: 'Directorio' },
+  { href: '/readiness', label: 'Readiness' },
   { href: '/agenda', label: 'Agenda' },
   { href: '/balance', label: 'Balance' },
   { href: '/plan', label: 'Plan 5 años' },

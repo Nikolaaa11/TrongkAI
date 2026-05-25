@@ -1313,6 +1313,28 @@ def sensitivity_heatmap_endpoint(req: SensitivityHeatmapRequest) -> dict:
     return res.to_dict()
 
 
+# ----- Investment Readiness Score -----
+
+
+@app.get(
+    "/readiness/score",
+    tags=["meta"],
+    summary="Investment Readiness Score (IRS) — score 0-100 de madurez del proyecto",
+    description=(
+        "Sintetiza 8 dimensiones (retorno, robustez MC, bancabilidad, diversificación, "
+        "ESG, compliance, resiliencia, madurez operativa) en un score único 0-100. "
+        "Útil para LP roadshow / comité de inversión. "
+        "Score ≥ 80: bankable. 60-79: prometedor. 40-59: oportunidad. <40: re-think."
+    ),
+)
+def readiness_score_endpoint(n_sims_mc: int = 500) -> dict:
+    from .readiness_score import calcular_readiness_score
+
+    if n_sims_mc < 100 or n_sims_mc > 5000:
+        raise HTTPException(status_code=400, detail="n_sims_mc debe estar entre 100 y 5000")
+    return calcular_readiness_score(n_sims_mc=n_sims_mc).to_dict()
+
+
 # ----- Break-even analysis -----
 
 
