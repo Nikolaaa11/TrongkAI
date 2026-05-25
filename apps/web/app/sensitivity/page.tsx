@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { HeatmapChart, type HeatmapData } from '@/components/HeatmapChart';
 import { CurvaSensibilidadChart, type CurvaData } from '@/components/CurvaSensibilidad';
@@ -97,15 +98,25 @@ export default function SensitivityPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="font-serif text-3xl text-oliva-900">
-          Sensitivity Analysis 2D
-        </h1>
-        <p className="mt-2 text-sm text-oliva-600">
-          Mapa de calor de TIR para combinaciones simultáneas de dos drivers.
-          Identifica visualmente las &quot;zonas seguras&quot; del proyecto
-          (TIR &gt; hurdle CEHTA 15%).
-        </p>
+      <header className="flex items-start gap-4">
+        <Image
+          src="/icon-trongkai.png"
+          alt="Trongkai"
+          width={56}
+          height={56}
+          priority
+          className="shrink-0"
+        />
+        <div>
+          <h1 className="font-serif text-3xl text-oliva-900">
+            Sensitivity Analysis 2D
+          </h1>
+          <p className="mt-2 text-sm text-oliva-600">
+            Mapa de calor de TIR para combinaciones simultáneas de dos drivers.
+            Identifica visualmente las &quot;zonas seguras&quot; del proyecto
+            (TIR &gt; hurdle CEHTA 15%).
+          </p>
+        </div>
       </header>
 
       <section className="rounded-lg border border-oliva/10 bg-white p-4 shadow-sm card-hover">

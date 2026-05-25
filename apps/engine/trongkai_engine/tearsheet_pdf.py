@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import io
 from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 from reportlab.lib import colors
@@ -26,6 +27,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm, mm
 from reportlab.platypus import (
+    Image as RLImage,
     PageBreak,
     Paragraph,
     SimpleDocTemplate,
@@ -33,6 +35,23 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
+
+# Ruta al logo (PNG) — empaquetado junto al módulo
+ASSETS_DIR = Path(__file__).parent / "assets"
+LOGO_COLOR_PATH = ASSETS_DIR / "logo-trongkai-color.png"
+ICON_PATH = ASSETS_DIR / "icon-trongkai.png"
+
+
+def _header_logo(width_cm: float = 5.5) -> RLImage | None:
+    """Devuelve el logo Trongkai en color como Flowable. None si no existe."""
+    if not LOGO_COLOR_PATH.exists():
+        return None
+    # Aspect ratio del logo: 2977 x 512 ≈ 5.81:1
+    aspect_ratio = 512 / 2977
+    img = RLImage(str(LOGO_COLOR_PATH))
+    img.drawWidth = width_cm * cm
+    img.drawHeight = width_cm * cm * aspect_ratio
+    return img
 
 # Paleta Trongkai
 OLIVA_OSCURO = colors.HexColor("#3F4A2B")
@@ -302,12 +321,39 @@ def generar_tearsheet_pdf(snap: dict) -> bytes:
     fecha = datetime.now().strftime("%d %B %Y, %H:%M")
     macro = snap.get("macro_chile", {})
 
-    # === Header ===
-    story.append(Paragraph("Trongkai · Tearsheet Ejecutivo", st["title"]))
-    story.append(Paragraph(
-        f"Innovación en Nutrición Circular · Plan 5 Años · Generado {fecha}",
-        st["subtitle"],
-    ))
+    # === Header con logo ===
+    logo = _header_logo(width_cm=5.0)
+    if logo is not None:
+        # Tabla 2 columnas: logo izquierda + título derecha
+        header_tbl = Table(
+            [[
+                logo,
+                [
+                    Paragraph("Tearsheet Ejecutivo", st["title"]),
+                    Paragraph(
+                        f"Innovación en Nutrición Circular · Plan 5 Años · Generado {fecha}",
+                        st["subtitle"],
+                    ),
+                ],
+            ]],
+            colWidths=[5.5 * cm, 12.0 * cm],
+        )
+        header_tbl.setStyle(TableStyle([
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+            ("TOPPADDING", (0, 0), (-1, -1), 0),
+        ]))
+        story.append(header_tbl)
+        story.append(Spacer(1, 6 * mm))
+    else:
+        # Fallback sin logo
+        story.append(Paragraph("Trongkai · Tearsheet Ejecutivo", st["title"]))
+        story.append(Paragraph(
+            f"Innovación en Nutrición Circular · Plan 5 Años · Generado {fecha}",
+            st["subtitle"],
+        ))
 
     # === KPIs grandes ===
     story.append(_kpi_cards(snap, st))

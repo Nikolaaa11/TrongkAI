@@ -29,6 +29,9 @@ dev = [
     "mypy>=1.11.0",
 ]
 
+[tool.setuptools.package-data]
+trongkai_engine = ["assets/*.png", "assets/*.svg"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py311"

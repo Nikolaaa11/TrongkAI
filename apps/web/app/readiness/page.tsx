@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
@@ -62,12 +63,22 @@ export default function ReadinessPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="font-serif text-3xl text-oliva-900">Investment Readiness Score</h1>
-        <p className="mt-2 text-sm text-oliva-600">
-          Score 0-100 sintetizado de 8 dimensiones del proyecto. Útil para LP roadshow,
-          comité de inversión y due diligence. Recalcula en vivo desde el motor.
-        </p>
+      <header className="flex items-start gap-4">
+        <Image
+          src="/icon-trongkai.png"
+          alt="Trongkai"
+          width={56}
+          height={56}
+          priority
+          className="shrink-0"
+        />
+        <div>
+          <h1 className="font-serif text-3xl text-oliva-900">Investment Readiness Score</h1>
+          <p className="mt-2 text-sm text-oliva-600">
+            Score 0-100 sintetizado de 8 dimensiones del proyecto. Útil para LP roadshow,
+            comité de inversión y due diligence. Recalcula en vivo desde el motor.
+          </p>
+        </div>
       </header>
 
       {err && (

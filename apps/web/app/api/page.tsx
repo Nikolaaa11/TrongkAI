@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
@@ -112,13 +113,23 @@ const TAG_COLOR: Record<EndpointSpec['tag'], string> = {
 export default function ApiExplorerPage() {
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="font-serif text-3xl text-oliva-900">API Explorer</h1>
-        <p className="mt-2 text-sm text-oliva-600">
-          Los {ENDPOINTS.length} endpoints públicos del motor TrongkAI. Pruebalos en vivo, copia el comando curl,
-          o consúmelos desde el SDK Python / TypeScript. Engine base:{' '}
-          <code className="rounded bg-papel px-1 text-xs text-oliva-900">{ENGINE_URL}</code>
-        </p>
+      <header className="flex items-start gap-4">
+        <Image
+          src="/icon-trongkai.png"
+          alt="Trongkai"
+          width={56}
+          height={56}
+          priority
+          className="shrink-0"
+        />
+        <div>
+          <h1 className="font-serif text-3xl text-oliva-900">API Explorer</h1>
+          <p className="mt-2 text-sm text-oliva-600">
+            Los {ENDPOINTS.length} endpoints públicos del motor TrongkAI. Pruebalos en vivo, copia el comando curl,
+            o consúmelos desde el SDK Python / TypeScript. Engine base:{' '}
+            <code className="rounded bg-papel px-1 text-xs text-oliva-900">{ENGINE_URL}</code>
+          </p>
+        </div>
       </header>
 
       <section className="rounded-lg border border-trigo/30 bg-trigo/5 p-4 text-sm text-oliva-900">
