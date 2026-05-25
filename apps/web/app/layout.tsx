@@ -24,6 +24,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/riesgo', label: 'Riesgo' },
   { href: '/stress', label: 'Stress' },
   { href: '/sensitivity', label: 'Sensitivity 2D' },
+  { href: '/api', label: 'API' },
   { href: '/carbono', label: 'Carbono' },
   { href: '/macro', label: 'Macro' },
   { href: '/whatif', label: 'What-if' },
