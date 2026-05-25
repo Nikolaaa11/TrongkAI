@@ -1237,7 +1237,35 @@ def snapshot_endpoint() -> dict:
             }
             for s in tornado[:3]
         ],
+        # NUEVO: meta-info para el tearsheet PDF
+        "readiness_score": _safe_readiness(),
+        "data_room": _safe_data_room(),
+        "variables_matrix": _safe_variables_matrix(),
     }
+
+
+def _safe_readiness() -> dict | None:
+    try:
+        from .readiness_score import calcular_readiness_score
+        return calcular_readiness_score(n_sims_mc=200).to_dict()
+    except Exception:
+        return None
+
+
+def _safe_data_room() -> dict | None:
+    try:
+        from .data_room import resumen_checklist
+        return resumen_checklist().to_dict()
+    except Exception:
+        return None
+
+
+def _safe_variables_matrix() -> dict | None:
+    try:
+        from .variables_matrix import construir_matriz, stats_resumen
+        return stats_resumen(construir_matriz())
+    except Exception:
+        return None
 
 
 # ----- Tearsheet PDF ejecutivo -----

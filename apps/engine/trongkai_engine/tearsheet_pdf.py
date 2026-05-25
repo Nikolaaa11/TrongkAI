@@ -443,6 +443,70 @@ def generar_tearsheet_pdf(snap: dict) -> bytes:
         )
         story.append(Paragraph(macro_text, st["body"]))
 
+    # === Sección NUEVA: Investment Readiness + Trazabilidad ===
+    rs = snap.get("readiness_score")
+    dr = snap.get("data_room")
+    vm = snap.get("variables_matrix")
+
+    if rs or dr or vm:
+        story.append(PageBreak())
+        story.append(Paragraph("Investment Readiness y Trazabilidad", st["h2"]))
+
+        if rs:
+            story.append(Paragraph(
+                f"<b>Investment Readiness Score: {rs.get('score_total', 0):.1f}/100</b> — "
+                f"{rs.get('interpretacion', '')}",
+                st["body"],
+            ))
+            story.append(Spacer(1, 3 * mm))
+            # Tabla 10 dimensiones
+            rows = [["Dimensión", "Peso", "Score", "Aporte"]]
+            for d in rs.get("dimensiones", []):
+                rows.append([
+                    d["nombre"],
+                    f'{d["peso"] * 100:.0f}%',
+                    f'{d["score_0_100"]:.0f}/100',
+                    f'{d["aporte_total"]:.1f}',
+                ])
+            tbl = Table(rows, colWidths=[6.5 * cm, 2 * cm, 2.5 * cm, 2.5 * cm])
+            tbl.setStyle(TableStyle([
+                ("BACKGROUND", (0, 0), (-1, 0), OLIVA_OSCURO),
+                ("TEXTCOLOR", (0, 0), (-1, 0), PAPEL),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("FONTSIZE", (0, 0), (-1, -1), 8.5),
+                ("ALIGN", (1, 0), (-1, -1), "RIGHT"),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 6),
+                ("TOPPADDING", (0, 0), (-1, -1), 3),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                ("LINEBELOW", (0, 0), (-1, 0), 1, OLIVA_OSCURO),
+                ("LINEBELOW", (0, -1), (-1, -1), 0.5, GRIS_SUAVE),
+            ]))
+            story.append(tbl)
+            story.append(Spacer(1, 4 * mm))
+
+        if dr:
+            story.append(Paragraph("Avance Data Room (Due Diligence)", st["h2"]))
+            story.append(Paragraph(
+                f"<b>{dr.get('pct_avance', 0):.0f}% avance ponderado</b> · "
+                f"{dr.get('completos', 0)} completos · "
+                f"{dr.get('parciales', 0)} parciales · "
+                f"{dr.get('faltantes', 0)} faltantes (de {dr.get('total', 0)} items DD).",
+                st["body"],
+            ))
+            story.append(Spacer(1, 3 * mm))
+
+        if vm:
+            story.append(Paragraph("Matriz Variables (Excel original)", st["h2"]))
+            story.append(Paragraph(
+                f"165 celdas modeladas (11 productos × 15 variables). "
+                f"<b>{vm.get('OK_PROVISORIO', 0)} OK*</b> (provisorio con benchmarks), "
+                f"<b>{vm.get('OK_VALIDADO', 0)} OK</b> (validado con dato real), "
+                f"<b>{vm.get('PD', 0)} PD</b> (por definir — esperando equipo). "
+                f"Cobertura actual: <b>{vm.get('pct_cubierto', 0):.0f}%</b>.",
+                st["body"],
+            ))
+
     # === Footer ===
     story.append(Spacer(1, 8 * mm))
     story.append(Paragraph(
