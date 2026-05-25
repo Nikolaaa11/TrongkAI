@@ -1313,6 +1313,25 @@ def sensitivity_heatmap_endpoint(req: SensitivityHeatmapRequest) -> dict:
     return res.to_dict()
 
 
+# ----- Data Room — checklist Due Diligence para LP -----
+
+
+@app.get(
+    "/data-room/checklist",
+    tags=["meta"],
+    summary="Checklist Due Diligence completo (41 items)",
+    description=(
+        "Checklist DD típico para LP / banco / DFI. 6 categorías: corporativo, "
+        "financiero, comercial, operacional, ESG, equipo. Cada item: estado "
+        "(faltante/parcial/completo), responsable interno, formato esperado."
+    ),
+)
+def data_room_endpoint() -> dict:
+    from .data_room import checklist_completo
+
+    return checklist_completo()
+
+
 # ----- Matriz Variables (canónica del Excel original) -----
 
 

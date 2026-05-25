@@ -80,7 +80,8 @@ def test_calcular_readiness_score_completo():
     rs = calcular_readiness_score(n_sims_mc=100)
     assert isinstance(rs, ReadinessScore)
     assert 0 <= rs.score_total <= 100
-    assert len(rs.dimensiones) == 8
+    # 10 dimensiones (agregamos Calidad datos + Data Room)
+    assert len(rs.dimensiones) == 10
     # Suma de pesos = 1.0
     assert abs(sum(d.peso for d in rs.dimensiones) - 1.0) < 0.01
     # Score total = suma de aportes
@@ -94,7 +95,20 @@ def test_readiness_to_dict_serializa():
     assert "score_total" in d
     assert "dimensiones" in d
     assert "interpretacion" in d
-    assert len(d["dimensiones"]) == 8
+    assert len(d["dimensiones"]) == 10
+
+
+def test_dimensiones_nuevas_calidad_y_dataroom():
+    rs = calcular_readiness_score(n_sims_mc=100)
+    nombres = [d.nombre for d in rs.dimensiones]
+    assert "Calidad datos (matriz)" in nombres
+    assert "Avance Data Room DD" in nombres
+
+
+def test_readiness_dimensiones_serialization():
+    """Verifica que las 10 dimensiones serializan correctamente."""
+    rs = calcular_readiness_score(n_sims_mc=100)
+    d = rs.to_dict()
     for dim in d["dimensiones"]:
         assert "nombre" in dim
         assert "peso" in dim

@@ -12,11 +12,11 @@
   --color-brand: #1A8A1A;
   --color-brand-light: #EAF6EA;
 
-  /* Legacy palette (compatibilidad) */
-  --color-oliva: #3F4A2B;
+  /* Legacy palette re-skin (oliva = ink, borgoña = Apple red) */
+  --color-oliva: #1D1D1F;
   --color-trigo: #C8A961;
-  --color-borgona: #7A1F1F;
-  --color-papel: #FEFCF6;
+  --color-borgona: #FF3B30;
+  --color-papel: #F5F5F7;
 }
 
 html, body {

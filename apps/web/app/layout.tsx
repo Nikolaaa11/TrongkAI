@@ -19,6 +19,8 @@ const nav: { href: string; label: string }[] = [
   { href: '/readiness', label: 'Readiness' },
   { href: '/datos', label: 'Datos faltantes' },
   { href: '/variables', label: 'Matriz Variables' },
+  { href: '/data-room', label: 'Data Room' },
+  { href: '/equipo', label: 'Equipo' },
   { href: '/plan', label: 'Plan 5 años' },
   { href: '/sensitivity', label: 'Sensibilidad' },
   { href: '/stress', label: 'Stress' },

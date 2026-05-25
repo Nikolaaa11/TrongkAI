@@ -27,8 +27,10 @@ from dataclasses import dataclass, field
 from .breakeven import breakeven_summary
 from .carbon_footprint import calcular_footprint, comparar_escenarios_footprint
 from .compliance_rep import hitos_por_estado
+from .data_room import resumen_checklist
 from .monte_carlo import run_monte_carlo_con_clima
 from .plan_builder import ParametrosPlan, build_plan
+from .variables_matrix import construir_matriz, stats_resumen
 
 
 @dataclass
@@ -158,6 +160,29 @@ def _score_resiliencia(breakeven_resumen) -> tuple[float, str]:
     return score, f"Colchón promedio {promedio*100:.0f}%"
 
 
+def _score_calidad_datos() -> tuple[float, str]:
+    """% de celdas de la matriz canónica en estado OK_VALIDADO (peso 2) o OK_PROVISORIO (peso 1)."""
+    m = construir_matriz()
+    s = stats_resumen(m)
+    total = s["total"]
+    if total == 0:
+        return 0.0, "Matriz vacía"
+    score_ponderado = (s["OK_VALIDADO"] * 2 + s["OK_PROVISORIO"] * 1) / (total * 2) * 100
+    return score_ponderado, (
+        f"{s['OK_VALIDADO']} validadas + {s['OK_PROVISORIO']} provisorias de {total} celdas"
+    )
+
+
+def _score_data_room() -> tuple[float, str]:
+    """% de items DD completos (peso 2) + parciales (peso 1)."""
+    r = resumen_checklist()
+    total = r.total
+    if total == 0:
+        return 0.0, "Data room vacío"
+    score = (r.completos * 2 + r.parciales * 1) / (total * 2) * 100
+    return score, f"{r.completos} completos + {r.parciales} parciales de {total} items DD"
+
+
 def _score_madurez_operativa(plan) -> tuple[float, str]:
     """Working capital + ramp-up. Si EBITDA año 1 > 0 → 100. Si EBITDA año 2 > 0 → 80."""
     ebitda = plan.ebitda_anuales
@@ -255,15 +280,21 @@ def calcular_readiness_score(
     # Madurez operativa
     s8, d8 = _score_madurez_operativa(plan)
 
+    # NUEVAS: calidad de datos + data room
+    s9, d9 = _score_calidad_datos()
+    s10, d10 = _score_data_room()
+
     dimensiones = [
-        DimensionScore("Retorno financiero", 0.20, tir or 0, s1, d1),
-        DimensionScore("Robustez Monte Carlo", 0.15, prob_wacc or 0, s2, d2),
-        DimensionScore("Bancabilidad DSCR", 0.15, dscr_promedio, s3, d3),
-        DimensionScore("Diversificación marca", 0.10, 0, s4, d4),
+        DimensionScore("Retorno financiero", 0.18, tir or 0, s1, d1),
+        DimensionScore("Robustez Monte Carlo", 0.13, prob_wacc or 0, s2, d2),
+        DimensionScore("Bancabilidad DSCR", 0.12, dscr_promedio, s3, d3),
+        DimensionScore("Diversificación marca", 0.08, 0, s4, d4),
         DimensionScore("ESG carbono", 0.10, 0, s5, d5),
-        DimensionScore("Compliance regulatorio", 0.10, 0, s6, d6),
-        DimensionScore("Resiliencia (break-even)", 0.10, 0, s7, d7),
-        DimensionScore("Madurez operativa", 0.10, 0, s8, d8),
+        DimensionScore("Compliance regulatorio", 0.08, 0, s6, d6),
+        DimensionScore("Resiliencia (break-even)", 0.08, 0, s7, d7),
+        DimensionScore("Madurez operativa", 0.08, 0, s8, d8),
+        DimensionScore("Calidad datos (matriz)", 0.08, 0, s9, d9),
+        DimensionScore("Avance Data Room DD", 0.07, 0, s10, d10),
     ]
 
     score_total = sum(d.aporte_total() for d in dimensiones)

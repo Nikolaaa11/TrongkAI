@@ -36,21 +36,33 @@ const config: Config = {
           700: '#136913',
           900: '#0B3D0B',
         },
-        // Mantener paleta clásica disponible (legacy)
+        // Legacy paleta — re-skin Apple para que las páginas viejas se vean uniformes
+        // Conceptualmente: oliva = ink (grises Apple), trigo = brand-light dorado, borgoña = Apple red
         oliva: {
-          DEFAULT: '#3F4A2B',
-          50: '#F5F1E8',
-          100: '#E6E2D5',
-          400: '#7C8857',
-          600: '#3F4A2B',
-          700: '#2A311E',
-          900: '#2A311E',
+          DEFAULT: '#1D1D1F',     // ink principal
+          50: '#F5F5F7',          // fondo gris muy claro
+          100: '#E8E8ED',         // borde sutil
+          400: '#86868B',         // gris medio
+          500: '#86868B',
+          600: '#515154',         // gris oscuro
+          700: '#1D1D1F',         // texto principal
+          900: '#1D1D1F',
         },
-        trigo: '#C8A961',
-        tierra: '#8B5A3C',
-        borgoña: '#7A1F1F',
-        crema: '#F5F1E8',
-        papel: '#FEFCF6',
+        trigo: {
+          DEFAULT: '#C8A961',     // dorado mantenido (acento secundario)
+          50: '#FAF5E8',
+          100: '#F1E4BD',
+        },
+        tierra: '#515154',         // (era #8B5A3C, hoy gris medio Apple)
+        borgoña: {
+          DEFAULT: '#FF3B30',      // Apple red
+          50: '#FFEBEA',
+          100: '#FFD4D1',
+        },
+        crema: '#FFFFFF',          // (era #F5F1E8 — ahora blanco puro)
+        papel: '#F5F5F7',          // gris background Apple
+        // Brand alias para uso flexible
+        verde: '#1A8A1A',
       },
       fontFamily: {
         // SF Pro stack — fallback Inter
