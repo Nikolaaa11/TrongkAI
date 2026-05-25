@@ -26,13 +26,35 @@ export default function SensitivityPage() {
     n_celdas_totales: number;
     pct_zona_segura: number;
   }) | null>(null);
+  const [breakeven, setBreakeven] = useState<{
+    umbral_tir_aplicado: number;
+    resultados: {
+      driver: Driver;
+      shock_breakeven: number | null;
+      colchon_pct: number | null;
+      tir_base: number | null;
+      umbral_tir: number;
+      direccion: string;
+    }[];
+    driver_mas_sensible: Driver | null;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     void cargar();
+    void cargarBreakeven();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  async function cargarBreakeven() {
+    try {
+      const r = await fetch(`${ENGINE_URL}/sensitivity/breakeven?umbral_tir=${hurdle}`);
+      if (r.ok) setBreakeven(await r.json());
+    } catch (e) {
+      console.error('breakeven', e);
+    }
+  }
 
   async function cargar() {
     if (driverX === driverY) {
@@ -125,7 +147,10 @@ export default function SensitivityPage() {
           </label>
         </div>
         <button
-          onClick={cargar}
+          onClick={() => {
+            void cargar();
+            void cargarBreakeven();
+          }}
           className="mt-4 rounded bg-borgoña px-4 py-2 text-sm text-crema hover:bg-tierra disabled:opacity-50"
           disabled={loading}
         >
@@ -188,6 +213,29 @@ export default function SensitivityPage() {
             />
           </section>
 
+          {/* Break-even analysis */}
+          {breakeven && (
+            <section className="rounded-lg border border-oliva/10 bg-white p-4 shadow-sm">
+              <h2 className="font-medium text-oliva-900">
+                Break-even por driver — colchón hasta TIR={(breakeven.umbral_tir_aplicado * 100).toFixed(0)}%
+              </h2>
+              <p className="mt-1 text-xs text-oliva-600">
+                Cuánto puede empeorar cada driver antes de que el proyecto baje del hurdle. Driver más
+                sensible:{' '}
+                <strong className="text-borgoña">
+                  {breakeven.driver_mas_sensible
+                    ? DRIVER_LABEL[breakeven.driver_mas_sensible]
+                    : '—'}
+                </strong>
+              </p>
+              <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+                {breakeven.resultados.map((r) => (
+                  <BreakevenCard key={r.driver} r={r} />
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* Interpretación */}
           <section className="rounded-lg border border-trigo/30 bg-trigo/5 p-4 text-sm text-oliva-900">
             <strong>Cómo leer el mapa:</strong>
@@ -248,6 +296,56 @@ function Select({
         ))}
       </select>
     </label>
+  );
+}
+
+function BreakevenCard({
+  r,
+}: {
+  r: {
+    driver: Driver;
+    shock_breakeven: number | null;
+    colchon_pct: number | null;
+    direccion: string;
+  };
+}) {
+  if (r.shock_breakeven === null || r.colchon_pct === null) {
+    return (
+      <div className="rounded-lg border border-oliva/10 bg-oliva-50/30 p-3">
+        <div className="text-[10px] uppercase tracking-[0.08em] text-oliva-600">
+          {DRIVER_LABEL[r.driver]}
+        </div>
+        <div className="mt-2 text-sm text-oliva-700">No aplica break-even por {r.direccion}</div>
+      </div>
+    );
+  }
+
+  const isWacc = r.driver === 'wacc';
+  const signo = r.direccion === 'bajada' ? '−' : '+';
+  const valor = isWacc
+    ? `${signo}${(r.colchon_pct * 100).toFixed(1)} pp`
+    : `${signo}${(r.colchon_pct * 100).toFixed(1)}%`;
+
+  // Tono por magnitud: colchón pequeño = rojo, grande = verde
+  const colchonRel = isWacc ? r.colchon_pct / 0.15 : r.colchon_pct / 0.30;
+  const tone = colchonRel > 0.8 ? 'ok' : colchonRel > 0.4 ? 'warn' : 'bad';
+  const cls =
+    tone === 'ok'
+      ? 'border-oliva-700/30 bg-oliva-50/30'
+      : tone === 'warn'
+      ? 'border-trigo/40 bg-trigo/5'
+      : 'border-borgoña/30 bg-borgoña/5';
+
+  return (
+    <div className={`rounded-lg border p-3 ${cls}`}>
+      <div className="text-[10px] uppercase tracking-[0.08em] text-oliva-600">
+        {DRIVER_LABEL[r.driver]}
+      </div>
+      <div className="mt-1 tabular text-2xl font-semibold text-oliva-900">{valor}</div>
+      <div className="mt-1 text-xs text-oliva-700">
+        Soporta {r.direccion === 'bajada' ? 'caída' : 'subida'} hasta este punto
+      </div>
+    </div>
   );
 }
 

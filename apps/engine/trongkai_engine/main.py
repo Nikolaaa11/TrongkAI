@@ -1311,3 +1311,24 @@ def sensitivity_heatmap_endpoint(req: SensitivityHeatmapRequest) -> dict:
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     return res.to_dict()
+
+
+# ----- Break-even analysis -----
+
+
+@app.get(
+    "/sensitivity/breakeven",
+    tags=["whatif"],
+    summary="Análisis break-even por driver (colchón frente a hurdle)",
+    description=(
+        "Para cada driver (precio, costo_mmpp, wacc, opex), encuentra por bisección "
+        "el shock máximo soportable antes de que TIR caiga bajo el umbral indicado. "
+        "Útil para identificar el driver más sensible y dimensionar el riesgo del proyecto."
+    ),
+)
+def breakeven_endpoint(umbral_tir: float = 0.15) -> dict:
+    from .breakeven import breakeven_summary
+
+    if not 0 < umbral_tir < 1:
+        raise HTTPException(status_code=400, detail="umbral_tir debe estar entre 0 y 1")
+    return breakeven_summary(umbral_tir=umbral_tir).to_dict()
