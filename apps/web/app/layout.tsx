@@ -23,6 +23,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/compliance', label: 'Compliance' },
   { href: '/riesgo', label: 'Riesgo' },
   { href: '/stress', label: 'Stress' },
+  { href: '/sensitivity', label: 'Sensitivity 2D' },
   { href: '/carbono', label: 'Carbono' },
   { href: '/macro', label: 'Macro' },
   { href: '/whatif', label: 'What-if' },

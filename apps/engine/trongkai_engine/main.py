@@ -1273,3 +1273,41 @@ def tearsheet_pdf_endpoint() -> FileResponse:
         media_type="application/pdf",
         filename=f"trongkai_tearsheet_{stamp}.pdf",
     )
+
+
+# ----- Sensitivity heatmap 2D -----
+
+
+class SensitivityHeatmapRequest(BaseModel):
+    """Request al endpoint /sensitivity/heatmap."""
+
+    driver_x: str = "precio"
+    driver_y: str = "costo_mmpp"
+    n: int = 7
+    hurdle_pct: float = 0.15
+
+
+@app.post(
+    "/sensitivity/heatmap",
+    tags=["whatif"],
+    summary="Heatmap 2D de TIR para combinaciones cross-variable",
+    description=(
+        "Genera un grid NxN de TIR para combinaciones de dos drivers simultáneos. "
+        "Drivers soportados: precio, costo_mmpp, wacc, opex. "
+        "Default 7x7=49 simulaciones. Útil para comité de inversión: muestra "
+        "'zonas seguras' donde TIR > hurdle."
+    ),
+)
+def sensitivity_heatmap_endpoint(req: SensitivityHeatmapRequest) -> dict:
+    from .sensitivity import heatmap_2d
+
+    try:
+        res = heatmap_2d(
+            driver_x=req.driver_x,  # type: ignore[arg-type]
+            driver_y=req.driver_y,  # type: ignore[arg-type]
+            n=req.n,
+            hurdle_pct=req.hurdle_pct,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    return res.to_dict()
