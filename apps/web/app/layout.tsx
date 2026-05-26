@@ -28,6 +28,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/equipo', label: 'Equipo' },
   { href: '/plan', label: 'Plan 5 años' },
   { href: '/sensitivity', label: 'Sensibilidad' },
+  { href: '/comparador', label: 'Comparador' },
   { href: '/stress', label: 'Stress' },
   { href: '/financiamiento', label: 'Financiamiento' },
   { href: '/carbono', label: 'Carbono' },

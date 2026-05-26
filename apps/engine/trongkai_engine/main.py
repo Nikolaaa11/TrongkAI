@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 import structlog
 from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from pydantic import BaseModel, Field
 
 from . import __version__
@@ -1248,6 +1248,10 @@ def snapshot_endpoint() -> dict:
     }
 
 
+from .cache import cached_ttl
+
+
+@cached_ttl(seconds=300)
 def _safe_decisiones() -> dict | None:
     try:
         from .decision_engine import resumen_decisiones
@@ -1263,6 +1267,7 @@ def _safe_decisiones() -> dict | None:
         return None
 
 
+@cached_ttl(seconds=180)  # Alertas más frecuentes
 def _safe_alertas() -> dict | None:
     try:
         from .alertas import escanear_alertas
@@ -1271,6 +1276,7 @@ def _safe_alertas() -> dict | None:
         return None
 
 
+@cached_ttl(seconds=600)
 def _safe_coherencia() -> dict | None:
     try:
         from .matriz_coherence import resumen_coherencia
@@ -1279,6 +1285,7 @@ def _safe_coherencia() -> dict | None:
         return None
 
 
+@cached_ttl(seconds=600)  # 10 min — Monte Carlo es caro
 def _safe_readiness() -> dict | None:
     try:
         from .readiness_score import calcular_readiness_score
@@ -1287,6 +1294,7 @@ def _safe_readiness() -> dict | None:
         return None
 
 
+@cached_ttl(seconds=600)
 def _safe_data_room() -> dict | None:
     try:
         from .data_room import resumen_checklist
@@ -1295,6 +1303,7 @@ def _safe_data_room() -> dict | None:
         return None
 
 
+@cached_ttl(seconds=600)
 def _safe_variables_matrix() -> dict | None:
     try:
         from .variables_matrix import construir_matriz, stats_resumen
@@ -1457,6 +1466,108 @@ def data_room_endpoint() -> dict:
     from .data_room import checklist_completo
 
     return checklist_completo()
+
+
+# ----- Audit Trail -----
+
+
+@app.get("/audit/trail", tags=["meta"], summary="Historial de cambios al modelo")
+def audit_trail_endpoint(limit: int = 50, tipo: str | None = None) -> dict:
+    from .audit_trail import get_audit_trail, stats_audit_trail
+    return {
+        "entries": get_audit_trail(limit=limit, tipo=tipo),
+        "stats": stats_audit_trail(),
+    }
+
+
+class LogEventoRequest(BaseModel):
+    tipo: str
+    descripcion: str
+    actor: str = "system"
+    valor_anterior: Any = None
+    valor_nuevo: Any = None
+    metadata: dict | None = None
+    impacto_estimado: str | None = None
+
+
+@app.post("/audit/log", tags=["meta"], summary="Registra un evento en el audit trail")
+def audit_log_endpoint(req: LogEventoRequest) -> dict:
+    from .audit_trail import log_evento
+    entrada = log_evento(
+        tipo=req.tipo,
+        descripcion=req.descripcion,
+        actor=req.actor,
+        valor_anterior=req.valor_anterior,
+        valor_nuevo=req.valor_nuevo,
+        metadata=req.metadata,
+        impacto_estimado=req.impacto_estimado,
+    )
+    return {"logged": True, "entry": entrada.to_dict()}
+
+
+# ----- Weekly Digest HTML -----
+
+
+@app.get(
+    "/weekly-digest.html",
+    tags=["meta"],
+    summary="Genera el HTML del digest semanal (Apple style)",
+    description=(
+        "Resumen ejecutivo semanal listo para mandar por email. "
+        "Incluye score con delta, top 3 acciones, alertas, progreso, audit trail."
+    ),
+    response_class=HTMLResponse,
+)
+def weekly_digest_endpoint() -> HTMLResponse:
+    from .audit_trail import get_audit_trail
+    from .readiness_history import get_history
+    from .weekly_digest import generar_weekly_digest
+
+    snap = snapshot_endpoint()
+    # Score anterior: 7 días atrás
+    hist = get_history(limit=20)
+    from datetime import datetime, timedelta, timezone
+    hace_7d = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+    score_anterior = None
+    for h in reversed(hist):
+        if h.get("timestamp", "") < hace_7d:
+            score_anterior = h.get("score")
+            break
+    # Audit últimos 7 días
+    audit_semana = [e for e in get_audit_trail(limit=200) if e.get("timestamp", "") >= hace_7d]
+
+    html = generar_weekly_digest(snap, score_anterior=score_anterior, audit_entries_semana=audit_semana)
+    return HTMLResponse(content=html)
+
+
+# ----- Multi-Scenario Comparator -----
+
+
+@app.get(
+    "/scenarios/compare",
+    tags=["whatif"],
+    summary="Compara los 3 escenarios estratégicos lado a lado",
+    description="PILOTO vs INDUSTRIAL vs EXPANSION con ranking por métrica + recomendación.",
+)
+def scenarios_compare_endpoint() -> dict:
+    from .scenario_comparator import comparar_estrategicos
+    return comparar_estrategicos().to_dict()
+
+
+# ----- Cache management -----
+
+
+@app.get("/cache/stats", tags=["meta"], summary="Estado del cache in-memory")
+def cache_stats_endpoint() -> dict:
+    from .cache import cache_stats
+    return cache_stats()
+
+
+@app.post("/cache/clear", tags=["meta"], summary="Limpia todo el cache (forza recálculo)")
+def cache_clear_endpoint() -> dict:
+    from .cache import clear_all
+    n = clear_all()
+    return {"cleared": True, "entries_removed": n}
 
 
 # ----- Sistema de Alertas Inteligentes -----
