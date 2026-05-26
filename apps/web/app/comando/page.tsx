@@ -266,6 +266,9 @@ export default function ComandoPage() {
         </div>
       </section>
 
+      {/* Pipeline LP */}
+      <PipelineLPCard />
+
       {/* ESG + Probabilidad MC */}
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className={`apple-card ${snap.carbon_footprint.baseline.es_carbono_negativo ? 'bg-brand-50 ring-1 ring-brand/20' : 'bg-orange-50 ring-1 ring-orange-200'}`}>
@@ -351,6 +354,53 @@ function BigKPI({ label, value, unit, tone, sub, link }: {
     );
   }
   return <div className={`apple-card ring-1 ${ringCls}`}>{inner}</div>;
+}
+
+function PipelineLPCard() {
+  const [data, setData] = useState<{ resumen: { ticket_pipeline_usd: number; ticket_ponderado_usd: number; objetivo_usd: number; pct_objetivo_ponderado: number; total_lps: number; proximas_acciones_7d: number; por_etapa: Record<string, number> } } | null>(null);
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/lp/pipeline`).then(r => r.ok && r.json()).then(setData).catch(() => {});
+  }, []);
+  if (!data) return null;
+  const r = data.resumen;
+  return (
+    <section className="apple-card">
+      <div className="flex items-baseline justify-between">
+        <h2 className="text-xl font-semibold tracking-apple text-ink">💼 Pipeline LP (CRM)</h2>
+        <Link href="/pipeline-lp" className="text-xs font-medium text-brand">Ver kanban →</Link>
+      </div>
+      <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-ink-400">Pipeline total</div>
+          <div className="tabular mt-1 text-2xl font-semibold text-ink">${(r.ticket_pipeline_usd / 1e6).toFixed(1)}M</div>
+          <div className="text-[11px] text-ink-400">{r.total_lps} LPs activos</div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-ink-400">Ponderado por prob.</div>
+          <div className="tabular mt-1 text-2xl font-semibold text-brand">${(r.ticket_ponderado_usd / 1e6).toFixed(1)}M</div>
+          <div className="text-[11px] text-ink-400">{r.pct_objetivo_ponderado.toFixed(0)}% del target</div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-ink-400">Objetivo round</div>
+          <div className="tabular mt-1 text-2xl font-semibold text-ink">${(r.objetivo_usd / 1e6).toFixed(0)}M</div>
+          <div className="text-[11px] text-ink-400">USD target</div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-ink-400">Acciones próx 7d</div>
+          <div className="tabular mt-1 text-2xl font-semibold text-orange-600">{r.proximas_acciones_7d}</div>
+          <div className="text-[11px] text-ink-400">tareas vencen</div>
+        </div>
+      </div>
+      <div className="mt-4 flex gap-1 text-[10px]">
+        {(['prospect', 'contactado', 'reunion', 'dd', 'comprometido', 'ganado'] as const).map((e) => (
+          <div key={e} className="flex-1 rounded bg-ink-50 px-2 py-1 text-center">
+            <div className="text-ink-400">{e}</div>
+            <div className="tabular font-semibold text-ink">{r.por_etapa[e] ?? 0}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 function ProgresoCard({ label, pct, detalle, link }: { label: string; pct: number; detalle: string; link: string }) {
