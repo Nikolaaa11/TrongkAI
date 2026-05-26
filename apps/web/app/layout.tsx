@@ -35,6 +35,8 @@ const nav: { href: string; label: string }[] = [
   { href: '/compliance', label: 'Compliance' },
   { href: '/macro', label: 'Macro' },
   { href: '/api', label: 'API' },
+  { href: '/audit', label: 'Audit Trail' },
+  { href: '/digest', label: '📧 Digest' },
   { href: '/investigacion', label: 'Research' },
 ];
 
