@@ -1468,6 +1468,84 @@ def data_room_endpoint() -> dict:
     return checklist_completo()
 
 
+# ----- Pipeline LP (CRM) -----
+
+
+@app.get("/lp/pipeline", tags=["meta"], summary="Lista todos los LPs del pipeline")
+def lp_list_endpoint() -> dict:
+    from .pipeline_lp import list_lps, resumen_pipeline
+    return {
+        "lps": list_lps(),
+        "resumen": resumen_pipeline().to_dict(),
+    }
+
+
+class LPUpsertRequest(BaseModel):
+    id: str | None = None
+    nombre: str
+    tipo: str = "fondo"
+    pais: str = "Chile"
+    ticket_esperado_usd: float = 0
+    etapa: str = "prospect"
+    prob_cierre: float = 0
+    proxima_accion: str = ""
+    proxima_accion_owner: str = ""
+    proxima_accion_fecha: str = ""
+    notas: str = ""
+    fecha_ultimo_contacto: str = ""
+
+
+@app.post("/lp/upsert", tags=["meta"], summary="Crea o actualiza un LP en el pipeline")
+def lp_upsert_endpoint(req: LPUpsertRequest) -> dict:
+    from .pipeline_lp import upsert_lp
+    data = req.model_dump(exclude_none=True)
+    return upsert_lp(data)
+
+
+@app.delete("/lp/{lp_id}", tags=["meta"], summary="Elimina un LP del pipeline")
+def lp_delete_endpoint(lp_id: str) -> dict:
+    from .pipeline_lp import delete_lp
+    return {"deleted": delete_lp(lp_id)}
+
+
+# ----- Snapshot Diff -----
+
+
+@app.get("/snapshot/diff", tags=["meta"], summary="Compara snapshot actual con uno anterior")
+def snapshot_diff_endpoint(dias_atras: int = 7) -> dict:
+    """Compara snapshot live con uno hace N días (usando readiness_history como proxy)."""
+    from datetime import datetime, timedelta, timezone
+    from .readiness_history import get_history
+    from .snapshot_diff import comparar_snapshots
+
+    actual = snapshot_endpoint()
+    hist = get_history(limit=200)
+    if not hist:
+        return {
+            "error": "Sin historial — registra un snapshot antes con POST /readiness/snapshot",
+            "diff_disponible": False,
+        }
+    # Buscar el entry más cercano a hace_N_dias
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=dias_atras)).isoformat()
+    entry_anterior = None
+    for h in reversed(hist):
+        if h.get("timestamp", "") <= cutoff:
+            entry_anterior = h
+            break
+    if not entry_anterior:
+        entry_anterior = hist[0]  # El más viejo disponible
+
+    # Construir snapshot-like del entry anterior (limitado)
+    snap_anterior = {
+        "generated_at": entry_anterior.get("timestamp", ""),
+        "readiness_score": {"score_total": entry_anterior.get("score")},
+        # Para los demás campos no tenemos histórico — usamos defaults
+    }
+
+    diff = comparar_snapshots(snap_anterior, actual)
+    return diff.to_dict()
+
+
 # ----- Audit Trail -----
 
 

@@ -29,6 +29,8 @@ const nav: { href: string; label: string }[] = [
   { href: '/plan', label: 'Plan 5 años' },
   { href: '/sensitivity', label: 'Sensibilidad' },
   { href: '/comparador', label: 'Comparador' },
+  { href: '/whatif-live', label: '⚡ What-if Live' },
+  { href: '/pipeline-lp', label: '💼 Pipeline LP' },
   { href: '/stress', label: 'Stress' },
   { href: '/financiamiento', label: 'Financiamiento' },
   { href: '/carbono', label: 'Carbono' },
