@@ -1468,6 +1468,61 @@ def data_room_endpoint() -> dict:
     return checklist_completo()
 
 
+# ----- Sistema de Notas -----
+
+
+class NotaCrearRequest(BaseModel):
+    entidad_tipo: str
+    entidad_id: str
+    texto: str
+    autor: str = "Nicolás"
+    tags: list[str] = []
+
+
+class NotaActualizarRequest(BaseModel):
+    texto: str | None = None
+    tags: list[str] | None = None
+
+
+@app.get("/notas", tags=["meta"], summary="Lista notas, opcionalmente por entidad")
+def notas_list_endpoint(entidad_tipo: str | None = None, entidad_id: str | None = None) -> dict:
+    from .notas import listar_notas_de, stats_notas
+    return {
+        "notas": listar_notas_de(entidad_tipo, entidad_id),
+        "stats": stats_notas(),
+    }
+
+
+@app.post("/notas", tags=["meta"], summary="Crea una nota nueva")
+def notas_crear_endpoint(req: NotaCrearRequest) -> dict:
+    from .notas import crear_nota
+    return crear_nota(req.entidad_tipo, req.entidad_id, req.texto, req.autor, req.tags)
+
+
+@app.patch("/notas/{nota_id}", tags=["meta"], summary="Actualiza una nota")
+def notas_update_endpoint(nota_id: str, req: NotaActualizarRequest) -> dict:
+    from .notas import actualizar_nota
+    n = actualizar_nota(nota_id, req.texto, req.tags)
+    if not n:
+        raise HTTPException(status_code=404, detail="Nota no encontrada")
+    return n
+
+
+@app.delete("/notas/{nota_id}", tags=["meta"], summary="Elimina una nota")
+def notas_delete_endpoint(nota_id: str) -> dict:
+    from .notas import eliminar_nota
+    return {"deleted": eliminar_nota(nota_id)}
+
+
+# ----- System Health -----
+
+
+@app.get("/health/full", tags=["meta"], summary="Reporte completo de salud del sistema")
+def system_health_endpoint() -> dict:
+    from .system_health import system_health_report
+    return system_health_report()
+
+
 # ----- Pipeline LP (CRM) -----
 
 

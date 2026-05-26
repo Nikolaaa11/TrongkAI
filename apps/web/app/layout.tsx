@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { CommandK } from '@/components/CommandK';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -38,6 +39,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/macro', label: 'Macro' },
   { href: '/api', label: 'API' },
   { href: '/audit', label: 'Audit Trail' },
+  { href: '/salud', label: '💚 Salud' },
   { href: '/digest', label: '📧 Digest' },
   { href: '/investigacion', label: 'Research' },
 ];
@@ -50,19 +52,29 @@ export default function RootLayout({
   return (
     <html lang="es-CL">
       <body className="bg-white font-sans text-ink antialiased">
+        <CommandK />
         {/* Apple-style sticky nav: blanco, blur, sombra mínima */}
         <header className="sticky top-0 z-50 border-b border-ink-100 bg-white/80 backdrop-blur-xl">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-3">
-            <Link href="/" className="flex shrink-0 items-center gap-2">
-              <Image
-                src="/logo-trongkai-color.png"
-                alt="Trongkai"
-                width={140}
-                height={32}
-                priority
-                className="h-7 w-auto"
-              />
-            </Link>
+            <div className="flex shrink-0 items-center gap-3">
+              <Link href="/" className="flex items-center gap-2">
+                <Image
+                  src="/logo-trongkai-color.png"
+                  alt="Trongkai"
+                  width={140}
+                  height={32}
+                  priority
+                  className="h-7 w-auto"
+                />
+              </Link>
+              <span
+                className="hidden md:inline-flex items-center gap-1 rounded-full border border-ink-100 bg-ink-50/50 px-2.5 py-1 text-[11px] font-medium text-ink-400 cursor-help"
+                title="Atajo: presiona Cmd+K (Mac) o Ctrl+K (Windows) para buscar en toda la plataforma"
+              >
+                <kbd className="text-[10px] font-semibold text-ink-600">⌘K</kbd>
+                <span>Buscar</span>
+              </span>
+            </div>
             <nav className="flex flex-1 items-center justify-end gap-1 overflow-x-auto">
               {nav.map((n) => (
                 <Link
