@@ -269,6 +269,9 @@ export default function ComandoPage() {
       {/* Pipeline LP */}
       <PipelineLPCard />
 
+      {/* Inbox status */}
+      <InboxCard />
+
       {/* ESG + Probabilidad MC */}
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className={`apple-card ${snap.carbon_footprint.baseline.es_carbono_negativo ? 'bg-brand-50 ring-1 ring-brand/20' : 'bg-orange-50 ring-1 ring-orange-200'}`}>
@@ -354,6 +357,54 @@ function BigKPI({ label, value, unit, tone, sub, link }: {
     );
   }
   return <div className={`apple-card ring-1 ${ringCls}`}>{inner}</div>;
+}
+
+function InboxCard() {
+  const [data, setData] = useState<{ total: number; sugerencias_totales: number; por_categoria: Record<string, number>; ultimos_10: any[]; nota?: string } | null>(null);
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/inbox/status`).then(r => r.ok && r.json()).then(setData).catch(() => {});
+  }, []);
+  if (!data) return null;
+  return (
+    <section className="apple-card">
+      <div className="flex items-baseline justify-between">
+        <h2 className="text-xl font-semibold tracking-apple text-ink">📥 Inbox Inteligente</h2>
+        <Link href="/inbox" className="text-xs font-medium text-brand">Ver inbox →</Link>
+      </div>
+      <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-ink-400">Archivos indexados</div>
+          <div className="tabular mt-1 text-2xl font-semibold text-ink">{data.total}</div>
+          <div className="text-[11px] text-ink-400">en {Object.keys(data.por_categoria).length} categorías</div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-ink-400">Sugerencias generadas</div>
+          <div className="tabular mt-1 text-2xl font-semibold text-brand">{data.sugerencias_totales}</div>
+          <div className="text-[11px] text-ink-400">celdas/módulos a actualizar</div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-ink-400">Último procesamiento</div>
+          <div className="tabular mt-1 text-base font-semibold text-ink">
+            {data.ultimos_10[0]?.fecha_procesado ? new Date(data.ultimos_10[0].fecha_procesado).toLocaleDateString('es-CL') : '—'}
+          </div>
+          <div className="text-[11px] text-ink-400">
+            {data.ultimos_10[0]?.filename?.slice(0, 30) ?? 'Sin archivos aún'}
+          </div>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-ink-400">Acción</div>
+          <div className="mt-1">
+            <Link href="/inbox" className="btn-apple text-xs">Procesar inbox</Link>
+          </div>
+        </div>
+      </div>
+      {data.nota && (
+        <div className="mt-3 rounded bg-yellow-50 px-3 py-2 text-xs text-yellow-700">
+          ⚠ {data.nota}
+        </div>
+      )}
+    </section>
+  );
 }
 
 function PipelineLPCard() {
