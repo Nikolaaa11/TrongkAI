@@ -20,6 +20,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/dashboard-directorio', label: 'Directorio' },
   { href: '/readiness', label: 'Readiness' },
   { href: '/datos', label: 'Datos faltantes' },
+  { href: '/inbox', label: '📥 Inbox' },
   { href: '/variables', label: 'Matriz Variables' },
   { href: '/decisiones', label: '🎯 Decisiones' },
   { href: '/coherencia', label: 'Coherencia' },

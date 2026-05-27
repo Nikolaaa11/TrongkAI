@@ -1468,6 +1468,67 @@ def data_room_endpoint() -> dict:
     return checklist_completo()
 
 
+# ----- Inbox Status -----
+
+
+@app.get(
+    "/inbox/status",
+    tags=["meta"],
+    summary="Estado del inbox (archivos por categoría + sugerencias)",
+    description=(
+        "Lee inbox/_index.json y devuelve estadísticas: total archivos, "
+        "por categoría, sugerencias automáticas detectadas."
+    ),
+)
+def inbox_status_endpoint() -> dict:
+    import json
+    from pathlib import Path
+    # En el container, el repo está en /app
+    INDEX_PATHS = [
+        Path("/app/inbox/_index.json"),
+        Path(__file__).parent.parent.parent.parent / "inbox" / "_index.json",
+    ]
+    for p in INDEX_PATHS:
+        if p.exists():
+            try:
+                idx = json.loads(p.read_text(encoding="utf-8"))
+                archivos = list(idx.get("archivos", {}).values())
+                por_cat: dict[str, int] = {}
+                por_subcat: dict[str, int] = {}
+                sugerencias_total = 0
+                ultimos: list[dict] = []
+                for e in archivos:
+                    cat = e.get("categoria", "?")
+                    sub = f"{cat}/{e.get('subcategoria', '?')}"
+                    por_cat[cat] = por_cat.get(cat, 0) + 1
+                    por_subcat[sub] = por_subcat.get(sub, 0) + 1
+                    sugerencias_total += len(e.get("sugerencias", []))
+                # Más recientes primero
+                archivos_sorted = sorted(
+                    archivos,
+                    key=lambda e: e.get("fecha_procesado", ""),
+                    reverse=True,
+                )
+                ultimos = archivos_sorted[:10]
+                return {
+                    "total": len(archivos),
+                    "por_categoria": por_cat,
+                    "por_subcategoria": por_subcat,
+                    "sugerencias_totales": sugerencias_total,
+                    "ultimos_10": ultimos,
+                }
+            except Exception:
+                pass
+    return {
+        "total": 0,
+        "por_categoria": {},
+        "por_subcategoria": {},
+        "sugerencias_totales": 0,
+        "ultimos_10": [],
+        "nota": "No se encontró inbox/_index.json (procesar primero con scripts/procesar_inbox.py)",
+    }
+
+
 # ----- Sistema de Notas -----
 
 

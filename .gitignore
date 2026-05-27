@@ -58,3 +58,11 @@ docs/_inventory.json
 
 .vercel
 trongkai_local.db
+
+# Inbox - archivos sensibles del equipo (NO commitear contenido)
+# Solo trackeamos: estructura (.gitkeep), README.md, _index.json
+inbox/**/*
+!inbox/**/.gitkeep
+!inbox/**/README.md
+!inbox/_index.json
+!inbox/README.md
