@@ -221,11 +221,30 @@ def render_status(idx: dict) -> str:
     return "\n".join(out)
 
 
+def sync_a_engine(idx: dict, engine_url: str = "https://trongkai-engine.fly.dev") -> bool:
+    """Sube el _index.json al engine para que /inbox/status web lo vea."""
+    try:
+        import urllib.request
+        data = json.dumps({"archivos": idx.get("archivos", {}), "version": idx.get("version", 1)}).encode("utf-8")
+        req = urllib.request.Request(
+            f"{engine_url}/inbox/sync",
+            data=data,
+            method="POST",
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            return resp.status == 200
+    except Exception as e:
+        print(f"  [WARN] Sync engine falló: {e}")
+        return False
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--status", action="store_true", help="Solo mostrar estado")
     parser.add_argument("--reprocess-all", action="store_true", help="Re-procesar todo (incluye _procesados)")
     parser.add_argument("--move", action="store_true", help="Mover archivos a _procesados/ tras procesar")
+    parser.add_argument("--no-sync", action="store_true", help="No sincronizar al engine prod")
     args = parser.parse_args()
 
     if not INBOX.exists():
@@ -277,6 +296,15 @@ def main():
                 print(f"        [WARN] No se pudo mover: {e}")
 
     guardar_index(idx)
+
+    # Sync al engine prod (para que /inbox/status web lo vea)
+    if not args.no_sync:
+        print()
+        print("Sincronizando al engine prod...")
+        if sync_a_engine(idx):
+            print("  [OK] Sync exitoso → /inbox/status actualizado en https://trongkai-web.vercel.app/inbox")
+        else:
+            print("  [WARN] Sync omitido (sin conexión o engine down). Local OK igual.")
 
     print()
     print(f"OK Procesados: {procesados_count}  |  Duplicados: {duplicados_count}")

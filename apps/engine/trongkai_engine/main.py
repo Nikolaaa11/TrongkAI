@@ -1471,20 +1471,49 @@ def data_room_endpoint() -> dict:
 # ----- Inbox Status -----
 
 
+class InboxSyncRequest(BaseModel):
+    archivos: dict = Field(default_factory=dict)
+    version: int = 1
+
+
+@app.post(
+    "/inbox/sync",
+    tags=["meta"],
+    summary="Sincroniza inbox/_index.json local al engine (called from procesar_inbox.py)",
+    description=(
+        "Recibe el índice del inbox local y lo persiste en /tmp del engine. "
+        "Permite que /inbox/status muestre estado actualizado desde la web pública."
+    ),
+)
+def inbox_sync_endpoint(req: InboxSyncRequest) -> dict:
+    import json
+    from datetime import datetime, timezone
+    from pathlib import Path
+    out = Path("/tmp/trongkai-inbox-index.json")
+    payload = {
+        "archivos": req.archivos,
+        "version": req.version,
+        "synced_at": datetime.now(timezone.utc).isoformat(),
+    }
+    out.write_text(json.dumps(payload, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+    return {"synced": True, "total_archivos": len(req.archivos), "path": str(out)}
+
+
 @app.get(
     "/inbox/status",
     tags=["meta"],
     summary="Estado del inbox (archivos por categoría + sugerencias)",
     description=(
-        "Lee inbox/_index.json y devuelve estadísticas: total archivos, "
-        "por categoría, sugerencias automáticas detectadas."
+        "Devuelve stats del inbox. Primero busca /tmp/trongkai-inbox-index.json (sync), "
+        "luego inbox/_index.json del repo."
     ),
 )
 def inbox_status_endpoint() -> dict:
     import json
     from pathlib import Path
-    # En el container, el repo está en /app
+    # Prioridad: 1) sync /tmp, 2) inbox local
     INDEX_PATHS = [
+        Path("/tmp/trongkai-inbox-index.json"),
         Path("/app/inbox/_index.json"),
         Path(__file__).parent.parent.parent.parent / "inbox" / "_index.json",
     ]
