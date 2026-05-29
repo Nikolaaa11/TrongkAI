@@ -1468,6 +1468,23 @@ def data_room_endpoint() -> dict:
     return checklist_completo()
 
 
+# ----- Roadmap Timeline -----
+
+
+@app.get(
+    "/roadmap",
+    tags=["meta"],
+    summary="Roadmap consolidado de próximos hitos (12 meses)",
+    description=(
+        "Timeline cronológico con compliance REP, LP pipeline, decisiones top, "
+        "certificaciones esperadas. Agrupado por mes."
+    ),
+)
+def roadmap_endpoint(meses: int = 12) -> dict:
+    from .roadmap import construir_roadmap
+    return construir_roadmap(meses_adelante=meses)
+
+
 # ----- Inbox Status -----
 
 

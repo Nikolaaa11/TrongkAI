@@ -140,13 +140,44 @@ def listar_archivos_inbox(incluir_procesados: bool = False) -> list[Path]:
 
 
 def procesar_archivo(p: Path, idx: dict, log_audit: bool = True) -> dict:
-    """Procesa UN archivo: indexa, clasifica, sugiere, registra."""
+    """Procesa UN archivo: indexa, clasifica, extrae contenido, sugiere, registra."""
     hash_md5 = _hash_md5(p)
     rel_path = str(p.relative_to(ROOT)).replace("\\", "/")
     categoria = _categoria_desde_path(p)
     subcategoria = _subcategoria_desde_path(p)
     size_kb = p.stat().st_size / 1024
+
+    # Sugerencias basadas en nombre + path
     sugerencias = sugerir_actualizaciones(p.name, categoria, subcategoria)
+
+    # NUEVO: extraer texto y entidades del contenido
+    extraccion = {}
+    entidades = {}
+    metodo_extraccion = "skipped"
+    try:
+        from text_extractor import extraer_texto, resumen_entidades
+        ext_result = extraer_texto(p)
+        metodo_extraccion = ext_result["metodo"]
+        entidades = ext_result["entidades"]
+        extraccion = {
+            "metodo": metodo_extraccion,
+            "longitud_texto": len(ext_result["texto"]),
+            "resumen_entidades": resumen_entidades(entidades),
+        }
+        # Sugerencias adicionales basadas en contenido extraído
+        texto_lower = ext_result["texto"].lower()
+        sugerencias_contenido = sugerir_actualizaciones(texto_lower[:500], categoria, subcategoria)
+        # Merge sin duplicados
+        existing_tipos = {s["tipo_dato"] for s in sugerencias}
+        for sc in sugerencias_contenido:
+            if sc["tipo_dato"] not in existing_tipos:
+                sc["confianza"] = "media"  # Detectado en contenido, no en nombre
+                sc["fuente"] = "contenido"
+                sugerencias.append(sc)
+    except ImportError:
+        pass
+    except Exception as e:
+        extraccion = {"error": str(e), "metodo": metodo_extraccion}
 
     entry = {
         "ruta": rel_path,
@@ -158,6 +189,8 @@ def procesar_archivo(p: Path, idx: dict, log_audit: bool = True) -> dict:
         "extension": p.suffix.lower(),
         "fecha_procesado": datetime.now(timezone.utc).isoformat(),
         "sugerencias": sugerencias,
+        "extraccion": extraccion,
+        "entidades": entidades,
     }
 
     # Detectar duplicado por hash

@@ -32,6 +32,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/sensitivity', label: 'Sensibilidad' },
   { href: '/comparador', label: 'Comparador' },
   { href: '/whatif-live', label: '⚡ What-if Live' },
+  { href: '/roadmap', label: '🗺 Roadmap' },
   { href: '/pipeline-lp', label: '💼 Pipeline LP' },
   { href: '/stress', label: 'Stress' },
   { href: '/financiamiento', label: 'Financiamiento' },
