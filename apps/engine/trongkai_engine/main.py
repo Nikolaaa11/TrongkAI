@@ -1479,6 +1479,39 @@ def data_room_endpoint() -> dict:
     return checklist_completo()
 
 
+# ----- Commercial Intelligence (pricing + concentration + tech ROI + pipeline) -----
+
+
+@cached_ttl(seconds=600)
+def _commercial_intelligence_cached() -> dict:
+    from .commercial_intelligence import analisis_comercial_completo
+    return analisis_comercial_completo()
+
+
+@app.get("/commercial/intelligence", tags=["meta"], summary="Análisis comercial integral")
+def commercial_intelligence_endpoint() -> dict:
+    """Análisis comercial cruzando clientes reales, benchmarks, tech ROI y revenue pipeline."""
+    return _commercial_intelligence_cached()
+
+
+@app.get("/commercial/pricing", tags=["meta"], summary="Pricing power: precios SKU vs benchmarks")
+def commercial_pricing_endpoint() -> dict:
+    from .commercial_intelligence import analizar_pricing
+    return {"pricing": [p.to_dict() for p in analizar_pricing()]}
+
+
+@app.get("/commercial/concentration", tags=["meta"], summary="HHI concentración clientes")
+def commercial_concentration_endpoint() -> dict:
+    from .commercial_intelligence import analizar_concentracion
+    return analizar_concentracion().to_dict()
+
+
+@app.get("/commercial/tech-roi", tags=["meta"], summary="ROI por cada tecnología del stack")
+def commercial_tech_roi_endpoint() -> dict:
+    from .commercial_intelligence import analizar_tech_roi
+    return {"tech_roi": [t.to_dict() for t in analizar_tech_roi()]}
+
+
 # ----- Clientes Reales (catálogo P1) -----
 
 

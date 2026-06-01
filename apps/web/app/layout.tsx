@@ -29,6 +29,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/lp-pack', label: 'LP Pack' },
   { href: '/equipo', label: 'Equipo' },
   { href: '/clientes-reales', label: '🍽 Clientes' },
+  { href: '/commercial', label: '💼 Commercial Intel' },
   { href: '/tecnologias', label: '⚙️ Tech Stack' },
   { href: '/plan', label: 'Plan 5 años' },
   { href: '/sensitivity', label: 'Sensibilidad' },
