@@ -46,8 +46,11 @@ def test_get_audit_trail_filtro_tipo(temp_path):
 
 
 def test_orden_mas_reciente_primero(temp_path):
+    import time
     at.log_evento("otro", "primero")
+    time.sleep(0.002)
     at.log_evento("otro", "segundo")
+    time.sleep(0.002)
     at.log_evento("otro", "tercero")
 
     entries = at.get_audit_trail()

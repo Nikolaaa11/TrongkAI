@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Any
 
 try:
@@ -34,8 +35,48 @@ SNAPSHOT_FALLBACK: dict[str, dict[str, Any]] = {
     "tasa_desempleo": {"valor": 8.4, "fecha": "2026-04-01", "unidad_medida": "Porcentaje"},
 }
 
+# Cache híbrido: in-memory (rápido) + disco persistente (sobrevive cold start)
 _CACHE: dict[str, Any] = {"timestamp": None, "data": None}
 _CACHE_TTL = timedelta(hours=24)
+_DISK_CACHE_PATH = Path("/tmp/trongkai-macro-cache.json")
+
+
+def _load_disk_cache() -> bool:
+    """Intenta cargar cache desde disco. Devuelve True si encontró cache válido."""
+    if not _DISK_CACHE_PATH.exists():
+        return False
+    try:
+        data = json.loads(_DISK_CACHE_PATH.read_text(encoding="utf-8"))
+        ts = datetime.fromisoformat(data["timestamp"])
+        if datetime.now(timezone.utc) - ts < _CACHE_TTL:
+            # Reconstruir IndicadorMacro objects
+            _CACHE["timestamp"] = ts
+            _CACHE["data"] = {
+                k: IndicadorMacro(**v) for k, v in data["indicadores"].items()
+            }
+            return True
+    except Exception:
+        pass
+    return False
+
+
+def _save_disk_cache() -> None:
+    """Guarda cache a disco para sobrevivir cold starts."""
+    if not _CACHE["data"] or not _CACHE["timestamp"]:
+        return
+    try:
+        _DISK_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "timestamp": _CACHE["timestamp"].isoformat(),
+            "indicadores": {
+                k: {"codigo": v.codigo, "valor": v.valor, "fecha": v.fecha,
+                    "unidad_medida": v.unidad_medida, "fuente": v.fuente}
+                for k, v in _CACHE["data"].items()
+            },
+        }
+        _DISK_CACHE_PATH.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    except Exception:
+        pass  # Cache best-effort
 
 
 @dataclass
@@ -47,7 +88,7 @@ class IndicadorMacro:
     fuente: str = "mindicador.cl (Banco Central Chile)"
 
 
-def _fetch_remote(timeout: float = 5.0) -> dict | None:
+def _fetch_remote(timeout: float = 3.0) -> dict | None:
     """Intenta traer la última foto de indicadores de mindicador.cl. None si falla."""
     try:
         if httpx:
@@ -63,8 +104,10 @@ def _fetch_remote(timeout: float = 5.0) -> dict | None:
 
 
 def get_indicadores(force_refresh: bool = False) -> dict[str, IndicadorMacro]:
-    """Devuelve dict de indicadores. Usa cache 24h. Fallback al snapshot si falla."""
+    """Devuelve dict de indicadores. Usa cache 24h memoria+disco. Fallback al snapshot si falla."""
     now = datetime.now(timezone.utc)
+
+    # 1. Try memory cache (fastest)
     if (
         not force_refresh
         and _CACHE["timestamp"] is not None
@@ -73,6 +116,11 @@ def get_indicadores(force_refresh: bool = False) -> dict[str, IndicadorMacro]:
     ):
         return _CACHE["data"]
 
+    # 2. Try disk cache (sobrevive cold starts)
+    if not force_refresh and _load_disk_cache():
+        return _CACHE["data"]  # _load_disk_cache poblo memory cache
+
+    # 3. Fetch remote (último recurso)
     remote = _fetch_remote()
     indicadores: dict[str, IndicadorMacro] = {}
 
@@ -100,6 +148,7 @@ def get_indicadores(force_refresh: bool = False) -> dict[str, IndicadorMacro]:
 
     _CACHE["timestamp"] = now
     _CACHE["data"] = indicadores
+    _save_disk_cache()  # Persist para próximos cold starts
     return indicadores
 
 

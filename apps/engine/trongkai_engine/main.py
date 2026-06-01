@@ -6,6 +6,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal
 
+from .cache import cached_ttl  # noqa: E402 — early import for snapshot caching
+
 import structlog
 from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -1130,10 +1132,22 @@ def carbon_footprint_endpoint(req: CarbonRequest) -> dict:
     description=(
         "Devuelve el estado consolidado: KPIs base + valuation + escenarios estratégicos + "
         "carbon footprint + REP calendar + macro Chile + monte carlo integrado + tornado. "
-        "Pensado para tearsheet PDF y APIs externas. Una sola request, todo el modelo."
+        "Cacheado 60s para reducir carga (forzar refresh con ?force=true)."
     ),
 )
-def snapshot_endpoint() -> dict:
+def snapshot_endpoint(force: bool = False) -> dict:
+    if not force:
+        return _snapshot_cached()
+    # Bypass cache
+    return _snapshot_build()
+
+
+@cached_ttl(seconds=60)  # Cache snapshot 60s — alimenta cockpit, PDF, ZIP, digest
+def _snapshot_cached() -> dict:
+    return _snapshot_build()
+
+
+def _snapshot_build() -> dict:
     base = ParametrosPlan()
     plan = build_plan(base)
     val = valuar_proyecto_ev_ebitda(plan)
@@ -1246,9 +1260,6 @@ def snapshot_endpoint() -> dict:
         "alertas": _safe_alertas(),
         "coherencia": _safe_coherencia(),
     }
-
-
-from .cache import cached_ttl
 
 
 @cached_ttl(seconds=300)
@@ -1649,6 +1660,12 @@ def notas_delete_endpoint(nota_id: str) -> dict:
 # ----- System Health -----
 
 
+@app.get("/healthz", tags=["meta"], summary="Health check rápido (load balancer)", include_in_schema=False)
+def healthz_endpoint() -> dict:
+    """Ultra-rápido (<5ms): no toca módulos pesados. Para LB / monitoring."""
+    return {"ok": True, "service": "trongkai-engine"}
+
+
 @app.get("/health/full", tags=["meta"], summary="Reporte completo de salud del sistema")
 def system_health_endpoint() -> dict:
     from .system_health import system_health_report
@@ -1847,6 +1864,7 @@ def cache_clear_endpoint() -> dict:
         "carbon, modelo, progreso) y devuelve alertas ordenadas por severidad."
     ),
 )
+@cached_ttl(seconds=180)
 def alertas_endpoint() -> dict:
     from .alertas import escanear_alertas
 
@@ -1866,6 +1884,7 @@ def alertas_endpoint() -> dict:
         "priorizadas por: impacto TIR + sinergia + uplift readiness + quick-win + urgencia."
     ),
 )
+@cached_ttl(seconds=300)
 def decisiones_top_endpoint() -> dict:
     from .decision_engine import resumen_decisiones
 
@@ -2032,13 +2051,19 @@ def variables_matrix_endpoint() -> dict:
         "Score ≥ 80: bankable. 60-79: prometedor. 40-59: oportunidad. <40: re-think."
     ),
 )
+@cached_ttl(seconds=600)  # 10 min - Monte Carlo es caro
+def _readiness_cached(n_sims_mc: int) -> dict:
+    from .readiness_score import calcular_readiness_score
+    return calcular_readiness_score(n_sims_mc=n_sims_mc).to_dict()
+
+
 def readiness_score_endpoint(n_sims_mc: int = 500, save_history: bool = False) -> dict:
     from .readiness_history import add_snapshot
-    from .readiness_score import calcular_readiness_score
 
     if n_sims_mc < 100 or n_sims_mc > 5000:
         raise HTTPException(status_code=400, detail="n_sims_mc debe estar entre 100 y 5000")
-    result = calcular_readiness_score(n_sims_mc=n_sims_mc).to_dict()
+    # Usar cache: misma n_sims_mc → mismo resultado por 10 min (TTL del _readiness_cached)
+    result = _readiness_cached(n_sims_mc)
     if save_history:
         try:
             add_snapshot(result, evento="manual /readiness/score?save_history=true")
