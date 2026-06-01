@@ -1575,7 +1575,8 @@ def inbox_sync_endpoint(req: InboxSyncRequest) -> dict:
     import json
     from datetime import datetime, timezone
     from pathlib import Path
-    out = Path("/tmp/trongkai-inbox-index.json")
+    from .storage import data_path
+    out = data_path("inbox-index.json")
     payload = {
         "archivos": req.archivos,
         "version": req.version,
@@ -1598,8 +1599,10 @@ def inbox_status_endpoint() -> dict:
     import json
     from pathlib import Path
     # Prioridad: 1) sync /tmp, 2) inbox local
+    from .storage import data_path
     INDEX_PATHS = [
-        Path("/tmp/trongkai-inbox-index.json"),
+        data_path("inbox-index.json"),  # Volume persistente (/data o /tmp fallback)
+        Path("/tmp/trongkai-inbox-index.json"),  # Legacy
         Path("/app/inbox/_index.json"),
         Path(__file__).parent.parent.parent.parent / "inbox" / "_index.json",
     ]

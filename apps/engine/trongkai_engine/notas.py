@@ -25,7 +25,9 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
-NOTAS_PATH = Path("/tmp/trongkai-notas.json")
+from .storage import data_path
+
+NOTAS_PATH = data_path("notas.json")
 MAX_NOTAS = 2000
 
 

@@ -21,7 +21,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-HISTORY_PATH = Path("/tmp/trongkai-readiness-history.json")
+from .storage import data_path
+
+HISTORY_PATH = data_path("readiness-history.json")
 MAX_ENTRIES = 1000  # Cap para evitar crecimiento ilimitado
 
 

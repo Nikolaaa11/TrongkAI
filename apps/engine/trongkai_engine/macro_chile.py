@@ -38,7 +38,9 @@ SNAPSHOT_FALLBACK: dict[str, dict[str, Any]] = {
 # Cache híbrido: in-memory (rápido) + disco persistente (sobrevive cold start)
 _CACHE: dict[str, Any] = {"timestamp": None, "data": None}
 _CACHE_TTL = timedelta(hours=24)
-_DISK_CACHE_PATH = Path("/tmp/trongkai-macro-cache.json")
+from .storage import data_path  # noqa: E402
+
+_DISK_CACHE_PATH = data_path("macro-cache.json")
 
 
 def _load_disk_cache() -> bool:

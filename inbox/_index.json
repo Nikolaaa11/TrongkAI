@@ -8,7 +8,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 366.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:52.905361+00:00",
+      "fecha_procesado": "2026-06-01T21:06:35.914776+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -59,7 +59,8 @@
             "van"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Aceite alperujo__la-gestion-de-los-subproductos-un-potencial-pendiente-para-el-sector-del-olivar.pdf"
     },
     "be9eeb1b8e15": {
       "ruta": "inbox/01-comercial/contratos-firmados/Aceite alperujo__recuperación aceite de oliva.docx",
@@ -69,7 +70,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 18.8,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:52.993537+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.018199+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -126,7 +127,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Aceite alperujo__recuperación aceite de oliva.docx"
     },
     "c59821893378": {
       "ruta": "inbox/01-comercial/contratos-firmados/Aceite alperujo__Subproductos-agroindustrias-olivar-def.pdf",
@@ -136,7 +138,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 984.3,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:53.397158+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.161670+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -174,7 +176,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Aceite alperujo__Subproductos-agroindustrias-olivar-def.pdf"
     },
     "15853fc507f4": {
       "ruta": "inbox/01-comercial/contratos-firmados/Agrozzi__Empresas_Carozzi_SA-Pomasa_de_tomate-7001251.PDF",
@@ -184,7 +187,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 224.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:53.419452+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.168846+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -242,7 +245,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Agrozzi__Empresas_Carozzi_SA-Pomasa_de_tomate-7001251.PDF"
     },
     "ad9c91d9d3f1": {
       "ruta": "inbox/01-comercial/contratos-firmados/Tomasa__análisis tomasa Iansa.png",
@@ -252,7 +256,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 27.8,
       "extension": ".png",
-      "fecha_procesado": "2026-06-01T19:24:53.992973+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.561731+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -279,7 +283,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 45.3,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:53.480744+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.204286+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Alianza estratégica / MOU",
@@ -319,7 +323,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Iansa Molina__MOU_Agrosphere -Patagonia Fresh_14042025 (1).docx"
     },
     "d5d1ad5452e4": {
       "ruta": "inbox/01-comercial/contratos-firmados/Iansa Molina__Reunión Iansa Molina.docx",
@@ -329,7 +334,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 15.8,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:53.499390+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.208285+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -363,7 +368,8 @@
             "tir"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Iansa Molina__Reunión Iansa Molina.docx"
     },
     "367542a3450a": {
       "ruta": "inbox/01-comercial/contratos-firmados/image005.jpg",
@@ -373,14 +379,15 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 39.0,
       "extension": ".jpg",
-      "fecha_procesado": "2026-06-01T19:24:53.515042+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.209286+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/image005.jpg"
     },
     "3f85358a0d19": {
       "ruta": "inbox/01-comercial/contratos-firmados/image006.jpg",
@@ -390,14 +397,15 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 11.4,
       "extension": ".jpg",
-      "fecha_procesado": "2026-06-01T19:24:53.523888+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.210286+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/image006.jpg"
     },
     "8cec3dc75d59": {
       "ruta": "inbox/01-comercial/contratos-firmados/San Clemente Foods__Planilla volumen residuos organicos.xlsx",
@@ -407,7 +415,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 10.8,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:24:53.791607+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.497425+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -438,7 +446,8 @@
             "pomasa"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/San Clemente Foods__Planilla volumen residuos organicos.xlsx"
     },
     "5016db81f98a": {
       "ruta": "inbox/01-comercial/contratos-firmados/San Clemente Foods__Propuesta - San Clemente Foods.docx",
@@ -448,7 +457,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 1522.8,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:53.841095+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.522422+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -489,7 +498,8 @@
             "ods"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/San Clemente Foods__Propuesta - San Clemente Foods.docx"
     },
     "1458a027fe12": {
       "ruta": "inbox/01-comercial/contratos-firmados/Sugal__MOU_Agrosphere - Sugal Revabril2025.docx",
@@ -499,7 +509,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 43.4,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:53.886189+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.544855+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Alianza estratégica / MOU",
@@ -546,7 +556,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Sugal__MOU_Agrosphere - Sugal Revabril2025.docx"
     },
     "46aea0db7ba0": {
       "ruta": "inbox/01-comercial/contratos-firmados/Sugal__MOU_Agrosphere - Sugal.docx",
@@ -556,7 +567,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 18.6,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:53.979742+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.561731+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Alianza estratégica / MOU",
@@ -597,7 +608,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Sugal__MOU_Agrosphere - Sugal.docx"
     },
     "0d97341f097b": {
       "ruta": "inbox/01-comercial/contratos-firmados/Tomasa__ca5801p59-69104 tomato pomace for chicken.pdf",
@@ -607,7 +619,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 18672.7,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:54.146361+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.694900+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -642,7 +654,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Tomasa__ca5801p59-69104 tomato pomace for chicken.pdf"
     },
     "41a778db9e01": {
       "ruta": "inbox/01-comercial/contratos-firmados/Tomasa__Tomato pomace drum dried specs (003)_L.pdf",
@@ -652,7 +665,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 166.5,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:54.163027+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.727938+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -684,7 +697,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Tomasa__Tomato pomace drum dried specs (003)_L.pdf"
     },
     "e5a9694ca286": {
       "ruta": "inbox/01-comercial/contratos-firmados/Tomasa__Tomato Spec Sheet Labb.pdf",
@@ -694,7 +708,7 @@
       "subcategoria": "contratos-firmados",
       "size_kb": 89.3,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:54.210564+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.745680+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -726,7 +740,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/01-comercial/contratos-firmados/Tomasa__Tomato Spec Sheet Labb.pdf"
     },
     "11c1044ce53e": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Alister_Alister Tomasa__Informe valorizacion Planta Tomasa -PARRAL-V1.pdf",
@@ -736,7 +751,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 1051.8,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:54.352182+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.892753+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -794,7 +809,8 @@
             "capex"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Alister_Alister Tomasa__Informe valorizacion Planta Tomasa -PARRAL-V1.pdf"
     },
     "2440a0f929e8": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Alister_Alister Tomasa__PPTO PROYECTO TOMASA LA GRORIA MAY 2025-REV2.xlsx",
@@ -804,7 +820,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 68.3,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:24:54.397045+00:00",
+      "fecha_procesado": "2026-06-01T21:06:36.910352+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -852,7 +868,8 @@
             "tomasa"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Alister_Alister Tomasa__PPTO PROYECTO TOMASA LA GRORIA MAY 2025-REV2.xlsx"
     },
     "a6ee2536d7ca": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Cascada__COTIZACIÓN ABASTECIMIENTO TERMICO PARA DESHIDRATADO_03-12-25_v2.pdf",
@@ -862,7 +879,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 141.0,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:54.604532+00:00",
+      "fecha_procesado": "2026-06-01T21:06:37.118721+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -910,7 +927,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Cascada__COTIZACIÓN ABASTECIMIENTO TERMICO PARA DESHIDRATADO_03-12-25_v2.pdf"
     },
     "7893a84a0d0e": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Cascada__COTIZACIÓN INGENIERIA DISIPADOR Y ORC TURBINA_19-11-2025 V3 (con datos proporcionado por el mandante).pdf",
@@ -920,7 +938,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 299.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:54.731908+00:00",
+      "fecha_procesado": "2026-06-01T21:06:37.232950+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -977,7 +995,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Cascada__COTIZACIÓN INGENIERIA DISIPADOR Y ORC TURBINA_19-11-2025 V3 (con datos proporcionado por el mandante).pdf"
     },
     "daae74b622de": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Cascada__Cotización Ingeniería y sistema deshidratación fase 1_24-12-25.pdf",
@@ -987,7 +1006,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 139.2,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:54.853074+00:00",
+      "fecha_procesado": "2026-06-01T21:06:37.356452+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1045,7 +1064,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Cascada__Cotización Ingeniería y sistema deshidratación fase 1_24-12-25.pdf"
     },
     "2b119077d0ba": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Cascada__Ing y Ejecucin Disipador.pdf",
@@ -1055,7 +1075,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 1768.3,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:59.450409+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.182741+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1080,7 +1100,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Cascada__Ing y Ejecucin Disipador.pdf"
     },
     "da6cbec93694": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Cascada__Selección Tecnológica del Proceso de Secado_27-11-25.pdf",
@@ -1090,7 +1111,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 109.3,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:59.568987+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.273244+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1148,7 +1169,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Cascada__Selección Tecnológica del Proceso de Secado_27-11-25.pdf"
     },
     "05544b87e429": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Equipos auxiliares__OC009_TecnoDevil.pdf",
@@ -1158,7 +1180,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 275.0,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:24:59.638173+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.325119+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1209,7 +1231,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Equipos auxiliares__OC009_TecnoDevil.pdf"
     },
     "c0885d6861e3": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Comparación ofertas.xlsx",
@@ -1219,7 +1242,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 11.9,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:24:59.658343+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.332003+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1273,7 +1296,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Comparación ofertas.xlsx"
     },
     "63711a4ea038": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Consultas para INDUGES.docx",
@@ -1283,7 +1307,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 9.7,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:59.709155+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.338005+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1322,7 +1346,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Consultas para INDUGES.docx"
     },
     "29fec550cbfe": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Consultas para Pesamatic.docx",
@@ -1332,7 +1357,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 9.1,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:59.758796+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.341005+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1368,7 +1393,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Consultas para Pesamatic.docx"
     },
     "03e45528e188": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Consultas para Richtech.docx",
@@ -1378,7 +1404,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 9.5,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:59.807395+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.346399+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1421,7 +1447,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Consultas para Richtech.docx"
     },
     "a45c5c2fcbbe": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Minuta de Homologación de Ofertas_ Obras Civiles Radier Parral.docx",
@@ -1431,7 +1458,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 8.5,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:59.863671+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.349172+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1473,7 +1500,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Minuta de Homologación de Ofertas_ Obras Civiles Radier Parral.docx"
     },
     "2c304bed5a5c": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Must have internos La Gloria.docx",
@@ -1483,7 +1511,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 12.9,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:24:59.926618+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.357172+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1522,7 +1550,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles__Must have internos La Gloria.docx"
     },
     "311d8c9a5fa3": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Bascula__Induges Bascula.pdf",
@@ -1532,7 +1561,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 998.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.067098+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.483102+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1589,7 +1618,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Bascula__Induges Bascula.pdf"
     },
     "0f4fb65a6c1d": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Bascula__Pesamatic Bascula.pdf",
@@ -1599,7 +1629,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 1324.9,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.272696+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.595637+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1634,7 +1664,8 @@
             "van"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Bascula__Pesamatic Bascula.pdf"
     },
     "83875717b691": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Galpones__Imagen de WhatsApp 2025-10-30 a las 16.33.38_ea1987ad.jpg",
@@ -1644,7 +1675,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 137.6,
       "extension": ".jpg",
-      "fecha_procesado": "2026-06-01T19:25:00.280329+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.596637+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1659,7 +1690,8 @@
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Galpones__Imagen de WhatsApp 2025-10-30 a las 16.33.38_ea1987ad.jpg"
     },
     "bdbb1f41b072": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Galpones__Imagen de WhatsApp 2025-10-30 a las 16.34.12_54d9cb3a.jpg",
@@ -1669,7 +1701,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 94.1,
       "extension": ".jpg",
-      "fecha_procesado": "2026-06-01T19:25:00.290786+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.597637+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1684,7 +1716,8 @@
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Galpones__Imagen de WhatsApp 2025-10-30 a las 16.34.12_54d9cb3a.jpg"
     },
     "e9a47b83df5c": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Galpones__Imagen de WhatsApp 2025-10-30 a las 16.35.08_7136e275.jpg",
@@ -1694,7 +1727,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 105.4,
       "extension": ".jpg",
-      "fecha_procesado": "2026-06-01T19:25:00.304881+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.598637+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1709,7 +1742,8 @@
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Galpones__Imagen de WhatsApp 2025-10-30 a las 16.35.08_7136e275.jpg"
     },
     "417bf0e7d3c7": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Radier__IM2551b Ecoinnova - Pavimentos estructura bodegas.pdf",
@@ -1719,7 +1753,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 681.3,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.588790+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.816324+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1783,7 +1817,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 1870.4,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.725506+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.961561+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1869,7 +1903,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 679.7,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.517488+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.766339+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1922,7 +1956,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Radier__IM2551 Ecoinnova - Pavimentos estructura bodegas.pdf"
     },
     "34660eb058f9": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Radier__Induges Radier.pdf",
@@ -1932,7 +1967,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 734.9,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.632733+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.861908+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -1985,7 +2020,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Obras Civiles_Radier__Induges Radier.pdf"
     },
     "75c313c6bd57": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Pulsator__Dos sistema de secado de tomasa.pdf",
@@ -1995,7 +2031,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 435.2,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.757359+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.978813+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -2038,7 +2074,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Pulsator__Dos sistema de secado de tomasa.pdf"
     },
     "73a647575e42": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Pulsator__oferta de consultoria Diseño Matías Grez.pdf",
@@ -2048,7 +2085,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 165.0,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.802505+00:00",
+      "fecha_procesado": "2026-06-01T21:06:42.994698+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -2113,7 +2150,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Pulsator__oferta de consultoria Diseño Matías Grez.pdf"
     },
     "1948231cf90a": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Pulsator__Pulsator para 500 kg Matías Grez(1).pdf",
@@ -2123,7 +2161,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 165.4,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.852467+00:00",
+      "fecha_procesado": "2026-06-01T21:06:43.028047+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -2179,7 +2217,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Pulsator__Pulsator para 500 kg Matías Grez(1).pdf"
     },
     "3d7d56d1d53d": {
       "ruta": "inbox/02-financiero/capex-cotizaciones/Pulsator__Pulsator para 500 kg Matías Grez.pdf",
@@ -2189,7 +2228,7 @@
       "subcategoria": "capex-cotizaciones",
       "size_kb": 177.8,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:00.902807+00:00",
+      "fecha_procesado": "2026-06-01T21:06:43.078051+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CapEx cotización equipo",
@@ -2255,7 +2294,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/capex-cotizaciones/Pulsator__Pulsator para 500 kg Matías Grez.pdf"
     },
     "ff5c93dbb23f": {
       "ruta": "inbox/02-financiero/eerr-historicos/Flujo Caja Agrospher.xlsm",
@@ -2265,7 +2305,7 @@
       "subcategoria": "eerr-historicos",
       "size_kb": 140.0,
       "extension": ".xlsm",
-      "fecha_procesado": "2026-06-01T19:25:01.158235+00:00",
+      "fecha_procesado": "2026-06-01T21:06:43.145467+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "openpyxl",
@@ -2311,7 +2351,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/eerr-historicos/Flujo Caja Agrospher.xlsm"
     },
     "18f788bf2331": {
       "ruta": "inbox/02-financiero/eerr-historicos/Flujo Caja Laboratorio & Piloto.xlsm",
@@ -2321,7 +2362,7 @@
       "subcategoria": "eerr-historicos",
       "size_kb": 137.6,
       "extension": ".xlsm",
-      "fecha_procesado": "2026-06-01T19:25:01.417872+00:00",
+      "fecha_procesado": "2026-06-01T21:06:43.228358+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "openpyxl",
@@ -2366,7 +2407,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/02-financiero/eerr-historicos/Flujo Caja Laboratorio & Piloto.xlsm"
     },
     "ac3ba6974d76": {
       "ruta": "inbox/03-operacional/capacidad-equipos/4. Planos__LAYOUT PLANTA PILOTO ALISTER.pptx",
@@ -2376,14 +2418,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1381.4,
       "extension": ".pptx",
-      "fecha_procesado": "2026-06-01T19:25:01.435034+00:00",
+      "fecha_procesado": "2026-06-01T21:06:43.228358+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/4. Planos__LAYOUT PLANTA PILOTO ALISTER.pptx"
     },
     "ecfe0d758ace": {
       "ruta": "inbox/03-operacional/capacidad-equipos/4. Planos__Plano emplazamiento LG-PL-MU-100-001.pdf",
@@ -2393,14 +2436,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2687.3,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:01.466367+00:00",
+      "fecha_procesado": "2026-06-01T21:06:43.244788+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/4. Planos__Plano emplazamiento LG-PL-MU-100-001.pdf"
     },
     "f6f892e43a6b": {
       "ruta": "inbox/03-operacional/capacidad-equipos/4. Planos__Proyecto Tomasa Version 1-Modelo.pdf",
@@ -2410,7 +2454,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1026.3,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:03.871345+00:00",
+      "fecha_procesado": "2026-06-01T21:06:45.896753+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -2436,7 +2480,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/4. Planos__Proyecto Tomasa Version 1-Modelo.pdf"
     },
     "e7fe38451250": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON_23-04-20__Cot 2020-32  Inyector Bicarbonato de Sodio.pdf",
@@ -2446,7 +2491,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 19.9,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:03.915545+00:00",
+      "fecha_procesado": "2026-06-01T21:06:45.922284+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -2474,7 +2519,8 @@
             "cotizacion"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON_23-04-20__Cot 2020-32  Inyector Bicarbonato de Sodio.pdf"
     },
     "786e62edb454": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON_23-04-20__Informe N°  PG-001.pdf",
@@ -2484,7 +2530,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 583.0,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:04.002859+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.000440+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -2520,7 +2566,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON_23-04-20__Informe N°  PG-001.pdf"
     },
     "2f15cc5f1544": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__2. 2020 02 25 Technical Specification La Gloria EN  Comentarios REP.doc",
@@ -2530,14 +2577,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2086.0,
       "extension": ".doc",
-      "fecha_procesado": "2026-06-01T19:25:04.034866+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.006823+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__2. 2020 02 25 Technical Specification La Gloria EN  Comentarios REP.doc"
     },
     "89ac1392cf46": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__2. 2020 02 25 Technical Specification La Gloria EN (1).doc",
@@ -2547,14 +2595,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2068.0,
       "extension": ".doc",
-      "fecha_procesado": "2026-06-01T19:25:04.052551+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.013027+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__2. 2020 02 25 Technical Specification La Gloria EN (1).doc"
     },
     "81d349fc3ac2": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__2. CO 0075V_20 DZ LA GLORIA (RV LG) RE.docx",
@@ -2564,7 +2613,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 162.8,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:04.097487+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.037048+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "python-docx",
@@ -2589,7 +2638,8 @@
             "ods"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__2. CO 0075V_20 DZ LA GLORIA (RV LG) RE.docx"
     },
     "8767960aa158": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__20200406123918_001.pdf",
@@ -2599,14 +2649,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 249.2,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:04.115200+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.039049+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__20200406123918_001.pdf"
     },
     "5f71df622b98": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__3. Terms and Conditions Uniconfort RE.docx",
@@ -2616,7 +2667,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 193.1,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:04.151089+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.072582+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "python-docx",
@@ -2637,7 +2688,8 @@
             "van"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__3. Terms and Conditions Uniconfort RE.docx"
     },
     "9d8da8ef397c": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__admin-permiso-temporal-individual-asistencia-a-establecimientos-de-salud-sin-clave-unica-v2-6375677.pdf",
@@ -2647,7 +2699,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 339.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:04.215109+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.093703+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -2693,7 +2745,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__admin-permiso-temporal-individual-asistencia-a-establecimientos-de-salud-sin-clave-unica-v2-6375677.pdf"
     },
     "a1e8e82ca695": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Certificado Titulo Ramon Espinoza.pdf",
@@ -2703,7 +2756,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 634.2,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:04.234125+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.110771+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -2720,7 +2773,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Certificado Titulo Ramon Espinoza.pdf"
     },
     "5240389e8496": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Comentarios Doc 2 Pag 9.docx",
@@ -2730,7 +2784,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 17.6,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:04.251376+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.110771+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "python-docx",
@@ -2755,7 +2809,8 @@
             "ods"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Comentarios Doc 2 Pag 9.docx"
     },
     "589b2caa9d33": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__CV Ramon Espinoza 03.03.20.pdf",
@@ -2765,7 +2820,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 260.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:04.345578+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.211056+00:00",
       "sugerencias": [
         {
           "tipo_dato": "CV o bio (equipo/advisor)",
@@ -2798,7 +2853,8 @@
             "tir"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__CV Ramon Espinoza 03.03.20.pdf"
     },
     "daeb469e9343": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Detalle Costos Proyecto La Gloria de C & E Rev B.xlsx",
@@ -2808,7 +2864,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 44.5,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:04.381286+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.227390+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "openpyxl",
@@ -2832,7 +2888,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Detalle Costos Proyecto La Gloria de C & E Rev B.xlsx"
     },
     "977e7af0f1fc": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Fuel Specifications.pdf",
@@ -2842,7 +2899,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 551.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:04.413398+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.244132+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -2867,7 +2924,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Fuel Specifications.pdf"
     },
     "3bf14f565d02": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON_Entregables__Entregables y Flujo CBLG.xlsx",
@@ -2877,7 +2935,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 24.8,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:04.446481+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.259719+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "openpyxl",
@@ -2945,7 +3003,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON_Entregables__Entregables y Flujo CBLG.xlsx"
     },
     "3fb289519e41": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_10. Minutas_Uniconfort__Minuta Reunión 200716.pdf",
@@ -2955,7 +3014,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 106.5,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:04.474792+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.260423+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -2988,7 +3047,8 @@
             "capex"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_10. Minutas_Uniconfort__Minuta Reunión 200716.pdf"
     },
     "2a543290ce8f": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_10. Minutas_Uniconfort__Minuta Reunión 200716.xlsx",
@@ -2998,7 +3058,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 44.3,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:04.496753+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.276069+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "openpyxl",
@@ -3031,7 +3091,8 @@
             "capex"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_10. Minutas_Uniconfort__Minuta Reunión 200716.xlsx"
     },
     "116acb9ca935": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_10. Minutas_Uniconfort_Modelo__Modelo Minuta Reunión yymmdd.xlsx",
@@ -3041,7 +3102,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 44.1,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:04.519438+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.277096+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "openpyxl",
@@ -3058,7 +3119,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_10. Minutas_Uniconfort_Modelo__Modelo Minuta Reunión yymmdd.xlsx"
     },
     "897d638e7776": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_11. Layout__CBLG-PLA-GEN-001-Rev_01.20.09.2021.dwg",
@@ -3068,14 +3130,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 4350.5,
       "extension": ".dwg",
-      "fecha_procesado": "2026-06-01T19:25:04.540329+00:00",
+      "fecha_procesado": "2026-06-01T21:06:46.294021+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_11. Layout__CBLG-PLA-GEN-001-Rev_01.20.09.2021.dwg"
     },
     "79ccea7e0d69": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_11. Layout__CBLG-PLA-GEN-001-Rev_01.20.09.2021.pdf",
@@ -3085,7 +3148,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 576.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:05.771299+00:00",
+      "fecha_procesado": "2026-06-01T21:06:47.584042+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -3106,7 +3169,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_11. Layout__CBLG-PLA-GEN-001-Rev_01.20.09.2021.pdf"
     },
     "69aac35aa8dd": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_11. Layout_lay out Equipos__CBLG-PLA-GEN-001-Rev_01_Rev2 (1).pdf",
@@ -3116,7 +3180,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 737.2,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:07.392383+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.144672+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -3137,7 +3201,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_11. Layout_lay out Equipos__CBLG-PLA-GEN-001-Rev_01_Rev2 (1).pdf"
     },
     "476132f86655": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_11. Layout_lay out Equipos__CBLG-PLA-GEN-001-Rev_01_Rev2.dwg",
@@ -3147,14 +3212,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 3869.6,
       "extension": ".dwg",
-      "fecha_procesado": "2026-06-01T19:25:07.414136+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.147162+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_11. Layout_lay out Equipos__CBLG-PLA-GEN-001-Rev_01_Rev2.dwg"
     },
     "9574dc543a4f": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_12. RHO_Resuesta a Turboden 210125__GLORIA-DWG-UNIL-001-D.dwg",
@@ -3164,14 +3230,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1097.6,
       "extension": ".dwg",
-      "fecha_procesado": "2026-06-01T19:25:07.427483+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.147162+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_12. RHO_Resuesta a Turboden 210125__GLORIA-DWG-UNIL-001-D.dwg"
     },
     "0524bb1689f1": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_12. RHO_Resuesta a Turboden 210125__GLORIA-DWG-UNIL-001-D.pdf",
@@ -3181,14 +3248,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 151.2,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:07.628258+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.406083+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_12. RHO_Resuesta a Turboden 210125__GLORIA-DWG-UNIL-001-D.pdf"
     },
     "bcae191afe0e": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_12. RHO_Resuesta a Turboden 210125__GLR-ENG.ZDI-1060 - CUSTOMER Clarification list (002).docx",
@@ -3198,7 +3266,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 150.8,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:07.649976+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.415881+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "python-docx",
@@ -3219,7 +3287,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_12. RHO_Resuesta a Turboden 210125__GLR-ENG.ZDI-1060 - CUSTOMER Clarification list (002).docx"
     },
     "6b3ea29d8919": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_13. Servicios auxiliarres__Electricidad BT-20221021T113225Z-001.zip",
@@ -3229,14 +3298,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 14686.3,
       "extension": ".zip",
-      "fecha_procesado": "2026-06-01T19:25:07.692996+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.455390+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_13. Servicios auxiliarres__Electricidad BT-20221021T113225Z-001.zip"
     },
     "b988f12032f2": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_Balance de masa__Original (Bilancio di massa olio 1 livello) (3).pdf",
@@ -3246,7 +3316,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 517.9,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:10.921750+00:00",
+      "fecha_procesado": "2026-06-01T21:06:51.437816+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -3286,14 +3356,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 225.0,
       "extension": ".doc",
-      "fecha_procesado": "2026-06-01T19:25:07.826526+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.555338+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado_17-04-20__1. CO 0075V_20 DZ LA GLORIA (RV LG 200416).doc"
     },
     "72cc7157d9da": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado_17-04-20__3. Terms and Conditions Uniconfort (RV LG 200416).docx",
@@ -3303,7 +3374,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 183.7,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:07.874929+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.588303+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "python-docx",
@@ -3324,7 +3395,8 @@
             "van"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado_17-04-20__3. Terms and Conditions Uniconfort (RV LG 200416).docx"
     },
     "a00c4cd8e603": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__2. 2020 02 25 Technical Specification La Gloria EN (1)-LAF.doc",
@@ -3334,14 +3406,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2091.0,
       "extension": ".doc",
-      "fecha_procesado": "2026-06-01T19:25:07.889672+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.594692+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__2. 2020 02 25 Technical Specification La Gloria EN (1)-LAF.doc"
     },
     "d3eb854b700c": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__2. CO 0075V_20 DZ LA GLORIA (RV LG)-LAF.doc",
@@ -3351,14 +3424,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 226.5,
       "extension": ".doc",
-      "fecha_procesado": "2026-06-01T19:25:07.908696+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.595691+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__2. CO 0075V_20 DZ LA GLORIA (RV LG)-LAF.doc"
     },
     "25c11fc65354": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__3. Terms and Conditions Uniconfort-LAF.docx",
@@ -3368,7 +3442,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 186.3,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:07.946440+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.627020+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "python-docx",
@@ -3389,7 +3463,8 @@
             "van"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__3. Terms and Conditions Uniconfort-LAF.docx"
     },
     "fd632fb778ee": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__Observaciones Matrix-200412 RE.xlsx",
@@ -3399,7 +3474,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 16.0,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:07.972280+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.642147+00:00",
       "sugerencias": [
         {
           "tipo_dato": "LCA medido",
@@ -3433,7 +3508,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__Observaciones Matrix-200412 RE.xlsx"
     },
     "c2bf2b4eaf4f": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__Observaciones Matrix-200412.xlsx",
@@ -3443,7 +3519,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 12.1,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:07.986429+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.642147+00:00",
       "sugerencias": [
         {
           "tipo_dato": "LCA medido",
@@ -3476,7 +3552,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__Observaciones Matrix-200412.xlsx"
     },
     "7c5b12b6b708": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__Observaciones Matrix-200413.xlsx",
@@ -3486,7 +3563,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 16.2,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:08.017631+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.658177+00:00",
       "sugerencias": [
         {
           "tipo_dato": "LCA medido",
@@ -3520,7 +3597,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_3. Consultas Abogado__Observaciones Matrix-200413.xlsx"
     },
     "d1a3307de20e": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_4. Consumos Eléctricos Motores__XXXX-STR-070000_00 Motor list (1).pdf",
@@ -3530,7 +3608,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 336.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:08.183750+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.825751+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Permiso sanitario/ambiental",
@@ -3562,7 +3640,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_4. Consumos Eléctricos Motores__XXXX-STR-070000_00 Motor list (1).pdf"
     },
     "d5b8e09a851a": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones__2020 04 17 Emissioni_01.xlsx",
@@ -3572,7 +3651,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 68.4,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:08.208931+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.827428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "openpyxl",
@@ -3604,7 +3683,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones__2020 04 17 Emissioni_01.xlsx"
     },
     "1c20fce624cd": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones__Ambiental Calidad del Aire.docx",
@@ -3614,14 +3694,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 7500.6,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:08.246667+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.844037+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "python-docx",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones__Ambiental Calidad del Aire.docx"
     },
     "5a134d7cb37a": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones__Documento1 tradotto sp.docx",
@@ -3631,7 +3712,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 16.2,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:08.266690+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.860478+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "python-docx",
@@ -3654,7 +3735,8 @@
             "tir"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones__Documento1 tradotto sp.docx"
     },
     "404546b09e58": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones__La Gloria2.pptx",
@@ -3664,14 +3746,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1794.4,
       "extension": ".pptx",
-      "fecha_procesado": "2026-06-01T19:25:08.277887+00:00",
+      "fecha_procesado": "2026-06-01T21:06:49.860871+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones__La Gloria2.pptx"
     },
     "9c971902a6bd": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones__Anexo 10.A Emisiones La Gloria_Adenda 1_revA1-1.pdf",
@@ -3681,7 +3764,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1170.8,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:08.495515+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.059441+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -3702,7 +3785,8 @@
             "tir"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones__Anexo 10.A Emisiones La Gloria_Adenda 1_revA1-1.pdf"
     },
     "7ecea1f478a3": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones__Anexo 10.B Modelacion La Gloria_Adenda 1_Rev A2.pdf",
@@ -3712,7 +3796,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 14255.9,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:08.709161+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.244118+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -3729,7 +3813,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones__Anexo 10.B Modelacion La Gloria_Adenda 1_Rev A2.pdf"
     },
     "50a40d2850d5": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación__CALMET.INP",
@@ -3739,14 +3824,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 42.1,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:08.724891+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.244118+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación__CALMET.INP"
     },
     "82728946f06b": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación__CALMET.LST",
@@ -3756,14 +3842,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 224.7,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:08.738039+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.244118+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación__CALMET.LST"
     },
     "09ae4233215d": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación__CALPUFF.INP",
@@ -3773,14 +3860,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 137.9,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:08.750922+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.244118+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación__CALPUFF.INP"
     },
     "1b154f5b6278": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación__CALPUFF.LST",
@@ -3790,14 +3878,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 759.4,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:08.765430+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.244118+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación__CALPUFF.LST"
     },
     "73cd67989b69": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__CALLPUFFVW.FDB",
@@ -3807,14 +3896,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 3516.0,
       "extension": ".fdb",
-      "fecha_procesado": "2026-06-01T19:25:08.785340+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__CALLPUFFVW.FDB"
     },
     "ab917378488a": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__CALPUFFView.xml",
@@ -3824,14 +3914,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 67.8,
       "extension": ".xml",
-      "fecha_procesado": "2026-06-01T19:25:08.798510+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__CALPUFFView.xml"
     },
     "5c5a8ebed4f3": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__cpvcontours.upf",
@@ -3841,14 +3932,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 11.1,
       "extension": ".upf",
-      "fecha_procesado": "2026-06-01T19:25:08.803171+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__cpvcontours.upf"
     },
     "ea2acaeae5f2": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__maphive.xml",
@@ -3858,14 +3950,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1.4,
       "extension": ".xml",
-      "fecha_procesado": "2026-06-01T19:25:08.820882+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__maphive.xml"
     },
     "97e7d5f05ebb": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__OverwaterMetFiles.xml",
@@ -3875,14 +3968,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 0.8,
       "extension": ".xml",
-      "fecha_procesado": "2026-06-01T19:25:08.825816+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__OverwaterMetFiles.xml"
     },
     "49f39751ce28": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__OverwaterOutput.xml",
@@ -3892,14 +3986,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 0.6,
       "extension": ".xml",
-      "fecha_procesado": "2026-06-01T19:25:08.844519+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__OverwaterOutput.xml"
     },
     "74b484e1ab49": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__UpperAirSummary.xml",
@@ -3909,7 +4004,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 0.4,
       "extension": ".xml",
-      "fecha_procesado": "2026-06-01T19:25:08.941606+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
@@ -3927,14 +4022,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1.5,
       "extension": ".xml",
-      "fecha_procesado": "2026-06-01T19:25:08.866323+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__Settings.xml"
     },
     "068879f66e88": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__SurfaceMetFiles.xml",
@@ -3944,14 +4040,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 0.7,
       "extension": ".xml",
-      "fecha_procesado": "2026-06-01T19:25:08.866323+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__SurfaceMetFiles.xml"
     },
     "3081286dda07": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__TerData.t3d",
@@ -3961,14 +4058,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 7.1,
       "extension": ".t3d",
-      "fecha_procesado": "2026-06-01T19:25:08.890812+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__TerData.t3d"
     },
     "74c24987228a": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__TerData.upf",
@@ -3978,14 +4076,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 9.5,
       "extension": ".upf",
-      "fecha_procesado": "2026-06-01T19:25:08.904421+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__TerData.upf"
     },
     "5913b4511778": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__UpperAirMetFiles.xml",
@@ -3995,14 +4094,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 0.6,
       "extension": ".xml",
-      "fecha_procesado": "2026-06-01T19:25:08.919705+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__UpperAirMetFiles.xml"
     },
     "11010036d970": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__UpperAirOutput.xml",
@@ -4012,14 +4112,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 0.6,
       "extension": ".xml",
-      "fecha_procesado": "2026-06-01T19:25:08.934847+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.dat__UpperAirOutput.xml"
     },
     "70392cd09760": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__CALPOST Results.kml",
@@ -4029,14 +4130,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 82.5,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:08.952657+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__CALPOST Results.kml"
     },
     "cf15b7c154b8": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Computational Grid.kml",
@@ -4046,14 +4148,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2.4,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:08.969710+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Computational Grid.kml"
     },
     "e864f411e519": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Discrete Receptors.kml",
@@ -4063,14 +4166,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 8.3,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:08.986868+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Discrete Receptors.kml"
     },
     "24a95f4124a8": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__KML Exports.kml",
@@ -4080,14 +4184,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 0.5,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:09.001518+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__KML Exports.kml"
     },
     "1f92c0d3abaa": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Land Use.kml",
@@ -4097,14 +4202,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 41.2,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:09.018799+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Land Use.kml"
     },
     "776ad5630a2e": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Line Area Sources.kml",
@@ -4114,14 +4220,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 15.4,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:09.034807+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Line Area Sources.kml"
     },
     "0baa33b2e6ee": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Meteorological Grid.kml",
@@ -4131,14 +4238,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 10.2,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:09.050507+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Meteorological Grid.kml"
     },
     "eca813519ec8": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Point Sources.kml",
@@ -4148,14 +4256,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 3.5,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:09.067218+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Point Sources.kml"
     },
     "ed5c31d51f02": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Rectangular Tiers.kml",
@@ -4165,14 +4274,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 3.5,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:09.083410+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.260433+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Rectangular Tiers.kml"
     },
     "f9ea3d382999": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Sampling Grid.kml",
@@ -4182,14 +4292,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1192.1,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:09.110830+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Sampling Grid.kml"
     },
     "b1f48947105d": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Terrain Contours.kml",
@@ -4199,14 +4310,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 166.8,
       "extension": ".kml",
-      "fecha_procesado": "2026-06-01T19:25:09.130853+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3.kml__Terrain Contours.kml"
     },
     "0c8d58ed6faf": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__CTGPROC.DAT",
@@ -4216,14 +4328,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 73.8,
       "extension": ".dat",
-      "fecha_procesado": "2026-06-01T19:25:09.150611+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__CTGPROC.DAT"
     },
     "b31c6acd8705": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__CTGPROC.INP",
@@ -4233,14 +4346,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 12.9,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:09.165122+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__CTGPROC.INP"
     },
     "cc9ff49744b2": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__CTGPROC.LST",
@@ -4250,14 +4364,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 5.7,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:09.171887+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__CTGPROC.LST"
     },
     "28dd4e374768": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__GEO.DAT",
@@ -4267,14 +4382,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 19.3,
       "extension": ".dat",
-      "fecha_procesado": "2026-06-01T19:25:09.195187+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__GEO.DAT"
     },
     "fe65a67bf0e5": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__luse.clr",
@@ -4284,14 +4400,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 0.6,
       "extension": ".clr",
-      "fecha_procesado": "2026-06-01T19:25:09.208280+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__luse.clr"
     },
     "a85e08189278": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__MAKEGEO.INP",
@@ -4301,14 +4418,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 14.6,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:09.223134+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__MAKEGEO.INP"
     },
     "2229dd61c025": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__MAKEGEO.LST",
@@ -4318,14 +4436,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 21.1,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:09.235433+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__MAKEGEO.LST"
     },
     "e1238a13142e": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__QALUSE.GRD",
@@ -4335,14 +4454,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1.5,
       "extension": ".grd",
-      "fecha_procesado": "2026-06-01T19:25:09.248467+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__QALUSE.GRD"
     },
     "d56e581cd7ab": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__QATERR.GRD",
@@ -4352,14 +4472,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 3.5,
       "extension": ".grd",
-      "fecha_procesado": "2026-06-01T19:25:09.259650+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__QATERR.GRD"
     },
     "64f3984e0852": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.GRD",
@@ -4369,14 +4490,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2.4,
       "extension": ".grd",
-      "fecha_procesado": "2026-06-01T19:25:09.263088+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.GRD"
     },
     "c69e45745b7c": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.INP",
@@ -4386,14 +4508,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 19.7,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:09.278419+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.INP"
     },
     "6ef024fca2c2": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.LST",
@@ -4403,14 +4526,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 12.0,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:09.294534+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.LST"
     },
     "9194e155eaf5": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.OUT",
@@ -4420,14 +4544,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2.7,
       "extension": ".out",
-      "fecha_procesado": "2026-06-01T19:25:09.294534+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.OUT"
     },
     "de1ea91d8ff2": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.SAV",
@@ -4437,14 +4562,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 3.4,
       "extension": ".sav",
-      "fecha_procesado": "2026-06-01T19:25:09.310451+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_geo__TERREL.SAV"
     },
     "cf8d5144299f": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_CO__CO_C.INP",
@@ -4454,14 +4580,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 33.7,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:09.326242+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_CO__CO_C.INP"
     },
     "fba278c8161d": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_CO__CO_C.LST",
@@ -4471,14 +4598,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 355.1,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:09.347044+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_CO__CO_C.LST"
     },
     "63015f03b41d": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_NOX__NOX_C.INP",
@@ -4488,14 +4616,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 33.7,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:09.365053+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_NOX__NOX_C.INP"
     },
     "258c57cadace": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_NOX__NOX_C.LST",
@@ -4505,14 +4634,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 253.0,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:09.378075+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_NOX__NOX_C.LST"
     },
     "bb573538a44a": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_PM10__PM10_C.INP",
@@ -4522,14 +4652,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 33.7,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:09.389410+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_PM10__PM10_C.INP"
     },
     "833bc4027445": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_PM10__PM10_C.LST",
@@ -4539,14 +4670,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 253.0,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:09.405469+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_PM10__PM10_C.LST"
     },
     "fbf073588edf": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_PM2.5__PM2.5_C.INP",
@@ -4556,14 +4688,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 33.7,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:09.423573+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_PM2.5__PM2.5_C.INP"
     },
     "c32647db9156": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_PM2.5__PM2.5_C.LST",
@@ -4573,14 +4706,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 253.0,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:09.437689+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_PM2.5__PM2.5_C.LST"
     },
     "bb19122a8856": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_SO2__SO2_C.INP",
@@ -4590,14 +4724,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 33.7,
       "extension": ".inp",
-      "fecha_procesado": "2026-06-01T19:25:09.455679+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.277428+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_SO2__SO2_C.INP"
     },
     "a30bd7fae237": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_SO2__SO2_C.LST",
@@ -4607,14 +4742,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 343.6,
       "extension": ".lst",
-      "fecha_procesado": "2026-06-01T19:25:09.469452+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.292948+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Anexo_N_10_Estimacion_y_Modelacion_de_Emisiones_Datos modelación_Gloria_3_post_SO2__SO2_C.LST"
     },
     "ec7d10faa28d": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-113_06-MAR-2003-SO2.pdf",
@@ -4624,7 +4760,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 52.7,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:09.501162+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.310443+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -4686,7 +4822,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-113_06-MAR-2003-SO2.pdf"
     },
     "38b0ec6e6b6f": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-12_09-MAY-2011-MP2.5.pdf",
@@ -4696,7 +4833,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 57.6,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:09.551875+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.343742+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -4761,7 +4898,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-12_09-MAY-2011-MP2.5.pdf"
     },
     "cbc55e19fb87": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-13_23-JUN-2011 RE2.pdf",
@@ -4771,7 +4909,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 277.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:09.595998+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.360772+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -4836,7 +4974,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-13_23-JUN-2011 RE2.pdf"
     },
     "49be36ca35f9": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-45_11-SEP-2001-MP10.pdf",
@@ -4846,7 +4985,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 45.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:09.630033+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.377347+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -4908,7 +5047,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-45_11-SEP-2001-MP10.pdf"
     },
     "e1997c0b05e7": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-59_25-MAY-1998-MP10.pdf",
@@ -4918,7 +5058,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 73.5,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:09.675821+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.410435+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -4981,7 +5121,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_5. Emisiones_Decretos Supremos__DTO-59_25-MAY-1998-MP10.pdf"
     },
     "72002b812e76": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera_16-04-20__Correo de Sociedad Administradora de Fondos - Fwd_ opziones variación modulos ORC.pdf",
@@ -4991,7 +5132,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 263.9,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:09.807350+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.539125+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5041,7 +5182,8 @@
             "van"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera_16-04-20__Correo de Sociedad Administradora de Fondos - Fwd_ opziones variación modulos ORC.pdf"
     },
     "f75eae2d594e": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Technical variations study_La Gloria - rev.0.pdf",
@@ -5051,7 +5193,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 911.5,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:32.807568+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.427253+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5104,7 +5246,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 11.5,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:09.898406+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.604811+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "openpyxl",
@@ -5127,7 +5269,8 @@
             "capex"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera__Alternativas.xlsx"
     },
     "590f55e6baf0": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera__CICH-DHL-PL-ARQ-300-01_Rev.H.dwg",
@@ -5137,14 +5280,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1759.1,
       "extension": ".dwg",
-      "fecha_procesado": "2026-06-01T19:25:09.914047+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.610816+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera__CICH-DHL-PL-ARQ-300-01_Rev.H.dwg"
     },
     "c37ac3b8e591": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera__Correo de Sociedad Administradora de Fondos - Ficha ACC.pdf",
@@ -5154,7 +5298,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 367.5,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:10.118481+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.810517+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5191,7 +5335,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera__Correo de Sociedad Administradora de Fondos - Ficha ACC.pdf"
     },
     "feb3aef82a05": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera__Presentación Secado Madera.v1.pptx",
@@ -5201,14 +5346,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1971.3,
       "extension": ".pptx",
-      "fecha_procesado": "2026-06-01T19:25:10.149907+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.810517+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera__Presentación Secado Madera.v1.pptx"
     },
     "7c066da91c3b": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera__Presentación Secado Madera.v2.pptx",
@@ -5218,14 +5364,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 4077.6,
       "extension": ".pptx",
-      "fecha_procesado": "2026-06-01T19:25:10.275929+00:00",
+      "fecha_procesado": "2026-06-01T21:06:50.827700+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera__Presentación Secado Madera.v2.pptx"
     },
     "223cd74ce54b": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera_Air Coolers__XXLD1N 9225 E 22VENT(2X11).pdf",
@@ -5235,7 +5382,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 275.6,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:10.657713+00:00",
+      "fecha_procesado": "2026-06-01T21:06:51.219965+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5268,7 +5415,8 @@
             "van"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_6. Secado de Madera_Air Coolers__XXLD1N 9225 E 22VENT(2X11).pdf"
     },
     "c12d023c7ba9": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_7. Gantts__XXXX-DOC-00003-03 Gantt.pdf",
@@ -5278,7 +5426,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 98.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:10.796196+00:00",
+      "fecha_procesado": "2026-06-01T21:06:51.326804+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5344,7 +5492,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_7. Gantts__XXXX-DOC-00003-03 Gantt.pdf"
     },
     "75b72a10b6cb": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_Diseño Civil Preliminar__Civil design Spagnolo.pdf",
@@ -5354,7 +5503,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2662.7,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:11.103053+00:00",
+      "fecha_procesado": "2026-06-01T21:06:51.510453+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Certificación ESG/QA",
@@ -5388,7 +5537,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_Diseño Civil Preliminar__Civil design Spagnolo.pdf"
     },
     "e69c0e33b682": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_EETT__2. 20200426 Technical Specification La Gloria.pdf",
@@ -5398,7 +5548,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 760.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:11.238393+00:00",
+      "fecha_procesado": "2026-06-01T21:06:51.646146+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5424,7 +5574,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_EETT__2. 20200426 Technical Specification La Gloria.pdf"
     },
     "4f5ba5f78a6b": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_Estudios Básicos_Diseño Sísmico__NCh2369-2003 Diseño Sísmico de Estructuras Industriales.pdf",
@@ -5434,7 +5585,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 924.4,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:11.320484+00:00",
+      "fecha_procesado": "2026-06-01T21:06:51.710436+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Paper científico",
@@ -5471,7 +5622,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_Estudios Básicos_Diseño Sísmico__NCh2369-2003 Diseño Sísmico de Estructuras Industriales.pdf"
     },
     "5435db4ee3a0": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_Estudios Básicos_Mecánica de Suelos_Estudio Tipo__IMS Caldera Forestal Andes-Freire V1.pdf",
@@ -5481,7 +5633,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2508.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:11.412564+00:00",
+      "fecha_procesado": "2026-06-01T21:06:51.806950+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Paper científico",
@@ -5540,7 +5692,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_Estudios Básicos_Mecánica de Suelos_Estudio Tipo__IMS Caldera Forestal Andes-Freire V1.pdf"
     },
     "453567bff9a4": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_P&ID__P275-PID-00001-00 P&I Combustor.pdf",
@@ -5550,7 +5703,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1876.4,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:13.684845+00:00",
+      "fecha_procesado": "2026-06-01T21:06:54.261539+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5577,7 +5730,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_P&ID__P275-PID-00001-00 P&I Combustor.pdf"
     },
     "fb2fb90f92e0": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_P&ID__P275-PID-01001-00 P&I Diathermic Oil Circuit.pdf",
@@ -5587,7 +5741,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1092.2,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:14.726213+00:00",
+      "fecha_procesado": "2026-06-01T21:06:55.366430+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5608,7 +5762,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_P&ID__P275-PID-01001-00 P&I Diathermic Oil Circuit.pdf"
     },
     "d2b0c0ef9d2d": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_P&ID__P275-PID-20001-00 P&I Compressed Air Circuit.pdf",
@@ -5618,7 +5773,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 610.8,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:15.141962+00:00",
+      "fecha_procesado": "2026-06-01T21:06:55.823741+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5639,7 +5794,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_8. Caldera_P&ID__P275-PID-20001-00 P&I Compressed Air Circuit.pdf"
     },
     "222f60d30782": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Descripción Procesos y Control__4.7_17-ENG.PCL-1-rev.1.pdf",
@@ -5649,7 +5805,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2014.2,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:15.376273+00:00",
+      "fecha_procesado": "2026-06-01T21:06:56.069254+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5687,7 +5843,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Descripción Procesos y Control__4.7_17-ENG.PCL-1-rev.1.pdf"
     },
     "04bd31acd4eb": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Descripción Técnica__4.0_P943-C-4-rev.0.pdf",
@@ -5697,7 +5854,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1986.4,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:15.567011+00:00",
+      "fecha_procesado": "2026-06-01T21:06:56.345271+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5739,7 +5896,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Descripción Técnica__4.0_P943-C-4-rev.0.pdf"
     },
     "9c2035f441cc": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Descripción Técnica__4.10_13-C-17-rev.3.pdf",
@@ -5749,7 +5907,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1254.7,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:15.732382+00:00",
+      "fecha_procesado": "2026-06-01T21:06:56.480997+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5807,7 +5965,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Descripción Técnica__4.10_13-C-17-rev.3.pdf"
     },
     "b62fa1919c94": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Layout General__4.2a_P943-ENG.ILY-2-rev.0-sh.1.pdf",
@@ -5817,7 +5976,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1177.4,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:17.748719+00:00",
+      "fecha_procesado": "2026-06-01T21:06:58.927305+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5836,7 +5995,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Layout General__4.2a_P943-ENG.ILY-2-rev.0-sh.1.pdf"
     },
     "618b982e7f1b": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Layout General__4.2b_P943-ENG.ILY-2-rev.0-sh.2.pdf",
@@ -5846,7 +6006,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1016.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:20.152563+00:00",
+      "fecha_procesado": "2026-06-01T21:07:01.593761+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5865,7 +6025,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Layout General__4.2b_P943-ENG.ILY-2-rev.0-sh.2.pdf"
     },
     "71a975c3d54d": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_P&ID Simplificado__4.3_P943-N-2-rev.0.pdf",
@@ -5875,7 +6036,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 690.4,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:20.286055+00:00",
+      "fecha_procesado": "2026-06-01T21:07:01.710578+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5894,7 +6055,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_P&ID Simplificado__4.3_P943-N-2-rev.0.pdf"
     },
     "80a1bbf58dcd": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Unilineal__4.4_P943-L-2-rev.0.pdf",
@@ -5904,7 +6066,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 495.4,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:20.863163+00:00",
+      "fecha_procesado": "2026-06-01T21:07:02.284445+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -5921,7 +6083,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA_9. Turbogenerador_Unilineal__4.4_P943-L-2-rev.0.pdf"
     },
     "30293d0b5382": {
       "ruta": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA__LAYOUT PLANTA PILOTO ALISTER.pptx",
@@ -5931,14 +6094,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1382.8,
       "extension": ".pptx",
-      "fecha_procesado": "2026-06-01T19:25:20.894818+00:00",
+      "fecha_procesado": "2026-06-01T21:07:02.294750+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/8. INGENIERIA ANTECEDENTES LA GLORIA__LAYOUT PLANTA PILOTO ALISTER.pptx"
     },
     "7b109b0ea743": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Alister__Cotizacion Ingeniería BASICA proyecto Planta Tomasa - V1.pdf",
@@ -5948,7 +6112,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 195.0,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:20.950094+00:00",
+      "fecha_procesado": "2026-06-01T21:07:02.332167+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -5989,7 +6153,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Alister__Cotizacion Ingeniería BASICA proyecto Planta Tomasa - V1.pdf"
     },
     "15b2831a1305": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Alister__Informe Balance de materia y energia Planta Tomasa -PARRAL-V1.pdf",
@@ -5999,7 +6164,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 595.7,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:21.184852+00:00",
+      "fecha_procesado": "2026-06-01T21:07:02.543767+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -6039,7 +6204,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Alister__Informe Balance de materia y energia Planta Tomasa -PARRAL-V1.pdf"
     },
     "0f494b84873a": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Alister__Layout e indicaciones Planta Pomasa.pdf",
@@ -6049,7 +6215,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 453.6,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:21.229868+00:00",
+      "fecha_procesado": "2026-06-01T21:07:02.577080+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -6093,7 +6259,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Alister__Layout e indicaciones Planta Pomasa.pdf"
     },
     "e99bdc5292b1": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Alister__Proyecto Tomasa Galpon almacenamiento Version 1-Modelo.pdf",
@@ -6103,7 +6270,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2547.2,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:29.528774+00:00",
+      "fecha_procesado": "2026-06-01T21:07:11.744260+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -6129,7 +6296,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Alister__Proyecto Tomasa Galpon almacenamiento Version 1-Modelo.pdf"
     },
     "41f50e8e8022": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Alister__Proyecto Tomasa Version 2-Modelo.pdf",
@@ -6139,7 +6307,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 935.9,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:31.909411+00:00",
+      "fecha_procesado": "2026-06-01T21:07:13.927617+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -6165,7 +6333,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Alister__Proyecto Tomasa Version 2-Modelo.pdf"
     },
     "e4f5b1c4a85e": {
       "ruta": "inbox/03-operacional/capacidad-equipos/DEFINICIONES PLANTA TOMASA PARRAL.docx",
@@ -6175,7 +6344,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 17.1,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:31.928399+00:00",
+      "fecha_procesado": "2026-06-01T21:07:13.927617+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -6191,7 +6360,8 @@
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/DEFINICIONES PLANTA TOMASA PARRAL.docx"
     },
     "c21dafd03b10": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Equipos__Micronizador de acero Inoxidable ESP.pdf",
@@ -6201,7 +6371,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 64.0,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:31.976825+00:00",
+      "fecha_procesado": "2026-06-01T21:07:13.960825+00:00",
       "sugerencias": [
         {
           "tipo_dato": "LCA medido",
@@ -6254,7 +6424,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Equipos__Micronizador de acero Inoxidable ESP.pdf"
     },
     "9b980c1bec57": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Equipos__Opticep Precios.docx",
@@ -6264,7 +6435,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 17.8,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:31.990662+00:00",
+      "fecha_procesado": "2026-06-01T21:07:13.960825+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "python-docx",
@@ -6295,7 +6466,8 @@
         ],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Equipos__Opticep Precios.docx"
     },
     "0f080a18b308": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Equipos__TSST Quotation 2025-01-13 1 Leasing Esp ODIN 1 con Arriendo.pdf",
@@ -6305,7 +6477,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 230.4,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:32.051488+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.010588+00:00",
       "sugerencias": [
         {
           "tipo_dato": "LCA medido",
@@ -6370,7 +6542,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Equipos__TSST Quotation 2025-01-13 1 Leasing Esp ODIN 1 con Arriendo.pdf"
     },
     "8a0f75bc3591": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Equipos_PULSATOR__Drying-Process-V2.mp4",
@@ -6380,14 +6553,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 9276.6,
       "extension": ".mp4",
-      "fecha_procesado": "2026-06-01T19:25:32.090336+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.043935+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Equipos_PULSATOR__Drying-Process-V2.mp4"
     },
     "404207e6acc6": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Equipos_PULSATOR__infraljud presentation 2025.pdf",
@@ -6397,7 +6571,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 694.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:32.263407+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.060569+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -6423,7 +6597,8 @@
             "aceite"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Equipos_PULSATOR__infraljud presentation 2025.pdf"
     },
     "c863872599a0": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Equipos_PULSATOR_Propuestas comerciales__oferta de consultoria Diseño 500 kg Matías Grez.pdf",
@@ -6433,7 +6608,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 150.6,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:32.305048+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.077253+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -6478,7 +6653,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Equipos_PULSATOR_Propuestas comerciales__oferta de consultoria Diseño 500 kg Matías Grez.pdf"
     },
     "db560adab580": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Equipos_PULSATOR_Propuestas comerciales__Oferta piloto  20 kg hr.pdf",
@@ -6488,7 +6664,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 145.6,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:32.320831+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.093938+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -6531,7 +6707,8 @@
             "tir"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Equipos_PULSATOR_Propuestas comerciales__Oferta piloto  20 kg hr.pdf"
     },
     "4e3f1f074a67": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Infrasonido__infrasound secador .ppt",
@@ -6541,14 +6718,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 5150.0,
       "extension": ".ppt",
-      "fecha_procesado": "2026-06-01T19:25:32.352572+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.110582+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Infrasonido__infrasound secador .ppt"
     },
     "535c63ee9267": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Infrasonido__Video de WhatsApp 2025-07-12 a las 11.02.24_b90ae9f0.mp4",
@@ -6558,14 +6736,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 3648.9,
       "extension": ".mp4",
-      "fecha_procesado": "2026-06-01T19:25:32.384443+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.110582+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Infrasonido__Video de WhatsApp 2025-07-12 a las 11.02.24_b90ae9f0.mp4"
     },
     "0daf12bac308": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Infrasonido__Video de WhatsApp 2025-07-12 a las 11.02.27_08f376a1.mp4",
@@ -6575,14 +6754,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2960.1,
       "extension": ".mp4",
-      "fecha_procesado": "2026-06-01T19:25:32.400237+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.127264+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Infrasonido__Video de WhatsApp 2025-07-12 a las 11.02.27_08f376a1.mp4"
     },
     "71eeb0e9ef24": {
       "ruta": "inbox/03-operacional/capacidad-equipos/LAYOUT PLANTA DESHIDRATADO.pptx",
@@ -6592,14 +6772,15 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 5335.0,
       "extension": ".pptx",
-      "fecha_procesado": "2026-06-01T19:25:32.431949+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.143959+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/LAYOUT PLANTA DESHIDRATADO.pptx"
     },
     "cd2bc3a420c7": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Opticept__Copia de OliveCEPT  - Results From Greece.mp4",
@@ -6609,7 +6790,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 35192.4,
       "extension": ".mp4",
-      "fecha_procesado": "2026-06-01T19:25:32.647605+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.327243+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "unsupported-extension",
@@ -6627,7 +6808,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 1727.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:32.703953+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.377232+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -6654,7 +6835,8 @@
             "van"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Opticept__PEF Presentation  Esp.pdf"
     },
     "34e3076139f8": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Tomates micronizado ESP.pdf",
@@ -6664,7 +6846,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 2879.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:33.168274+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.527251+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -6711,7 +6893,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Tomates micronizado ESP.pdf"
     },
     "574301584d47": {
       "ruta": "inbox/03-operacional/capacidad-equipos/Videos Residuos__Tomasa Hot.mp4",
@@ -6721,7 +6904,7 @@
       "subcategoria": "capacidad-equipos",
       "size_kb": 4337.3,
       "extension": ".mp4",
-      "fecha_procesado": "2026-06-01T19:25:33.196609+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.543953+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -6737,7 +6920,8 @@
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/capacidad-equipos/Videos Residuos__Tomasa Hot.mp4"
     },
     "d6c26a921be7": {
       "ruta": "inbox/03-operacional/consumo-energetico/Análisis PCI.pdf",
@@ -6747,7 +6931,7 @@
       "subcategoria": "consumo-energetico",
       "size_kb": 84.3,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:33.234659+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.560616+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -6788,7 +6972,8 @@
             "rep"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/consumo-energetico/Análisis PCI.pdf"
     },
     "356c5c301707": {
       "ruta": "inbox/03-operacional/consumo-energetico/Tabla PCI residuos Carozzi.xlsx",
@@ -6798,7 +6983,7 @@
       "subcategoria": "consumo-energetico",
       "size_kb": 16.1,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:33.264327+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.578424+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "openpyxl",
@@ -6815,7 +7000,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/consumo-energetico/Tabla PCI residuos Carozzi.xlsx"
     },
     "fc9dd9e8669d": {
       "ruta": "inbox/03-operacional/cronograma-obra/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Propuesta Tecnico Economica Rev A.pdf",
@@ -6825,7 +7011,7 @@
       "subcategoria": "cronograma-obra",
       "size_kb": 545.8,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:33.456871+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.737053+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -6853,7 +7039,8 @@
             "lca"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/cronograma-obra/8. INGENIERIA ANTECEDENTES LA GLORIA_1. RAMON__Propuesta Tecnico Economica Rev A.pdf"
     },
     "0eae86ecdd85": {
       "ruta": "inbox/03-operacional/cronograma-obra/ETAPAS DESARROLLO INGENIERIA.pdf",
@@ -6863,7 +7050,7 @@
       "subcategoria": "cronograma-obra",
       "size_kb": 152.6,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:33.480007+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.737053+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -6880,7 +7067,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/cronograma-obra/ETAPAS DESARROLLO INGENIERIA.pdf"
     },
     "268beb48c8e0": {
       "ruta": "inbox/03-operacional/cronograma-obra/Propuesta ingeniería planta Tomasa.docx",
@@ -6890,7 +7078,7 @@
       "subcategoria": "cronograma-obra",
       "size_kb": 50.2,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:33.493150+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.756473+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Cotización MMPP",
@@ -6926,7 +7114,8 @@
             "cotizacion"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/cronograma-obra/Propuesta ingeniería planta Tomasa.docx"
     },
     "efc50a38bab0": {
       "ruta": "inbox/03-operacional/rendimientos-medidos/Pruebas Deshidratado PEF.docx",
@@ -6936,7 +7125,7 @@
       "subcategoria": "rendimientos-medidos",
       "size_kb": 7.8,
       "extension": ".docx",
-      "fecha_procesado": "2026-06-01T19:25:33.549137+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.758574+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Rendimiento medido planta",
@@ -6984,7 +7173,8 @@
             "tir"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/rendimientos-medidos/Pruebas Deshidratado PEF.docx"
     },
     "4607073b0b94": {
       "ruta": "inbox/03-operacional/rendimientos-medidos/Resultados Carnes. 23 - 27 junio 2025. Rev 1.xlsx",
@@ -6994,7 +7184,7 @@
       "subcategoria": "rendimientos-medidos",
       "size_kb": 241.4,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:33.614040+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.810536+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Rendimiento medido planta",
@@ -7009,7 +7199,8 @@
         "longitud_texto": 0,
         "resumen_entidades": ""
       },
-      "entidades": {}
+      "entidades": {},
+      "duplicado_de": "inbox/03-operacional/rendimientos-medidos/Resultados Carnes. 23 - 27 junio 2025. Rev 1.xlsx"
     },
     "b67e44f793c8": {
       "ruta": "inbox/03-operacional/rendimientos-medidos/Resultados Líquidos. 23 - 27 junio 2025. Rev 1.xlsx",
@@ -7019,7 +7210,7 @@
       "subcategoria": "rendimientos-medidos",
       "size_kb": 23.7,
       "extension": ".xlsx",
-      "fecha_procesado": "2026-06-01T19:25:33.645737+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.826004+00:00",
       "sugerencias": [
         {
           "tipo_dato": "Rendimiento medido planta",
@@ -7057,7 +7248,8 @@
             "pomasa"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/03-operacional/rendimientos-medidos/Resultados Líquidos. 23 - 27 junio 2025. Rev 1.xlsx"
     },
     "605f78c432ee": {
       "ruta": "inbox/07-mercado/benchmarks-precios/Low protein powder of fava bean -2025-01-22.pdf",
@@ -7067,7 +7259,7 @@
       "subcategoria": "benchmarks-precios",
       "size_kb": 445.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:33.701079+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.857568+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -7096,7 +7288,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/07-mercado/benchmarks-precios/Low protein powder of fava bean -2025-01-22.pdf"
     },
     "1f7f46c5da25": {
       "ruta": "inbox/07-mercado/benchmarks-precios/SDS GP Protein Concentrate GP68.pdf",
@@ -7106,7 +7299,7 @@
       "subcategoria": "benchmarks-precios",
       "size_kb": 454.1,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:33.740909+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.889117+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -7135,7 +7328,8 @@
         "ruts_chilenos": [],
         "empresas_tipo": [],
         "keywords": {}
-      }
+      },
+      "duplicado_de": "inbox/07-mercado/benchmarks-precios/SDS GP Protein Concentrate GP68.pdf"
     },
     "df2cb7386b42": {
       "ruta": "inbox/07-mercado/benchmarks-precios/Yellow pea protein(small bag)_3012_eng.pdf",
@@ -7145,7 +7339,7 @@
       "subcategoria": "benchmarks-precios",
       "size_kb": 144.0,
       "extension": ".pdf",
-      "fecha_procesado": "2026-06-01T19:25:33.810509+00:00",
+      "fecha_procesado": "2026-06-01T21:07:14.927360+00:00",
       "sugerencias": [],
       "extraccion": {
         "metodo": "pypdf",
@@ -7171,7 +7365,8 @@
             "ods"
           ]
         }
-      }
+      },
+      "duplicado_de": "inbox/07-mercado/benchmarks-precios/Yellow pea protein(small bag)_3012_eng.pdf"
     }
   },
   "version": 1

@@ -29,7 +29,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
 
-PIPELINE_PATH = Path("/tmp/trongkai-pipeline-lp.json")
+from .storage import data_path
+
+PIPELINE_PATH = data_path("pipeline-lp.json")
 
 Etapa = Literal["prospect", "contactado", "reunion", "dd", "comprometido", "ganado", "perdido"]
 TipoLP = Literal["fondo", "family_office", "dfi", "banco", "particular", "corporativo"]

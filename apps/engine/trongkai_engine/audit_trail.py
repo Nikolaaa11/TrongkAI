@@ -24,7 +24,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal
 
-AUDIT_PATH = Path("/tmp/trongkai-audit-trail.json")
+from .storage import data_path
+
+AUDIT_PATH = data_path("audit-trail.json")
 MAX_ENTRIES = 5000
 
 TipoEvento = Literal[
