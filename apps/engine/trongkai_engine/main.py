@@ -1468,6 +1468,31 @@ def data_room_endpoint() -> dict:
     return checklist_completo()
 
 
+# ----- Clientes Reales (catálogo P1) -----
+
+
+@app.get("/clientes/reales", tags=["meta"], summary="Catálogo de clientes reales identificados en P1")
+def clientes_reales_endpoint() -> dict:
+    from .clientes_reales import listar_benchmarks, listar_clientes, resumen_clientes
+    return {
+        "clientes": listar_clientes(),
+        "benchmarks_proteinas": listar_benchmarks(),
+        "resumen": resumen_clientes(),
+    }
+
+
+# ----- Tecnologías (catálogo Opticept, Infrasonido, Micromolienda) -----
+
+
+@app.get("/tecnologias", tags=["meta"], summary="Catálogo de tecnologías de la planta Trongkai")
+def tecnologias_endpoint() -> dict:
+    from .tecnologias_catalog import listar_tecnologias, resumen_tecnologias
+    return {
+        "tecnologias": listar_tecnologias(),
+        "resumen": resumen_tecnologias(),
+    }
+
+
 # ----- Roadmap Timeline -----
 
 
