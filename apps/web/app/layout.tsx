@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
 import { CommandK } from '@/components/CommandK';
+import NavMenu from '@/components/NavMenu';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -13,43 +12,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Nav agrupado por categoría visual
-const nav: { href: string; label: string }[] = [
-  { href: '/', label: 'Inicio' },
-  { href: '/comando', label: '⚡ Centro de Mando' },
-  { href: '/dashboard-directorio', label: 'Directorio' },
-  { href: '/readiness', label: 'Readiness' },
-  { href: '/datos', label: 'Datos faltantes' },
-  { href: '/inbox', label: '📥 Inbox' },
-  { href: '/variables', label: 'Matriz Variables' },
-  { href: '/decisiones', label: '🎯 Decisiones' },
-  { href: '/coherencia', label: 'Coherencia' },
-  { href: '/red', label: '🕸 Red' },
-  { href: '/data-room', label: 'Data Room' },
-  { href: '/lp-pack', label: 'LP Pack' },
-  { href: '/equipo', label: 'Equipo' },
-  { href: '/clientes-reales', label: '🍽 Clientes' },
-  { href: '/commercial', label: '💼 Commercial Intel' },
-  { href: '/nutrientes', label: '🧬 Nutrientes' },
-  { href: '/tecnologias', label: '⚙️ Tech Stack' },
-  { href: '/plan', label: 'Plan 5 años' },
-  { href: '/sensitivity', label: 'Sensibilidad' },
-  { href: '/comparador', label: 'Comparador' },
-  { href: '/whatif-live', label: '⚡ What-if Live' },
-  { href: '/roadmap', label: '🗺 Roadmap' },
-  { href: '/pipeline-lp', label: '💼 Pipeline LP' },
-  { href: '/stress', label: 'Stress' },
-  { href: '/financiamiento', label: 'Financiamiento' },
-  { href: '/carbono', label: 'Carbono' },
-  { href: '/compliance', label: 'Compliance' },
-  { href: '/macro', label: 'Macro' },
-  { href: '/api', label: 'API' },
-  { href: '/audit', label: 'Audit Trail' },
-  { href: '/salud', label: '💚 Salud' },
-  { href: '/digest', label: '📧 Digest' },
-  { href: '/investigacion', label: 'Research' },
-];
-
 export default function RootLayout({
   children,
 }: {
@@ -59,41 +21,7 @@ export default function RootLayout({
     <html lang="es-CL">
       <body className="bg-white font-sans text-ink antialiased">
         <CommandK />
-        {/* Apple-style sticky nav: blanco, blur, sombra mínima */}
-        <header className="sticky top-0 z-50 border-b border-ink-100 bg-white/80 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-3">
-            <div className="flex shrink-0 items-center gap-3">
-              <Link href="/" className="flex items-center gap-2">
-                <Image
-                  src="/logo-trongkai-color.png"
-                  alt="Trongkai"
-                  width={140}
-                  height={32}
-                  priority
-                  className="h-7 w-auto"
-                />
-              </Link>
-              <span
-                className="hidden md:inline-flex items-center gap-1 rounded-full border border-ink-100 bg-ink-50/50 px-2.5 py-1 text-[11px] font-medium text-ink-400 cursor-help"
-                title="Atajo: presiona Cmd+K (Mac) o Ctrl+K (Windows) para buscar en toda la plataforma"
-              >
-                <kbd className="text-[10px] font-semibold text-ink-600">⌘K</kbd>
-                <span>Buscar</span>
-              </span>
-            </div>
-            <nav className="flex flex-1 items-center justify-end gap-1 overflow-x-auto">
-              {nav.map((n) => (
-                <Link
-                  key={n.href}
-                  href={n.href}
-                  className="rounded-full px-3 py-1.5 text-[13px] font-medium text-ink-600 transition-colors hover:bg-ink-50 hover:text-ink"
-                >
-                  {n.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </header>
+        <NavMenu />
 
         <main className="mx-auto max-w-7xl px-6 py-12">{children}</main>
 
