@@ -30,6 +30,7 @@ const nav: { href: string; label: string }[] = [
   { href: '/equipo', label: 'Equipo' },
   { href: '/clientes-reales', label: '🍽 Clientes' },
   { href: '/commercial', label: '💼 Commercial Intel' },
+  { href: '/nutrientes', label: '🧬 Nutrientes' },
   { href: '/tecnologias', label: '⚙️ Tech Stack' },
   { href: '/plan', label: 'Plan 5 años' },
   { href: '/sensitivity', label: 'Sensibilidad' },

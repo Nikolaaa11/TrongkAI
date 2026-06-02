@@ -1479,6 +1479,36 @@ def data_room_endpoint() -> dict:
     return checklist_completo()
 
 
+# ----- Nutrient Intelligence (perfil cientifico por SKU) -----
+
+
+@cached_ttl(seconds=3600)
+def _nutrient_resumen_cached() -> dict:
+    from .nutrient_intelligence import resumen_completo
+    return resumen_completo()
+
+
+@app.get("/nutrientes", tags=["meta"], summary="Resumen del portfolio nutricional")
+def nutrient_resumen_endpoint() -> dict:
+    """Analisis ejecutivo: TAM total, top aplicaciones, mercados target."""
+    return _nutrient_resumen_cached()
+
+
+@app.get("/nutrientes/perfiles", tags=["meta"], summary="Perfiles cientificos de los 12 SKUs")
+def nutrient_perfiles_endpoint() -> dict:
+    from .nutrient_intelligence import listar_perfiles
+    return {"perfiles": listar_perfiles()}
+
+
+@app.get("/nutrientes/sku/{sku}", tags=["meta"], summary="Perfil cientifico de un SKU especifico")
+def nutrient_sku_endpoint(sku: str) -> dict:
+    from .nutrient_intelligence import perfil_por_sku
+    p = perfil_por_sku(sku)
+    if p is None:
+        raise HTTPException(status_code=404, detail=f"SKU {sku} no encontrado")
+    return p
+
+
 # ----- Commercial Intelligence (pricing + concentration + tech ROI + pipeline) -----
 
 
