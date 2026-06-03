@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guía Trongkai · Paso a paso con manzanitas</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+    background: #ffffff;
+    color: #1d1d1f;
+    line-height: 1.55;
+    letter-spacing: -0.022em;
+  }
+  ::selection { background: #1a8a1a; color: #fff; }
+
+  .container { max-width: 980px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 80px 0; }
+  @media (max-width: 768px) { section { padding: 56px 0; } .container { padding: 0 20px; } }
+
+  /* ========= NAV STICKY ========= */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid #f0f0f2;
+  }
+  .toc-inner {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    padding: 14px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    scrollbar-width: none;
+  }
+  .toc-inner::-webkit-scrollbar { display: none; }
+  .toc a {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #515154;
+    font-size: 12px;
+    font-weight: 500;
+    background: #f5f5f7;
+    transition: all 0.2s;
+  }
+  .toc a:hover { background: #1a8a1a; color: #fff; }
+
+  /* ========= HERO ========= */
+  .hero { padding: 120px 0 60px; text-align: center; }
+  .hero .eyebrow {
+    color: #1a8a1a;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 80px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    margin-bottom: 24px;
+    background: linear-gradient(180deg, #1d1d1f 0%, #515154 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, #1a8a1a 0%, #34a853 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p.lead {
+    font-size: clamp(18px, 2.2vw, 24px);
+    color: #515154;
+    max-width: 680px;
+    margin: 0 auto 32px;
+    line-height: 1.4;
+  }
+  .apple-row {
+    font-size: 36px;
+    line-height: 1;
+    margin: 24px 0;
+    letter-spacing: 4px;
+  }
+
+  /* ========= SECTION HEAD ========= */
+  .head { text-align: center; margin-bottom: 56px; }
+  .head .eyebrow {
+    color: #1a8a1a;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    margin-bottom: 10px;
+  }
+  .head h2 {
+    font-size: clamp(32px, 4.5vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin-bottom: 14px;
+  }
+  .head p {
+    font-size: 18px;
+    color: #6e6e73;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  /* ========= ANALOGIA BOX ========= */
+  .analogia {
+    background: linear-gradient(135deg, #fff7e6 0%, #fffbf0 100%);
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 16px 16px 0;
+    padding: 20px 28px;
+    margin: 24px 0;
+  }
+  .analogia .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #92400e;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .analogia p {
+    color: #1d1d1f;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  /* ========= MODULO CARD ========= */
+  .modulo {
+    background: #fff;
+    border: 1px solid #f0f0f2;
+    border-radius: 22px;
+    padding: 36px;
+    margin-bottom: 24px;
+    transition: all 0.3s;
+  }
+  .modulo:hover { box-shadow: 0 18px 40px rgba(0,0,0,0.06); }
+  .modulo-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+  .modulo-icon {
+    font-size: 40px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .modulo-title h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.015em;
+  }
+  .modulo-title .ruta {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: #1a8a1a;
+    background: #f0faf0;
+    padding: 2px 8px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+  .modulo p.desc {
+    color: #515154;
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  .modulo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  @media (max-width: 640px) { .modulo-grid { grid-template-columns: 1fr; } }
+  .modulo-grid > div {
+    background: #f5f5f7;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .modulo-grid h4 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #6e6e73;
+    margin-bottom: 10px;
+  }
+  .modulo-grid ul {
+    list-style: none;
+    padding: 0;
+  }
+  .modulo-grid li {
+    font-size: 14px;
+    color: #1d1d1f;
+    padding: 4px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+  .modulo-grid li::before {
+    content: "🍏";
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+  }
+  .modulo-grid.faltantes li::before { content: "🍎"; }
+
+  /* ========= FLOW STEP ========= */
+  .flow-step {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    padding: 24px;
+    background: linear-gradient(180deg, #fbfbfd 0%, #ffffff 100%);
+    border-radius: 18px;
+    border: 1px solid #f0f0f2;
+  }
+  .flow-step .num {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a8a1a 0%, #34a853 100%);
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .flow-step h4 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .flow-step p { color: #515154; font-size: 15px; line-height: 1.55; }
+
+  /* ========= ETAPAS PLANTA ========= */
+  .etapas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .etapa-card {
+    background: #fff;
+    border: 1px solid #f0f0f2;
+    border-radius: 16px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .etapa-card .num {
+    position: absolute;
+    top: 12px; right: 14px;
+    font-size: 36px;
+    font-weight: 800;
+    color: #f0f0f2;
+    line-height: 1;
+  }
+  .etapa-card h5 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    padding-right: 28px;
+  }
+  .etapa-card p {
+    font-size: 12px;
+    color: #6e6e73;
+    line-height: 1.4;
+  }
+  .nivel-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  .nivel-pd { background: #ef4444; }
+  .nivel-prov { background: #f59e0b; }
+  .nivel-val { background: #1a8a1a; }
+
+  /* ========= ANTES/DESPUES ========= */
+  .ad-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+  @media (max-width: 768px) { .ad-grid { grid-template-columns: 1fr; } }
+  .ad-card {
+    border-radius: 22px;
+    padding: 36px;
+    color: white;
+  }
+  .ad-card.antes {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  }
+  .ad-card.despues {
+    background: linear-gradient(135deg, #1a8a1a 0%, #16a34a 100%);
+  }
+  .ad-card .label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    opacity: 0.9;
+    margin-bottom: 10px;
+  }
+  .ad-card h4 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+  .ad-card ul { list-style: none; }
+  .ad-card li {
+    font-size: 15px;
+    padding: 6px 0;
+    padding-left: 24px;
+    position: relative;
+  }
+  .ad-card.antes li::before { content: "❌"; position: absolute; left: 0; }
+  .ad-card.despues li::before { content: "✅"; position: absolute; left: 0; }
+
+  /* ========= CHECKLIST FINAL ========= */
+  .check-block {
+    background: linear-gradient(180deg, #fbfbfd 0%, #fff 100%);
+    border-radius: 22px;
+    padding: 40px;
+    margin: 32px 0;
+  }
+  .check-block h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  .check-block ol {
+    list-style: none;
+    counter-reset: check;
+  }
+  .check-block li {
+    counter-increment: check;
+    padding: 14px 0;
+    padding-left: 56px;
+    position: relative;
+    border-bottom: 1px solid #f0f0f2;
+    font-size: 16px;
+  }
+  .check-block li:last-child { border-bottom: none; }
+  .check-block li::before {
+    content: counter(check);
+    position: absolute;
+    left: 0; top: 12px;
+    width: 36px; height: 36px;
+    background: #f0faf0;
+    color: #1a8a1a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* ========= QUOTE/CALLOUT ========= */
+  .callout {
+    background: #1d1d1f;
+    color: #fff;
+    border-radius: 28px;
+    padding: 56px 40px;
+    text-align: center;
+    margin: 48px 0;
+  }
+  .callout p {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .callout .accent {
+    background: linear-gradient(135deg, #34a853 0%, #1a8a1a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  footer {
+    background: #f5f5f7;
+    padding: 40px 0;
+    text-align: center;
+    color: #6e6e73;
+    font-size: 13px;
+  }
+  footer .quote {
+    color: #1d1d1f;
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOC sticky -->
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#flujo">Cómo funciona</a>
+    <a href="#balances">⚖️ Balances</a>
+    <a href="#etapas">🏭 Etapas planta</a>
+    <a href="#modulos">📋 Módulos · 31 pestañas</a>
+    <a href="#datos-faltantes">📝 Qué datos faltan</a>
+    <a href="#antes-despues">Antes / después de operar</a>
+    <a href="#checklist">✅ Checklist</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero container">
+  <p class="eyebrow">Guía oficial</p>
+  <h1>Trongkai paso a paso<br /><span class="accent">explicado con manzanitas.</span></h1>
+  <div class="apple-row">🍎 🍏 🍎 🍏 🍎 🍏 🍎</div>
+  <p class="lead">
+    Cómo funciona cada pestaña, qué información le falta para volverse exacta,
+    y cómo todo se sincroniza para que la plataforma tome mejores decisiones
+    — antes y después de empezar a operar la planta.
+  </p>
+</section>
+
+<!-- ====================== FLUJO GENERAL ====================== -->
+<section id="flujo">
+  <div class="container">
+    <div class="head">
+      <p class="eyebrow">Capítulo 1</p>
+      <h2>¿Cómo funciona Trongkai?</h2>
+      <p>El mismo principio que en el campo: <strong>lo que cosechás afuera lo procesás adentro</strong> para obtener algo de mayor valor.</p>
+    </div>
+
+    <div class="analogia">
+      <div class="label">🍏 Pensalo así</div>
+      <p>
+        Si tenés <strong>10 manzanas</strong> en el campo, y querés hacer <strong>compota premium</strong>, necesitás saber:
+        cuánta fruta llega · cuánta agua y energía usás · cuántas personas y cuánto tiempo · qué pasa en cada paso.
+        Trongkai es el cuaderno digital donde anotás <strong>todo eso por vos</strong>, y además te dice
+        si vas a tener pérdidas, si te falta gente, o si el precio de venta cierra contra el costo.
+      </p>
+    </div>
+
+    <div class="flow-step">
+      <div class="num">1</div>
+      <div>
+        <h4>📥 Entran datos al sistema</h4>
+        <p>
+          Mandás documentos a la carpeta <strong>inbox</strong> (PDFs, Excels, fotos de ticket de balanza).
+          El procesador autónomo los clasifica, extrae texto y nutre las matrices.
+          Ya no hay "qué Excel era el bueno" — todo queda trazado.
+        </p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="num">2</div>
+      <div>
+        <h4>⚙️ El motor calcula todo</h4>
+        <p>
+          Un único motor (FastAPI corriendo 24/7) combina datos de mercado, supuestos validados, papers científicos y precios reales para producir
+          <strong>KPIs financieros, balances, scores de inversión, alertas y recomendaciones</strong>.
+          Como una hoja de cálculo gigante que se actualiza sola.
+        </p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="num">3</div>
+      <div>
+        <h4>🧠 Los agentes de IA chequean</h4>
+        <p>
+          13 agentes especializados (financial, ESG, compliance, banker, monitor…) revisan que todo cuadre,
+          detectan hardcodes, validan supuestos contra benchmarks, y proponen mejoras.
+          Cada 1 hora corre el "improver", cada 6h el monitor SRE, cada lunes el compliance.
+        </p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="num">4</div>
+      <div>
+        <h4>📊 Vos lo ves en el frontend</h4>
+        <p>
+          Una web (Vercel) con 32+ páginas Apple-style organizadas en 6 grupos (Estado, Datos, Comercial, Modelo, <strong>Balances</strong>, Decisiones).
+          Centro de Mando arriba, drill-down hasta el último kWh por equipo.
+        </p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="num">5</div>
+      <div>
+        <h4>📄 Salen entregables listos</h4>
+        <p>
+          PDF tearsheet, LP Pack ZIP, Excel master con macros VBA, HTML de presentación.
+          Todo descargable de un click. Sin "preparame el deck" — el deck ya está hecho y siempre actualizado.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== BALANCES ====================== -->
+<section id="balances" style="background:#fbfbfd">
+  <div class="container">
+    <div class="head">
+      <p class="eyebrow">Capítulo 2</p>
+      <h2>Los 4 balances que validan la planta</h2>
+      <p>Cada balance es una promesa de coherencia. Si no cierra, algo está mal.</p>
+    </div>
+
+    <div class="analogia">
+      <div class="label">🍏 La regla de oro</div>
+      <p>
+        Si entran <strong>100 kg de manzanas</strong> a la planta, deben salir <strong>100 kg en algún lado</strong>:
+        en producto final, en agua evaporada, en pérdidas. Si la suma no da 100, hay un error.
+        Lo mismo aplica a kWh, litros de agua y horas de la gente. Trongkai no acepta plata sin destino, ni masa sin destino.
+      </p>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header">
+        <div class="modulo-icon">📦</div>
+        <div class="modulo-title">
+          <h3>Balance Producto (masa)</h3>
+          <div class="ruta">/balance · closure ±0.5%</div>
+        </div>
+      </div>
+      <p class="desc">
+        Suma kg que entran vs kg que salen + agua evaporada + pérdidas. Por SKU y por modo (A: base inicial / B: base deshidratada).
+      </p>
+      <div class="modulo-grid faltantes">
+        <div>
+          <h4>Datos faltantes para volverse exacto</h4>
+          <ul>
+            <li>Humedad inicial real medida por lote (no estimada)</li>
+            <li>Yield real de extracción por MMPP (orujo, alperujo, tomasa)</li>
+            <li>Curva de pérdidas por etapa con mediciones de planta</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Cómo lo cargás</h4>
+          <ul>
+            <li>Ticket de balanza (camión vacío vs lleno)</li>
+            <li>Análisis humedad del laboratorio QA</li>
+            <li>Reporte de fin de turno operario</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header">
+        <div class="modulo-icon">⚡</div>
+        <div class="modulo-title">
+          <h3>Balance Energía</h3>
+          <div class="ruta">/balance-energia · closure ±2%</div>
+        </div>
+      </div>
+      <p class="desc">
+        kWh consumidos por equipo (PEF, secador, caldera…) vs kWh facturados. Mix renovable, factor potencia, intensidad por kg producto.
+      </p>
+      <div class="modulo-grid faltantes">
+        <div>
+          <h4>Datos faltantes para volverse exacto</h4>
+          <ul>
+            <li>Factura eléctrica mensual real (CGE / Enel / cooperativa)</li>
+            <li>Lectura medidores por equipo (no estimación de placa)</li>
+            <li>Factor potencia real medido (no asumido 0.92)</li>
+            <li>Consumo gas natural de caldera (m³ → kWh equivalente)</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Cómo lo cargás</h4>
+          <ul>
+            <li>Foto del medidor mensual a /inbox</li>
+            <li>Edita los flujos en <code>data/balance-energia.json</code></li>
+            <li>POST <code>/balance/energia/equipo</code> desde el SDK</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header">
+        <div class="modulo-icon">💧</div>
+        <div class="modulo-title">
+          <h3>Balance Agua</h3>
+          <div class="ruta">/balance-agua · closure ±1% + DGA</div>
+        </div>
+      </div>
+      <p class="desc">
+        m³ de pozo + red pública + recirculado vs m³ usados en proceso/lavado/CIP/vapor + RILE. Cumplimiento de derecho DGA.
+      </p>
+      <div class="modulo-grid faltantes">
+        <div>
+          <h4>Datos faltantes para volverse exacto</h4>
+          <ul>
+            <li>Caudalímetro instalado en Pozo 1 Parral</li>
+            <li>Volumen real de RILE generado (m³/mes)</li>
+            <li>Costo agua Essbio actualizado</li>
+            <li>% real de recirculación medido vs estimado</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Cómo lo cargás</h4>
+          <ul>
+            <li>Foto caudalímetro semanal a /inbox</li>
+            <li>Boleta Essbio mensual a /inbox</li>
+            <li>Análisis RILE del laboratorio externo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="modulo" style="border-color:#fee2e2;background:linear-gradient(180deg,#fef2f2 0%,#fff 100%)">
+      <div class="modulo-header">
+        <div class="modulo-icon">👥</div>
+        <div class="modulo-title">
+          <h3>Balance RRHH ⚠️ <span style="color:#dc2626;font-size:14px">con alarma de horas extras</span></h3>
+          <div class="ruta">/balance-rrhh · 100% asignación · CT Chile</div>
+        </div>
+      </div>
+      <p class="desc">
+        Horas asignadas a cada trabajador vs horas legales (Art. 22 y 31 CT). Alarma <strong>crítica roja</strong> si:
+      </p>
+      <ul style="margin-left:20px;color:#dc2626;margin-bottom:16px">
+        <li>📛 Sem regulares > 45h (excede contrato)</li>
+        <li>📛 Sem totales > 57h (excede 45+12 extras máx legal)</li>
+        <li>📛 Mes extras > 32h (excede Art. 31 CT)</li>
+      </ul>
+      <div class="modulo-grid faltantes">
+        <div>
+          <h4>Datos faltantes para volverse exacto</h4>
+          <ul>
+            <li>Lista real de trabajadores activos (contratados)</li>
+            <li>Sueldos reales actualizados</li>
+            <li>Asignación real semanal por turno</li>
+            <li>Marcaciones (reloj control) para validar horas efectivas</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Cómo lo cargás</h4>
+          <ul>
+            <li>Subí planilla mensual de remuneraciones a /inbox</li>
+            <li>Editá <code>data/balance-rrhh-trabajadores.json</code></li>
+            <li>POST <code>/balance/rrhh/asignar</code> desde la UI</li>
+            <li>Integrar con Nubox / Buk en futura iteración</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== ETAPAS PLANTA ====================== -->
+<section id="etapas">
+  <div class="container">
+    <div class="head">
+      <p class="eyebrow">Capítulo 3 · Nuevo</p>
+      <h2>Balance por etapas de la planta</h2>
+      <p>Las 12 estaciones por las que pasan tus manzanas — de camión a producto premium.</p>
+    </div>
+
+    <div class="analogia">
+      <div class="label">🍏 ¿Por qué importa por etapa?</div>
+      <p>
+        Si te dicen "el yield total es 32%", está bien — pero <strong>no sabés dónde se pierde el resto</strong>.
+        Si lo desglosás por etapa: lavado pierde 3%, trituración 1%, PEF 1%, <strong>secado evapora 50% (es esperado)</strong>, micromolienda 2%…
+        ahí podés actuar quirúrgicamente. La pestaña <code>/balance-etapas</code> te muestra exactamente <strong>en qué máquina se va cada kilo</strong>.
+      </p>
+    </div>
+
+    <div class="etapas-grid">
+      <div class="etapa-card"><div class="num">1</div><h5>Recepción</h5><p><span class="nivel-dot nivel-prov"></span>Pesaje en balanza + muestreo.</p></div>
+      <div class="etapa-card"><div class="num">2</div><h5>Almacenamiento húmedo</h5><p><span class="nivel-dot nivel-pd"></span>Silos refrigerados, evita fermentación.</p></div>
+      <div class="etapa-card"><div class="num">3</div><h5>Lavado</h5><p><span class="nivel-dot nivel-prov"></span>Tambor + tamices, remoción tierra.</p></div>
+      <div class="etapa-card"><div class="num">4</div><h5>Trituración</h5><p><span class="nivel-dot nivel-pd"></span>Molino martillos 5-10mm.</p></div>
+      <div class="etapa-card"><div class="num">5</div><h5>PEF Opticept</h5><p><span class="nivel-dot nivel-prov"></span>Pulsos eléctricos, ruptura celular sin calor.</p></div>
+      <div class="etapa-card"><div class="num">6</div><h5>Extracción líquida</h5><p><span class="nivel-dot nivel-pd"></span>Prensa horizontal, separa jugo/aceite.</p></div>
+      <div class="etapa-card"><div class="num">7</div><h5>Centrifugación</h5><p><span class="nivel-dot nivel-pd"></span>Separa 3 fases: aceite + agua + sólidos.</p></div>
+      <div class="etapa-card"><div class="num">8</div><h5>Secado rotativo</h5><p><span class="nivel-dot nivel-prov"></span>Tambor 80-110 °C, humedad → 10%.</p></div>
+      <div class="etapa-card"><div class="num">9</div><h5>Micromolienda</h5><p><span class="nivel-dot nivel-prov"></span>Molino impacto a 100-200 micras.</p></div>
+      <div class="etapa-card"><div class="num">10</div><h5>Mezclado</h5><p><span class="nivel-dot nivel-pd"></span>Mezclador cintas, formula cada SKU.</p></div>
+      <div class="etapa-card"><div class="num">11</div><h5>Envasado</h5><p><span class="nivel-dot nivel-prov"></span>Big bags 1000 kg o sacos 25 kg.</p></div>
+      <div class="etapa-card"><div class="num">12</div><h5>Logística</h5><p><span class="nivel-dot nivel-pd"></span>Carga FCL, doc exportación.</p></div>
+    </div>
+
+    <div class="modulo" style="margin-top:32px">
+      <div class="modulo-header">
+        <div class="modulo-icon">🎛</div>
+        <div class="modulo-title">
+          <h3>La página <code>/balance-etapas</code></h3>
+          <div class="ruta">dinámico · slider de throughput recalcula todo</div>
+        </div>
+      </div>
+      <p class="desc">Movés el slider de <strong>throughput</strong> (kg/h) y al instante ves:</p>
+      <ul style="padding-left:20px;color:#1d1d1f;line-height:1.9">
+        <li>🍏 Cómo cambia el consumo de energía/agua/HH en cada etapa</li>
+        <li>🍏 Dónde aparece el cuello de botella (etapa &gt; 85% utilización)</li>
+        <li>🍏 Qué etapas tienen datos "PD" (sin validar) y cuáles "OK"</li>
+        <li>🍏 La completitud global del modelo (40% PD → no podés tomar decisiones finas)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== MODULOS / PESTANAS ====================== -->
+<section id="modulos" style="background:#fbfbfd">
+  <div class="container">
+    <div class="head">
+      <p class="eyebrow">Capítulo 4</p>
+      <h2>Las 31 pestañas, una por una</h2>
+      <p>Qué hace cada una y qué dato necesitás cargarle para que funcione bien.</p>
+    </div>
+
+    <h3 style="font-size:24px;margin:32px 0 16px;color:#1a8a1a">📊 Grupo: Estado</h3>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">⚡</div>
+        <div class="modulo-title"><h3>Centro de Mando</h3><div class="ruta">/comando</div></div></div>
+      <p class="desc">Cockpit ejecutivo — KPIs, alertas, próxima acción del Decision Engine, balances strip.</p>
+      <div class="modulo-grid faltantes"><div><h4>Necesita</h4><ul><li>Que todo lo demás esté actualizado</li><li>Snapshot fresco</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>Score Readiness</li><li>TIR / VAN / EV</li><li>Top alerta crítica</li><li>Score balances</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">📋</div>
+        <div class="modulo-title"><h3>Directorio</h3><div class="ruta">/dashboard-directorio</div></div></div>
+      <p class="desc">Vista consolidada para reunión de board. Una hoja, todo el proyecto.</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Foto del directorio (avatares)</li><li>Compromisos de CAPEX firmados</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>Resumen mes</li><li>TIR escenarios</li><li>Hitos próximos</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">🎯</div>
+        <div class="modulo-title"><h3>Readiness Score</h3><div class="ruta">/readiness</div></div></div>
+      <p class="desc">Score 0-100 de qué tan listos estamos para LPs / fondos.</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Carta intención LP firmada</li><li>Acuerdos cliente vinculantes</li><li>Permisos ambientales</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>Score actual + histórico</li><li>Gaps prioritarios</li><li>Uplift potencial</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">💚</div>
+        <div class="modulo-title"><h3>Salud del Sistema</h3><div class="ruta">/salud</div></div></div>
+      <p class="desc">Health check técnico: engine OK, DB OK, cache OK, volume montado.</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Ninguno — es automático</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>Estado Fly.io</li><li>Memoria, cache stats</li><li>Endpoints OK / 5xx</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">📝</div>
+        <div class="modulo-title"><h3>Audit Trail</h3><div class="ruta">/audit</div></div></div>
+      <p class="desc">Histórico de cambios al modelo. Quién cambió qué, cuándo.</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Login de usuarios reales (hoy es "actor: bot")</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>Timeline cambios</li><li>Eventos snapshot, asignaciones, alarmas</li></ul></div></div>
+    </div>
+
+    <h3 style="font-size:24px;margin:32px 0 16px;color:#1a8a1a">📥 Grupo: Datos</h3>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">📥</div>
+        <div class="modulo-title"><h3>Inbox</h3><div class="ruta">/inbox</div></div></div>
+      <p class="desc">Carpeta donde tirás archivos nuevos. El procesador los clasifica solo.</p>
+      <div class="modulo-grid faltantes"><div><h4>Necesita</h4><ul><li>Que mandes archivos!</li><li>Reglas de clasificación por nombre</li></ul></div>
+        <div><h4>Procesa</h4><ul><li>PDFs (cartolas, F29, NDAs)</li><li>Excels (balances, datos)</li><li>Word (actas, contratos)</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">📋</div>
+        <div class="modulo-title"><h3>Datos faltantes</h3><div class="ruta">/datos</div></div></div>
+      <p class="desc">Checklist visual de los gaps de información del proyecto.</p>
+      <div class="modulo-grid faltantes"><div><h4>Marca</h4><ul><li>Lista de docs requeridos</li><li>Estado: tenemos / no tenemos / parcial</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>Score completitud</li><li>Priorización por bloqueador LP</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">📊</div>
+        <div class="modulo-title"><h3>Matriz Variables</h3><div class="ruta">/variables</div></div></div>
+      <p class="desc">Todos los supuestos del modelo, etiquetados <strong>PD / OK_PROVISORIO / OK_VALIDADO</strong>.</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Validación en planta de cada supuesto PD</li><li>Auto-sugerencias del engine</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>% del modelo validado</li><li>Variables a validar urgente</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">🧬</div>
+        <div class="modulo-title"><h3>Nutrientes</h3><div class="ruta">/nutrientes</div></div></div>
+      <p class="desc">Perfil científico de cada SKU: compuestos bioactivos, ORAC, aplicaciones, papers, TAM por mercado.</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Análisis composición real de tu producto</li><li>Certificación EFSA claims</li><li>Tests laboratorio antioxidantes</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>12 SKUs con compuestos</li><li>TAM agregado $26.6B USD</li><li>Top 10 aplicaciones</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">💼</div>
+        <div class="modulo-title"><h3>Commercial Intel</h3><div class="ruta">/commercial</div></div></div>
+      <p class="desc">Pricing power, HHI concentración clientes, ROI por tecnología, revenue pipeline 5y.</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Cotizaciones reales de clientes</li><li>Precios de competencia validados</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>Revenue 5y $88M proyectado</li><li>HHI alta concentración</li><li>NPV tech +$346k</li></ul></div></div>
+    </div>
+
+    <h3 style="font-size:24px;margin:32px 0 16px;color:#1a8a1a">📈 Grupo: Modelo</h3>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">📅</div>
+        <div class="modulo-title"><h3>Plan 5 años</h3><div class="ruta">/plan</div></div></div>
+      <p class="desc">EERR mes a mes a 60 meses, KPIs financieros (TIR, VAN, payback, EBITDA margin).</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>CAPEX cotizado real (no estimado)</li><li>Working capital validado</li><li>Tasa impuestos local exacta</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>60 meses proyectados</li><li>Análisis sensibilidad</li><li>Working capital cíclico</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">🌪</div>
+        <div class="modulo-title"><h3>What-if Live + Stress</h3><div class="ruta">/whatif-live · /stress</div></div></div>
+      <p class="desc">Sliders en vivo para precio/costo/WACC + test triple negativo.</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Ninguno — usa el modelo actual</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>TIR/VAN al instante</li><li>Resistencia a shocks</li></ul></div></div>
+    </div>
+
+    <h3 style="font-size:24px;margin:32px 0 16px;color:#1a8a1a">🎯 Grupo: Decisiones</h3>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">🎯</div>
+        <div class="modulo-title"><h3>Decision Engine</h3><div class="ruta">/decisiones</div></div></div>
+      <p class="desc">Top 5 acciones priorizadas por uplift al Readiness Score (cross-matriz).</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Owners reales asignados</li><li>Fechas límite firmes</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>Próxima mejor acción</li><li>Quick-wins</li><li>Uplift potencial pts</li></ul></div></div>
+    </div>
+
+    <div class="modulo">
+      <div class="modulo-header"><div class="modulo-icon">📜</div>
+        <div class="modulo-title"><h3>Compliance + Macro + Carbono</h3><div class="ruta">/compliance · /macro · /carbono</div></div></div>
+      <p class="desc">Ley REP timeline, USD/CLP en vivo, LCA + revenue créditos CO₂.</p>
+      <div class="modulo-grid faltantes"><div><h4>Datos faltantes</h4><ul><li>Registro RETC actualizado</li><li>Tarifa exacta créditos CO₂</li></ul></div>
+        <div><h4>Te muestra</h4><ul><li>Hitos REP próximos</li><li>UF, IPC, TPM live</li><li>3 escenarios LCA</li></ul></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== DATOS FALTANTES PRIORIZADOS ====================== -->
+<section id="datos-faltantes">
+  <div class="container">
+    <div class="head">
+      <p class="eyebrow">Capítulo 5</p>
+      <h2>📝 Lo que falta para que la app sea exacta</h2>
+      <p>Priorizado: del más urgente al menos.</p>
+    </div>
+
+    <div class="check-block">
+      <h3>🍎 Top 10 datos que aún faltan (priorizado)</h3>
+      <ol>
+        <li><strong>Cotización CAPEX final de Opticept PEF + Secador rotativo</strong> — sin esto la TIR se mueve ±15%.</li>
+        <li><strong>Acuerdos vinculantes con 3 clientes ancla</strong> (Iansa, Sugal, Agrozzi) — destraba LP institucional.</li>
+        <li><strong>Análisis humedad real por MMPP</strong> (orujo, alperujo, tomasa) de laboratorio. Hoy es estimado por literatura.</li>
+        <li><strong>Caudalímetro instalado en Pozo 1 Parral</strong> — sin esto el cumplimiento DGA es estimado.</li>
+        <li><strong>Factura eléctrica real CGE/Enel</strong> de últimos 3 meses para calibrar consumo.</li>
+        <li><strong>Lista trabajadores activos + sueldos reales</strong> (hoy seed con 15 ficticios) — desbloquea balance RRHH correcto.</li>
+        <li><strong>Permiso ambiental (RCA) DIA/EIA en trámite</strong> — bloqueador regulatorio para arrancar.</li>
+        <li><strong>Yield real PEF Opticept en orujo chileno</strong> (no benchmark Pulsemaster Europa).</li>
+        <li><strong>Curva de aprendizaje primeros 6 meses operación</strong> — para ajustar costos año 1 vs estado estable.</li>
+        <li><strong>Precio venta validado por SKU</strong> (cotizaciones firmes de Asia/EU/USA), no solo benchmark.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== ANTES Y DESPUES ====================== -->
+<section id="antes-despues" style="background:#fbfbfd">
+  <div class="container">
+    <div class="head">
+      <p class="eyebrow">Capítulo 6</p>
+      <h2>Antes y después de operar la planta</h2>
+      <p>Cómo cambia el rol de Trongkai cuando pasamos de papel a fierro.</p>
+    </div>
+
+    <div class="ad-grid">
+      <div class="ad-card antes">
+        <div class="label">🍎 Antes de operar</div>
+        <h4>Trongkai es el caso de inversión</h4>
+        <ul>
+          <li>Convencer LPs con números defendibles</li>
+          <li>Negociar con bancos (DSCR, LLCR, TIR equity)</li>
+          <li>Stress tests para que el board se sienta tranquilo</li>
+          <li>Cotizar y planificar CAPEX</li>
+          <li>Calibrar supuestos con literatura + benchmarks</li>
+          <li>Generar LP Pack premium descargable</li>
+        </ul>
+      </div>
+      <div class="ad-card despues">
+        <div class="label">🍏 Después de operar</div>
+        <h4>Trongkai es el sistema nervioso de la planta</h4>
+        <ul>
+          <li>Balances en vivo (entran kg → salen kg validado)</li>
+          <li>Alarmas RRHH antes de que un operario exceda 57h</li>
+          <li>Bottleneck detectado en tiempo real por etapa</li>
+          <li>Reportes ESG mensuales automáticos a LPs</li>
+          <li>Cumplimiento DGA monitoreado en vivo</li>
+          <li>Forecast meses 1-12 ajustado con datos reales</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== SYNC CALLOUT ====================== -->
+<section>
+  <div class="container">
+    <div class="callout">
+      <p>Toda la app es <span class="accent">una sola fuente de verdad.</span><br />
+      Cambiás un supuesto en /variables → recalcula el plan → mueve el TIR → cambia el score readiness → notifica al Decision Engine → aparece en /comando → llega al PDF tearsheet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== CHECKLIST FINAL ====================== -->
+<section id="checklist" style="background:#fbfbfd">
+  <div class="container">
+    <div class="head">
+      <p class="eyebrow">Capítulo final</p>
+      <h2>✅ Cómo usarla cada día</h2>
+      <p>El ritual mínimo para que la plataforma se mantenga afilada.</p>
+    </div>
+
+    <div class="check-block">
+      <h3>🍏 Rutina diaria del COO</h3>
+      <ol>
+        <li>Abrí <strong>/comando</strong> en la mañana — 30 segundos para ver score, alertas y próxima acción.</li>
+        <li>Si hay alerta crítica RRHH → ir a <strong>/balance-rrhh</strong> y ajustar asignación antes de las 9 AM.</li>
+        <li>Tirá los archivos nuevos del día a la carpeta <strong>/inbox</strong> — la app los procesa sola.</li>
+        <li>Revisá <strong>/balance-etapas</strong> si hubo cambios en throughput o equipos.</li>
+        <li>Cerrá el día checando <strong>/decisiones</strong> — qué cambió en el top 5.</li>
+      </ol>
+    </div>
+
+    <div class="check-block">
+      <h3>🍏 Rutina semanal (lunes 9 AM)</h3>
+      <ol>
+        <li>Revisar <strong>/compliance</strong> — hitos REP próximos (corre el ComplianceMonitor schedule automático).</li>
+        <li>Validar variables que pasaron de PD → OK_PROVISORIO en <strong>/variables</strong>.</li>
+        <li>Aprobar el reporte <strong>SupuestosAudit</strong> del agente.</li>
+        <li>Generar <strong>Weekly Digest HTML</strong> y mandarlo al directorio.</li>
+      </ol>
+    </div>
+
+    <div class="check-block">
+      <h3>🍏 Rutina mensual</h3>
+      <ol>
+        <li>Subir factura eléctrica + boleta agua a <strong>/inbox</strong> para calibrar balances.</li>
+        <li>Subir planilla remuneraciones para sincronizar balance RRHH.</li>
+        <li>Generar <strong>LP Pack ZIP</strong> actualizado.</li>
+        <li>Revisar <strong>/carbono</strong> mensual con LCA actualizado.</li>
+        <li>Validar el HTML autogenerado <strong>Balances-YYYYMMDD.html</strong> (sale del schedule cada 6h).</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="quote">"En la naturaleza no existen los residuos, solo recursos."</p>
+  <p>Trongkai · Innovación en Nutrición Circular · Guía oficial 2026</p>
+  <p style="margin-top:10px;font-size:11px;color:#a1a1a6">
+    Generada automáticamente · 12 etapas · 4 balances · 31 pestañas · 13 agentes · 11 schedules · 477/477 tests verde
+  </p>
+</footer>
+
+</body>
+</html>

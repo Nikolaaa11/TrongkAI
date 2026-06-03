@@ -2410,3 +2410,29 @@ def balance_integrado_endpoint(produccion_anual_kg: float = 850_000.0) -> dict:
 
     b = computar_balance_integrado(produccion_anual_kg=produccion_anual_kg)
     return b.to_dict()
+
+
+@app.get(
+    "/balance/etapas",
+    tags=["balances"],
+    summary="Balance por cada una de las 12 etapas de la planta",
+    description="Dinamico: cambiando throughput_kg_h recalcula los consumos por etapa, "
+                "yield acumulado, bottlenecks y completitud de datos faltantes.",
+)
+@cached_ttl(seconds=60)
+def balance_etapas_endpoint(throughput_kg_h: float = 2000.0) -> dict:
+    from .balances.etapas import computar_balance_etapas
+
+    if throughput_kg_h <= 0 or throughput_kg_h > 20_000:
+        raise HTTPException(400, "throughput_kg_h debe estar entre 0 y 20000")
+    return computar_balance_etapas(throughput_kg_h=throughput_kg_h).to_dict()
+
+
+@app.get(
+    "/balance/etapas/datos-faltantes",
+    tags=["balances"],
+    summary="Checklist de datos faltantes por etapa (para calibracion)",
+)
+def balance_etapas_datos_faltantes_endpoint() -> dict:
+    from .balances.etapas import resumen_datos_faltantes
+    return resumen_datos_faltantes()

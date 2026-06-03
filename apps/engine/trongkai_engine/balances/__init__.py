@@ -38,8 +38,22 @@ from .rrhh import (
     detectar_alarmas,
 )
 from .integrado import BalanceIntegrado, computar_balance_integrado
+from .etapas import (
+    BalancePorEtapas,
+    EtapaPlanta,
+    NivelDato,
+    computar_balance_etapas,
+    etapas_seed,
+    resumen_datos_faltantes,
+)
 
 __all__ = [
+    "BalancePorEtapas",
+    "EtapaPlanta",
+    "NivelDato",
+    "computar_balance_etapas",
+    "etapas_seed",
+    "resumen_datos_faltantes",
     # energia
     "BalanceEnergia",
     "FlujoEnergetico",

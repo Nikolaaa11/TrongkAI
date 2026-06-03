@@ -75,6 +75,7 @@ const GROUPS: Group[] = [
     emoji: '⚖️',
     items: [
       { href: '/balance-integral', label: 'Vista Integral', desc: 'Los 4 balances en uno + score global' },
+      { href: '/balance-etapas', label: '🏭 Por Etapas', desc: 'Las 12 etapas de la planta · dinámico' },
       { href: '/balance', label: 'Producto (masa)', desc: 'Closure ±0.5% por SKU' },
       { href: '/balance-energia', label: 'Energía', desc: 'kWh + mix renovable + FP' },
       { href: '/balance-agua', label: 'Agua', desc: 'Consumo + recirculación + DGA' },
