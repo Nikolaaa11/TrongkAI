@@ -1259,6 +1259,8 @@ def _snapshot_build() -> dict:
         "decisiones": _safe_decisiones(),
         "alertas": _safe_alertas(),
         "coherencia": _safe_coherencia(),
+        # NUEVO v3: Balances integrales (4 balances + score)
+        "balances": _safe_balances(),
     }
 
 
@@ -1319,6 +1321,47 @@ def _safe_variables_matrix() -> dict | None:
     try:
         from .variables_matrix import construir_matriz, stats_resumen
         return stats_resumen(construir_matriz())
+    except Exception:
+        return None
+
+
+@cached_ttl(seconds=180)
+def _safe_balances() -> dict | None:
+    """Resumen ligero de los 4 balances para el snapshot/PDF/cockpit."""
+    try:
+        from .balances.integrado import computar_balance_integrado
+        b = computar_balance_integrado()
+        return {
+            "score_eficiencia_global": b.score_eficiencia_global,
+            "alarmas_criticas": sum(
+                1 for a in b.alarmas_consolidadas if a.get("severidad") == "critica"
+            ),
+            "alarmas_total": len(b.alarmas_consolidadas),
+            "energia": {
+                "consumo_mwh": b.energia["consumo_total_anual_mwh"],
+                "mix_renovable_pct": b.energia["mix_renovable_pct"],
+                "intensidad_kwh_kg": b.energia["intensidad_energetica_kwh_por_kg_producto"],
+                "factor_potencia": b.energia["factor_potencia_planta"],
+                "alarmas": len(b.energia["alarmas"]),
+            },
+            "agua": {
+                "consumo_m3": b.agua["consumo_total_anual_m3"],
+                "intensidad_l_kg": b.agua["intensidad_hidrica_l_por_kg_producto"],
+                "recirculacion_pct": b.agua["agua_recirculada_pct"],
+                "alarmas": len(b.agua["alarmas"]),
+            },
+            "rrhh": {
+                "trabajadores": len(b.rrhh["trabajadores"]),
+                "utilizacion_pct": b.rrhh["utilizacion_pct"],
+                "productividad_kg_hh": b.rrhh["productividad_kg_por_hh"],
+                "alarmas_criticas_horas": sum(
+                    1 for a in b.rrhh["alarmas"] if a.get("severidad") == "critica"
+                ),
+                "alarmas_total": len(b.rrhh["alarmas"]),
+            },
+            "intensidades": b.intensidades,
+            "costos_anuales_usd": b.costos_consolidados.get("total_operacional_anual_usd", 0),
+        }
     except Exception:
         return None
 
@@ -2206,3 +2249,164 @@ def breakeven_endpoint(umbral_tir: float = 0.15) -> dict:
     if not 0 < umbral_tir < 1:
         raise HTTPException(status_code=400, detail="umbral_tir debe estar entre 0 y 1")
     return breakeven_summary(umbral_tir=umbral_tir).to_dict()
+
+
+# =============================================================================
+# BALANCES INTEGRALES (energia, agua, rrhh, integrado)
+# =============================================================================
+@app.get("/balance/energia", tags=["balances"], summary="Balance energetico anual (Sankey + alarmas)")
+@cached_ttl(seconds=120)
+def balance_energia_endpoint(produccion_anual_kg: float = 850_000.0) -> dict:
+    from .balances.energia import balance_a_sankey, cargar_flujos, computar_balance_energia
+
+    flujos = cargar_flujos()
+    b = computar_balance_energia(flujos, produccion_anual_kg=produccion_anual_kg)
+    out = b.to_dict()
+    out["sankey"] = balance_a_sankey(b)
+    return out
+
+
+@app.get("/balance/energia/sankey", tags=["balances"], summary="Solo el Sankey energetico")
+def balance_energia_sankey_endpoint(produccion_anual_kg: float = 850_000.0) -> dict:
+    from .balances.energia import balance_a_sankey, cargar_flujos, computar_balance_energia
+
+    b = computar_balance_energia(cargar_flujos(), produccion_anual_kg=produccion_anual_kg)
+    return balance_a_sankey(b)
+
+
+@app.get("/balance/agua", tags=["balances"], summary="Balance hidrico anual + cumplimiento DGA")
+@cached_ttl(seconds=120)
+def balance_agua_endpoint(produccion_anual_kg: float = 850_000.0) -> dict:
+    from .balances.agua import balance_a_sankey, cargar_flujos_agua, computar_balance_agua
+
+    flujos = cargar_flujos_agua()
+    b = computar_balance_agua(flujos, produccion_anual_kg=produccion_anual_kg)
+    out = b.to_dict()
+    out["sankey"] = balance_a_sankey(b)
+    return out
+
+
+@app.get("/balance/agua/sankey", tags=["balances"], summary="Solo el Sankey hidrico")
+def balance_agua_sankey_endpoint(produccion_anual_kg: float = 850_000.0) -> dict:
+    from .balances.agua import balance_a_sankey, cargar_flujos_agua, computar_balance_agua
+
+    b = computar_balance_agua(cargar_flujos_agua(), produccion_anual_kg=produccion_anual_kg)
+    return balance_a_sankey(b)
+
+
+@app.get("/balance/agua/cumplimiento-dga", tags=["balances"], summary="Estado derechos DGA")
+def balance_agua_dga_endpoint() -> dict:
+    from .balances.agua import cargar_flujos_agua, computar_balance_agua
+
+    b = computar_balance_agua(cargar_flujos_agua())
+    return b.cumplimiento_dga
+
+
+@app.get(
+    "/balance/rrhh",
+    tags=["balances"],
+    summary="Balance RRHH + alarmas horas extras (CT Chile)",
+    description="Devuelve trabajadores, asignaciones de la semana, alarmas criticas si hay extras > 12h/sem o totales > 57h.",
+)
+@cached_ttl(seconds=60)
+def balance_rrhh_endpoint(semana: str | None = None) -> dict:
+    from .balances.rrhh import (
+        cargar_asignaciones,
+        cargar_trabajadores,
+        computar_balance_rrhh,
+    )
+
+    sem = semana or "2026-W23"
+    trabs = cargar_trabajadores()
+    asigs = cargar_asignaciones(sem)
+    b = computar_balance_rrhh(trabajadores=trabs, asignaciones=asigs, semana=sem)
+    return b.to_dict()
+
+
+@app.get(
+    "/balance/rrhh/alarmas",
+    tags=["balances"],
+    summary="Solo alarmas criticas RRHH (para dashboard)",
+)
+def balance_rrhh_alarmas_endpoint(semana: str | None = None) -> dict:
+    from .balances.rrhh import (
+        cargar_asignaciones,
+        cargar_trabajadores,
+        detectar_alarmas,
+    )
+
+    sem = semana or "2026-W23"
+    asigs = cargar_asignaciones(sem)
+    al = detectar_alarmas(asigs, cargar_trabajadores())
+    criticas = [a for a in al if a["severidad"] == "critica"]
+    return {
+        "semana": sem,
+        "total_alarmas": len(al),
+        "criticas": len(criticas),
+        "altas": sum(1 for a in al if a["severidad"] == "alta"),
+        "alarmas": al,
+    }
+
+
+class AsignacionRequest(BaseModel):
+    trabajador_id: str
+    semana_iso: str
+    horas_regulares: float
+    horas_extras: float = 0.0
+    tareas: list[str] = Field(default_factory=list)
+    equipo_asignado: str = ""
+
+
+@app.post(
+    "/balance/rrhh/asignar",
+    tags=["balances"],
+    summary="Asignar horas a un trabajador (siempre devuelve alarmas)",
+)
+def balance_rrhh_asignar_endpoint(req: AsignacionRequest) -> dict:
+    from .balances.rrhh import (
+        AsignacionHoras,
+        cargar_asignaciones,
+        cargar_trabajadores,
+        detectar_alarmas,
+        guardar_asignaciones,
+    )
+    from .cache import clear_all
+
+    nueva = AsignacionHoras(
+        trabajador_id=req.trabajador_id,
+        semana_iso=req.semana_iso,
+        horas_regulares=req.horas_regulares,
+        horas_extras=req.horas_extras,
+        tareas=req.tareas,
+        equipo_asignado=req.equipo_asignado,
+    )
+    todas = cargar_asignaciones()
+    # Reemplazar si existe para misma semana + trabajador
+    todas = [
+        a for a in todas
+        if not (a.trabajador_id == nueva.trabajador_id and a.semana_iso == nueva.semana_iso)
+    ]
+    todas.append(nueva)
+    guardar_asignaciones(todas)
+    clear_all()  # invalida cache balances
+
+    al = detectar_alarmas([nueva], cargar_trabajadores())
+    return {
+        "ok": True,
+        "asignacion": nueva.to_dict(),
+        "alarmas_disparadas": al,
+        "tiene_alarma_critica": any(a["severidad"] == "critica" for a in al),
+    }
+
+
+@app.get(
+    "/balance/integrado",
+    tags=["balances"],
+    summary="Los 4 balances integrados + cross-checks + score eficiencia global",
+)
+@cached_ttl(seconds=120)
+def balance_integrado_endpoint(produccion_anual_kg: float = 850_000.0) -> dict:
+    from .balances.integrado import computar_balance_integrado
+
+    b = computar_balance_integrado(produccion_anual_kg=produccion_anual_kg)
+    return b.to_dict()

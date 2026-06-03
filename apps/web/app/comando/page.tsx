@@ -120,6 +120,9 @@ export default function ComandoPage() {
         <BigKPI label="EV exit año 5" value={`$${(snap.valuation.ev_base_clp / 1e9).toFixed(0)}`} unit="B CLP" tone="ok" sub={`MOIC ${snap.valuation.moic.toFixed(1)}×`} link="/dashboard-directorio" />
       </section>
 
+      {/* BALANCES INTEGRALES — 4 cards */}
+      <BalancesStrip />
+
       {/* PRÓXIMA ACCIÓN — DECISIÓN del Engine */}
       {topAccion && (
         <section className="rounded-appleXl bg-brand p-8 text-white">
@@ -466,5 +469,43 @@ function ProgresoCard({ label, pct, detalle, link }: { label: string; pct: numbe
       </div>
       <div className="mt-2 text-xs text-ink-400">{detalle}</div>
     </Link>
+  );
+}
+
+function BalancesStrip() {
+  const [bal, setBal] = useState<any | null>(null);
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/balance/integrado`).then((r) => r.json()).then(setBal).catch(() => setBal(null));
+  }, []);
+  if (!bal) return null;
+  const criticas = (bal.alarmas_consolidadas ?? []).filter((a: any) => a.severidad === 'critica').length;
+  const cards = [
+    { title: '⚡ Energía', href: '/balance-energia', kpi: `${bal.energia.consumo_total_anual_mwh.toFixed(0)} MWh`, alarmas: bal.energia.alarmas.length },
+    { title: '💧 Agua', href: '/balance-agua', kpi: `${bal.agua.consumo_total_anual_m3.toFixed(0)} m³`, alarmas: bal.agua.alarmas.length },
+    { title: '👥 RRHH', href: '/balance-rrhh', kpi: `${(bal.rrhh.utilizacion_pct * 100).toFixed(0)}% uso`, alarmas: bal.rrhh.alarmas.length, isHR: true },
+    { title: '⚖️ Integral', href: '/balance-integral', kpi: `${bal.score_eficiencia_global.toFixed(0)}/100`, alarmas: criticas },
+  ];
+  return (
+    <section className="apple-card">
+      <div className="mb-3 flex items-baseline justify-between">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">⚖️ Balances integrales</h2>
+        <Link href="/balance-integral" className="text-xs text-brand hover:underline">Ver detalle →</Link>
+      </div>
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        {cards.map((c) => (
+          <Link key={c.href} href={c.href} className="rounded-xl border border-ink-100 bg-white p-4 transition hover:border-brand hover:shadow">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold">{c.title}</p>
+              {c.alarmas > 0 && (
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${c.isHR ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}`}>
+                  {c.alarmas}
+                </span>
+              )}
+            </div>
+            <p className="mt-2 text-xl font-bold tabular">{c.kpi}</p>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }
