@@ -2455,3 +2455,73 @@ def balance_etapas_datos_faltantes_endpoint() -> dict:
 def balance_productos_etapas_endpoint() -> dict:
     from .balances.etapas import matriz_productos_x_etapas
     return matriz_productos_x_etapas()
+
+
+# =============================================================================
+# PARAMETROS PLANTA + COSTEO
+# =============================================================================
+@app.get(
+    "/parametros",
+    tags=["parametros"],
+    summary="Planilla variables (sueldos, energia, calor residual, agua, flete, arriendos)",
+)
+def parametros_get_endpoint() -> dict:
+    from .balances.parametros_planta import cargar_parametros
+    return cargar_parametros().to_dict()
+
+
+class ParametrosUpdateRequest(BaseModel):
+    """Update parcial. Solo los campos enviados se actualizan."""
+    sueldos: list[dict] | None = None
+    energia: dict | None = None
+    calor_residual: dict | None = None
+    agua: dict | None = None
+    flete: dict | None = None
+    arriendos: dict | None = None
+    perdida_mmpp_global_pct: float | None = None
+    usd_clp_referencia: float | None = None
+
+
+@app.post(
+    "/parametros/actualizar",
+    tags=["parametros"],
+    summary="Actualizar parametros variables planta (persistente en /data)",
+)
+def parametros_update_endpoint(req: ParametrosUpdateRequest) -> dict:
+    from .balances.parametros_planta import actualizar_parametros
+    from .cache import clear_all
+    updates = {k: v for k, v in req.model_dump().items() if v is not None}
+    if not updates:
+        raise HTTPException(400, "No se enviaron campos para actualizar")
+    actualizados = actualizar_parametros(updates)
+    clear_all()  # invalida cache de costeo
+    return {"ok": True, "actualizado": actualizados.to_dict()}
+
+
+@app.get(
+    "/parametros/humedades-mmpp",
+    tags=["parametros"],
+    summary="Humedades de ingreso por MMPP (Tomasa, Orujo, Alperujo, Pomasa)",
+)
+def parametros_humedades_endpoint() -> dict:
+    from .balances.humedades_mmpp import listar_humedades
+    return {"humedades": listar_humedades(), "fuente": "Conversacion equipo 04/06/2026"}
+
+
+@app.get(
+    "/costeo/etapas",
+    tags=["balances"],
+    summary="Costeo completo por etapa y por SKU usando parametros actuales",
+    description="MO + energia + calor residual + agua + materiales + arriendo PEF/Tricanter. "
+                "Resultado en CLP/kg y USD/kg por SKU.",
+)
+@cached_ttl(seconds=120)
+def costeo_etapas_endpoint(
+    throughput_kg_h: float = 2000.0,
+    incluir_respaldo: bool = False,
+) -> dict:
+    from .balances.costeo_etapas import computar_costeo_completo
+    return computar_costeo_completo(
+        throughput_kg_h=throughput_kg_h,
+        incluir_respaldo=incluir_respaldo,
+    )

@@ -170,31 +170,51 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
     """
     e1 = EtapaPlanta(
         id="E1_RECEPCION",
-        nombre="E1. Recepcion",
+        nombre="E1. Recepcion (con muestreo previo Laboratorista)",
         orden=1,
-        descripcion="Descarga en zona de acopio. Pesaje en bascula y muestreo calidad.",
+        descripcion=(
+            "Camion llega a estacionamiento - Laboratorista toma muestra ANTES de "
+            "aceptar carga. Si aceptado: vertido en estanque (piscina/acero inox/aprobado). "
+            "Encargado guia al camionero (20-30 min/camion). Tornillo/cinta/bomba "
+            "impulsion lleva a etapa 2. ROMANA COMPARTIDA con La Gloria (fuera de costos)."
+        ),
         masa_input_kg_h=throughput_kg_h,
         yield_pct=1.00,
         perdidas_pct=0.005,
-        humedad_post_etapa=(0.60, 0.80),
+        humedad_post_etapa=(0.55, 0.85),     # varia por MMPP - ver humedades_mmpp.py
         energia_kwh_por_kg=0.0008,
         agua_l_por_kg=0.0,
-        hh_por_ton_input=0.10,
-        tiempo_proceso_min=2.0,
+        hh_por_ton_input=0.40,                # alto por muestreo + recepcion
+        tiempo_proceso_min=25.0,              # 20-30 min por camion segun conversacion
         capacidad=CapacidadEtapa(throughput_kg_h * 2.0, "kg/h", NivelDato.OK_PROVISORIO),
-        mo_directa=["Laboratorista"],
-        mo_general=["Personal Recepcion y Limpieza"],
-        equipos_energeticos=["Tornillo/cinta transportadora"],
-        notas_proceso="Considerar % perdida por etapa (productos descargados en limpieza).",
-        datos_faltantes=["Frecuencia llegada camiones real", "Tiempo descarga por tipo MMPP"],
+        mo_directa=["Laboratorista (muestreo previo)", "Encargado Recepcion"],
+        mo_general=["Operario Limpieza"],
+        equipos_energeticos=["Tornillo / Cinta / Bomba impulsion a E2"],
+        notas_proceso=(
+            "Romana COMPARTIDA con servicios La Gloria - FUERA de analisis costos. "
+            "Solo se despachan documentos de recepcion DESPUES de aceptar la carga. "
+            "Humedades ingreso varian por MMPP: Tomasa 75-85%, Orujo 65%, "
+            "Alperujo 60%, Pomasa 80%. Variable por clima. "
+            "Limpieza/desinfeccion estandarizada por cantidad material o dias productivos."
+        ),
+        datos_faltantes=[
+            "Materialidad final estanque (piscina vs acero inox vs otra)",
+            "Frecuencia llegada camiones por hora",
+            "Tiempo muestreo Laboratorista (incluido en HH)",
+            "Protocolo limpieza/desinfeccion (cantidad o dias)",
+        ],
         nivel_calibracion=NivelDato.OK_VALIDADO,
         categoria_rrhh_principal="calidad",
     )
     e2 = EtapaPlanta(
-        id="E2_HOMOGENIZACION",
-        nombre="E2. Homogenizacion (previo PEF)",
+        id="E2_ESTANDARIZACION",
+        nombre="E2. Estandarizacion (analisis quimicos + ajuste)",
         orden=2,
-        descripcion="Mezcla previa al PEF. Se debe definir % de agua liquida a agregar.",
+        descripcion=(
+            "Analisis parametros quimicos para configurar PEF. Evaluar incorporacion "
+            "de agua y/o liquidos del prensado posterior (loop E5->E2). "
+            "Homogenizador de paleta. Transporte por bomba tornillo a tolva PEF."
+        ),
         masa_input_kg_h=throughput_kg_h * 0.995,
         yield_pct=0.995,
         perdidas_pct=0.005,
@@ -204,36 +224,61 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         hh_por_ton_input=0.03,
         tiempo_proceso_min=2.0,
         capacidad=CapacidadEtapa(throughput_kg_h * 1.8, "kg/h"),
-        mo_directa=["Encargado"],
+        mo_directa=["Encargado Proceso", "Laboratorista"],
         mo_general=["Limpieza"],
-        equipos_energeticos=["Bomba 1 Salida", "Remontar/Homogenizar"],
-        notas_proceso="Definir % agua a agregar para reologia optima de PEF.",
-        datos_faltantes=["% agua optimo por MMPP", "Densidad post-homogenizacion"],
+        equipos_energeticos=["Homogenizador de paleta", "Bomba tornillo alimentacion PEF"],
+        notas_proceso=(
+            "1) Analisis quimicos del lote para configurar PEF. "
+            "2) Ajustar % agua/liquidos (puede usar agua llave + liquidos prensado E5). "
+            "3) Limpieza/desinfeccion por batch/dia/MMPP."
+        ),
+        datos_faltantes=[
+            "% agua optimo por MMPP para reologia PEF",
+            "Densidad target post-homogenizacion",
+            "Especificacion homogenizador (paleta vs cinta vs sinusoidal)",
+        ],
         nivel_calibracion=NivelDato.OK_PROVISORIO,
         equipo_hidrico_principal="PEF Opticept",
         categoria_rrhh_principal="operario",
     )
     e3 = EtapaPlanta(
         id="E3_PEF",
-        nombre="E3. PEF (Salida)",
+        nombre="E3. PEF (Electroporacion - solo ruptura celular)",
         orden=3,
-        descripcion="Electroporacion con pulsos electricos. Ruptura celular sin calor.",
+        descripcion=(
+            "Pulsos electricos abren membranas celulares. SIN PERDIDAS DE MASA, "
+            "SIN CAMBIO DE HUMEDAD. Bomba tornillo alimenta, bomba salida traslada "
+            "a prensado. PEF es EQUIPO ARRENDADO (OPEX, no CAPEX propio)."
+        ),
         masa_input_kg_h=throughput_kg_h * 0.990,
-        yield_pct=0.995,
-        perdidas_pct=0.005,
-        humedad_post_etapa=(0.75, 0.80),
+        yield_pct=1.00,                  # NO HAY PERDIDAS segun conversacion
+        perdidas_pct=0.0,
+        humedad_post_etapa=(0.75, 0.80),  # NO CAMBIA HUMEDAD
         energia_kwh_por_kg=0.13,
         agua_l_por_kg=0.5,
         hh_por_ton_input=0.04,
         tiempo_proceso_min=8.0,
         capacidad=CapacidadEtapa(throughput_kg_h * 1.0, "kg/h", NivelDato.OK_PROVISORIO),
-        mo_directa=["Encargado"],
-        mo_general=["Limpieza"],
-        equipos_energeticos=["Bomba 2 Salida", "PEF (consumo electrico principal)"],
+        mo_directa=["Encargado Proceso"],
+        mo_general=["Operario Limpieza"],
+        equipos_energeticos=["PEF Opticept ARRENDADO", "Bomba tornillo entrada", "Bomba salida"],
         repuestos=["Electrodos PEF (vida util 300hrs)"],
-        notas_proceso="Critical path: electrodos vencen cada 300hrs operacion.",
-        datos_faltantes=["kV optimo por MMPP", "Numero pulsos optimo", "Costo electrodos real CIF Chile"],
-        nivel_calibracion=NivelDato.OK_PROVISORIO,
+        notas_proceso=(
+            "TRES EVALUACIONES PENDIENTES (criticas para tesis de inversion): "
+            "1) PEF efectivamente disminuye tiempos secado posterior con impacto significativo? "
+            "2) Pasada unica o multiple para apertura efectiva de membranas? "
+            "3) Justifica economicamente el arriendo vs prensado directo? "
+            "Test A/B: misma MMPP, fraccion con PEF + prensado vs prensado directo. "
+            "Limpieza/desinfeccion por batch/dia/MMPP."
+        ),
+        datos_faltantes=[
+            "kV optimo por MMPP (tomasa vs orujo vs alperujo)",
+            "Numero pasadas optimas (1 o N)",
+            "Validar disminucion real tiempos secado vs prensado directo (A/B test)",
+            "Costo arriendo mensual PEF (cotizacion final)",
+            "Costo electrodos CIF Chile",
+        ],
+        nivel_calibracion=NivelDato.PD,
         equipo_energetico_principal="PEF Opticept",
         equipo_hidrico_principal="PEF Opticept",
         categoria_rrhh_principal="operario",
@@ -283,11 +328,15 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         categoria_rrhh_principal="operario",
     )
     e5 = EtapaPlanta(
-        id="E5_CANALIZACION",
-        nombre="E5. Canalizacion y almacenamiento (agua/aceite)",
+        id="E5_LIQUIDOS_RESIDUALES",
+        nombre="E5. Liquidos residuales (loop opcional a E2)",
         orden=6,
-        descripcion="Separacion de fases liquidas. Tratamiento de agua, captura de aceite.",
-        masa_input_kg_h=throughput_kg_h * 0.50,   # fase liquida
+        descripcion=(
+            "Gestion fase liquida del prensado: almacenamiento + bombas traslado. "
+            "Opciones: 1) tratar y descartar como RILE, 2) REINCORPORAR al proceso "
+            "de Estandarizacion (E2) para ajustar reologia."
+        ),
+        masa_input_kg_h=throughput_kg_h * 0.50,   # fase liquida del prensado
         yield_pct=0.95,
         perdidas_pct=0.005,
         humedad_post_etapa=(0.0, 0.0),
@@ -296,102 +345,160 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         hh_por_ton_input=0.04,
         tiempo_proceso_min=4.0,
         capacidad=CapacidadEtapa(throughput_kg_h * 0.8, "kg/h"),
-        mo_directa=["Encargado"],
-        mo_general=["Limpieza"],
-        equipos_energeticos=["Bomba 3 Canalizacion"],
-        notas_proceso="Separacion fases + tratamiento de agua. Revisar especificacion equipo.",
-        datos_faltantes=["Equipo concreto a usar", "Repuestos asociados", "Materiales asociados"],
+        mo_directa=["Encargado Proceso"],
+        mo_general=["Operario Limpieza"],
+        equipos_energeticos=["Estanque almacenamiento", "Bombas traslado", "Planta tratamiento (opcional)"],
+        notas_proceso=(
+            "Decision clave: cuanto del liquido se reincorpora a E2 (reduce consumo "
+            "agua llave) vs cuanto va a RILE (costo tratamiento). "
+            "Loop E5 -> E2 puede reducir significativamente consumo de agua llave."
+        ),
+        datos_faltantes=[
+            "Equipo concreto de canalizacion",
+            "% optimo recirculacion E5->E2 por MMPP",
+            "Costo planta tratamiento RILE (CAPEX + OPEX)",
+            "Carga organica liquido (DBO/DQO) para dimensionar tratamiento",
+        ],
         nivel_calibracion=NivelDato.PD,
     )
     if incluir_respaldo:
         e6 = EtapaPlanta(
             id="E6B_DESHIDRATACION_RESPALDO",
-            nombre="E6(b). Deshidratacion con Equipo de Respaldo",
+            nombre="E6(b). Deshidratacion - Bomba de Calor (respaldo)",
             orden=7,
-            descripcion="Bomba de calor como sistema respaldo. Tiempo proceso 90 min.",
+            descripcion=(
+                "Sistema secundario con bomba de calor. Activo cuando La Gloria no "
+                "entrega calor residual o por mantencion. Mayor consumo electrico. "
+                "Input: 30% humedad post-prensado -> Output: 10-15% humedad."
+            ),
             masa_input_kg_h=throughput_kg_h * 0.50,
             yield_pct=0.50,
             perdidas_pct=0.005,
-            humedad_post_etapa=(0.08, 0.10),
+            humedad_post_etapa=(0.10, 0.15),     # ajustado segun conversacion
             energia_kwh_por_kg=0.55,
             agua_l_por_kg=0.5,
             hh_por_ton_input=0.08,
             tiempo_proceso_min=90.0,
             capacidad=CapacidadEtapa(throughput_kg_h * 0.6, "kg/h"),
-            mo_directa=["Encargado"],
-            mo_general=["Limpieza"],
-            equipos_energeticos=["Sistema Transportador E", "Sistema Secado (Bomba calor respaldo)"],
-            notas_proceso="Desde sistema de secado en adelante no puede tener contacto con ambiente.",
-            datos_faltantes=["Eficiencia bomba calor", "Tiempo residencia real"],
+            mo_directa=["Encargado Secado"],
+            mo_general=["Operario Limpieza"],
+            equipos_energeticos=["Bomba de calor (respaldo)", "Sistema Transportador hermetico"],
+            notas_proceso=(
+                "Desde sistema de secado en adelante NO PUEDE haber contacto con ambiente "
+                "(humedad reabsorbida). Mas costoso que principal (4x electricidad)."
+            ),
+            datos_faltantes=[
+                "COP (eficiencia) real bomba de calor",
+                "Tiempo residencia por MMPP",
+                "Costo CAPEX bomba calor + arriendo opcional",
+            ],
             nivel_calibracion=NivelDato.PD,
             es_respaldo=True,
-            equipo_energetico_principal="Sistema vapor",
+            equipo_energetico_principal="Bomba de calor",
         )
     else:
         e6 = EtapaPlanta(
             id="E6A_DESHIDRATACION_PRINCIPAL",
-            nombre="E6(a). Deshidratacion Principal",
+            nombre="E6(a). Deshidratacion - Calor Residual La Gloria",
             orden=7,
-            descripcion="Secado principal con calor residual. Tiempo proceso 60 min.",
+            descripcion=(
+                "Sistema PRINCIPAL usa CALOR RESIDUAL desde planta La Gloria. "
+                "Input: 30% humedad post-prensado -> Output: 10-15% humedad. "
+                "Costo termico muy bajo (es residuo industrial)."
+            ),
             masa_input_kg_h=throughput_kg_h * 0.50,
             yield_pct=0.50,
             perdidas_pct=0.005,
-            humedad_post_etapa=(0.08, 0.10),
-            energia_kwh_por_kg=0.45,
+            humedad_post_etapa=(0.10, 0.15),     # 10-15% segun conversacion
+            energia_kwh_por_kg=0.10,              # solo electrico para movimiento
             agua_l_por_kg=0.5,
             hh_por_ton_input=0.08,
             tiempo_proceso_min=60.0,
             capacidad=CapacidadEtapa(throughput_kg_h * 0.8, "kg/h", NivelDato.OK_PROVISORIO),
-            mo_directa=["Encargado"],
-            mo_general=["Limpieza"],
-            equipos_energeticos=["Sistema Transportador E", "Sistema Secado Principal"],
-            notas_proceso="Aprovecha calor residual. Desde aqui no puede haber contacto con ambiente.",
-            datos_faltantes=["Temperatura optima sin degradar bioactivos", "Tiempo residencia por MMPP"],
+            mo_directa=["Encargado Secado"],
+            mo_general=["Operario Limpieza"],
+            equipos_energeticos=["Intercambiador calor residual La Gloria", "Sistema Transportador hermetico"],
+            notas_proceso=(
+                "CALOR RESIDUAL desde La Gloria (compartido). Costo muy bajo, validar contrato. "
+                "Desde aqui NO puede haber contacto con ambiente (reabsorcion humedad)."
+            ),
+            datos_faltantes=[
+                "Contrato formal con La Gloria por calor residual",
+                "kWh termicos efectivos entregados/mes",
+                "Temperatura optima sin degradar bioactivos por MMPP",
+                "Tiempo residencia real por MMPP",
+            ],
             nivel_calibracion=NivelDato.OK_PROVISORIO,
-            equipo_energetico_principal="Secador rotativo",
-            equipo_hidrico_principal="Caldera biomasa",
+            equipo_energetico_principal="Calor residual La Gloria",
+            equipo_hidrico_principal="Sistema vapor",
         )
     e7 = EtapaPlanta(
-        id="E7_ENFRIADO_MOLIENDA",
-        nombre="E7. Enfriado / Molienda",
+        id="E7_ENFRIADO",
+        nombre="E7. Enfriado (humedad relativa final 8-10%)",
         orden=8,
-        descripcion="Reduccion temperatura post-secado + molienda gruesa.",
+        descripcion=(
+            "Enfriado natural de la harina post-secado. Continua perdida de humedad "
+            "por movimiento y perdida de calor. PUNTO DE DECISION DE VENTA: "
+            "vender ya o pasar a E8 mejoramiento (molienda + mezcla)."
+        ),
         masa_input_kg_h=throughput_kg_h * 0.25,
-        yield_pct=0.98,
+        yield_pct=0.99,
         perdidas_pct=0.010,
-        humedad_post_etapa=(0.08, 0.10),
-        energia_kwh_por_kg=0.080,
+        humedad_post_etapa=(0.08, 0.10),     # 8-10% segun conversacion
+        energia_kwh_por_kg=0.020,             # solo movimiento
         agua_l_por_kg=0.0,
         hh_por_ton_input=0.04,
         tiempo_proceso_min=3.0,
         capacidad=CapacidadEtapa(throughput_kg_h * 0.4, "kg/h"),
-        mo_directa=["Encargado"],
-        mo_general=["Limpieza"],
-        equipos_energeticos=["Sistema Transportador E"],
-        notas_proceso="Considerar valor producto con molienda y sin molienda (para alimentacion animal).",
-        datos_faltantes=["Granulometria target por SKU", "Mix con molienda vs sin"],
+        mo_directa=["Encargado Proceso"],
+        mo_general=["Operario Limpieza"],
+        equipos_energeticos=["Sistema Transportador / enfriado natural"],
+        notas_proceso=(
+            "DECISION DE VENTA: Opcion A) Producto se ensaca directamente como harina basica "
+            "(uso alimentacion animal) - va directo a E9. "
+            "Opcion B) Pasa a E8 para mejoramiento (molienda + homogenizacion + mezcla SKU) "
+            "para producto premium humanos/nutraceutica. "
+            "Considerar valor distinto en ambas opciones."
+        ),
+        datos_faltantes=[
+            "Demand split: % volumen que va a A (alimentacion) vs B (premium)",
+            "Precio venta diferenciado por opcion",
+            "Tiempo enfriado necesario hasta 8-10% humedad",
+        ],
         nivel_calibracion=NivelDato.OK_PROVISORIO,
-        equipo_energetico_principal="Micromolienda",
         categoria_rrhh_principal="operario",
     )
     e8 = EtapaPlanta(
-        id="E8_HOMOGENIZADO_CALIDAD",
-        nombre="E8. Homogenizado / Revision Calidad",
+        id="E8_HOMOGENEIZACION",
+        nombre="E8. Homogeneizacion (molienda + mezcla SKU)",
         orden=9,
-        descripcion="Mezcla final y QC laboratorio antes del envasado.",
+        descripcion=(
+            "OPCIONAL - solo SKU premium. Molienda fina + homogenizacion del producto. "
+            "Calidad evaluada y analizada. Mezcla con diferentes MMPP para alcanzar "
+            "spec/demanda comercial. Equipo: homogenizador/mezclador de harinas."
+        ),
         masa_input_kg_h=throughput_kg_h * 0.245,
         yield_pct=0.995,
         perdidas_pct=0.003,
         humedad_post_etapa=(0.08, 0.10),
-        energia_kwh_por_kg=0.015,
+        energia_kwh_por_kg=0.030,
         agua_l_por_kg=0.0,
         hh_por_ton_input=0.06,
         tiempo_proceso_min=2.0,
         capacidad=CapacidadEtapa(throughput_kg_h * 0.6, "kg/h"),
-        mo_directa=["Encargado", "Laboratorista"],
-        mo_general=["Limpieza"],
-        equipos_energeticos=["Sistema Transportador E", "Homogenizacion"],
-        datos_faltantes=["Plan muestreo QC formal", "Tiempo mezcla hasta homogeneidad"],
+        mo_directa=["Encargado Proceso", "Laboratorista"],
+        mo_general=["Operario Limpieza"],
+        equipos_energeticos=["Homogenizador/mezclador harinas", "Sistema Transportador"],
+        notas_proceso=(
+            "Solo aplica cuando E7 deriva a 'opcion B premium'. Permite mezclar MMPP "
+            "para alcanzar especificaciones del cliente (proteina, fibra, ORAC, etc)."
+        ),
+        datos_faltantes=[
+            "Recetas formales por SKU premium (% mezcla MMPP)",
+            "Plan muestreo QC formal por lote",
+            "Tiempo mezcla hasta homogeneidad",
+            "Granulometria target por mercado (feed acuicola vs pet food vs humanos)",
+        ],
         nivel_calibracion=NivelDato.OK_PROVISORIO,
         categoria_rrhh_principal="calidad",
     )
@@ -441,10 +548,13 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         categoria_rrhh_principal="operario",
     )
     e11 = EtapaPlanta(
-        id="E11_TOMA_MUESTRA",
-        nombre="E11. Toma Muestra / Almac. x Trazabilidad",
+        id="E11_CONTROL_CALIDAD",
+        nombre="E11. Control de Calidad y Trazabilidad",
         orden=12,
-        descripcion="Muestra de retencion y almacenamiento de trazabilidad por lote.",
+        descripcion=(
+            "Muestras para validar calidad de producto + trazabilidad por lote. "
+            "Genera confianza con clientes y permite trazabilidad de los productos."
+        ),
         masa_input_kg_h=throughput_kg_h * 0.001,   # solo muestras
         yield_pct=1.0,
         perdidas_pct=0.0,
@@ -455,9 +565,15 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         tiempo_proceso_min=1.0,
         capacidad=CapacidadEtapa(throughput_kg_h * 0.01, "kg/h"),
         mo_directa=["Laboratorista"],
-        repuestos=["Tinta impresora etiquetas"],
-        notas_proceso="Zona almacenamiento separada por trazabilidad.",
-        datos_faltantes=["Tamano muestra retencion", "Tiempo retencion exigido (12-24 meses?)"],
+        notas_proceso=(
+            "Zona almacenamiento separada para muestras retencion. Esencial para "
+            "auditorias de clientes export (Asia/EU/USA) y certificacion ISO/HACCP."
+        ),
+        datos_faltantes=[
+            "Tamano muestra retencion por SKU (kg)",
+            "Tiempo retencion exigido (12 vs 24 meses por mercado)",
+            "Parametros analiticos minimos por SKU",
+        ],
         nivel_calibracion=NivelDato.OK_PROVISORIO,
         categoria_rrhh_principal="calidad",
     )
@@ -488,18 +604,18 @@ def productos_seed() -> list[ProductoEtapas]:
         ProductoEtapas(
             codigo="TOMASA_1",
             variante="Cold",
-            etapas_aplicables=["E1_RECEPCION", "E2_HOMOGENIZACION", "E3_PEF", "E4A_PRENSADO_MECANICO",
-                                "E5_CANALIZACION", "E6A_DESHIDRATACION_PRINCIPAL", "E7_ENFRIADO_MOLIENDA",
-                                "E8_HOMOGENIZADO_CALIDAD", "E9_ENSACADO", "E10_ETIQUETADO", "E11_TOMA_MUESTRA"],
+            etapas_aplicables=["E1_RECEPCION", "E2_ESTANDARIZACION", "E3_PEF", "E4A_PRENSADO_MECANICO",
+                                "E5_LIQUIDOS_RESIDUALES", "E6A_DESHIDRATACION_PRINCIPAL", "E7_ENFRIADO",
+                                "E8_HOMOGENEIZACION", "E9_ENSACADO", "E10_ETIQUETADO", "E11_CONTROL_CALIDAD"],
             rendimiento_msf_pct=0.30,
             notas="Linea Cold: prensado mecanico. MSF 30%.",
         ),
         ProductoEtapas(
             codigo="TOMASA_2",
             variante="Hot",
-            etapas_aplicables=["E1_RECEPCION", "E2_HOMOGENIZACION", "E3_PEF", "E4B_PRENSADO_CENTRIFUGO",
-                                "E5_CANALIZACION", "E6A_DESHIDRATACION_PRINCIPAL", "E7_ENFRIADO_MOLIENDA",
-                                "E8_HOMOGENIZADO_CALIDAD", "E9_ENSACADO", "E10_ETIQUETADO", "E11_TOMA_MUESTRA"],
+            etapas_aplicables=["E1_RECEPCION", "E2_ESTANDARIZACION", "E3_PEF", "E4B_PRENSADO_CENTRIFUGO",
+                                "E5_LIQUIDOS_RESIDUALES", "E6A_DESHIDRATACION_PRINCIPAL", "E7_ENFRIADO",
+                                "E8_HOMOGENEIZACION", "E9_ENSACADO", "E10_ETIQUETADO", "E11_CONTROL_CALIDAD"],
             rendimiento_msf_pct=0.25,
             notas="Linea Hot: tricanter centrifugo. MSF 25%.",
         ),

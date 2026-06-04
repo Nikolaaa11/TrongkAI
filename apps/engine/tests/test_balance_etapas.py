@@ -39,7 +39,7 @@ def test_recepcion_es_primera():
 
 
 def test_toma_muestra_es_ultima():
-    assert etapas_seed()[-1].id == "E11_TOMA_MUESTRA"
+    assert etapas_seed()[-1].id == "E11_CONTROL_CALIDAD"
 
 
 def test_balance_basico():
@@ -76,10 +76,17 @@ def test_humedad_post_pef_alta():
     assert pef.humedad_post_etapa == (0.75, 0.80)
 
 
-def test_humedad_post_deshidratacion_es_8_10():
+def test_humedad_post_deshidratacion_es_10_15():
+    """Conversacion 4/06/26: deshidratacion baja 30% -> 10-15%, luego enfriado a 8-10%."""
     es = etapas_seed()
     deshid = next(e for e in es if "DESHIDRATACION" in e.id)
-    assert deshid.humedad_post_etapa == (0.08, 0.10)
+    assert deshid.humedad_post_etapa == (0.10, 0.15)
+
+
+def test_humedad_post_enfriado_es_8_10():
+    es = etapas_seed()
+    enf = next(e for e in es if e.id == "E7_ENFRIADO")
+    assert enf.humedad_post_etapa == (0.08, 0.10)
 
 
 def test_etapa_pef_tiene_repuesto_electrodos():
@@ -95,11 +102,13 @@ def test_etapa_ensacado_tiene_materiales():
     assert "Pallets" in ens.materiales
 
 
-def test_etapa_deshidratacion_es_mas_intensiva_energia():
+def test_etapa_pef_es_la_mas_intensiva_electrica_real():
+    """Con calor residual La Gloria, E6a baja a 0.10 kWh/kg.
+    PEF queda como mayor consumidor electrico (0.13 kWh/kg)."""
     es = etapas_seed()
     consumos = {e.id: e.energia_kwh_por_kg for e in es}
     max_id = max(consumos, key=consumos.get)
-    assert "DESHIDRATACION" in max_id
+    assert max_id == "E3_PEF"
 
 
 def test_alarmas_estructura():

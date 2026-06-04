@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Parámetros + Costeo Trongkai · Confirmación</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background: #ffffff; color: #1d1d1f; line-height: 1.55;
+    letter-spacing: -0.022em; -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 56px 0; }
+
+  .hero { padding: 96px 0 48px; text-align: center; }
+  .hero .badge {
+    display: inline-block; background: #f0faf0; color: #1a8a1a;
+    font-size: 12px; font-weight: 600; padding: 6px 16px;
+    border-radius: 999px; margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 60px); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 18px;
+    background: linear-gradient(180deg, #1d1d1f, #515154);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p.lead { font-size: 19px; color: #6e6e73; max-width: 660px; margin: 0 auto; }
+
+  .grid-kpi { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .kpi {
+    background: linear-gradient(180deg, #fbfbfd, #fff);
+    border: 1px solid #f0f0f2; border-radius: 18px; padding: 22px;
+  }
+  .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #6e6e73; font-weight: 600; }
+  .kpi .num { font-size: 32px; font-weight: 700; line-height: 1.1; margin-top: 6px; }
+  .kpi.brand .num {
+    background: linear-gradient(135deg, #1a8a1a, #34a853);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .kpi .desc { font-size: 12px; color: #515154; margin-top: 4px; }
+
+  .head { margin-bottom: 32px; }
+  .head .eyebrow {
+    color: #1a8a1a; font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.4px; margin-bottom: 8px;
+  }
+  .head h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 700; letter-spacing: -0.022em; }
+  .head p { color: #6e6e73; font-size: 16px; max-width: 640px; margin-top: 6px; }
+
+  .row {
+    display: grid; grid-template-columns: 52px 1fr auto;
+    gap: 16px; padding: 14px 18px; background: #fff;
+    border: 1px solid #f0f0f2; border-radius: 14px;
+    margin-bottom: 8px; align-items: center;
+  }
+  .row .icon { font-size: 28px; }
+  .row h4 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .row p { font-size: 13px; color: #6e6e73; }
+  .row .right {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 13px; font-weight: 600; color: #1a8a1a; text-align: right;
+  }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #f0f0f2; }
+  th { background: #fbfbfd; font-size: 11px; text-transform: uppercase; font-weight: 600; color: #6e6e73; }
+  td.r { text-align: right; font-family: "SF Mono", Menlo, monospace; }
+
+  .link-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+  .link-row a {
+    background: #1d1d1f; color: #fff; text-decoration: none;
+    padding: 11px 18px; border-radius: 999px; font-size: 13px; font-weight: 500;
+  }
+  .link-row a:hover { background: #1a8a1a; }
+
+  .note {
+    background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 0 14px 14px 0;
+    padding: 14px 22px; margin: 16px 0; font-size: 14px; color: #78350f;
+  }
+  .pdf-yellow {
+    background: #fef3c7; border-radius: 14px; padding: 24px; margin: 20px 0;
+  }
+  .pdf-yellow h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #78350f; }
+  .pdf-yellow ol { margin-left: 22px; line-height: 1.9; font-size: 14px; }
+
+  footer { background: #f5f5f7; padding: 32px 0; text-align: center; color: #6e6e73; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<section class="hero container">
+  <span class="badge">✅ PLATAFORMA ACTUALIZADA</span>
+  <h1>Parámetros editables<br />+ costeo dinámico por SKU</h1>
+  <p class="lead">
+    La planilla de antecedentes variables ya está parametrizada: sueldos, energía, calor residual La Gloria,
+    aguas, flete y arriendos. Todo conectado al costeo por etapa y al precio CLP/kg de cada SKU.
+  </p>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid-kpi">
+      <div class="kpi brand"><div class="label">Costo total</div><div class="num">$166k</div><div class="desc">CLP/h planta operando</div></div>
+      <div class="kpi brand"><div class="label">Costo unitario</div><div class="num">$79</div><div class="desc">USD/kg producto final</div></div>
+      <div class="kpi"><div class="label">PEF (mayor costo)</div><div class="num">$69k</div><div class="desc">41% del costo por hora</div></div>
+      <div class="kpi"><div class="label">Calor residual</div><div class="num">$2k</div><div class="desc">CLP/h gracias a La Gloria</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Capítulo 1 · Antecedentes variables</div>
+      <h2>Lo que hicimos parametrizable</h2>
+      <p>Editás cualquier valor en <code>/parametros</code> y todo el costeo se recalcula al instante.</p>
+    </div>
+
+    <div class="row"><div class="icon">👥</div><div><h4>Sueldos profesionales planta</h4><p>8 cargos · factor leyes sociales 1.35x (AFP, salud, seguros)</p></div><div class="right">8 cargos<br/>$540k–$1.8M/mes</div></div>
+    <div class="row"><div class="icon">⚡</div><div><h4>Energía eléctrica</h4><p>Tarifa punta + resto + cargo potencia + cargo fijo (CGE BT4-3)</p></div><div class="right">$95–$165<br/>CLP/kWh</div></div>
+    <div class="row"><div class="icon">🔥</div><div><h4>Calor residual La Gloria</h4><p>Es residuo industrial · costo "interno" muy bajo · contrato pendiente</p></div><div class="right">$5 CLP/kWh<br/>(vs $110 eléctrico)</div></div>
+    <div class="row"><div class="icon">💧</div><div><h4>Agua llave + Industrial + Recirculada</h4><p>Essbio vs pozo propio vs tratada/recirculada</p></div><div class="right">$1.450 vs $180<br/>CLP/m³</div></div>
+    <div class="row"><div class="icon">🚚</div><div><h4>Flete / traslados</h4><p>Tarifa CLP/km + flete mínimo · distancia MMPP vs despacho</p></div><div class="right">$1.400 CLP/km<br/>$180k mínimo</div></div>
+    <div class="row"><div class="icon">🏗</div><div><h4>Arriendos OPEX (PEF + Tricanter)</h4><p>El PEF NO es CAPEX propio · arriendo mensual ~$18.5M CLP</p></div><div class="right">$22.7M CLP/mes<br/>total arriendos</div></div>
+  </div>
+</section>
+
+<section style="background:#fbfbfd">
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Capítulo 2 · Refinamiento etapas</div>
+      <h2>11 etapas con detalles reales (conversación 4/06)</h2>
+      <p>Reemplazamos lo genérico con lo conversado: humedades por MMPP, loops de líquidos, decisión de venta E7, PEF como arriendo.</p>
+    </div>
+
+    <div class="row"><div class="icon">📥</div><div><h4>E1 Recepción · 25 min/camión</h4><p>Laboratorista muestrea ANTES de aceptar · Romana COMPARTIDA con La Gloria (fuera de costos)</p></div><div class="right">~25 min<br/>OK_VALIDADO</div></div>
+    <div class="row"><div class="icon">🧪</div><div><h4>E2 Estandarización (renombrada)</h4><p>Análisis químicos + ajuste % agua · puede usar líquidos del prensado posterior (loop E5→E2)</p></div><div class="right">2 min<br/>+ ajuste reología</div></div>
+    <div class="row" style="background:#fef3c7"><div class="icon">⚡</div><div><h4>E3 PEF · ARRIENDO (no CAPEX) · ⚠️ 3 evaluaciones</h4><p>Sin pérdidas · sin cambio humedad · solo apertura membranas · electrodos cada 300hrs</p></div><div class="right">8 min<br/>$69k CLP/h</div></div>
+    <div class="row"><div class="icon">⚙️</div><div><h4>E4(a)/E4(b) Prensado mecánico/tricanter</h4><p>4a: torta 30% humedad · 4b: tricanter 3 fases (sólido/líquido/aceite)</p></div><div class="right">3 min<br/>30-50% hum.</div></div>
+    <div class="row"><div class="icon">♻️</div><div><h4>E5 Líquidos residuales (loop opcional E2)</h4><p>Reincorporar al proceso o descartar como RILE · decisión a definir</p></div><div class="right">4 min<br/>OPEX tratamiento</div></div>
+    <div class="row" style="background:#f0faf0"><div class="icon">🔥</div><div><h4>E6(a) Deshidratación · CALOR RESIDUAL La Gloria</h4><p>30% → 10-15% humedad · costo térmico cuasi-cero · principal</p></div><div class="right">60 min<br/>$13k CLP/h</div></div>
+    <div class="row"><div class="icon">🔋</div><div><h4>E6(b) Bomba de calor RESPALDO</h4><p>Cuando La Gloria no entrega · más caro (eléctrico)</p></div><div class="right">90 min<br/>+30 min vs E6a</div></div>
+    <div class="row" style="background:#e0f2fe"><div class="icon">❄️</div><div><h4>E7 Enfriado · DECISIÓN DE VENTA</h4><p>8-10% humedad final · A) vender directo o B) pasar a E8 mejoramiento</p></div><div class="right">3 min<br/>punto decisión</div></div>
+    <div class="row"><div class="icon">🌾</div><div><h4>E8 Homogeneización (solo SKU premium)</h4><p>Molienda + mezcla MMPP para spec cliente (proteína, fibra, ORAC)</p></div><div class="right">2 min<br/>opcional</div></div>
+    <div class="row"><div class="icon">📦</div><div><h4>E9 Ensacado + Barrera anti-humedad</h4><p>Sellado calor + costura · big bag 1000kg o saco 25kg · palletizado</p></div><div class="right">10 min<br/>$40k CLP/h</div></div>
+    <div class="row"><div class="icon">🏷</div><div><h4>E10 Etiquetado + codificación + bodega</h4><p>Grúa horquilla a zona almacenamiento</p></div><div class="right">3 min</div></div>
+    <div class="row"><div class="icon">🔬</div><div><h4>E11 Control de calidad + trazabilidad</h4><p>Muestras retención · auditorías export · confianza cliente</p></div><div class="right">1 min<br/>2 HH/ton</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Capítulo 3 · Humedades MMPP</div>
+      <h2>Cargadas según conversación</h2>
+      <p>Variabilidad por condiciones climáticas - rangos, no puntos.</p>
+    </div>
+    <table>
+      <thead><tr><th>MMPP</th><th>Mín</th><th>Promedio</th><th>Máx</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>🍅 Tomasa Cold</td><td class="r">75%</td><td class="r"><strong>80%</strong></td><td class="r">85%</td><td>Variabilidad por temporada cosecha vs almacén</td></tr>
+        <tr><td>🍅 Tomasa Hot</td><td class="r">70%</td><td class="r"><strong>75%</strong></td><td class="r">80%</td><td>Menor por evaporación previa proceso conservero</td></tr>
+        <tr><td>🍇 Orujo (tinto/blanco)</td><td class="r">60%</td><td class="r"><strong>62.5%</strong></td><td class="r">65%</td><td>3-7 días post cosecha, variabilidad &lt;5pp</td></tr>
+        <tr><td>🫒 Alperujo (EV/V)</td><td class="r">55%</td><td class="r"><strong>57.5%</strong></td><td class="r">60%</td><td>Estacional (abril-julio)</td></tr>
+        <tr><td>🍎 Pomasa (manzana)</td><td class="r">78%</td><td class="r"><strong>80%</strong></td><td class="r">82%</td><td>Variabilidad por condición fruta</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section style="background:#fbfbfd">
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Capítulo 4 · Costeo dinámico</div>
+      <h2>Top 5 etapas más caras (a 2000 kg/h)</h2>
+      <p>El PEF concentra 41% del costo total · justifica las 3 evaluaciones pendientes.</p>
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Etapa</th><th class="r">Costo CLP/h</th><th class="r">% del total</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>E3 PEF (arriendo + electrodos + energía)</td><td class="r">$69.139</td><td class="r">41%</td></tr>
+        <tr><td>2</td><td>E9 Ensacado (sacos + hilo + pallets)</td><td class="r">$39.838</td><td class="r">24%</td></tr>
+        <tr><td>3</td><td>E4(b) Prensado Centrífugo (arriendo Tricanter)</td><td class="r">$21.411</td><td class="r">13%</td></tr>
+        <tr><td>4</td><td>E6(a) Deshidratación calor residual</td><td class="r">$13.368</td><td class="r">8%</td></tr>
+        <tr><td>5</td><td>E4(a) Prensado mecánico</td><td class="r">$9.440</td><td class="r">6%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Capítulo 5 · Las 3 evaluaciones PEF</div>
+      <h2>Las 3 preguntas críticas a responder</h2>
+      <p>El PEF representa $69k CLP/h. Validar estas tres antes de cerrar la tesis de inversión.</p>
+    </div>
+    <div class="pdf-yellow">
+      <h3>🔬 Tres preguntas (de tu conversación)</h3>
+      <ol>
+        <li><strong>¿El PEF efectivamente disminuye tiempos de secado posterior con impacto significativo?</strong> Test A/B: misma MMPP, fracción con PEF + prensado vs prensado directo. Medir tiempo + consumo secado.</li>
+        <li><strong>¿Se debe pasar una sola vez la materia prima o requiere múltiples pasadas?</strong> Para que efectivamente sea efectiva la apertura de membranas internas.</li>
+        <li><strong>¿Se justifica económicamente utilizar el PEF?</strong> Considerando que es ARRIENDO ($18.5M CLP/mes), comparar contra escenario sin PEF (directo a prensado).</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fbfbfd">
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Capítulo 6 · Consideraciones globales</div>
+      <h2>4 consideraciones que cargamos</h2>
+    </div>
+    <ul style="line-height:2; font-size:15px; padding-left:22px">
+      <li>✅ <strong>Protocolo de limpieza por proceso</strong> — anotado por etapa (E1, E2, E3 marcadas con limpieza/desinfección por batch/día/MMPP).</li>
+      <li>✅ <strong>Mantención por tiempo de uso</strong> — campos repuestos + nivel calibración listos para asociar plan mantenimiento.</li>
+      <li>✅ <strong>Pérdida MMPP global 5%</strong> — cargada en <code>params.perdida_mmpp_global_pct = 0.05</code>.</li>
+      <li>✅ <strong>% rendimiento productivo + costo + viabilidad</strong> — costeo por SKU con CLP/kg y USD/kg en <code>/costeo</code>.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">URLs LIVE</div>
+      <h2>Dónde verlo</h2>
+    </div>
+    <div class="link-row">
+      <a href="https://trongkai-web.vercel.app/parametros">⚙️ /parametros (editar)</a>
+      <a href="https://trongkai-web.vercel.app/costeo">💰 /costeo (dinámico)</a>
+      <a href="https://trongkai-web.vercel.app/balance-etapas">🏭 /balance-etapas (11 reales)</a>
+      <a href="https://trongkai-engine.fly.dev/parametros">API /parametros</a>
+      <a href="https://trongkai-engine.fly.dev/costeo/etapas">API /costeo/etapas</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="font-style:italic;color:#1d1d1f;font-weight:500;margin-bottom:8px;">
+    "En la naturaleza no existen los residuos, solo recursos."
+  </p>
+  <p>Trongkai · Parametrización validada 4 de junio de 2026 · Tests 509/509 verde</p>
+</footer>
+
+</body>
+</html>
