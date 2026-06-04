@@ -2415,17 +2415,24 @@ def balance_integrado_endpoint(produccion_anual_kg: float = 850_000.0) -> dict:
 @app.get(
     "/balance/etapas",
     tags=["balances"],
-    summary="Balance por cada una de las 12 etapas de la planta",
+    summary="Balance por cada una de las etapas reales de la planta Agrosphere",
     description="Dinamico: cambiando throughput_kg_h recalcula los consumos por etapa, "
-                "yield acumulado, bottlenecks y completitud de datos faltantes.",
+                "yield acumulado, bottlenecks, tiempos y completitud de datos. "
+                "incluir_respaldo=true usa E6(b) Deshidratacion Respaldo (tiempo 150 min vs 120).",
 )
 @cached_ttl(seconds=60)
-def balance_etapas_endpoint(throughput_kg_h: float = 2000.0) -> dict:
+def balance_etapas_endpoint(
+    throughput_kg_h: float = 2000.0,
+    incluir_respaldo: bool = False,
+) -> dict:
     from .balances.etapas import computar_balance_etapas
 
     if throughput_kg_h <= 0 or throughput_kg_h > 20_000:
         raise HTTPException(400, "throughput_kg_h debe estar entre 0 y 20000")
-    return computar_balance_etapas(throughput_kg_h=throughput_kg_h).to_dict()
+    return computar_balance_etapas(
+        throughput_kg_h=throughput_kg_h,
+        incluir_respaldo=incluir_respaldo,
+    ).to_dict()
 
 
 @app.get(
@@ -2436,3 +2443,15 @@ def balance_etapas_endpoint(throughput_kg_h: float = 2000.0) -> dict:
 def balance_etapas_datos_faltantes_endpoint() -> dict:
     from .balances.etapas import resumen_datos_faltantes
     return resumen_datos_faltantes()
+
+
+@app.get(
+    "/balance/etapas/productos",
+    tags=["balances"],
+    summary="Matriz productos x etapas (que MMPP pasa por que etapa + yield MSF)",
+    description="Cuadro Etapas x Productos del Excel Agrosphere. "
+                "Mapea cada MMPP/SKU a las etapas que aplica y calcula yield acumulado.",
+)
+def balance_productos_etapas_endpoint() -> dict:
+    from .balances.etapas import matriz_productos_x_etapas
+    return matriz_productos_x_etapas()

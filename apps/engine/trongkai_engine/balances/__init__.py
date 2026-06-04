@@ -42,8 +42,11 @@ from .etapas import (
     BalancePorEtapas,
     EtapaPlanta,
     NivelDato,
+    ProductoEtapas,
     computar_balance_etapas,
     etapas_seed,
+    matriz_productos_x_etapas,
+    productos_seed,
     resumen_datos_faltantes,
 )
 
@@ -51,8 +54,11 @@ __all__ = [
     "BalancePorEtapas",
     "EtapaPlanta",
     "NivelDato",
+    "ProductoEtapas",
     "computar_balance_etapas",
     "etapas_seed",
+    "matriz_productos_x_etapas",
+    "productos_seed",
     "resumen_datos_faltantes",
     # energia
     "BalanceEnergia",

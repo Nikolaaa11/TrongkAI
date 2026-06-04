@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ingesta Excel Agrosphere 29/05/2026 · Confirmación</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+    background: #ffffff;
+    color: #1d1d1f;
+    line-height: 1.55;
+    letter-spacing: -0.022em;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 64px 0; }
+
+  /* Hero */
+  .hero { padding: 100px 0 60px; text-align: center; }
+  .hero .badge {
+    display: inline-block;
+    background: #f0faf0;
+    color: #1a8a1a;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin-bottom: 18px;
+    background: linear-gradient(180deg, #1d1d1f, #515154);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p.lead {
+    font-size: 20px;
+    color: #6e6e73;
+    max-width: 660px;
+    margin: 0 auto;
+  }
+
+  /* Cards */
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .card {
+    background: #fbfbfd;
+    border: 1px solid #f0f0f2;
+    border-radius: 18px;
+    padding: 24px;
+  }
+  .card .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #6e6e73;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .card .num {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #1a8a1a, #34a853);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .card .desc { font-size: 13px; color: #515154; margin-top: 6px; }
+
+  /* Section heading */
+  .head { margin-bottom: 36px; }
+  .head .eyebrow {
+    color: #1a8a1a;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    margin-bottom: 8px;
+  }
+  .head h2 {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.022em;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .head p { color: #6e6e73; font-size: 16px; max-width: 640px; }
+
+  /* Etapa item */
+  .etapa-item {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 16px;
+    padding: 16px 20px;
+    background: #fff;
+    border: 1px solid #f0f0f2;
+    border-radius: 14px;
+    margin-bottom: 8px;
+    align-items: center;
+  }
+  .etapa-item .num {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a8a1a, #34a853);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .etapa-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .etapa-item p { font-size: 12px; color: #6e6e73; }
+  .etapa-item .right {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: #1a8a1a;
+    font-weight: 600;
+  }
+
+  /* Matriz mini */
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #f0f0f2; }
+  th { background: #fbfbfd; font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 0.6px; color: #6e6e73; }
+  td.center { text-align: center; }
+
+  /* Link callout */
+  .link-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 24px 0;
+  }
+  .link-row a {
+    background: #1d1d1f;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .link-row a:hover { background: #1a8a1a; }
+
+  .note {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 14px 14px 0;
+    padding: 16px 22px;
+    margin: 18px 0;
+    font-size: 14px;
+    color: #78350f;
+  }
+
+  footer {
+    background: #f5f5f7;
+    padding: 36px 0;
+    text-align: center;
+    color: #6e6e73;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<section class="hero container">
+  <span class="badge">✅ INGESTA COMPLETADA</span>
+  <h1>Excel Agrosphere 29/05/2026<br />procesado e integrado</h1>
+  <p class="lead">
+    Los datos de las 11 etapas reales, tiempos, MO, equipos, repuestos y la matriz de productos × etapas
+    están ahora en producción.
+  </p>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <div class="label">Etapas reales</div>
+        <div class="num">11</div>
+        <div class="desc">+ E6(b) opcional de respaldo</div>
+      </div>
+      <div class="card">
+        <div class="label">Productos × Etapas</div>
+        <div class="num">8</div>
+        <div class="desc">2 con proceso completo · 6 a definir</div>
+      </div>
+      <div class="card">
+        <div class="label">Tiempo proceso</div>
+        <div class="num">120<span style="font-size:20px;color:#a1a1a6">min</span></div>
+        <div class="desc">150 min con respaldo deshidratación</div>
+      </div>
+      <div class="card">
+        <div class="label">Completitud calibración</div>
+        <div class="num">60<span style="font-size:20px;color:#a1a1a6">/100</span></div>
+        <div class="desc">subió de 40 → 60 con el Excel</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Lo que se cargó</div>
+      <h2>Las 11 etapas reales con datos del Excel</h2>
+      <p>Reemplazaron el seed genérico anterior. Tiempo, humedad, MO, equipos y repuestos validados con el equipo Agrosphere.</p>
+    </div>
+
+    <div class="etapa-item"><div class="num">E1</div><div><h4>Recepción · Descarga en zona de acopio</h4><p>Laboratorista + Personal Recepción · Tornillo/cinta</p></div><div class="right">2 min<br/>60-80%</div></div>
+    <div class="etapa-item"><div class="num">E2</div><div><h4>Homogenización (previo PEF)</h4><p>Encargado + Limpieza · Bomba 1 + Remontar/Homogenizar</p></div><div class="right">2 min<br/>75-80%</div></div>
+    <div class="etapa-item"><div class="num">E3</div><div><h4>PEF (Salida)</h4><p>Encargado · Bomba 2 + PEF · Electrodos 300hrs</p></div><div class="right">8 min<br/>75-80%</div></div>
+    <div class="etapa-item"><div class="num">E4a</div><div><h4>Prensado Mecánico</h4><p>Encargado · Prensa · Filtros</p></div><div class="right">3 min<br/>40-50%</div></div>
+    <div class="etapa-item"><div class="num">E4b</div><div><h4>Prensado Centrífugo (Tricanter)</h4><p>Encargado · Solo para Tomasa Hot</p></div><div class="right">3 min<br/>30-35%</div></div>
+    <div class="etapa-item"><div class="num">E5</div><div><h4>Canalización y almacenamiento</h4><p>Encargado · Bomba 3 · separación de fases agua/aceite</p></div><div class="right">4 min</div></div>
+    <div class="etapa-item"><div class="num">E6a</div><div><h4>Deshidratación Principal</h4><p>Encargado · Sistema Secado + calor residual</p></div><div class="right">60 min<br/>8-10%</div></div>
+    <div class="etapa-item" style="background:#fef3c7;border-color:#fcd34d"><div class="num" style="background:#f59e0b">E6b</div><div><h4>Deshidratación con Equipo de Respaldo</h4><p>Bomba de calor como respaldo · OPCIONAL</p></div><div class="right">90 min<br/>8-10%</div></div>
+    <div class="etapa-item"><div class="num">E7</div><div><h4>Enfriado / Molienda</h4><p>Encargado · Sistema Transportador</p></div><div class="right">3 min<br/>8-10%</div></div>
+    <div class="etapa-item"><div class="num">E8</div><div><h4>Homogenizado / Revisión Calidad</h4><p>Encargado + Laboratorista · Homogenización</p></div><div class="right">2 min</div></div>
+    <div class="etapa-item"><div class="num">E9</div><div><h4>Ensacado / Palletizado</h4><p>Encargado · Sist. Llenado + Ensacado · Hilo/Sacos/Pallets · sellado 2 fases</p></div><div class="right">10 min</div></div>
+    <div class="etapa-item"><div class="num">E10</div><div><h4>Etiquetado / Codificación / Almacenamiento</h4><p>Encargado + Laboratorista · Grúa Horquilla · Tinta impresora</p></div><div class="right">3 min</div></div>
+    <div class="etapa-item"><div class="num">E11</div><div><h4>Toma Muestra / Almac. x Trazabilidad</h4><p>Laboratorista · Zona almacenamiento separada</p></div><div class="right">1 min</div></div>
+
+    <div class="note">
+      <strong>📊 Total proceso (E4a):</strong> 101 min de tiempo secuencial · <strong>Con respaldo (E4b):</strong> ~131 min.
+      El Excel indica 120 min como suma de tiempos por etapa (suma E1-E5 + E6a + E7-E11 sin paralelización).
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Matriz Productos × Etapas</div>
+      <h2>8 productos catalogados del Excel</h2>
+      <p>Cada MMPP/SKU mapeado a las etapas que aplica. Tomasa Cold/Hot tienen proceso completo. Los demás esperan definición.</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Variante</th>
+          <th class="center">Etapas</th>
+          <th class="center">MSF</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>🍅 Tomasa 1</td><td>Cold</td><td class="center">E1-E4a + E5-E11</td><td class="center"><strong>30%</strong></td><td>✅ Proceso definido</td></tr>
+        <tr><td>🍅 Tomasa 2</td><td>Hot</td><td class="center">E1-E3 + E4b + E5-E11</td><td class="center"><strong>25%</strong></td><td>✅ Proceso definido</td></tr>
+        <tr><td>🍇 Orujo 1</td><td>Tinto</td><td class="center">E1</td><td class="center">—</td><td>⚠️ A definir</td></tr>
+        <tr><td>🍇 Orujo 2</td><td>Blanco</td><td class="center">E1</td><td class="center">—</td><td>⚠️ A definir</td></tr>
+        <tr><td>🫒 Alperujo 1</td><td>EV</td><td class="center">E1</td><td class="center">—</td><td>⚠️ A definir</td></tr>
+        <tr><td>🫒 Alperujo 2</td><td>V</td><td class="center">E1</td><td class="center">—</td><td>⚠️ A definir</td></tr>
+        <tr><td>🍎 Pomasa 1</td><td>Roja</td><td class="center">E1</td><td class="center">—</td><td>⚠️ A definir</td></tr>
+        <tr><td>🍏 Pomasa 2</td><td>Verde</td><td class="center">E1</td><td class="center">—</td><td>⚠️ A definir</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Lo que falta</div>
+      <h2>Datos pendientes para llegar a 100% calibración</h2>
+      <p>El Excel cerró los datos macro pero quedan varios pendientes por etapa.</p>
+    </div>
+
+    <ul style="line-height:2; font-size:15px; padding-left:20px">
+      <li><strong>E2 Homogenización:</strong> "se debe definir el porcentaje de agua que se debe agregar"</li>
+      <li><strong>E3 PEF:</strong> "kV óptimo por MMPP" (orujo vs alperujo vs tomasa) + costo CIF real de electrodos</li>
+      <li><strong>E5 Canalización:</strong> equipo concreto + repuestos + materiales (todavía "???" en Excel)</li>
+      <li><strong>E6b Respaldo:</strong> eficiencia bomba de calor + tiempo residencia real</li>
+      <li><strong>E7 Enfriado/Molienda:</strong> mix con molienda vs sin molienda (afecta valor producto)</li>
+      <li><strong>E9 Ensacado:</strong> mix big bag 1000kg vs saco 25kg por mercado · capacidad absorción hídrica</li>
+      <li><strong>E11 Toma Muestra:</strong> tamaño + tiempo de retención (12 o 24 meses?)</li>
+      <li><strong>Productos:</strong> definir línea (Cold/Hot/propia) para Orujo, Alperujo y Pomasa</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Dónde verlo</div>
+      <h2>Las pestañas que ya muestran este Excel</h2>
+    </div>
+    <div class="link-row">
+      <a href="https://trongkai-web.vercel.app/balance-etapas">/balance-etapas (toggle respaldo)</a>
+      <a href="https://trongkai-web.vercel.app/productos-etapas">/productos-etapas (matriz)</a>
+      <a href="https://trongkai-engine.fly.dev/balance/etapas/productos">API /balance/etapas/productos</a>
+      <a href="https://trongkai-engine.fly.dev/balance/etapas/datos-faltantes">API datos faltantes</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="font-style:italic;color:#1d1d1f;font-weight:500;margin-bottom:8px;">
+    "En la naturaleza no existen los residuos, solo recursos."
+  </p>
+  <p>Trongkai · Ingesta validada el 4 de junio de 2026</p>
+  <p style="margin-top:8px;font-size:11px;color:#a1a1a6">
+    Fuente: Excel "Etapas X Costeo Agrosphere 29052026.xlsx" · Tests 486/486 verde
+  </p>
+</footer>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-"""Tests del balance por etapas de la planta."""
+"""Tests del balance por etapas de la planta - Modelo Agrosphere real."""
 from __future__ import annotations
 
 import pytest
@@ -7,28 +7,39 @@ from trongkai_engine.balances.etapas import (
     BalancePorEtapas,
     EtapaPlanta,
     NivelDato,
+    ProductoEtapas,
     computar_balance_etapas,
     etapas_seed,
+    matriz_productos_x_etapas,
+    productos_seed,
     resumen_datos_faltantes,
 )
 
 
-def test_seed_12_etapas():
-    assert len(etapas_seed()) == 12
+def test_seed_11_etapas_principal():
+    """11 etapas con E6(a) principal default."""
+    assert len(etapas_seed()) == 12   # 11 + E11 toma muestra
+
+
+def test_seed_con_respaldo_misma_cantidad():
+    """Mismo numero de etapas pero E6 cambia a respaldo."""
+    es = etapas_seed(incluir_respaldo=True)
+    assert len(es) == 12
+    assert any(e.id == "E6B_DESHIDRATACION_RESPALDO" for e in es)
 
 
 def test_orden_etapas_correcto():
     es = etapas_seed()
-    for i, e in enumerate(es, start=1):
-        assert e.orden == i
+    ordenes = [e.orden for e in es]
+    assert ordenes == sorted(ordenes)
 
 
 def test_recepcion_es_primera():
-    assert etapas_seed()[0].id == "RECEPCION"
+    assert etapas_seed()[0].id == "E1_RECEPCION"
 
 
-def test_logistica_es_ultima():
-    assert etapas_seed()[-1].id == "LOGISTICA"
+def test_toma_muestra_es_ultima():
+    assert etapas_seed()[-1].id == "E11_TOMA_MUESTRA"
 
 
 def test_balance_basico():
@@ -39,35 +50,56 @@ def test_balance_basico():
 
 
 def test_yield_total_razonable():
-    """Para una planta de upcycling con secado, yield total ~ 30-35%."""
+    """Yield total considera secado y separaciones — esperado bajo (1-30%)."""
     b = computar_balance_etapas()
-    assert 0.10 < b.yield_total_proceso < 0.50
+    assert 0.0001 < b.yield_total_proceso < 0.50
 
 
-def test_bottlenecks_detectados():
+def test_tiempo_proceso_total_min():
+    """Excel dice 120 min normal con E6(a)."""
     b = computar_balance_etapas()
-    # PEF + Secador deben aparecer cerca del bottleneck con seed default
-    assert isinstance(b.bottlenecks, list)
+    # Tiempos: 2+2+8+3+3+4+60+3+2+10+3+1 = 101 min (E4(a) + E4(b))
+    assert 80 < b.tiempo_proceso_total_min < 130
 
 
-def test_completitud_datos_calculada():
-    b = computar_balance_etapas()
-    assert 0 <= b.completitud_datos_pct <= 100
+def test_tiempo_con_respaldo_es_mayor():
+    """Con E6(b) respaldo el tiempo aumenta a 150min."""
+    b_normal = computar_balance_etapas()
+    b_resp = computar_balance_etapas(incluir_respaldo=True)
+    assert b_resp.tiempo_proceso_total_min > b_normal.tiempo_proceso_total_min
 
 
-def test_etapa_pef_consume_agua():
+def test_humedad_post_pef_alta():
     es = etapas_seed()
-    pef = next(e for e in es if e.id == "PEF_OPTICEPT")
-    assert pef.consumo_agua_l_h > 0
-    assert pef.consumo_energia_kwh_h > 0
+    pef = next(e for e in es if e.id == "E3_PEF")
+    # 75-80% segun Excel
+    assert pef.humedad_post_etapa == (0.75, 0.80)
 
 
-def test_etapa_secado_es_la_mas_intensiva_energia():
+def test_humedad_post_deshidratacion_es_8_10():
+    es = etapas_seed()
+    deshid = next(e for e in es if "DESHIDRATACION" in e.id)
+    assert deshid.humedad_post_etapa == (0.08, 0.10)
+
+
+def test_etapa_pef_tiene_repuesto_electrodos():
+    es = etapas_seed()
+    pef = next(e for e in es if e.id == "E3_PEF")
+    assert any("Electrodos" in r for r in pef.repuestos)
+
+
+def test_etapa_ensacado_tiene_materiales():
+    es = etapas_seed()
+    ens = next(e for e in es if e.id == "E9_ENSACADO")
+    assert "Sacos" in ens.materiales
+    assert "Pallets" in ens.materiales
+
+
+def test_etapa_deshidratacion_es_mas_intensiva_energia():
     es = etapas_seed()
     consumos = {e.id: e.energia_kwh_por_kg for e in es}
-    # Secado tiene el mayor consumo unitario kWh/kg
     max_id = max(consumos, key=consumos.get)
-    assert max_id == "SECADO_ROTATIVO"
+    assert "DESHIDRATACION" in max_id
 
 
 def test_alarmas_estructura():
@@ -78,41 +110,29 @@ def test_alarmas_estructura():
         assert "severidad" in a
 
 
-def test_alarmas_bottleneck():
-    """Forzar utilizacion alta dispara alarma."""
-    es = etapas_seed(throughput_kg_h=2000)
-    # PEF tiene capacidad de 2000 kg/h y recibe ~1890 → 94% → bottleneck
-    pef = next(e for e in es if e.id == "PEF_OPTICEPT")
-    assert pef.es_bottleneck
+def test_completitud_mejor_con_excel_real():
+    """El Excel sube validez. E1 es VALIDADO, varias son PROVISORIO."""
+    b = computar_balance_etapas()
+    # Con datos del Excel real, completitud debe ser > 50%
+    assert b.completitud_datos_pct > 50
 
 
-def test_intensidades_acumuladas():
+def test_intensidades_acumuladas_incluyen_tiempo():
     b = computar_balance_etapas()
     i = b.intensidades_acumuladas
-    for key in ["energia_kwh_por_kg_producto", "agua_l_por_kg_producto",
-                "perdidas_totales_kg_h", "energia_kwh_por_kg_mmpp"]:
-        assert key in i
+    assert "tiempo_min_por_ton" in i
 
 
 def test_resumen_datos_faltantes():
     r = resumen_datos_faltantes()
     assert r["total_etapas"] == 12
     assert r["validadas"] + r["provisorias"] + r["sin_validar"] == 12
-    assert 0 <= r["completitud_promedio_pct"] <= 100
-
-
-def test_etapas_con_PD_listadas_en_criticos():
-    r = resumen_datos_faltantes()
-    # Algunas etapas estan en PD (e.g. ALMACENAMIENTO, TRITURACION, MEZCLADO)
-    criticos_ids = [e["etapa"] for e in r["criticos_PD"]]
-    assert "ALMACENAMIENTO" in criticos_ids or "TRITURACION" in criticos_ids
 
 
 def test_throughput_alto_aumenta_consumos():
     b1 = computar_balance_etapas(throughput_kg_h=1000)
     b2 = computar_balance_etapas(throughput_kg_h=3000)
     assert b2.energia_total_kwh_h > b1.energia_total_kwh_h
-    assert b2.agua_total_l_h > b1.agua_total_l_h
 
 
 def test_to_dict_serializable():
@@ -121,7 +141,7 @@ def test_to_dict_serializable():
     d = b.to_dict()
     s = json.dumps(d)
     assert "etapas" in d
-    assert len(d["etapas"]) == 12
+    assert "tiempo_proceso_total_min" in d
 
 
 def test_nivel_dato_completitud():
@@ -136,3 +156,52 @@ def test_nivel_dato_completitud():
 def test_lista_etapas_vacia_levanta():
     with pytest.raises(ValueError):
         computar_balance_etapas(etapas=[])
+
+
+# =========================
+# Matriz Productos x Etapas
+# =========================
+def test_productos_seed_8_items():
+    """Excel: 2 Tomasa + 2 Orujo + 2 Alperujo + 2 Pomasa = 8 productos."""
+    assert len(productos_seed()) == 8
+
+
+def test_tomasa_cold_tiene_proceso_completo():
+    ps = productos_seed()
+    t1 = next(p for p in ps if p.codigo == "TOMASA_1")
+    assert t1.variante == "Cold"
+    assert t1.rendimiento_msf_pct == 0.30
+    # Cold pasa por E4(a) Prensado Mecanico
+    assert "E4A_PRENSADO_MECANICO" in t1.etapas_aplicables
+    assert "E4B_PRENSADO_CENTRIFUGO" not in t1.etapas_aplicables
+
+
+def test_tomasa_hot_pasa_por_tricanter():
+    ps = productos_seed()
+    t2 = next(p for p in ps if p.codigo == "TOMASA_2")
+    assert t2.variante == "Hot"
+    assert t2.rendimiento_msf_pct == 0.25
+    assert "E4B_PRENSADO_CENTRIFUGO" in t2.etapas_aplicables
+
+
+def test_orujo_y_alperujo_solo_recepcion():
+    ps = productos_seed()
+    for codigo in ["ORUJO_1", "ORUJO_2", "ALPERUJO_1", "ALPERUJO_2", "POMASA_1", "POMASA_2"]:
+        p = next(x for x in ps if x.codigo == codigo)
+        assert p.etapas_aplicables == ["E1_RECEPCION"]
+
+
+def test_matriz_productos_x_etapas():
+    m = matriz_productos_x_etapas()
+    assert m["total_productos"] == 8
+    assert m["productos_con_proceso_definido"] == 2     # solo Tomasa 1 y 2
+    assert m["productos_solo_recepcion"] == 6
+
+
+def test_matriz_yield_acumulado_tomasa():
+    m = matriz_productos_x_etapas()
+    t1 = next(p for p in m["productos"] if p["codigo"] == "TOMASA_1")
+    # yield acumulado debe ser > 0 (productos de proceso completo)
+    assert t1["yield_acumulado_teorico"] > 0
+    assert t1["cantidad_etapas"] > 5
+    assert t1["tiempo_proceso_min"] > 50

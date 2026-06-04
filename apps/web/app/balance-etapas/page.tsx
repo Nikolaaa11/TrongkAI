@@ -24,6 +24,16 @@ type Etapa = {
   nivel_calibracion: 'PD' | 'OK_PROVISORIO' | 'OK_VALIDADO';
   datos_faltantes: string[];
   capacidad: { valor_maximo: number; unidad: string };
+  // Nuevos campos Agrosphere
+  tiempo_proceso_min: number;
+  humedad_post_etapa: [number, number];
+  mo_directa: string[];
+  mo_general: string[];
+  equipos_energeticos: string[];
+  repuestos: string[];
+  materiales: string[];
+  notas_proceso: string;
+  es_respaldo?: boolean;
 };
 
 type Balance = {
@@ -34,6 +44,7 @@ type Balance = {
   energia_total_kwh_h: number;
   agua_total_l_h: number;
   hh_totales_turno: number;
+  tiempo_proceso_total_min: number;
   bottlenecks: string[];
   completitud_datos_pct: number;
   intensidades_acumuladas: Record<string, number>;
@@ -56,12 +67,13 @@ export default function BalanceEtapasPage() {
   const [data, setData] = useState<Balance | null>(null);
   const [throughput, setThroughput] = useState(2000);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [conRespaldo, setConRespaldo] = useState(false);
 
   useEffect(() => {
-    fetch(`${ENGINE_URL}/balance/etapas?throughput_kg_h=${throughput}`)
+    fetch(`${ENGINE_URL}/balance/etapas?throughput_kg_h=${throughput}&incluir_respaldo=${conRespaldo}`)
       .then((r) => r.json())
       .then(setData);
-  }, [throughput]);
+  }, [throughput, conRespaldo]);
 
   if (!data) return <p className="text-ink-400">Cargando balance por etapas…</p>;
 
@@ -77,9 +89,9 @@ export default function BalanceEtapasPage() {
         </p>
       </header>
 
-      {/* Slider throughput */}
+      {/* Slider throughput + toggle respaldo */}
       <section className="rounded-2xl border border-ink-100 bg-white p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wider text-ink-500">Throughput nominal</p>
             <p className="mt-1 text-3xl font-bold">{throughput.toLocaleString()} kg/h</p>
@@ -87,7 +99,7 @@ export default function BalanceEtapasPage() {
               {(throughput * 16 / 1000).toFixed(1)} t/día · {((throughput * 16 * 300) / 1000).toFixed(0)} t/año
             </p>
           </div>
-          <div className="flex flex-col items-end gap-1">
+          <div className="flex flex-col items-end gap-2">
             <p className="text-xs text-ink-400">Ajusta el caudal de entrada</p>
             <input
               type="range"
@@ -102,6 +114,18 @@ export default function BalanceEtapasPage() {
               <span>500</span><span>2.5k</span><span>5k kg/h</span>
             </div>
           </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="respaldo"
+              checked={conRespaldo}
+              onChange={(e) => setConRespaldo(e.target.checked)}
+              className="h-4 w-4 accent-orange-500"
+            />
+            <label htmlFor="respaldo" className="text-xs">
+              Usar Deshidratación de respaldo (E6b, +30 min)
+            </label>
+          </div>
         </div>
       </section>
 
@@ -110,9 +134,9 @@ export default function BalanceEtapasPage() {
         <KPI label="Entrada MMPP" valor={`${(data.masa_entrada_total_kg_h / 1000).toFixed(1)} t/h`} />
         <KPI label="Producto final" valor={`${(data.masa_salida_final_kg_h / 1000).toFixed(2)} t/h`} />
         <KPI label="Yield total" valor={`${(data.yield_total_proceso * 100).toFixed(1)}%`} />
+        <KPI label="Tiempo proceso" valor={`${data.tiempo_proceso_total_min.toFixed(0)} min`} />
         <KPI label="Energía" valor={`${data.energia_total_kwh_h.toFixed(0)} kWh/h`} />
         <KPI label="Agua" valor={`${data.agua_total_l_h.toFixed(0)} L/h`} />
-        <KPI label="HH/turno" valor={`${data.hh_totales_turno.toFixed(1)} h`} />
       </div>
 
       {/* Completitud de datos */}
@@ -214,11 +238,29 @@ export default function BalanceEtapasPage() {
                   </div>
                 </button>
 
-                {/* Detalle expandido */}
+                {/* Detalle expandido — datos Agrosphere reales */}
                 {isSelected && (
                   <div className="ml-12 mt-2 mb-3 rounded-xl bg-ink-50/40 p-5">
                     <p className="text-sm italic text-ink-600">{e.descripcion}</p>
-                    <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+                    {e.notas_proceso && (
+                      <div className="mt-3 rounded-lg border-l-3 border-brand bg-brand-50/30 px-3 py-2 text-xs text-ink-700">
+                        💡 <strong>Nota proceso:</strong> {e.notas_proceso}
+                      </div>
+                    )}
+                    {/* KPIs técnicos */}
+                    <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-5">
+                      <div>
+                        <p className="text-[10px] uppercase text-ink-400">Tiempo proceso</p>
+                        <p className="font-semibold">{e.tiempo_proceso_min} min</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase text-ink-400">Humedad post</p>
+                        <p className="font-semibold">
+                          {e.humedad_post_etapa[0] === 0 && e.humedad_post_etapa[1] === 0
+                            ? '—'
+                            : `${(e.humedad_post_etapa[0] * 100).toFixed(0)}-${(e.humedad_post_etapa[1] * 100).toFixed(0)}%`}
+                        </p>
+                      </div>
                       <div>
                         <p className="text-[10px] uppercase text-ink-400">Capacidad max</p>
                         <p className="font-semibold">{e.capacidad.valor_maximo.toFixed(0)} {e.capacidad.unidad}</p>
@@ -228,14 +270,48 @@ export default function BalanceEtapasPage() {
                         <p className="font-semibold">{e.energia_kwh_por_kg.toFixed(4)} kWh/kg</p>
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase text-ink-400">Agua unitaria</p>
-                        <p className="font-semibold">{e.agua_l_por_kg.toFixed(2)} L/kg</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase text-ink-400">Completitud datos</p>
+                        <p className="text-[10px] uppercase text-ink-400">Completitud</p>
                         <p className="font-semibold">{e.datos_completitud_pct.toFixed(0)}%</p>
                       </div>
                     </div>
+
+                    {/* Mano de obra + equipos en grid */}
+                    <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2">
+                      {(e.mo_directa.length > 0 || e.mo_general.length > 0) && (
+                        <div className="rounded-lg bg-white border border-ink-100 p-3">
+                          <p className="text-[10px] uppercase font-semibold text-ink-500">👤 Mano de obra</p>
+                          <ul className="mt-1.5 space-y-0.5 text-xs">
+                            {e.mo_directa.map((m, i) => <li key={`d${i}`}><strong>Directa:</strong> {m}</li>)}
+                            {e.mo_general.map((m, i) => <li key={`g${i}`} className="text-ink-500">General: {m}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {e.equipos_energeticos.length > 0 && (
+                        <div className="rounded-lg bg-white border border-ink-100 p-3">
+                          <p className="text-[10px] uppercase font-semibold text-ink-500">⚡ Equipos energéticos</p>
+                          <ul className="mt-1.5 space-y-0.5 text-xs">
+                            {e.equipos_energeticos.map((eq, i) => <li key={i}>{eq}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {e.repuestos.length > 0 && (
+                        <div className="rounded-lg bg-white border border-ink-100 p-3">
+                          <p className="text-[10px] uppercase font-semibold text-ink-500">🔧 Repuestos</p>
+                          <ul className="mt-1.5 space-y-0.5 text-xs">
+                            {e.repuestos.map((r, i) => <li key={i}>{r}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {e.materiales.length > 0 && (
+                        <div className="rounded-lg bg-white border border-ink-100 p-3">
+                          <p className="text-[10px] uppercase font-semibold text-ink-500">📦 Materiales</p>
+                          <ul className="mt-1.5 space-y-0.5 text-xs">
+                            {e.materiales.map((m, i) => <li key={i}>{m}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+
                     {e.datos_faltantes.length > 0 && (
                       <div className="mt-4">
                         <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">📋 Datos pendientes para calibrar</p>
