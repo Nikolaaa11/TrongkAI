@@ -11,8 +11,9 @@ type Group = { id: string; label: string; emoji?: string; items: Item[] };
 /**
  * Menu reorganizado por categoria ejecutiva.
  * Apple-style: nav slim + mega-dropdowns con blur + descripcion por item.
- * Items eliminados del menu (basura/duplicados): /api, /digest, /about,
- * /agenda, /balance, /riesgo, /supuestos, /whatif.
+ * Items accesibles via Cmd+K pero fuera del menu principal:
+ * /api (developer), /agenda, /balance (mass balance original), /riesgo.
+ * Eliminados (depurados): /whatif (duplicado), /supuestos, /digest, /about.
  */
 const GROUPS: Group[] = [
   {

@@ -160,8 +160,8 @@ export default function ComparadorPage() {
             <p className="mt-2 text-sm text-ink-600">
               Usa el módulo What-if para combinar variables a tu gusto.
             </p>
-            <a href="/whatif" className="btn-apple mt-4 inline-block">
-              Ir a What-if →
+            <a href="/whatif-live" className="btn-apple mt-4 inline-block">
+              Ir a What-if Live →
             </a>
           </section>
         </>
