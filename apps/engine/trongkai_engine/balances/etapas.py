@@ -243,17 +243,18 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
     )
     e3 = EtapaPlanta(
         id="E3_PEF",
-        nombre="E3. PEF (Electroporacion - solo ruptura celular)",
+        nombre="E3. PEF (Electroporacion - 1 pasada default)",
         orden=3,
         descripcion=(
             "Pulsos electricos abren membranas celulares. SIN PERDIDAS DE MASA, "
             "SIN CAMBIO DE HUMEDAD. Bomba tornillo alimenta, bomba salida traslada "
-            "a prensado. PEF es EQUIPO ARRENDADO (OPEX, no CAPEX propio)."
+            "a prensado. PEF es EQUIPO ARRENDADO (OPEX, no CAPEX propio). "
+            "Default 1 pasada (puede variar por MMPP o configuracion)."
         ),
         masa_input_kg_h=throughput_kg_h * 0.990,
-        yield_pct=1.00,                  # NO HAY PERDIDAS segun conversacion
+        yield_pct=1.00,
         perdidas_pct=0.0,
-        humedad_post_etapa=(0.75, 0.80),  # NO CAMBIA HUMEDAD
+        humedad_post_etapa=(0.75, 0.80),
         energia_kwh_por_kg=0.13,
         agua_l_por_kg=0.5,
         hh_por_ton_input=0.04,
@@ -264,21 +265,20 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         equipos_energeticos=["PEF Opticept ARRENDADO", "Bomba tornillo entrada", "Bomba salida"],
         repuestos=["Electrodos PEF (vida util 300hrs)"],
         notas_proceso=(
-            "TRES EVALUACIONES PENDIENTES (criticas para tesis de inversion): "
-            "1) PEF efectivamente disminuye tiempos secado posterior con impacto significativo? "
-            "2) Pasada unica o multiple para apertura efectiva de membranas? "
-            "3) Justifica economicamente el arriendo vs prensado directo? "
-            "Test A/B: misma MMPP, fraccion con PEF + prensado vs prensado directo. "
+            "RESPUESTAS EQUIPO (4/06/26): "
+            "1) ✅ Si disminuye tiempos secado posterior (usuario seguira alimentando info por equipo). "
+            "2) ✅ POR LO GENERAL 1 PASADA (variable segun como funcione la MMPP especifica). "
+            "3) ⚠️ JUSTIFICACION ECONOMICA: A INVESTIGAR via /pef-analisis (A/B vs prensado directo). "
             "Limpieza/desinfeccion por batch/dia/MMPP."
         ),
         datos_faltantes=[
-            "kV optimo por MMPP (tomasa vs orujo vs alperujo)",
-            "Numero pasadas optimas (1 o N)",
-            "Validar disminucion real tiempos secado vs prensado directo (A/B test)",
-            "Costo arriendo mensual PEF (cotizacion final)",
-            "Costo electrodos CIF Chile",
+            "Fichas tecnicas detalladas por equipo (en proceso por usuario)",
+            "kV optimo por MMPP (validacion en planta piloto)",
+            "Reduccion % tiempo secado real medida (necesario para justificar)",
+            "Comparativa economica PEF vs prensado directo (ver /pef-analisis)",
+            "Costo electrodos CIF Chile (cotizacion proveedor)",
         ],
-        nivel_calibracion=NivelDato.PD,
+        nivel_calibracion=NivelDato.OK_PROVISORIO,    # subio de PD por respuestas 1 y 2
         equipo_energetico_principal="PEF Opticept",
         equipo_hidrico_principal="PEF Opticept",
         categoria_rrhh_principal="operario",

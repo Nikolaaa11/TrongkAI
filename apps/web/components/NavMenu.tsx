@@ -78,6 +78,8 @@ const GROUPS: Group[] = [
       { href: '/balance-etapas', label: '🏭 Por Etapas', desc: '11 etapas reales Agrosphere · dinámico' },
       { href: '/productos-etapas', label: '🧬 Productos × Etapas', desc: 'Matriz MMPP por etapa + yield MSF' },
       { href: '/costeo', label: '💰 Costeo', desc: 'Costo por etapa y SKU (CLP/kg, USD/kg)' },
+      { href: '/pef-analisis', label: '⚡ PEF A/B', desc: '¿Justifica económicamente el PEF? Comparativo' },
+      { href: '/equipos', label: '🏗 Equipos', desc: 'Fichas técnicas de cada equipo (alimentar)' },
       { href: '/parametros', label: '⚙️ Parámetros', desc: 'Sueldos, energía, agua, calor, flete editables' },
       { href: '/balance', label: 'Producto (masa)', desc: 'Closure ±0.5% por SKU' },
       { href: '/balance-energia', label: 'Energía', desc: 'kWh + mix renovable + FP' },

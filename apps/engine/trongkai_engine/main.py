@@ -2525,3 +2525,80 @@ def costeo_etapas_endpoint(
         throughput_kg_h=throughput_kg_h,
         incluir_respaldo=incluir_respaldo,
     )
+
+
+# =============================================================================
+# ANALISIS PEF (responde la pregunta 3 del usuario)
+# =============================================================================
+@app.get(
+    "/pef/analisis",
+    tags=["balances"],
+    summary="Analisis economico PEF vs Prensado directo (A/B)",
+    description="Responde: justifica economicamente usar PEF? "
+                "Compara con/sin PEF + breakeven + sensibilidad % reduccion secado.",
+)
+@cached_ttl(seconds=120)
+def pef_analisis_endpoint(
+    throughput_kg_h: float = 2000.0,
+    pct_reduccion_tiempo_secado: float = 0.30,
+    pct_uplift_yield: float = 0.05,
+    pasadas_pef: int = 1,
+    precio_venta_clp_kg: float = 850.0,
+    pct_premium_pef: float = 0.10,
+) -> dict:
+    from .balances.pef_analisis import analizar_pef_vs_sin_pef
+    return analizar_pef_vs_sin_pef(
+        throughput_kg_h=throughput_kg_h,
+        pct_reduccion_tiempo_secado=pct_reduccion_tiempo_secado,
+        pct_uplift_yield=pct_uplift_yield,
+        pasadas_pef=pasadas_pef,
+        precio_venta_clp_kg=precio_venta_clp_kg,
+        pct_premium_pef=pct_premium_pef,
+    ).to_dict()
+
+
+@app.get(
+    "/pef/sensibilidad",
+    tags=["balances"],
+    summary="Sensibilidad: PEF vs sin PEF para varios % reduccion secado",
+)
+def pef_sensibilidad_endpoint(throughput_kg_h: float = 2000.0) -> dict:
+    from .balances.pef_analisis import sensibilidad_pef
+    return {
+        "throughput_kg_h": throughput_kg_h,
+        "rangos": sensibilidad_pef(throughput_kg_h=throughput_kg_h),
+    }
+
+
+# =============================================================================
+# FICHAS EQUIPOS (sistema captura info detallada)
+# =============================================================================
+@app.get(
+    "/equipos/fichas",
+    tags=["parametros"],
+    summary="Listado de fichas tecnicas de equipos de planta",
+)
+def fichas_listar_endpoint() -> dict:
+    from .balances.fichas_equipos import cargar_fichas, resumen_completitud_fichas
+    return {
+        "fichas": [f.to_dict() for f in cargar_fichas()],
+        "resumen": resumen_completitud_fichas(),
+    }
+
+
+class FichaEquipoUpdate(BaseModel):
+    equipo_id: str
+    updates: dict
+
+
+@app.post(
+    "/equipos/fichas/actualizar",
+    tags=["parametros"],
+    summary="Actualizar ficha equipo (recibe info que el usuario alimenta)",
+)
+def fichas_actualizar_endpoint(req: FichaEquipoUpdate) -> dict:
+    from .balances.fichas_equipos import actualizar_ficha
+    from .cache import clear_all
+    f = actualizar_ficha(req.equipo_id, req.updates)
+    clear_all()
+    return {"ok": True, "ficha": f.to_dict()}
