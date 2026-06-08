@@ -98,8 +98,9 @@ def test_etapa_pef_tiene_repuesto_electrodos():
 def test_etapa_ensacado_tiene_materiales():
     es = etapas_seed()
     ens = next(e for e in es if e.id == "E9_ENSACADO")
-    assert "Sacos" in ens.materiales
-    assert "Pallets" in ens.materiales
+    # Tras update con docpiloto: "Sacos 20 kg" + Pallets (opcional)
+    assert any("Sacos" in m for m in ens.materiales)
+    assert any("Pallets" in m for m in ens.materiales)
 
 
 def test_etapa_pef_es_la_mas_intensiva_electrica_real():

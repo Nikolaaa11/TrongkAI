@@ -120,10 +120,11 @@ def test_pef_opticept_es_arriendo():
     assert pef.arriendo_clp_mes > 0
 
 
-def test_tricanter_es_arriendo():
+def test_centrifuga_biobase_es_pruebas_lab():
+    """Tras update Word: la centrifuga BioBase es escala laboratorio, no arriendo."""
     fichas = fichas_seed()
-    tric = next(f for f in fichas if "TRICANTER" in f.id)
-    assert tric.modalidad == "OPEX_arriendo"
+    cent = next(f for f in fichas if "CENTRIFUGA_BIOBASE" in f.id)
+    assert "labor" in cent.notas.lower() or "prueba" in cent.notas.lower()
 
 
 def test_romana_fuera_costos():

@@ -67,8 +67,14 @@ class FichaEquipo:
 
 
 def fichas_seed() -> list[FichaEquipo]:
-    """Seed inicial con los equipos clave (a ser alimentados por usuario)."""
+    """Seed con equipos REALES del documento 'Descripcion Tecnica Planta Piloto'
+    (04/06/2026 - usuario).
+
+    PLANTA PILOTO: capacidades bajas (kg/h, no ton/h industrial). Producto final:
+    harina <1mm para alimentacion animal. Saco 20 kg.
+    """
     return [
+        # ===== ETAPA PREVIA (compartida) =====
         FichaEquipo(
             id="ROMANA_LAGLORIA",
             nombre="Romana compartida La Gloria",
@@ -80,72 +86,196 @@ def fichas_seed() -> list[FichaEquipo]:
             notas="COMPARTIDA con La Gloria - FUERA del analisis de costos Trongkai.",
             nivel_dato="OK_VALIDADO",
         ),
+
+        # ===== 1. RECEPCION Y ALIMENTACION =====
         FichaEquipo(
-            id="TORNILLO_E1",
-            nombre="Tornillo / Cinta / Bomba impulsion E1->E2",
-            tipo="tornillo_cinta",
+            id="BOMBA_VALISI_VSHH4",
+            nombre="Bomba Valisi VSHH 4 (impulsion)",
+            tipo="bomba",
             etapa_asociada="E1_RECEPCION",
-            notas="Define modalidad (tornillo, cinta, bomba) segun MMPP y reologia.",
-            nivel_dato="PD",
+            proveedor="Valisi",
+            modelo="VSHH 4",
+            capacidad_kg_h=3500.0,
+            capacidad_unidad="kg/h (3.5 ton/h)",
+            potencia_kw=3.0,
+            notas="Impulsa residuo desde descarga hacia linea de pretratamiento PEF. Confirmado en doc tecnico planta piloto.",
+            nivel_dato="OK_VALIDADO",
         ),
+
+        # ===== 2. PRETRATAMIENTO PEF =====
         FichaEquipo(
-            id="HOMOGENIZADOR_E2",
-            nombre="Homogenizador paleta E2",
-            tipo="homogenizador",
-            etapa_asociada="E2_ESTANDARIZACION",
-            notas="Mezclador para ajustar reologia previo PEF.",
-            nivel_dato="PD",
-        ),
-        FichaEquipo(
-            id="PEF_OPTICEPT_01",
-            nombre="PEF Opticept (modelo a definir)",
+            id="PEF_OPTICEPT_ODIN",
+            nombre="PEF OptiCept ODIN",
             tipo="pef",
             etapa_asociada="E3_PEF",
-            proveedor="Opticept Sweden",
+            proveedor="OptiCept (Sweden)",
+            modelo="ODIN",
             modalidad="OPEX_arriendo",
             arriendo_clp_mes=18_500_000,
-            capacidad_kg_h=2000.0,
-            potencia_kw=250.0,
+            capacidad_kg_h=4000.0,
+            capacidad_unidad="kg/h (4.0 ton/h)",
+            potencia_kw=10.0,
             notas=(
-                "1 pasada default segun usuario (4/06/26). "
-                "Pendiente: kV optimo por MMPP, costo electrodos CIF Chile, "
-                "% reduccion tiempo secado real."
+                "Confirmado modelo: OptiCept ODIN. Capacidad 4 ton/h, consumo 10 kW/h. "
+                "1 pasada default (segun respuesta usuario 4/06). "
+                "Electroporacion: aumenta extraccion agua vegetal y compuestos de interes. "
+                "Sin perdidas masa, sin cambio humedad."
             ),
-            nivel_dato="OK_PROVISORIO",
+            nivel_dato="OK_VALIDADO",
         ),
+
+        # ===== 3. SEPARACION MECANICA =====
         FichaEquipo(
-            id="BOMBA_E3_SALIDA",
-            nombre="Bomba salida PEF -> Prensado",
-            tipo="bomba",
-            etapa_asociada="E3_PEF",
-            nivel_dato="PD",
-        ),
-        FichaEquipo(
-            id="PRENSA_E4A",
-            nombre="Prensa mecanica (horizontal/tornillo)",
+            id="PRENSA_OELWERK_510",
+            nombre="Prensa de tornillo Oelwerk 510 s-inox",
             tipo="prensa",
             etapa_asociada="E4A_PRENSADO_MECANICO",
-            notas="Reduce humedad a ~30% generando torta.",
-            nivel_dato="PD",
+            proveedor="Oelwerk",
+            modelo="510 s-inox",
+            capacidad_kg_h=25.0,
+            capacidad_unidad="kg/h (0.025 ton/h)",
+            potencia_kw=1.5,
+            notas=(
+                "Prensa principal piloto. Capacidad 25 kg/h, consumo 1.5 kW/h. "
+                "Genera torta solida + jugo. CUELLO DE BOTELLA aguas arriba "
+                "(PEF puede 4000 kg/h pero prensa solo 25 kg/h en piloto)."
+            ),
+            nivel_dato="OK_VALIDADO",
         ),
         FichaEquipo(
-            id="TRICANTER_E4B",
-            nombre="Tricanter centrifugo (3 fases)",
+            id="PRENSA_EXTRACTORA_ACEITE",
+            nombre="Prensa extractora de aceite (alperujo)",
+            tipo="prensa",
+            etapa_asociada="E4A_PRENSADO_MECANICO",
+            capacidad_kg_h=15.0,
+            capacidad_unidad="kg/h (0.015 ton/h)",
+            potencia_kw=0.82,
+            notas=(
+                "Segunda prensa especifica para alperujo - maximiza recuperacion "
+                "aceite residual. Solo aplica linea oliva. Capacidad 15 kg/h."
+            ),
+            nivel_dato="OK_VALIDADO",
+        ),
+        FichaEquipo(
+            id="CENTRIFUGA_BIOBASE",
+            nombre="Centrifuga BioBase BKC-TL5VII (pruebas laboratorio)",
             tipo="tricanter",
             etapa_asociada="E4B_PRENSADO_CENTRIFUGO",
-            modalidad="OPEX_arriendo",
-            arriendo_clp_mes=4_200_000,
-            notas="Solo Tomasa Hot. Separa solido + liquido + aceite.",
-            nivel_dato="PD",
+            proveedor="BioBase",
+            modelo="BKC-TL5VII",
+            capacidad_kg_h=0.3,
+            capacidad_unidad="6×50 mL (escala laboratorio)",
+            potencia_kw=0.2,
+            notas=(
+                "ESCALA LABORATORIO (6×50 mL). Solo para PRUEBAS de separacion agua "
+                "vegetal vs torta solida post-PEF. NO es operacion continua. "
+                "Registrar humedad, pH, conductividad antes/despues."
+            ),
+            nivel_dato="OK_VALIDADO",
+        ),
+
+        # ===== 4. SECADO =====
+        FichaEquipo(
+            id="SECADOR_IKE_WRH300",
+            nombre="Secador deshidratador IKE WRH-300",
+            tipo="secador",
+            etapa_asociada="E6A_DESHIDRATACION_PRINCIPAL",
+            proveedor="IKE",
+            modelo="WRH-300",
+            capacidad_kg_h=300.0,
+            capacidad_unidad="kg/h (0.30 ton/h)",
+            potencia_kw=7.5,
+            notas=(
+                "Reduce humedad y estabiliza producto. Confirmado piloto. "
+                "Compatible con uso de CALOR RESIDUAL La Gloria como input termico."
+            ),
+            nivel_dato="OK_VALIDADO",
+        ),
+
+        # ===== 5. MOLIENDA =====
+        FichaEquipo(
+            id="MOLINO_MARTILLOS_HARINERO",
+            nombre="Molino de martillos harinero generico",
+            tipo="molino",
+            etapa_asociada="E8_HOMOGENEIZACION",
+            modelo="generico harinero",
+            capacidad_kg_h=350.0,
+            capacidad_unidad="kg/h (0.35 ton/h)",
+            potencia_kw=2.2,
+            notas=(
+                "Reduccion granulometrica final HASTA 1mm (optimo alimentacion animal). "
+                "Capacidad 350 kg/h, consumo 2.2 kW/h."
+            ),
+            nivel_dato="OK_VALIDADO",
+        ),
+
+        # ===== 6. CAPTACION DE POLVO =====
+        FichaEquipo(
+            id="ASPIRADOR_POLVO",
+            nombre="Aspirador Extractor Colector Polvo",
+            tipo="tamiz",
+            etapa_asociada="E8_HOMOGENEIZACION",
+            potencia_kw=2.2,
+            notas=(
+                "Filtro de aire para controlar emisiones de harina suspendida. "
+                "Mejora calidad ambiente + recupera material fino. 2.2 kW/h. "
+                "Capacidad: control emisiones (no flow continuo de producto)."
+            ),
+            nivel_dato="OK_VALIDADO",
+        ),
+
+        # ===== 7. TRANSPORTE =====
+        FichaEquipo(
+            id="TORNILLO_ELEVADOR",
+            nombre="Tornillo elevador hacia tolva ensacadora",
+            tipo="tornillo_cinta",
+            etapa_asociada="E9_ENSACADO",
+            modelo="generico",
+            capacidad_kg_h=6000.0,
+            capacidad_unidad="kg/h (6.0 ton/h)",
+            potencia_kw=2.2,
+            notas="Eleva harina desde molienda hacia tolva ensacadora automatica.",
+            nivel_dato="OK_VALIDADO",
+        ),
+
+        # ===== 8. ENSACADO =====
+        FichaEquipo(
+            id="ENSACADORA_AUTOMATICA",
+            nombre="Ensacadora automatica (sacos 20 kg)",
+            tipo="ensacadora",
+            etapa_asociada="E9_ENSACADO",
+            capacidad_kg_h=6000.0,
+            capacidad_unidad="kg/h (6.0 ton/h)",
+            potencia_kw=1.0,
+            notas=(
+                "Pesaje y llenado de sacos 20 kg (ACTUALIZADO: era 25 kg, ahora 20 kg "
+                "confirmado en doc piloto). Capacidad 6 ton/h."
+            ),
+            nivel_dato="OK_VALIDADO",
+        ),
+
+        # ===== 9. TRANSPORTE 2 + COSEDORA =====
+        FichaEquipo(
+            id="CINTA_TRANSPORTADORA_SACOS",
+            nombre="Cinta transportadora sacos llenos -> cosedora",
+            tipo="transportador",
+            etapa_asociada="E9_ENSACADO",
+            notas="Transporta sacos 20 kg desde ensacadora hacia cosedora.",
+            nivel_dato="OK_VALIDADO",
         ),
         FichaEquipo(
-            id="ESTANQUE_LIQUIDOS_E5",
-            nombre="Estanque liquidos residuales + bombas",
-            tipo="estanque",
-            etapa_asociada="E5_LIQUIDOS_RESIDUALES",
-            notas="Define materialidad + capacidad. Loop opcional a E2.",
-            nivel_dato="PD",
+            id="COSEDORA_SACOS",
+            nombre="Cosedora de sacos (sellado)",
+            tipo="ensacadora",
+            etapa_asociada="E9_ENSACADO",
+            notas=(
+                "Sella sacos 20 kg via costura. Producto final: harina ingrediente "
+                "alimentacion animal listo para despacho."
+            ),
+            nivel_dato="OK_VALIDADO",
         ),
+
+        # ===== CALOR RESIDUAL (input externo) =====
         FichaEquipo(
             id="INTERCAMBIADOR_LAGLORIA",
             nombre="Intercambiador calor residual La Gloria",
@@ -160,37 +290,7 @@ def fichas_seed() -> list[FichaEquipo]:
             nombre="Bomba de calor (respaldo deshidratacion)",
             tipo="caldera",
             etapa_asociada="E6B_DESHIDRATACION_RESPALDO",
-            notas="SECUNDARIO: activo cuando La Gloria no entrega calor.",
-            nivel_dato="PD",
-        ),
-        FichaEquipo(
-            id="MOLINO_HOMOGENIZADOR_E8",
-            nombre="Molino + Homogenizador harinas",
-            tipo="molino",
-            etapa_asociada="E8_HOMOGENEIZACION",
-            notas="Solo SKU premium (post decision venta en E7).",
-            nivel_dato="PD",
-        ),
-        FichaEquipo(
-            id="ENSACADORA_E9",
-            nombre="Ensacadora + selladora + palletizadora",
-            tipo="ensacadora",
-            etapa_asociada="E9_ENSACADO",
-            notas="Sellado en 2 fases: plancha calor + cosido. Big bag y/o saco.",
-            nivel_dato="PD",
-        ),
-        FichaEquipo(
-            id="ETIQUETADORA_E10",
-            nombre="Etiquetadora + codificadora",
-            tipo="etiquetadora",
-            etapa_asociada="E10_ETIQUETADO",
-            nivel_dato="PD",
-        ),
-        FichaEquipo(
-            id="GRUA_HORQUILLA",
-            nombre="Grua de horquilla",
-            tipo="grua",
-            etapa_asociada="E10_ETIQUETADO",
+            notas="SECUNDARIO: activo cuando La Gloria no entrega calor residual.",
             nivel_dato="PD",
         ),
     ]

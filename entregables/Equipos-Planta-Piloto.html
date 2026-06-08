@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Equipos Planta Piloto Trongkai · Fichas técnicas</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background: #fff; color: #1d1d1f; line-height: 1.55;
+    letter-spacing: -0.022em; -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 56px 0; }
+
+  .hero { padding: 100px 0 50px; text-align: center; }
+  .hero .badge {
+    display: inline-block; background: #f0faf0; color: #1a8a1a;
+    font-size: 12px; font-weight: 600; padding: 6px 16px;
+    border-radius: 999px; margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 60px); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 18px;
+    background: linear-gradient(180deg, #1d1d1f, #515154);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p.lead { font-size: 19px; color: #6e6e73; max-width: 720px; margin: 0 auto; }
+
+  .head { margin-bottom: 28px; }
+  .head .eyebrow { color: #1a8a1a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.4px; margin-bottom: 8px; }
+  .head h2 { font-size: clamp(28px, 4vw, 38px); font-weight: 700; letter-spacing: -0.022em; }
+  .head p { color: #6e6e73; font-size: 16px; max-width: 660px; margin-top: 6px; }
+
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .kpi {
+    background: linear-gradient(180deg, #fbfbfd, #fff);
+    border: 1px solid #f0f0f2; border-radius: 18px; padding: 22px;
+  }
+  .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #6e6e73; font-weight: 600; }
+  .kpi .num { font-size: 36px; font-weight: 700; line-height: 1.1; margin-top: 4px; }
+  .kpi.brand .num { background: linear-gradient(135deg, #1a8a1a, #34a853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .kpi .desc { font-size: 12px; color: #515154; margin-top: 4px; }
+
+  .equipo {
+    background: #fff; border: 1px solid #f0f0f2; border-radius: 18px;
+    padding: 20px; margin-bottom: 10px;
+  }
+  .equipo .top { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
+  .equipo h4 { font-size: 17px; font-weight: 600; }
+  .equipo .meta { font-size: 12px; color: #6e6e73; margin-top: 4px; }
+  .equipo .specs {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px; margin-top: 14px;
+  }
+  .equipo .spec {
+    background: #fbfbfd; border-radius: 10px; padding: 10px;
+  }
+  .equipo .spec .k { font-size: 10px; text-transform: uppercase; color: #6e6e73; font-weight: 600; }
+  .equipo .spec .v { font-size: 16px; font-weight: 700; font-family: "SF Mono", Menlo, monospace; margin-top: 2px; }
+  .equipo .notas { font-size: 13px; color: #515154; margin-top: 12px; font-style: italic; }
+  .badge {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .badge-ok { background: #f0faf0; color: #1a8a1a; }
+  .badge-warn { background: #fef3c7; color: #92400e; }
+  .badge-prov { background: #fffbeb; color: #78350f; }
+
+  .flow-step {
+    display: grid; grid-template-columns: 48px 1fr; gap: 14px;
+    padding: 14px 18px; background: #fbfbfd; border-left: 3px solid #1a8a1a;
+    border-radius: 0 12px 12px 0; margin-bottom: 8px;
+  }
+  .flow-step .n {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #1a8a1a; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+  }
+  .flow-step h5 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .flow-step p { font-size: 13px; color: #515154; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid #f0f0f2; }
+  th { background: #fbfbfd; font-size: 11px; text-transform: uppercase; font-weight: 600; color: #6e6e73; }
+  td.r { text-align: right; font-family: "SF Mono", Menlo, monospace; }
+
+  .note { background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 0 14px 14px 0; padding: 14px 22px; margin: 16px 0; font-size: 14px; color: #78350f; }
+  .insight { background: #e0f2fe; border-left: 4px solid #0284c7; border-radius: 0 14px 14px 0; padding: 14px 22px; margin: 16px 0; font-size: 14px; color: #075985; }
+  footer { background: #f5f5f7; padding: 32px 0; text-align: center; color: #6e6e73; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<section class="hero container">
+  <span class="badge badge-ok">📄 Word procesado 04/06/2026</span>
+  <h1>10 equipos del piloto<br />con fichas técnicas reales</h1>
+  <p class="lead">
+    Descripción técnica de la planta piloto + flujo de procesos ingerida y cargada.
+    Completitud equipos subió de <strong>40 → 92/100</strong>.
+  </p>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid">
+      <div class="kpi brand"><div class="label">Equipos validados</div><div class="num">13<span style="font-size:18px;color:#a1a1a6">/15</span></div><div class="desc">con proveedor + modelo + kW</div></div>
+      <div class="kpi brand"><div class="label">Completitud fichas</div><div class="num">92<span style="font-size:18px;color:#a1a1a6">/100</span></div><div class="desc">era 40 antes del Word</div></div>
+      <div class="kpi"><div class="label">PEF confirmado</div><div class="num">ODIN</div><div class="desc">OptiCept Sweden, 4 ton/h, 10 kW</div></div>
+      <div class="kpi"><div class="label">Cuello botella piloto</div><div class="num">25<span style="font-size:18px;color:#a1a1a6">kg/h</span></div><div class="desc">prensa Oelwerk vs PEF 4000</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Flujo proceso piloto (9 pasos)</div>
+      <h2>El proceso confirmado en el Word</h2>
+    </div>
+
+    <div class="flow-step"><div class="n">1</div><div><h5>Recepción y alimentación</h5><p>Residuo descargado e impulsado por <strong>Bomba Valisi VSHH 4</strong> hacia línea PEF.</p></div></div>
+    <div class="flow-step"><div class="n">2</div><div><h5>Pretratamiento PEF</h5><p><strong>OptiCept ODIN</strong>: electroporación para aumentar extracción agua vegetal y compuestos de interés.</p></div></div>
+    <div class="flow-step"><div class="n">3</div><div><h5>Separación mecánica</h5><p><strong>Prensa Oelwerk 510 s-inox</strong> + <strong>prensa extractora aceite</strong> (alperujo). Centrífuga <strong>BioBase BKC-TL5VII</strong> para pruebas laboratorio (humedad/pH/conductividad antes-después).</p></div></div>
+    <div class="flow-step"><div class="n">4</div><div><h5>Secado</h5><p><strong>Secador IKE WRH-300</strong>: deshidrata y estabiliza producto.</p></div></div>
+    <div class="flow-step"><div class="n">5</div><div><h5>Molienda</h5><p><strong>Molino de martillos harinero</strong>: reduce hasta <strong>1 mm</strong> (óptimo alimentación animal).</p></div></div>
+    <div class="flow-step"><div class="n">6</div><div><h5>Captación de polvo</h5><p><strong>Aspirador Extractor Colector</strong>: controla emisiones harina suspendida + mejora calidad aire.</p></div></div>
+    <div class="flow-step"><div class="n">7</div><div><h5>Transporte</h5><p><strong>Tornillo sinfín elevador</strong> hacia tolva de ensacadora.</p></div></div>
+    <div class="flow-step"><div class="n">8</div><div><h5>Ensacado</h5><p><strong>Ensacadora automática</strong>: pesaje y llenado <strong>sacos 20 kg</strong> (no 25 como teníamos).</p></div></div>
+    <div class="flow-step"><div class="n">9</div><div><h5>Transporte 2 + cosedora</h5><p><strong>Cinta transportadora</strong> + <strong>cosedora</strong>: sellado por costura. Producto listo para despacho.</p></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Tabla resumen capacidad/consumo</div>
+      <h2>10 equipos del piloto</h2>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Etapa</th><th>Equipo + modelo</th><th class="r">Capacidad</th><th class="r">kW/h</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Impulsión</td><td><strong>Bomba Valisi VSHH 4</strong></td><td class="r">3.500 kg/h</td><td class="r">3.0</td></tr>
+        <tr style="background:#f0faf0"><td>PEF</td><td><strong>OptiCept ODIN</strong></td><td class="r">4.000 kg/h</td><td class="r">10.0</td></tr>
+        <tr><td>Separación mec.</td><td><strong>Prensa Oelwerk 510 s-inox</strong></td><td class="r">25 kg/h</td><td class="r">1.5</td></tr>
+        <tr><td>Separación (oliva)</td><td><strong>Prensa extractora aceite</strong></td><td class="r">15 kg/h</td><td class="r">0.82</td></tr>
+        <tr style="background:#fef3c7"><td>Separación (lab)</td><td><strong>Centrífuga BioBase BKC-TL5VII</strong></td><td class="r">6×50 mL</td><td class="r">0.2</td></tr>
+        <tr><td>Secado</td><td><strong>Secador IKE WRH-300</strong></td><td class="r">300 kg/h</td><td class="r">7.5</td></tr>
+        <tr><td>Molienda</td><td><strong>Molino martillos genérico</strong></td><td class="r">350 kg/h</td><td class="r">2.2</td></tr>
+        <tr><td>Acondicionamiento</td><td><strong>Aspirador colector polvo</strong></td><td class="r">—</td><td class="r">2.2</td></tr>
+        <tr><td>Transporte</td><td><strong>Tornillo elevador</strong></td><td class="r">6.000 kg/h</td><td class="r">2.2</td></tr>
+        <tr><td>Ensacado</td><td><strong>Ensacadora automática (20 kg)</strong></td><td class="r">6.000 kg/h</td><td class="r">1.0</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:10px;font-size:13px;color:#6e6e73">Total consumo eléctrico instalado: <strong>30.62 kW</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Insights del análisis</div>
+      <h2>Lo que nos dice esta data</h2>
+    </div>
+
+    <div class="insight">
+      <strong>🎯 Cuello de botella claro:</strong> El PEF puede procesar 4.000 kg/h pero la prensa Oelwerk solo 25 kg/h.
+      En piloto eso significa que la prensa es el throughput real (25 kg/h ≈ 600 kg/día con 24h, ≈ 8 kg de harina final si yield 30%).
+    </div>
+
+    <div class="insight">
+      <strong>📦 Producto final: alimentación animal (harina &lt;1mm).</strong> El secador IKE WRH-300 + molino martillos
+      genérico están dimensionados para este SKU. Si quieres premium humanos/nutracéutica, necesitas micromolienda fina extra.
+    </div>
+
+    <div class="insight">
+      <strong>🔬 Centrífuga BioBase es LABORATORIO (6×50 mL).</strong> No es operación continua, es para pruebas
+      A/B post-PEF (medir humedad/pH/conductividad antes-después). Esto refuerza que tu pregunta 3 ("¿se justifica PEF?")
+      se va a responder con datos de esta centrífuga.
+    </div>
+
+    <div class="insight">
+      <strong>⚡ El PEF efectivamente confirma 1 pasada</strong> (4 ton/h capacidad, sin necesidad recirculación).
+    </div>
+
+    <div class="note">
+      <strong>📋 Datos pendientes detectados:</strong>
+      <ul style="margin-left:18px;margin-top:8px">
+        <li>Costo CAPEX de equipos propios (Bomba Valisi, Prensas, Secador IKE, Molino, Tornillo, Ensacadora)</li>
+        <li>Arriendo mensual confirmado del OptiCept ODIN</li>
+        <li>Especificación filtro polvo (modelo, capacidad m³/h)</li>
+        <li>Vida útil/frecuencia mantención de cada equipo</li>
+        <li>Pasar el piloto a escala industrial: ¿prensa de mayor capacidad?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="head">
+      <div class="eyebrow">Cambios aplicados al modelo</div>
+      <h2>Qué se actualizó automáticamente</h2>
+    </div>
+    <ul style="line-height:2; font-size:15px; padding-left:22px">
+      <li>✅ <strong>15 fichas de equipos</strong> reemplazadas con datos reales (era 14, ahora 15 con +cosedora separada).</li>
+      <li>✅ <strong>13/15 equipos validados</strong> (era 1/14 antes). Completitud 92/100.</li>
+      <li>✅ <strong>PEF confirmado: OptiCept ODIN</strong> (4 ton/h, 10 kW). Nivel calibración: VALIDADO.</li>
+      <li>✅ <strong>Saco 20 kg</strong> (corregido, era 25 kg). Materiales E9 actualizados.</li>
+      <li>✅ <strong>Capacidad E9 Ensacado</strong>: 6.000 kg/h (ensacadora real).</li>
+      <li>✅ <strong>Etapa E9 nivel calibración</strong>: subió a OK_VALIDADO.</li>
+      <li>✅ <strong>Nuevos equipos agregados</strong>: Aspirador polvo, Tornillo elevador, Cinta transportadora, Cosedora.</li>
+      <li>✅ <strong>Centrífuga BioBase</strong> marcada como escala laboratorio (no continua).</li>
+      <li>✅ <strong>Tests: 529/529 verde</strong> tras ajustes.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p style="font-style:italic;color:#1d1d1f;font-weight:500;margin-bottom:8px;">
+    "En la naturaleza no existen los residuos, solo recursos."
+  </p>
+  <p>Trongkai · Fichas piloto validadas 4 de junio 2026</p>
+  <p style="margin-top:8px;font-size:11px;color:#a1a1a6">
+    Fuente: Documento "Descripción Técnica de la Planta Piloto y Flujo de Procesos.docx"
+  </p>
+</footer>
+
+</body>
+</html>

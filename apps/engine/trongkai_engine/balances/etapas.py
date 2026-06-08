@@ -504,9 +504,12 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
     )
     e9 = EtapaPlanta(
         id="E9_ENSACADO",
-        nombre="E9. Ensacado / Palletizado",
+        nombre="E9. Ensacado (sacos 20 kg)",
         orden=10,
-        descripcion="Llenado de sacos/big bags + palletizado. Sellado en 2 fases.",
+        descripcion=(
+            "Ensacadora automatica (6 ton/h, 1 kW) -> cinta transportadora -> "
+            "cosedora. Sacos 20 kg con costura (CONFIRMADO doc piloto 04/06)."
+        ),
         masa_input_kg_h=throughput_kg_h * 0.243,
         yield_pct=0.998,
         perdidas_pct=0.002,
@@ -515,14 +518,17 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         agua_l_por_kg=0.0,
         hh_por_ton_input=0.18,
         tiempo_proceso_min=10.0,
-        capacidad=CapacidadEtapa(throughput_kg_h * 0.5, "kg/h"),
-        mo_directa=["Encargado"],
-        mo_general=["Limpieza"],
-        equipos_energeticos=["Sistema de Llenado", "Sistema de Ensacado"],
-        materiales=["Hilo de coser", "Sacos", "Pallets"],
-        notas_proceso="Sellado en 2 fases: 1) plancha calor (sellado polvo) 2) cosido. Evaluar pelletizado.",
-        datos_faltantes=["Mix big bag 1000kg vs saco 25kg por mercado", "Capacidad absorcion hidrica sacos"],
-        nivel_calibracion=NivelDato.OK_PROVISORIO,
+        capacidad=CapacidadEtapa(6000.0, "kg/h", NivelDato.OK_VALIDADO),
+        mo_directa=["Encargado Proceso"],
+        mo_general=["Operario Limpieza"],
+        equipos_energeticos=["Ensacadora automatica (1 kW)", "Cinta transportadora", "Cosedora sacos"],
+        materiales=["Hilo de coser", "Sacos 20 kg", "Pallets (opcional)"],
+        notas_proceso=(
+            "Sacos 20 kg sellados por costura. Producto: harina <1mm para "
+            "alimentacion animal. Evaluar palletizado segun cliente final."
+        ),
+        datos_faltantes=["Mix saco 20 kg vs big bag por mercado", "Frecuencia cambio formato"],
+        nivel_calibracion=NivelDato.OK_VALIDADO,
         categoria_rrhh_principal="operario",
     )
     e10 = EtapaPlanta(
