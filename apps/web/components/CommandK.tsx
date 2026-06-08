@@ -59,7 +59,7 @@ const ITEMS: SearchItem[] = [
   { label: 'Audit Trail', href: '/audit', category: 'Sistema', icon: '📝', keywords: ['historial', 'cambios', 'dd'] },
   { label: 'Riesgo Integrado', href: '/riesgo', category: 'Sistema', icon: '⚠️', keywords: ['clima', 'financiero', 'regulatorio'] },
   { label: 'Macro Chile', href: '/macro', category: 'Sistema', icon: '🇨🇱', keywords: ['banco central', 'usd', 'uf', 'tpm', 'ipc'] },
-  { label: 'API Explorer', href: '/api', category: 'Sistema', icon: '🔌', keywords: ['endpoints', 'rest', 'swagger'] },
+  { label: 'Mapa Plataforma', href: '/mapa', category: 'Sistema', icon: '🗺', keywords: ['arquitectura', 'todas paginas', 'sitemap', 'navegacion'] },
   { label: 'Investigación', href: '/investigacion', category: 'Sistema', icon: '📚', keywords: ['papers', 'cientificos', 'damodaran'] },
 ];
 

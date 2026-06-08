@@ -23,6 +23,7 @@ const GROUPS: Group[] = [
     items: [
       { href: '/comando', label: 'Centro de Mando', desc: 'Cockpit ejecutivo en tiempo real' },
       { href: '/inteligencia', label: '🧠 Inteligencia', desc: 'Síntesis cross-modular + plan acción' },
+      { href: '/mapa', label: '🗺 Mapa Plataforma', desc: 'Las 48 páginas en 9 capas interconectadas' },
       { href: '/dashboard-directorio', label: 'Directorio', desc: 'Dashboard consolidado para board' },
       { href: '/readiness', label: 'Readiness Score', desc: 'Madurez del proyecto 0-100' },
       { href: '/salud', label: 'Salud del Sistema', desc: 'Health check técnico' },
