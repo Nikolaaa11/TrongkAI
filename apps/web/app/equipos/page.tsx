@@ -12,6 +12,7 @@ type Ficha = {
   modalidad: string; capex_clp: number; arriendo_clp_mes: number; instalacion_clp: number;
   frecuencia_mantencion_h: number; costo_mantencion_clp: number; vida_util_anos: number;
   notas: string; ficha_tecnica_url: string; contacto_proveedor: string;
+  foto_url: string;
   fecha_creacion: string; nivel_dato: 'PD' | 'OK_PROVISORIO' | 'OK_VALIDADO';
 };
 
@@ -81,7 +82,20 @@ export default function EquiposPage() {
           const isEdit = editing === f.id;
           const v = (k: keyof Ficha) => (draft[k] !== undefined ? draft[k] : (f[k] as any));
           return (
-            <div key={f.id} className={`rounded-xl border p-5 ${isEdit ? 'border-brand bg-brand-50/20' : 'border-ink-100 bg-white'}`}>
+            <div key={f.id} className={`rounded-xl border overflow-hidden ${isEdit ? 'border-brand bg-brand-50/20' : 'border-ink-100 bg-white'}`}>
+              <div className="grid grid-cols-1 md:grid-cols-[180px,1fr]">
+                {/* FOTO */}
+                {f.foto_url ? (
+                  <div className="bg-ink-50/40 flex items-center justify-center p-2 md:border-r border-ink-100">
+                    <img src={f.foto_url} alt={f.nombre}
+                      className="max-h-32 md:max-h-full w-full object-cover rounded-lg" />
+                  </div>
+                ) : (
+                  <div className="bg-ink-50/30 flex items-center justify-center text-3xl text-ink-300 p-4 md:border-r border-ink-100">
+                    📦
+                  </div>
+                )}
+                <div className="p-5">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -141,6 +155,8 @@ export default function EquiposPage() {
                   {f.notas && <p className="col-span-full text-ink-500 italic">{f.notas}</p>}
                 </div>
               )}
+                </div>
+              </div>
             </div>
           );
         })}

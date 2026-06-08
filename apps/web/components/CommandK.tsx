@@ -34,7 +34,8 @@ const ITEMS: SearchItem[] = [
   { label: 'Data Room DD', href: '/data-room', category: 'Datos', icon: '🗂', keywords: ['due diligence', '41 items', 'lp'] },
   // ===== Operacional =====
   { label: 'Balance de Masa', href: '/balance', category: 'Operacional', icon: '⚖️', keywords: ['sankey', 'mmpp', 'rendimiento'] },
-  { label: 'Balance por Etapas', href: '/balance-etapas', category: 'Operacional', icon: '🏭', keywords: ['11 etapas', 'agrosphere', 'planta'] },
+  { label: 'Planta Visual (fotos)', href: '/planta', category: 'Operacional', icon: '🏭', keywords: ['layout', 'fotos', 'equipos', 'visual'] },
+  { label: 'Balance por Etapas', href: '/balance-etapas', category: 'Operacional', icon: '⚙️', keywords: ['11 etapas', 'agrosphere', 'planta'] },
   { label: 'Productos × Etapas', href: '/productos-etapas', category: 'Operacional', icon: '🧬', keywords: ['matriz', 'mmpp', 'msf'] },
   { label: 'Costeo dinámico', href: '/costeo', category: 'Operacional', icon: '💰', keywords: ['clp', 'usd', 'kg', 'costo'] },
   { label: 'Parámetros planta', href: '/parametros', category: 'Operacional', icon: '⚙️', keywords: ['sueldos', 'energia', 'agua', 'flete', 'arriendos'] },

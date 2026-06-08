@@ -76,7 +76,8 @@ const GROUPS: Group[] = [
     emoji: '⚖️',
     items: [
       { href: '/balance-integral', label: 'Vista Integral', desc: 'Los 4 balances en uno + score global' },
-      { href: '/balance-etapas', label: '🏭 Por Etapas', desc: '11 etapas reales Agrosphere · dinámico' },
+      { href: '/planta', label: '🏭 Planta (visual)', desc: 'Layout planta con fotos reales de equipos' },
+      { href: '/balance-etapas', label: '⚙️ Por Etapas', desc: '11 etapas reales Agrosphere · dinámico' },
       { href: '/productos-etapas', label: '🧬 Productos × Etapas', desc: 'Matriz MMPP por etapa + yield MSF' },
       { href: '/costeo', label: '💰 Costeo', desc: 'Costo por etapa y SKU (CLP/kg, USD/kg)' },
       { href: '/pef-analisis', label: '⚡ PEF A/B', desc: '¿Justifica económicamente el PEF? Comparativo' },

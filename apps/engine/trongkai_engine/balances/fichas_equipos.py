@@ -58,6 +58,7 @@ class FichaEquipo:
     notas: str = ""
     ficha_tecnica_url: str = ""
     contacto_proveedor: str = ""
+    foto_url: str = ""               # path relativo a /equipos/*.jpeg en /public
     # Metadata
     fecha_creacion: str = "2026-06-04"
     nivel_dato: Literal["PD", "OK_PROVISORIO", "OK_VALIDADO"] = "PD"
@@ -98,14 +99,15 @@ def fichas_seed() -> list[FichaEquipo]:
             capacidad_kg_h=3500.0,
             capacidad_unidad="kg/h (3.5 ton/h)",
             potencia_kw=3.0,
-            notas="Impulsa residuo desde descarga hacia linea de pretratamiento PEF. Confirmado en doc tecnico planta piloto.",
+            notas="Bomba de tornillo. Impulsa residuo desde descarga hacia linea PEF.",
+            foto_url="/equipos/Bomba-de-tornillo.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
 
         # ===== 2. PRETRATAMIENTO PEF =====
         FichaEquipo(
             id="PEF_OPTICEPT_ODIN",
-            nombre="PEF OptiCept ODIN",
+            nombre="PEF OptiCept ODIN (solidos)",
             tipo="pef",
             etapa_asociada="E3_PEF",
             proveedor="OptiCept (Sweden)",
@@ -116,12 +118,25 @@ def fichas_seed() -> list[FichaEquipo]:
             capacidad_unidad="kg/h (4.0 ton/h)",
             potencia_kw=10.0,
             notas=(
-                "Confirmado modelo: OptiCept ODIN. Capacidad 4 ton/h, consumo 10 kW/h. "
-                "1 pasada default (segun respuesta usuario 4/06). "
-                "Electroporacion: aumenta extraccion agua vegetal y compuestos de interes. "
-                "Sin perdidas masa, sin cambio humedad."
+                "OptiCept ODIN - PEF para solidos. Capacidad 4 ton/h, 10 kW. "
+                "1 pasada default. Electroporacion sin cambio masa/humedad."
             ),
+            foto_url="/equipos/PEF-solidos.jpeg",
             nivel_dato="OK_VALIDADO",
+        ),
+        FichaEquipo(
+            id="PEF_OPTICEPT_SUBPRODUCTOS",
+            nombre="PEF OptiCept ODIN (subproductos)",
+            tipo="pef",
+            etapa_asociada="E3_PEF",
+            proveedor="OptiCept (Sweden)",
+            modelo="ODIN (configuracion subproductos)",
+            modalidad="OPEX_arriendo",
+            capacidad_kg_h=4000.0,
+            potencia_kw=10.0,
+            notas="Modulo PEF configurado para tratamiento de subproductos liquidos/pastosos. Mismo equipo ODIN.",
+            foto_url="/equipos/PEF-subproductos.jpeg",
+            nivel_dato="OK_PROVISORIO",
         ),
 
         # ===== 3. SEPARACION MECANICA =====
@@ -135,11 +150,8 @@ def fichas_seed() -> list[FichaEquipo]:
             capacidad_kg_h=25.0,
             capacidad_unidad="kg/h (0.025 ton/h)",
             potencia_kw=1.5,
-            notas=(
-                "Prensa principal piloto. Capacidad 25 kg/h, consumo 1.5 kW/h. "
-                "Genera torta solida + jugo. CUELLO DE BOTELLA aguas arriba "
-                "(PEF puede 4000 kg/h pero prensa solo 25 kg/h en piloto)."
-            ),
+            notas="Prensa principal piloto. CUELLO DE BOTELLA aguas arriba del PEF.",
+            foto_url="/equipos/Prensa-de-tornillo.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
         FichaEquipo(
@@ -150,10 +162,8 @@ def fichas_seed() -> list[FichaEquipo]:
             capacidad_kg_h=15.0,
             capacidad_unidad="kg/h (0.015 ton/h)",
             potencia_kw=0.82,
-            notas=(
-                "Segunda prensa especifica para alperujo - maximiza recuperacion "
-                "aceite residual. Solo aplica linea oliva. Capacidad 15 kg/h."
-            ),
+            notas="Especifica alperujo. Maximiza recuperacion aceite residual.",
+            foto_url="/equipos/Prensa-extractora-aceite.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
         FichaEquipo(
@@ -166,11 +176,8 @@ def fichas_seed() -> list[FichaEquipo]:
             capacidad_kg_h=0.3,
             capacidad_unidad="6×50 mL (escala laboratorio)",
             potencia_kw=0.2,
-            notas=(
-                "ESCALA LABORATORIO (6×50 mL). Solo para PRUEBAS de separacion agua "
-                "vegetal vs torta solida post-PEF. NO es operacion continua. "
-                "Registrar humedad, pH, conductividad antes/despues."
-            ),
+            notas="ESCALA LAB. Solo pruebas A/B post-PEF (humedad, pH, conductividad).",
+            foto_url="/equipos/Centrifuga-laboratorio.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
 
@@ -185,27 +192,23 @@ def fichas_seed() -> list[FichaEquipo]:
             capacidad_kg_h=300.0,
             capacidad_unidad="kg/h (0.30 ton/h)",
             potencia_kw=7.5,
-            notas=(
-                "Reduce humedad y estabiliza producto. Confirmado piloto. "
-                "Compatible con uso de CALOR RESIDUAL La Gloria como input termico."
-            ),
+            notas="Deshidratador. Compatible con calor residual La Gloria.",
+            foto_url="/equipos/Deshidratador.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
 
         # ===== 5. MOLIENDA =====
         FichaEquipo(
             id="MOLINO_MARTILLOS_HARINERO",
-            nombre="Molino de martillos harinero generico",
+            nombre="Molino de martillos harinero",
             tipo="molino",
             etapa_asociada="E8_HOMOGENEIZACION",
             modelo="generico harinero",
             capacidad_kg_h=350.0,
             capacidad_unidad="kg/h (0.35 ton/h)",
             potencia_kw=2.2,
-            notas=(
-                "Reduccion granulometrica final HASTA 1mm (optimo alimentacion animal). "
-                "Capacidad 350 kg/h, consumo 2.2 kW/h."
-            ),
+            notas="Reduccion granulometrica HASTA 1mm (alimentacion animal).",
+            foto_url="/equipos/Molino-de-martillos.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
 
@@ -216,11 +219,8 @@ def fichas_seed() -> list[FichaEquipo]:
             tipo="tamiz",
             etapa_asociada="E8_HOMOGENEIZACION",
             potencia_kw=2.2,
-            notas=(
-                "Filtro de aire para controlar emisiones de harina suspendida. "
-                "Mejora calidad ambiente + recupera material fino. 2.2 kW/h. "
-                "Capacidad: control emisiones (no flow continuo de producto)."
-            ),
+            notas="Filtro aire controla emisiones harina + recupera material fino.",
+            foto_url="/equipos/Extractor-de-polvo.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
 
@@ -234,33 +234,34 @@ def fichas_seed() -> list[FichaEquipo]:
             capacidad_kg_h=6000.0,
             capacidad_unidad="kg/h (6.0 ton/h)",
             potencia_kw=2.2,
-            notas="Eleva harina desde molienda hacia tolva ensacadora automatica.",
+            notas="Eleva harina desde molienda hacia tolva ensacadora.",
+            foto_url="/equipos/Tornillo-elevador.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
 
-        # ===== 8. ENSACADO =====
+        # ===== 8-9. ENSACADO + CINTA + COSEDORA (linea integrada) =====
         FichaEquipo(
             id="ENSACADORA_AUTOMATICA",
-            nombre="Ensacadora automatica (sacos 20 kg)",
+            nombre="Ensacadora + Cinta + Cosedora (linea integrada)",
             tipo="ensacadora",
             etapa_asociada="E9_ENSACADO",
             capacidad_kg_h=6000.0,
             capacidad_unidad="kg/h (6.0 ton/h)",
             potencia_kw=1.0,
             notas=(
-                "Pesaje y llenado de sacos 20 kg (ACTUALIZADO: era 25 kg, ahora 20 kg "
-                "confirmado en doc piloto). Capacidad 6 ton/h."
+                "Linea integrada: ensacadora automatica (sacos 20 kg) -> "
+                "cinta transportadora -> cosedora de sellado por costura."
             ),
+            foto_url="/equipos/Ensacadora-cinta-cosedora.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
-
-        # ===== 9. TRANSPORTE 2 + COSEDORA =====
         FichaEquipo(
             id="CINTA_TRANSPORTADORA_SACOS",
-            nombre="Cinta transportadora sacos llenos -> cosedora",
+            nombre="Cinta transportadora sacos llenos",
             tipo="transportador",
             etapa_asociada="E9_ENSACADO",
-            notas="Transporta sacos 20 kg desde ensacadora hacia cosedora.",
+            notas="Parte de linea ensacado integrada. Ver foto principal en ENSACADORA_AUTOMATICA.",
+            foto_url="/equipos/Ensacadora-cinta-cosedora.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
         FichaEquipo(
@@ -268,10 +269,54 @@ def fichas_seed() -> list[FichaEquipo]:
             nombre="Cosedora de sacos (sellado)",
             tipo="ensacadora",
             etapa_asociada="E9_ENSACADO",
+            notas="Sella sacos 20 kg por costura. Parte linea ensacado integrada.",
+            foto_url="/equipos/Ensacadora-cinta-cosedora.jpeg",
+            nivel_dato="OK_VALIDADO",
+        ),
+
+        # ===== AUXILIARES (detectados en fotos) =====
+        FichaEquipo(
+            id="COMPRESOR_PISTON",
+            nombre="Compresor de piston (aire comprimido)",
+            tipo="bomba",
+            etapa_asociada="AUXILIAR",
+            notas="Suministro de aire comprimido para neumatica de planta (valvulas, actuadores).",
+            foto_url="/equipos/Compresor-de-piston.jpeg",
+            nivel_dato="OK_VALIDADO",
+        ),
+        FichaEquipo(
+            id="EQUIPOS_MEDICION",
+            nombre="Equipos de medicion (instrumentacion lab)",
+            tipo="balanza",
+            etapa_asociada="E11_CONTROL_CALIDAD",
             notas=(
-                "Sella sacos 20 kg via costura. Producto final: harina ingrediente "
-                "alimentacion animal listo para despacho."
+                "Instrumentos de medicion para QC: humedad, pH, conductividad, "
+                "granulometria, balanza. Critical para alimentar el sistema de "
+                "calibracion (PD -> OK_PROVISORIO -> OK_VALIDADO)."
             ),
+            foto_url="/equipos/Equipos-de-medicion.jpeg",
+            nivel_dato="OK_VALIDADO",
+        ),
+        FichaEquipo(
+            id="TABLERO_ELECTRICO_EXTERIOR",
+            nombre="Tablero electrico (vista exterior)",
+            tipo="estanque",     # placeholder de tipo
+            etapa_asociada="AUXILIAR",
+            potencia_kw=30.62,   # total instalado
+            notas=(
+                "Tablero principal: contiene proteccion + control de todos los equipos. "
+                "Total instalado: 30.62 kW (suma de los 10 equipos del piloto)."
+            ),
+            foto_url="/equipos/Tablero-electrico-exterior.jpeg",
+            nivel_dato="OK_VALIDADO",
+        ),
+        FichaEquipo(
+            id="TABLERO_ELECTRICO_INTERIOR",
+            nombre="Tablero electrico (vista interior)",
+            tipo="estanque",
+            etapa_asociada="AUXILIAR",
+            notas="Detalle interno tablero: contactores, breakers, variadores.",
+            foto_url="/equipos/Tablero-electrico-interior.jpeg",
             nivel_dato="OK_VALIDADO",
         ),
 
