@@ -1334,7 +1334,9 @@ def _safe_sintesis() -> dict | None:
     """Resumen inteligente ligero para el snapshot."""
     try:
         from .balances.sintesis_inteligente import computar_sintesis
+        from .balances.precision_tracker import computar_precision
         s = computar_sintesis()
+        prec = computar_precision()
         return {
             "score_global_inteligencia": s.score_global_inteligencia,
             "insights_criticos": s.insights_criticos,
@@ -1342,6 +1344,8 @@ def _safe_sintesis() -> dict | None:
             "oportunidades": s.oportunidades,
             "amenazas": s.amenazas,
             "resumen_ejecutivo": s.resumen_ejecutivo,
+            "exactitud_modelo_pct": round(prec.exactitud_global_pct, 1),
+            "nivel_confianza": prec.nivel_confianza,
             "top_3_insights": [
                 {"titulo": i.titulo, "severidad": i.severidad, "tipo": i.tipo,
                  "link": i.link_ui}
@@ -2823,3 +2827,16 @@ def inteligencia_insights_endpoint(severidad: str | None = None, tipo: str | Non
         "total": len(insights),
         "insights": [i.to_dict() for i in insights],
     }
+
+
+@app.get(
+    "/inteligencia/precision",
+    tags=["inteligencia"],
+    summary="Exactitud del modelo (estimado -> exacto) + qué validar primero",
+    description="Pondera cada input por impacto en el resultado final. "
+                "Lista accionable de qué validar para subir la exactitud.",
+)
+@cached_ttl(seconds=120)
+def inteligencia_precision_endpoint() -> dict:
+    from .balances.precision_tracker import computar_precision
+    return computar_precision().to_dict()

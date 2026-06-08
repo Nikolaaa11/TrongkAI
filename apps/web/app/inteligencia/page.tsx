@@ -43,9 +43,26 @@ const TIPO_ICON: Record<string, string> = {
   logro: '✅',
 };
 
+type Precision = {
+  exactitud_global_pct: number;
+  nivel_confianza: string;
+  total_inputs: number;
+  validados: number;
+  provisorios: number;
+  sin_validar: number;
+  por_categoria: Record<string, { total: number; exactitud_pct: number }>;
+  top_para_validar: { id: string; nombre: string; categoria: string; nivel: string; peso_impacto: number; prioridad: number; como_validar: string; fuente_sugerida: string; valor_actual: string }[];
+  resumen: string;
+};
+
 export default function InteligenciaPage() {
   const [data, setData] = useState<Sintesis | null>(null);
+  const [precision, setPrecision] = useState<Precision | null>(null);
   const [filtroTipo, setFiltroTipo] = useState<string>('todos');
+
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/inteligencia/precision`).then((r) => r.json()).then(setPrecision).catch(() => {});
+  }, []);
 
   useEffect(() => {
     fetch(`${ENGINE_URL}/inteligencia/sintesis`).then((r) => r.json()).then(setData);
@@ -88,6 +105,76 @@ export default function InteligenciaPage() {
         <KPI label="💡 Oportunidades" valor={data.oportunidades} color="text-brand" />
         <KPI label="⚠️ Amenazas" valor={data.amenazas} color="text-orange-600" />
       </div>
+
+      {/* PRECISIÓN DEL MODELO — qué validar para llegar a exacto */}
+      {precision && (
+        <section className="rounded-2xl border-2 border-brand/30 bg-gradient-to-br from-brand-50/40 to-white p-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold">🎯 Exactitud del modelo</h2>
+              <p className="text-sm text-ink-500 mt-1">{precision.resumen}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-5xl font-bold tabular" style={{ background: 'linear-gradient(135deg,#1a8a1a,#34a853)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                {precision.exactitud_global_pct.toFixed(0)}<span className="text-xl text-ink-400">/100</span>
+              </p>
+              <p className="text-xs uppercase tracking-wider font-bold text-brand">{precision.nivel_confianza}</p>
+            </div>
+          </div>
+
+          {/* Barra de exactitud */}
+          <div className="mt-4 h-4 overflow-hidden rounded-full bg-ink-100">
+            <div className="h-full bg-gradient-to-r from-orange-400 via-yellow-400 to-brand transition-all"
+              style={{ width: `${precision.exactitud_global_pct}%` }} />
+          </div>
+          <div className="mt-1 flex justify-between text-[10px] text-ink-400">
+            <span>estimado</span><span>aproximado</span><span>casi exacto</span><span>exacto</span>
+          </div>
+
+          {/* Por categoría */}
+          <div className="mt-5 grid grid-cols-2 gap-2 md:grid-cols-5">
+            {Object.entries(precision.por_categoria).map(([cat, d]) => (
+              <div key={cat} className="rounded-xl border border-ink-100 bg-white p-3">
+                <p className="text-[10px] uppercase text-ink-400">{cat}</p>
+                <p className={`mt-1 text-lg font-bold tabular ${d.exactitud_pct >= 75 ? 'text-brand' : d.exactitud_pct >= 50 ? 'text-yellow-600' : 'text-orange-600'}`}>
+                  {d.exactitud_pct.toFixed(0)}%
+                </p>
+                <p className="text-[10px] text-ink-400">{d.total} inputs</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Top a validar */}
+          <div className="mt-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-ink-500 mb-3">
+              📋 Qué validar primero (mayor impacto en la exactitud)
+            </h3>
+            <div className="space-y-2">
+              {precision.top_para_validar.slice(0, 6).map((t, i) => (
+                <div key={t.id} className="rounded-xl border border-ink-100 bg-white p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="rounded-full bg-ink text-white text-xs font-bold w-6 h-6 flex items-center justify-center shrink-0">{i + 1}</span>
+                        <span className="font-semibold text-sm">{t.nombre}</span>
+                        <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${t.nivel === 'PD' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>{t.nivel}</span>
+                      </div>
+                      <p className="mt-1 pl-8 text-xs text-ink-600">👉 {t.como_validar}</p>
+                      <p className="mt-0.5 pl-8 text-[11px] text-ink-400">📍 Fuente: {t.fuente_sugerida} · Valor actual: {t.valor_actual}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="text-xs text-ink-400">impacto</p>
+                      <div className="w-16 h-1.5 rounded-full bg-ink-100 mt-1">
+                        <div className="h-full rounded-full bg-brand" style={{ width: `${t.peso_impacto * 100}%` }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Métricas clave */}
       {data.metricas_clave && Object.keys(data.metricas_clave).length > 0 && (
