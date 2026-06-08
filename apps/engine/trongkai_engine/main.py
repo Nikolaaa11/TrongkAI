@@ -2602,3 +2602,71 @@ def fichas_actualizar_endpoint(req: FichaEquipoUpdate) -> dict:
     f = actualizar_ficha(req.equipo_id, req.updates)
     clear_all()
     return {"ok": True, "ficha": f.to_dict()}
+
+
+# =============================================================================
+# SIMULADOR TEMPORAL (por maquina + planta + timeline mensual)
+# =============================================================================
+@app.get(
+    "/simulacion/planta",
+    tags=["balances"],
+    summary="Simulacion planta completa por periodo (hora/dia/mes/ano)",
+    description=(
+        "Simula la planta integrada con bottleneck detectado automaticamente. "
+        "Devuelve producto + costos + utilizacion por maquina + timeline mensual estacional."
+    ),
+)
+@cached_ttl(seconds=120)
+def simulacion_planta_endpoint(
+    periodo: str = "mes",
+    horas_operacion_dia: float = 16.0,
+    dias_operacion_mes: float = 25.0,
+    meses_operacion_ano: float = 10.0,
+    mmpp_principal: str = "TOMASA",
+) -> dict:
+    from .balances.simulador_temporal import simular_planta
+
+    if periodo not in ("hora", "dia", "mes", "ano"):
+        raise HTTPException(400, "periodo debe ser: hora, dia, mes o ano")
+    if not (0 < horas_operacion_dia <= 24):
+        raise HTTPException(400, "horas_operacion_dia debe estar entre 0 y 24")
+    if not (0 < dias_operacion_mes <= 31):
+        raise HTTPException(400, "dias_operacion_mes debe estar entre 0 y 31")
+    if not (0 < meses_operacion_ano <= 12):
+        raise HTTPException(400, "meses_operacion_ano debe estar entre 0 y 12")
+
+    return simular_planta(
+        periodo=periodo,                                       # type: ignore[arg-type]
+        horas_operacion_dia=horas_operacion_dia,
+        dias_operacion_mes=dias_operacion_mes,
+        meses_operacion_ano=meses_operacion_ano,
+        mmpp_principal=mmpp_principal,
+    ).to_dict()
+
+
+@app.get(
+    "/simulacion/maquina/{equipo_id}",
+    tags=["balances"],
+    summary="Simulacion UNA maquina (aislada, capacidad nominal)",
+)
+def simulacion_maquina_endpoint(
+    equipo_id: str,
+    periodo: str = "mes",
+    horas_operacion_dia: float = 16.0,
+    dias_operacion_mes: float = 25.0,
+    meses_operacion_ano: float = 10.0,
+) -> dict:
+    from .balances.simulador_temporal import simular_maquina_individual
+
+    if periodo not in ("hora", "dia", "mes", "ano"):
+        raise HTTPException(400, "periodo debe ser: hora, dia, mes o ano")
+    try:
+        return simular_maquina_individual(
+            equipo_id=equipo_id,
+            periodo=periodo,                                   # type: ignore[arg-type]
+            horas_operacion_dia=horas_operacion_dia,
+            dias_operacion_mes=dias_operacion_mes,
+            meses_operacion_ano=meses_operacion_ano,
+        )
+    except ValueError as e:
+        raise HTTPException(404, str(e))
