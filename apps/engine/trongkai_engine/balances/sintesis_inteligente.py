@@ -83,14 +83,18 @@ class SintesisInteligente:
 def _insights_equipos() -> list[Insight]:
     """Analiza fichas equipos: cuello botella, validacion, CAPEX."""
     from .fichas_equipos import cargar_fichas
+    from .simulador_temporal import _equipos_linea_productiva, _detectar_bottleneck
 
     out: list[Insight] = []
     fichas = cargar_fichas()
     sin_validar = [f for f in fichas if f.nivel_dato == "PD"]
-    en_linea = [f for f in fichas if f.capacidad_kg_h > 0]
-    if not en_linea:
+    # Usar la MISMA logica de linea productiva que el simulador
+    # (excluye centrifuga lab, prensa aceite, auxiliares, etc.)
+    linea = _equipos_linea_productiva(fichas)
+    if not linea:
         return out
-    bottleneck = min(en_linea, key=lambda f: f.capacidad_kg_h)
+    cap_bottleneck, bottleneck_id = _detectar_bottleneck(linea)
+    bottleneck = next((f for f in linea if f.id == bottleneck_id), linea[0])
 
     # Oportunidad: ampliar bottleneck
     out.append(Insight(

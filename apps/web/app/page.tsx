@@ -3,18 +3,18 @@ import Link from 'next/link';
 import { stats } from '@/lib/seed-data';
 
 const accesos = [
-  { href: '/dashboard-directorio', label: 'Dashboard Directorio', desc: 'Vista ejecutiva consolidada' },
+  { href: '/inteligencia', label: '🧠 Inteligencia', desc: 'Síntesis + exactitud modelo + plan acción' },
+  { href: '/comando', label: '⚡ Centro de Mando', desc: 'Cockpit ejecutivo en tiempo real' },
+  { href: '/planta', label: '🏭 Planta Visual', desc: 'Equipos reales con fotos + flujo' },
+  { href: '/simulacion', label: '⏱ Simulación', desc: 'Producción + costos hora/día/mes/año' },
+  { href: '/escalas', label: '📈 Escalas', desc: 'Piloto vs industrial (x10, x50, x100)' },
+  { href: '/costeo', label: '💰 Costeo', desc: 'Costo CLP/kg y USD/kg por SKU' },
+  { href: '/balance-integral', label: '⚖️ Balances', desc: '4 balances + alarmas en vivo' },
+  { href: '/plan', label: 'Plan 5 años', desc: 'EERR + KPIs + Monte Carlo + tornado' },
   { href: '/readiness', label: 'Investment Readiness', desc: 'Score 0-100 de madurez' },
-  { href: '/plan', label: 'Plan 5 años', desc: 'EERR + KPIs + tornado' },
-  { href: '/sensitivity', label: 'Análisis de Sensibilidad', desc: 'Heatmap 2D + breakeven + curvas 1D' },
-  { href: '/stress', label: 'Stress Test', desc: 'Triple-negativo simultáneo' },
-  { href: '/financiamiento', label: 'Financiamiento', desc: 'Deuda/Equity + DSCR + LLCR' },
-  { href: '/slb', label: 'Sustainability Bonds', desc: 'KPIs ESG con step-up' },
   { href: '/compliance', label: 'Compliance Ley REP', desc: '8 hitos regulatorios' },
-  { href: '/carbono', label: 'Carbon Footprint', desc: 'LCA 3 escenarios + créditos CO₂' },
   { href: '/macro', label: 'Macro Chile', desc: 'Banco Central en vivo' },
-  { href: '/api', label: 'API Explorer', desc: '10 endpoints try-it-now' },
-  { href: '/investigacion', label: 'Research', desc: '27 papers peer-reviewed' },
+  { href: '/mapa', label: '🗺 Mapa Plataforma', desc: 'Las 47 páginas en 9 capas' },
 ];
 
 export default function Home() {
