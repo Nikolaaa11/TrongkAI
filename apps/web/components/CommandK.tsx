@@ -48,7 +48,6 @@ const ITEMS: SearchItem[] = [
   { label: 'Balance Agua', href: '/balance-agua', category: 'Operacional', icon: '💧', keywords: ['dga', 'pozo', 'rile'] },
   { label: 'Balance RRHH', href: '/balance-rrhh', category: 'Operacional', icon: '👥', keywords: ['horas extras', 'ct chile', 'alarma'] },
   { label: 'Balance Integral', href: '/balance-integral', category: 'Operacional', icon: '⚖️', keywords: ['4 balances', 'score'] },
-  { label: 'Agenda Camiones', href: '/agenda', category: 'Operacional', icon: '🚚', keywords: ['mmpp', 'estacional'] },
   { label: 'Compliance REP', href: '/compliance', category: 'Operacional', icon: '📜', keywords: ['ley rep', 'hitos', '8 timeline'] },
   { label: 'Carbon Footprint', href: '/carbono', category: 'Operacional', icon: '🌿', keywords: ['lca', 'beccs', 'co2', 'creditos'] },
   // ===== Roadshow / LP =====

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guía de Pestañas Trongkai · Manual completo</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+  body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",sans-serif;background:#fff;color:#1d1d1f;line-height:1.55;letter-spacing:-.022em}
+  ::selection{background:#1a8a1a;color:#fff}
+
+  .container{max-width:1100px;margin:0 auto;padding:0 32px}
+  section{padding:72px 0}
+
+  /* TOC sticky */
+  .toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(24px);border-bottom:1px solid #f0f0f2}
+  .toc-inner{display:flex;gap:4px;overflow-x:auto;padding:14px 32px;max-width:1300px;margin:0 auto;scrollbar-width:none}
+  .toc-inner::-webkit-scrollbar{display:none}
+  .toc a{flex-shrink:0;padding:6px 14px;border-radius:999px;text-decoration:none;color:#515154;font-size:12px;font-weight:500;background:#f5f5f7;transition:all .2s}
+  .toc a:hover{background:#1a8a1a;color:#fff}
+
+  /* Hero */
+  .hero{padding:120px 0 50px;text-align:center}
+  .hero .badge{display:inline-block;background:#f0faf0;color:#1a8a1a;font-size:12px;font-weight:600;padding:6px 16px;border-radius:999px;margin-bottom:18px}
+  .hero h1{font-size:clamp(40px,7vw,72px);font-weight:700;line-height:1.05;letter-spacing:-.035em;margin-bottom:24px;background:linear-gradient(180deg,#1d1d1f,#515154);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero h1 .accent{background:linear-gradient(135deg,#1a8a1a,#34a853);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p.lead{font-size:clamp(18px,2.2vw,22px);color:#515154;max-width:720px;margin:0 auto}
+
+  /* Capa header */
+  .capa{margin-bottom:64px}
+  .capa-head{display:flex;align-items:center;gap:16px;padding:24px;border-radius:18px;margin-bottom:24px;color:#fff}
+  .capa-head h2{font-size:28px;font-weight:700;letter-spacing:-.02em}
+  .capa-head p{font-size:14px;opacity:.92;margin-top:4px}
+  .capa-1{background:linear-gradient(135deg,#9333ea,#a855f7)}
+  .capa-2{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+  .capa-3{background:linear-gradient(135deg,#1a8a1a,#34a853)}
+  .capa-4{background:linear-gradient(135deg,#06b6d4,#22d3ee)}
+  .capa-5{background:linear-gradient(135deg,#f97316,#fb923c)}
+  .capa-6{background:linear-gradient(135deg,#ef4444,#f87171)}
+  .capa-7{background:linear-gradient(135deg,#ec4899,#f472b6)}
+  .capa-8{background:linear-gradient(135deg,#10b981,#34d399)}
+  .capa-9{background:linear-gradient(135deg,#1d1d1f,#515154)}
+
+  /* Página card */
+  .pagina{background:#fff;border:1px solid #f0f0f2;border-radius:18px;padding:24px;margin-bottom:14px;transition:all .25s}
+  .pagina:hover{box-shadow:0 12px 32px rgba(0,0,0,.06);border-color:#d2d2d7}
+  .pagina .head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .pagina .head h3{font-size:20px;font-weight:700;letter-spacing:-.015em}
+  .pagina .ruta{font-family:"SF Mono",Menlo,monospace;font-size:11px;color:#1a8a1a;background:#f0faf0;padding:3px 10px;border-radius:6px;display:inline-block;margin-top:4px}
+  .pagina .tag-star{background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px}
+
+  .pagina .body{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:720px){.pagina .body{grid-template-columns:1fr}}
+  .pagina .box{background:#fbfbfd;border-radius:12px;padding:14px}
+  .pagina .box h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#6e6e73;margin-bottom:8px}
+  .pagina .box p,.pagina .box li{font-size:14px;line-height:1.55;color:#1d1d1f}
+  .pagina .box ul{padding-left:18px;margin:0}
+  .pagina .box li{padding:2px 0}
+  .pagina .cuando{background:linear-gradient(135deg,#fff7e6,#fffbf0);border-left:3px solid #f59e0b;border-radius:0 12px 12px 0;padding:12px 16px;margin-top:14px;font-size:13px;color:#78350f}
+  .pagina .cuando strong{color:#92400e}
+
+  /* TLDR */
+  .tldr{background:linear-gradient(180deg,#fbfbfd,#fff);border-radius:22px;padding:36px;margin-bottom:48px;text-align:center}
+  .tldr h2{font-size:32px;font-weight:700;letter-spacing:-.022em;margin-bottom:14px}
+  .tldr p{font-size:17px;color:#515154;max-width:780px;margin:0 auto}
+  .tldr .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:24px}
+  .tldr .stat{background:#fff;border:1px solid #f0f0f2;border-radius:14px;padding:18px}
+  .tldr .stat .n{font-size:32px;font-weight:700;background:linear-gradient(135deg,#1a8a1a,#34a853);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .tldr .stat .l{font-size:11px;color:#6e6e73;text-transform:uppercase;letter-spacing:.8px;margin-top:4px;font-weight:600}
+
+  footer{background:#f5f5f7;padding:40px 0;text-align:center;color:#6e6e73;font-size:13px}
+  footer .quote{color:#1d1d1f;font-style:italic;font-weight:500;margin-bottom:10px;font-size:15px}
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#tldr">Resumen</a>
+    <a href="#c1">🧠 Inteligencia</a>
+    <a href="#c2">📥 Datos</a>
+    <a href="#c3">🏭 Planta</a>
+    <a href="#c4">⚖️ Balances</a>
+    <a href="#c5">⏱ Simulación</a>
+    <a href="#c6">📈 Modelo</a>
+    <a href="#c7">💼 Comercial</a>
+    <a href="#c8">📜 Compliance</a>
+    <a href="#c9">🔧 Sistema</a>
+  </div>
+</nav>
+
+<section class="hero container">
+  <span class="badge">📖 Manual completo · 47 pestañas</span>
+  <h1>Guía Trongkai · <span class="accent">cada pestaña explicada</span></h1>
+  <p class="lead">
+    Qué refleja cada página, cuándo usarla y qué hacer ahí. La plataforma completa en una sola guía consultable.
+  </p>
+</section>
+
+<section id="tldr" class="container">
+  <div class="tldr">
+    <h2>La plataforma en 30 segundos</h2>
+    <p>
+      Trongkai es el sistema operativo de la biorrefinería: 47 pestañas organizadas en 9 capas, conectadas por 1 motor con 93 endpoints, monitoreadas por 13 agentes IA. Datos entran por <code>/inbox</code>, fluyen a través de los módulos, y salen como insights accionables en <code>/inteligencia</code> y entregables descargables en <code>/lp-pack</code>.
+    </p>
+    <div class="grid">
+      <div class="stat"><div class="n">47</div><div class="l">páginas web</div></div>
+      <div class="stat"><div class="n">9</div><div class="l">capas funcionales</div></div>
+      <div class="stat"><div class="n">93</div><div class="l">endpoints engine</div></div>
+      <div class="stat"><div class="n">13</div><div class="l">agentes IA</div></div>
+      <div class="stat"><div class="n">11</div><div class="l">schedules autónomos</div></div>
+      <div class="stat"><div class="n">581</div><div class="l">tests verde</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPA 1: INTELIGENCIA ================= -->
+<section id="c1" class="container">
+  <div class="capa">
+    <div class="capa-head capa-1">
+      <div style="font-size:36px">🧠</div>
+      <div>
+        <h2>Capa 1 · Inteligencia</h2>
+        <p>Síntesis cross-modular y dashboards ejecutivos</p>
+      </div>
+    </div>
+
+    <div class="pagina">
+      <div class="head">
+        <div>
+          <h3>/inteligencia <span class="tag-star">⭐ DESTACADA</span></h3>
+          <div class="ruta">/inteligencia</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="box">
+          <h4>Qué refleja</h4>
+          <p>Score global 0-100 que combina la salud de TODOS los módulos. Insights cross-modulares: oportunidades, amenazas, validaciones pendientes, logros. Plan de acción top 5 priorizado por impacto.</p>
+        </div>
+        <div class="box">
+          <h4>Cómo usarla</h4>
+          <ul>
+            <li>Mirá el score global arriba</li>
+            <li>Lee el resumen ejecutivo auto-generado</li>
+            <li>Atendé el plan acción top 5 en orden</li>
+            <li>Filtrá insights por tipo (oportunidad/amenaza)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Cada lunes en la mañana. Cuando tomes cualquier decisión estratégica. Antes de reunión con LP.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/comando</h3><div class="ruta">/comando</div></div></div>
+      <div class="body">
+        <div class="box">
+          <h4>Qué refleja</h4>
+          <p>Cockpit ejecutivo: Investment Readiness Score, TIR, VAN, EV. Banner Inteligencia arriba. Strip de balances + simulación. Alertas activas. Próxima acción del Decision Engine.</p>
+        </div>
+        <div class="box">
+          <h4>Cómo usarla</h4>
+          <ul>
+            <li>Es tu home page diaria</li>
+            <li>Refresh con ↻ para datos live</li>
+            <li>Click en cualquier KPI para drill-down</li>
+            <li>Atendé la "próxima acción" recomendada</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> 5 minutos cada mañana antes de empezar el día.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/dashboard-directorio</h3><div class="ruta">/dashboard-directorio</div></div></div>
+      <div class="body">
+        <div class="box">
+          <h4>Qué refleja</h4>
+          <p>Vista board-friendly: KPIs ejecutivos en formato presentable para directorio. Menos técnico que /comando, más narrativo.</p>
+        </div>
+        <div class="box">
+          <h4>Cómo usarla</h4>
+          <ul>
+            <li>Antes de reunión de directorio</li>
+            <li>Para compartir snapshot externo</li>
+            <li>Para enviar resumen al chairman</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Día antes de reunión mensual de directorio.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/decisiones</h3><div class="ruta">/decisiones</div></div></div>
+      <div class="body">
+        <div class="box">
+          <h4>Qué refleja</h4>
+          <p>Top 5 acciones priorizadas cross-matriz por el Decision Engine. Cada acción con: owner, uplift al readiness, quick-win score, acción concreta.</p>
+        </div>
+        <div class="box">
+          <h4>Cómo usarla</h4>
+          <ul>
+            <li>Mirá la #1 y asignala a su owner</li>
+            <li>Trackeá quick-wins (alta prioridad, bajo esfuerzo)</li>
+            <li>Si haces una acción, el score sube</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Después de revisar /inteligencia. Para asignar tareas al equipo.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/mapa</h3><div class="ruta">/mapa</div></div></div>
+      <div class="body">
+        <div class="box">
+          <h4>Qué refleja</h4>
+          <p>Mapa visual de las 47 páginas en 9 capas. Diagrama "cómo fluye la información" del piloto al LP Pack.</p>
+        </div>
+        <div class="box">
+          <h4>Cómo usarla</h4>
+          <ul>
+            <li>Para orientarte si te perdés</li>
+            <li>Para onboardear a alguien nuevo</li>
+            <li>Click en cualquier card para navegar</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Primera vez que entrás. Cuando no recordás dónde está algo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPA 2: DATOS ================= -->
+<section id="c2" class="container">
+  <div class="capa">
+    <div class="capa-head capa-2"><div style="font-size:36px">📥</div><div><h2>Capa 2 · Datos & Calibración</h2><p>Inputs, validación de supuestos, completitud</p></div></div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/inbox</h3><div class="ruta">/inbox</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Archivos nuevos clasificados automáticamente (PDF, Excel, Word). El procesador los lee, extrae texto y nutre las matrices del modelo.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Tirá cualquier doc nuevo a /data/inbox</li><li>El sistema lo clasifica solo</li><li>Refresh para ver progreso</li><li>Sin código: drag&drop al folder</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Cada vez que llega doc nuevo (cotización, contrato, factura, paper).</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/variables</h3><div class="ruta">/variables</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Matriz completa de supuestos del modelo (165 celdas). Cada celda etiquetada: PD (placeholder), OK_PROVISORIO (validado literatura), OK_VALIDADO (validado planta real).</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Filtrá por estado PD</li><li>Cada PD necesita data real</li><li>Al subir a OK_VALIDADO, el readiness score sube</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Semanal con el SupuestosAudit del lunes. Cuando llega data nueva del equipo.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/datos</h3><div class="ruta">/datos</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Checklist visual de gaps por módulo. Score de completitud global. Priorización por bloqueador LP.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Pedí lo faltante al equipo</li><li>Marcá los que ya tenés</li><li>Atacá los bloqueadores LP primero</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Antes de DD con un LP. Para priorizar pedidos al equipo.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/coherencia</h3><div class="ruta">/coherencia</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Gaps de coherencia entre matrices: producto vs energía, energía vs agua, plan vs capacidad real, etc.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Ver gaps detectados auto</li><li>Cada gap = inconsistencia a resolver</li><li>Resolverlos sube el readiness</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Después de actualizar cualquier matriz mayor.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/red</h3><div class="ruta">/red</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Grafo visual de dependencias entre módulos del modelo. Quién depende de quién.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Ver impacto de cambiar X</li><li>Ver qué afecta a Y</li><li>Útil para impact analysis</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Antes de cambiar una variable importante.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/data-room</h3><div class="ruta">/data-room</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Checklist 41-items due-diligence para LP. Estado de cada doc requerido. % avance global.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Subí docs faltantes</li><li>Marcá completos a medida que los tengas</li><li>Comparte el % avance con LPs</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Antes de mandar Data Room a LP. Cada subida de doc.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/investigacion</h3><div class="ruta">/investigacion</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Papers científicos cargados (yield olivar, PEF, SCP, BECCS, comparables M&A LATAM). Refresh trimestral por el agente Data Hunter.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Para defender supuestos con papers</li><li>Para encontrar benchmarks</li><li>Para preparar pitch técnico</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Antes de presentación técnica. Para validar un supuesto controvertido.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPA 3: PLANTA ================= -->
+<section id="c3" class="container">
+  <div class="capa">
+    <div class="capa-head capa-3"><div style="font-size:36px">🏭</div><div><h2>Capa 3 · Planta Operacional</h2><p>Equipos reales, parámetros, etapas, fotos</p></div></div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/planta <span class="tag-star">⭐</span></h3><div class="ruta">/planta</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Layout visual del proceso piloto en 8 pasos con fotos reales de los 15 equipos. Click en cualquier equipo → modal con ficha técnica.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Recorrido visual del proceso</li><li>Identificar cuello de botella</li><li>Modal con specs por click</li><li>Para mostrar a visitas o LPs</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Para entender el proceso. Para presentar planta a externos.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/equipos</h3><div class="ruta">/equipos</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>20 fichas técnicas editables con foto. Cada equipo: proveedor, modelo, capacidad, kW, CAPEX/arriendo, mantención, vida útil, notas.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Click "Alimentar info" para editar</li><li>Sube nivel calibración a OK_VALIDADO</li><li>Esto sube el score global</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Cada vez que recibís cotización o ficha de proveedor.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/parametros</h3><div class="ruta">/parametros</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Planilla variables editables: 8 sueldos, tarifa eléctrica CGE, calor residual La Gloria, agua llave + industrial + recirc, flete, arriendos OPEX (PEF + Tricanter).</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Editá cualquier valor inline</li><li>Save dispara recálculo TODO costeo</li><li>Atendé el "Checklist pendientes"</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Llega factura eléctrica nueva. Cambian tarifas. Validás sueldo real.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/balance-etapas</h3><div class="ruta">/balance-etapas</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>11 etapas reales Agrosphere con masa in/out, yield, perdidas, tiempo, MO, equipos, repuestos, materiales, humedades por etapa. Slider de throughput recalcula todo.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Mové slider throughput</li><li>Click cada etapa para detalle</li><li>Toggle "respaldo deshidratación"</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Para entender qué pasa en cada paso. Antes de simulación.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/productos-etapas</h3><div class="ruta">/productos-etapas</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Matriz visual MMPP × Etapas: cuál Tomasa pasa por cuál etapa, yield MSF, tiempo. Tomasa Cold (30% MSF) y Hot (25% MSF) son los procesos completos definidos.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Ver qué procesa cada MMPP</li><li>Identificar productos sin proceso definido</li><li>Definir rutas para Orujo, Alperujo, Pomasa</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Para diseñar línea por MMPP. Antes de validar rendimientos por SKU.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPA 4: BALANCES ================= -->
+<section id="c4" class="container">
+  <div class="capa">
+    <div class="capa-head capa-4"><div style="font-size:36px">⚖️</div><div><h2>Capa 4 · Balances Integrales</h2><p>4 balances + alarmas tiempo real</p></div></div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/balance-integral <span class="tag-star">⭐</span></h3><div class="ruta">/balance-integral</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Los 4 balances (producto + energía + agua + RRHH) en un solo dashboard. Score eficiencia global + intensidades por kg + costos consolidados + cross-checks.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Mirá el score global arriba</li><li>Click cualquier card para detalle</li><li>Revisá alarmas consolidadas</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Diario una vez. Después de cambio importante en operación.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/balance</h3><div class="ruta">/balance</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Balance de masa por SKU con cierre ±0.5%. Sankey visual: input MMPP → harina + aceite + agua evaporada + pérdidas.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Seleccioná MMPP</li><li>Mové modo A/B</li><li>Verifica que cierre</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Validar rendimiento por SKU. Para pitch técnico.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/balance-energia</h3><div class="ruta">/balance-energia</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>7 equipos consumidores, mix renovable, factor potencia, intensidad kWh/kg. Alarmas factor potencia &lt;0.92 (multa SEC).</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Ver consumo por equipo</li><li>Identificar mayores consumidores</li><li>Atender alarmas FP</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Mensual con factura eléctrica. Si recibís alerta SEC.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/balance-agua</h3><div class="ruta">/balance-agua</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Flujos m³/h por origen (pozo, red, recirc), cumplimiento DGA, RILE, intensidad L/kg.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Verificar uso vs derecho DGA</li><li>Optimizar recirculación</li><li>Reducir RILE</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Mensual. Si hay alerta DGA &gt;80% del derecho.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/balance-rrhh <span class="tag-star">⚠️ CRÍTICA</span></h3><div class="ruta">/balance-rrhh</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>15 trabajadores piloto, asignación semanal, productividad kg/HH, costo mensual. <strong>Alarmas CT Chile</strong> si Sem &gt;57h o Mes &gt;32h extras.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Editor inline por trabajador</li><li>Si banner rojo → reasignar HOY</li><li>POST asignar dispara alarma instant</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Antes de cada lunes. Si llega alerta crítica horas.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPA 5: SIMULACIÓN ================= -->
+<section id="c5" class="container">
+  <div class="capa">
+    <div class="capa-head capa-5"><div style="font-size:36px">⏱</div><div><h2>Capa 5 · Simulación & Costeo</h2><p>Producción + costos + escalas + revenue</p></div></div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/simulacion <span class="tag-star">⭐</span></h3><div class="ruta">/simulacion</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Producción + costos por hora/día/mes/año, con bottleneck detectado auto. 18 máquinas con utilización individual + timeline mensual estacional por MMPP.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Tabs: hora/día/mes/año</li><li>Sliders: horas/día, días/mes, meses/año</li><li>Selector MMPP cambia estacionalidad</li><li>Ver tabla por máquina ordenada por costo</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Para planificar producción del próximo periodo. Para proyectar facturas.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/escalas <span class="tag-star">⭐</span></h3><div class="ruta">/escalas</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Comparativa piloto vs x10, x50, x100. Curva 80% costo unitario + Williams 0.7 CAPEX. Revela cuándo el proyecto se vuelve rentable (x10 ya margen +37%, x100 = +70%).</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Selector SKU principal</li><li>Ver margen y payback por escala</li><li>Insight estratégico destacado</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Para pitch a LP. Para decidir cuándo escalar.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/costeo</h3><div class="ruta">/costeo</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Costo por etapa y por SKU usando parámetros actuales. CLP/kg y USD/kg. Desglose: MO + energía + calor + agua + materiales + arriendo.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Slider throughput</li><li>Toggle respaldo deshidratación</li><li>Ver top consumidores (PEF = 41%)</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Después de actualizar parámetros. Para cotizar a cliente.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/pef-analisis</h3><div class="ruta">/pef-analisis</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Comparativo A/B con PEF vs sin PEF. Responde "¿se justifica económicamente?" considerando uplift yield + premium price.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Sliders: % reducción secado, % uplift yield, % premium</li><li>Ver sensibilidad</li><li>Insight calor residual barato</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Para defender decisión arriendo PEF. Cuando llegue data A/B real.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPA 6: MODELO FINANCIERO ================= -->
+<section id="c6" class="container">
+  <div class="capa">
+    <div class="capa-head capa-6"><div style="font-size:36px">📈</div><div><h2>Capa 6 · Modelo Financiero</h2><p>Plan 5 años, sensibilidad, valoración</p></div></div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/plan</h3><div class="ruta">/plan</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>EERR mensual a 60 meses. TIR, VAN, payback, EBITDA margin. Monte Carlo 10k corridas. Tornado de sensibilidades.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Slider WACC y otros drivers</li><li>Ver Monte Carlo (probabilidad TIR &gt; hurdle)</li><li>Tornado para identificar drivers críticos</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Para pitch financiero. Después de cambio importante en supuestos.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/sensitivity</h3><div class="ruta">/sensitivity</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Sensibilidad 1D (curvas), 2D (heatmap), 3D (explorador 3 drivers). Break-even por driver.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Ver hasta dónde aguantás cada driver</li><li>Cuán resistente es el proyecto</li><li>Comunicar riesgos al LP</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Antes de comité de inversión. Para responder "¿qué pasa si X cae 30%?"</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/comparador</h3><div class="ruta">/comparador</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Comparativa PILOTO vs INDUSTRIAL vs EXPANSION (3 escenarios estratégicos). Recomendación auto.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Ver TIR/VAN/CAPEX de cada</li><li>Decidir hacia dónde ir</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Decisión estratégica de escalamiento.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/whatif-live</h3><div class="ruta">/whatif-live</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Sliders interactivos para precio/costo/WACC/opex. Recalcula TIR/VAN en vivo.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Mové sliders</li><li>Ver impacto inmediato</li><li>Útil en reuniones</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> En vivo con LP/banker para responder hipótesis.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/stress</h3><div class="ruta">/stress</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Triple negativo: precio -30%, costo +20%, WACC +500bp simultáneo. Test máximo de resistencia.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Ver si sigue siendo viable en peor escenario</li><li>Defender ante LP conservador</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Antes de pitch a LP institucional/multilateral.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/financiamiento</h3><div class="ruta">/financiamiento</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Mix deuda/equity, DSCR (debt service coverage), LLCR, TIR equity, tax shield.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Optimizar mix deuda</li><li>Validar bancabilidad (DSCR &gt; 1.3)</li><li>Comparar opciones de financiamiento</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Negociación con banco. Estructuración financiamiento.</div>
+    </div>
+
+    <div class="pagina">
+      <div class="head"><div><h3>/slb</h3><div class="ruta">/slb</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Sustainability-Linked Bonds simulator. KPI step-up por compromisos ESG.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Configurar KPIs ESG</li><li>Calcular costo SLB vs bond tradicional</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Si estás considerando financiamiento sustainable-linked.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPA 7: COMERCIAL ================= -->
+<section id="c7" class="container">
+  <div class="capa">
+    <div class="capa-head capa-7"><div style="font-size:36px">💼</div><div><h2>Capa 7 · Comercial & LP</h2><p>Clientes, productos, equipo, fundraising</p></div></div>
+
+    <div class="pagina"><div class="head"><div><h3>/clientes-reales</h3><div class="ruta">/clientes-reales</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Catálogo clientes reales: Iansa, Sugal, Agrozzi, Patagonia, Concha y Toro, etc. Con cifras y estado relación.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Estado cada cuenta</li><li>Priorizar outreach</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Planificación comercial semanal.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/commercial</h3><div class="ruta">/commercial</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Pricing power, HHI concentración clientes, ROI por tecnología (PEF NPV +$346k), revenue pipeline 5y ($88M).</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Identificar dependencia de clientes</li><li>Diversificar si HHI &gt; 2000</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Trimestral, en revisión estrategia comercial.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/nutrientes</h3><div class="ruta">/nutrientes</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>12 SKUs científicamente perfilados: compuestos bioactivos, ORAC, aplicaciones, TAM $26.6B agregado. Papers de soporte.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Para pitch técnico a nutracéutica</li><li>Identificar mercado por SKU</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Preparando outreach mercado humano/nutracéutica.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/tecnologias</h3><div class="ruta">/tecnologias</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Stack tecnológico: Opticept PEF, Micromolienda, Infrasonido, etc.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Defender innovación ante LP tech</li><li>Justificar diferenciación</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Pitch a LP/cliente que valora tech.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/pipeline-lp</h3><div class="ruta">/pipeline-lp</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>CRM de LPs en roadshow. Kanban por etapa: prospect → contactado → reunión → DD → comprometido → ganado.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Drag&drop entre etapas</li><li>Notas por LP</li><li>Acciones próximas 7d</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Cada lunes para planificar roadshow semanal.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/lp-pack</h3><div class="ruta">/lp-pack</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Genera ZIP con todos los entregables: PDF tearsheet, Excel master, decks, HTMLs.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Click "Descargar ZIP"</li><li>Mandalo al LP</li><li>Siempre actualizado</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Antes de mandar pack inicial a LP. Después de actualización mayor.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/equipo</h3><div class="ruta">/equipo</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Cards directorio + fundadores + advisors + alianzas. Background de cada uno.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Para incluir en pitch deck</li><li>Para mostrar credibilidad a LP</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Cuando un LP pide "quiénes son detrás".</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPA 8: COMPLIANCE ================= -->
+<section id="c8" class="container">
+  <div class="capa">
+    <div class="capa-head capa-8"><div style="font-size:36px">📜</div><div><h2>Capa 8 · Compliance & Macro</h2><p>Regulación, sustentabilidad, contexto</p></div></div>
+
+    <div class="pagina"><div class="head"><div><h3>/compliance</h3><div class="ruta">/compliance</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Timeline visual Ley REP + alertas próximas obligaciones agroindustria.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Ver próximos vencimientos</li><li>No quedar fuera de fechas regulatorias</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Semanal (lo corre el ComplianceMonitor schedule).</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/carbono</h3><div class="ruta">/carbono</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>3 escenarios LCA (baseline, eficiente, BECCS). Revenue créditos CO₂. Si es carbono-negativo.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Para LP ESG europeo</li><li>Para calcular carbon credits</li><li>Para narrativa sustentabilidad</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Antes roadshow con LP ESG/europeo. Reporting mensual.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/macro</h3><div class="ruta">/macro</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>USD/CLP, UF, IPC, TPM live desde Banco Central. Conversor CLP↔USD.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Convertir cifras a USD para LP internacional</li><li>Ver contexto macro chileno</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Cuando preparás cifras para pitch internacional.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/roadmap</h3><div class="ruta">/roadmap</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Timeline visual de hitos del proyecto: cuándo se cierran los gaps, cuándo arranca operación, cuándo LP commit, etc.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Para mostrar plan a 12 meses</li><li>Trackear cumplimiento de hitos</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Revisión mensual con board.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/riesgo</h3><div class="ruta">/riesgo</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Riesgo integrado: clima (sequía/granizada/heladas) + financiero (Monte Carlo) + regulatorio (REP).</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Vista holística de riesgos</li><li>Para risk committee</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Reporting de riesgo trimestral.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPA 9: SISTEMA ================= -->
+<section id="c9" class="container">
+  <div class="capa">
+    <div class="capa-head capa-9"><div style="font-size:36px">🔧</div><div><h2>Capa 9 · Sistema</h2><p>Estado técnico, auditoría, salud</p></div></div>
+
+    <div class="pagina"><div class="head"><div><h3>/readiness</h3><div class="ruta">/readiness</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Score 0-100 de madurez del proyecto para LPs. Histórico timeline. Gaps prioritarios para subir.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Score actual</li><li>Qué hacer para subirlo +5/+10 puntos</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Semanal. Antes de cada DD.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/salud</h3><div class="ruta">/salud</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Health check técnico: engine, DB, cache, memoria, volumen Fly. 7 health checks.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Verificar que todo funcione</li><li>Si algo falla, dispara alerta</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Si algo se siente lento. Corre cada 6h auto.</div>
+    </div>
+
+    <div class="pagina"><div class="head"><div><h3>/audit</h3><div class="ruta">/audit</div></div></div>
+      <div class="body">
+        <div class="box"><h4>Qué refleja</h4><p>Historial de cambios al modelo: quién cambió qué cuándo. Auditoría completa.</p></div>
+        <div class="box"><h4>Cómo usarla</h4><ul><li>Trazar cambios</li><li>Útil en DD para LP</li></ul></div>
+      </div>
+      <div class="cuando"><strong>Cuándo:</strong> Si querés saber "quién cambió esto y por qué".</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="quote">"En la naturaleza no existen los residuos, solo recursos."</p>
+  <p>Trongkai · Manual de Pestañas · 47 páginas · 9 capas · 1 plataforma</p>
+  <p style="margin-top:10px;font-size:11px;color:#a1a1a6">
+    Generado automáticamente · 581 tests verde · 93 endpoints · 13 agentes IA
+  </p>
+</footer>
+
+</body>
+</html>
