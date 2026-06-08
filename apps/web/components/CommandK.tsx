@@ -36,6 +36,7 @@ const ITEMS: SearchItem[] = [
   { label: 'Balance de Masa', href: '/balance', category: 'Operacional', icon: '⚖️', keywords: ['sankey', 'mmpp', 'rendimiento'] },
   { label: 'Planta Visual (fotos)', href: '/planta', category: 'Operacional', icon: '🏭', keywords: ['layout', 'fotos', 'equipos', 'visual'] },
   { label: 'Simulación temporal', href: '/simulacion', category: 'Operacional', icon: '⏱', keywords: ['hora', 'dia', 'mes', 'ano', 'produccion', 'costos'] },
+  { label: 'Escalas (piloto vs industrial)', href: '/escalas', category: 'Operacional', icon: '📈', keywords: ['x10', 'x100', 'capex', 'payback', 'industrial'] },
   { label: 'Balance por Etapas', href: '/balance-etapas', category: 'Operacional', icon: '⚙️', keywords: ['11 etapas', 'agrosphere', 'planta'] },
   { label: 'Productos × Etapas', href: '/productos-etapas', category: 'Operacional', icon: '🧬', keywords: ['matriz', 'mmpp', 'msf'] },
   { label: 'Costeo dinámico', href: '/costeo', category: 'Operacional', icon: '💰', keywords: ['clp', 'usd', 'kg', 'costo'] },

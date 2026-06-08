@@ -78,6 +78,7 @@ const GROUPS: Group[] = [
       { href: '/balance-integral', label: 'Vista Integral', desc: 'Los 4 balances en uno + score global' },
       { href: '/planta', label: '🏭 Planta (visual)', desc: 'Layout planta con fotos reales de equipos' },
       { href: '/simulacion', label: '⏱ Simulación', desc: 'Producción + costos por hora/día/mes/año' },
+      { href: '/escalas', label: '📈 Escalas', desc: 'Piloto vs Industrial (x10, x50, x100)' },
       { href: '/balance-etapas', label: '⚙️ Por Etapas', desc: '11 etapas reales Agrosphere · dinámico' },
       { href: '/productos-etapas', label: '🧬 Productos × Etapas', desc: 'Matriz MMPP por etapa + yield MSF' },
       { href: '/costeo', label: '💰 Costeo', desc: 'Costo por etapa y SKU (CLP/kg, USD/kg)' },

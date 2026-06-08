@@ -123,6 +123,9 @@ export default function ComandoPage() {
       {/* BALANCES INTEGRALES — 4 cards */}
       <BalancesStrip />
 
+      {/* SIMULACION OPERACIONAL — piloto + escalas */}
+      <SimulacionStrip />
+
       {/* PRÓXIMA ACCIÓN — DECISIÓN del Engine */}
       {topAccion && (
         <section className="rounded-appleXl bg-brand p-8 text-white">
@@ -506,6 +509,70 @@ function BalancesStrip() {
           </Link>
         ))}
       </div>
+    </section>
+  );
+}
+
+function SimulacionStrip() {
+  const [sim, setSim] = useState<any | null>(null);
+  const [escalas, setEscalas] = useState<any | null>(null);
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/simulacion/revenue?periodo=ano&sku_principal=harina_animal_premium`)
+      .then((r) => r.json()).then(setSim).catch(() => setSim(null));
+    fetch(`${ENGINE_URL}/simulacion/escalas?sku_principal=harina_animal_premium`)
+      .then((r) => r.json()).then(setEscalas).catch(() => setEscalas(null));
+  }, []);
+  if (!sim) return null;
+  const rentable = sim.margen_total_clp > 0;
+  const tone = rentable ? 'bg-brand-50 border-brand text-brand' : 'bg-orange-50 border-orange-400 text-orange-700';
+  return (
+    <section className="apple-card">
+      <div className="mb-3 flex items-baseline justify-between">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">⏱ Simulación operacional anual</h2>
+        <div className="flex gap-2">
+          <Link href="/simulacion" className="text-xs text-brand hover:underline">Simular →</Link>
+          <Link href="/escalas" className="text-xs text-brand hover:underline">Escalas →</Link>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+        <div className="rounded-xl border border-ink-100 bg-white p-4">
+          <p className="text-[10px] uppercase text-ink-400">Piloto produce</p>
+          <p className="mt-1 text-xl font-bold tabular">{(sim.producto_total_kg / 1000).toFixed(0)} t/año</p>
+        </div>
+        <div className="rounded-xl border border-ink-100 bg-white p-4">
+          <p className="text-[10px] uppercase text-ink-400">Revenue año</p>
+          <p className="mt-1 text-xl font-bold tabular">${(sim.revenue_total_clp / 1e6).toFixed(0)}M CLP</p>
+        </div>
+        <div className={`rounded-xl border p-4 ${tone}`}>
+          <p className="text-[10px] uppercase opacity-80">Margen piloto</p>
+          <p className="mt-1 text-xl font-bold tabular">
+            {sim.margen_total_clp > 0 ? '+' : ''}${(sim.margen_total_clp / 1e6).toFixed(0)}M ({(sim.margen_pct * 100).toFixed(0)}%)
+          </p>
+        </div>
+        <div className="rounded-xl border border-ink-100 bg-white p-4">
+          <p className="text-[10px] uppercase text-ink-400">CAPEX</p>
+          <p className="mt-1 text-xl font-bold tabular">${(sim.capex_total_clp / 1e6).toFixed(0)}M CLP</p>
+        </div>
+        <div className="rounded-xl border border-ink-100 bg-white p-4">
+          <p className="text-[10px] uppercase text-ink-400">Payback</p>
+          <p className="mt-1 text-xl font-bold tabular">{sim.payback_simple_anos ? `${sim.payback_simple_anos.toFixed(1)} años` : '∞'}</p>
+        </div>
+      </div>
+      {escalas && (
+        <div className="mt-4 rounded-xl bg-ink-50/30 p-3">
+          <p className="text-[10px] uppercase font-semibold text-ink-500 mb-2">📈 Si escalamos:</p>
+          <div className="flex flex-wrap gap-3 text-xs">
+            {escalas.escalas.map((e: any) => (
+              <Link key={e.escala} href="/escalas"
+                className={`rounded-lg px-3 py-2 ${e.margen_clp > 0 ? 'bg-brand-50 text-brand' : 'bg-orange-50 text-orange-700'} hover:opacity-80`}>
+                <div className="font-bold">{e.etiqueta}</div>
+                <div className="text-[10px]">{e.producto_t_ano.toLocaleString()} t · margen {(e.margen_pct * 100).toFixed(0)}%</div>
+                {e.payback_anos !== null && <div className="text-[10px]">Payback {e.payback_anos.toFixed(1)}y</div>}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

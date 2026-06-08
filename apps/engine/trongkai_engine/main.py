@@ -1261,6 +1261,8 @@ def _snapshot_build() -> dict:
         "coherencia": _safe_coherencia(),
         # NUEVO v3: Balances integrales (4 balances + score)
         "balances": _safe_balances(),
+        # NUEVO v4: Simulacion operacional + revenue
+        "simulacion_planta": _safe_simulacion_planta(),
     }
 
 
@@ -1321,6 +1323,30 @@ def _safe_variables_matrix() -> dict | None:
     try:
         from .variables_matrix import construir_matriz, stats_resumen
         return stats_resumen(construir_matriz())
+    except Exception:
+        return None
+
+
+@cached_ttl(seconds=180)
+def _safe_simulacion_planta() -> dict | None:
+    """Resumen ligero simulacion piloto + escalado para snapshot."""
+    try:
+        from .balances.simulacion_revenue import simular_con_revenue, calcular_capex_piloto
+        s = simular_con_revenue(periodo="ano")
+        capex = calcular_capex_piloto()
+        return {
+            "piloto_t_ano": round(s.producto_total_kg / 1000, 1),
+            "costo_anual_clp": round(s.costo_total_clp, 0),
+            "revenue_anual_clp": round(s.revenue_total_clp, 0),
+            "margen_anual_clp": round(s.margen_total_clp, 0),
+            "margen_pct": round(s.margen_pct, 4),
+            "costo_unitario_clp_kg": round(s.costo_unitario_clp_kg, 0),
+            "precio_venta_clp_kg": s.precio_venta_clp_kg,
+            "capex_total_clp": capex["total_clp"],
+            "payback_anos": round(s.payback_simple_anos, 2)
+                if s.payback_simple_anos != float("inf") else None,
+            "es_rentable": s.margen_total_clp > 0,
+        }
     except Exception:
         return None
 
@@ -2670,3 +2696,71 @@ def simulacion_maquina_endpoint(
         )
     except ValueError as e:
         raise HTTPException(404, str(e))
+
+
+@app.get(
+    "/simulacion/revenue",
+    tags=["balances"],
+    summary="Simulacion + revenue + margen + payback",
+)
+@cached_ttl(seconds=120)
+def simulacion_revenue_endpoint(
+    periodo: str = "ano",
+    horas_dia: float = 16.0,
+    dias_mes: float = 25.0,
+    meses_ano: float = 10.0,
+    mmpp_principal: str = "TOMASA",
+    sku_principal: str = "harina_animal_premium",
+    precio_venta_clp_kg: float | None = None,
+) -> dict:
+    from .balances.simulacion_revenue import simular_con_revenue
+    return simular_con_revenue(
+        periodo=periodo,
+        horas_dia=horas_dia,
+        dias_mes=dias_mes,
+        meses_ano=meses_ano,
+        mmpp_principal=mmpp_principal,
+        sku_principal=sku_principal,
+        precio_venta_clp_kg=precio_venta_clp_kg,
+    ).to_dict()
+
+
+@app.get(
+    "/simulacion/escalas",
+    tags=["balances"],
+    summary="Comparador piloto vs industrial (x1, x10, x50, x100)",
+    description="Economias de escala: curva 80% costo unit + Williams 0.7 CAPEX",
+)
+@cached_ttl(seconds=180)
+def simulacion_escalas_endpoint(
+    horas_dia: float = 16.0,
+    dias_mes: float = 25.0,
+    meses_ano: float = 10.0,
+    mmpp_principal: str = "TOMASA",
+    sku_principal: str = "harina_animal_premium",
+) -> dict:
+    from .balances.simulacion_revenue import comparar_escalas
+    return comparar_escalas(
+        horas_dia=horas_dia, dias_mes=dias_mes, meses_ano=meses_ano,
+        mmpp_principal=mmpp_principal, sku_principal=sku_principal,
+    )
+
+
+@app.get(
+    "/simulacion/precios-sku",
+    tags=["balances"],
+    summary="Catalogo precios estimados por SKU final",
+)
+def simulacion_precios_endpoint() -> dict:
+    from .balances.simulacion_revenue import precios_venta_catalogo
+    return precios_venta_catalogo()
+
+
+@app.get(
+    "/simulacion/capex-piloto",
+    tags=["balances"],
+    summary="CAPEX estimado total piloto (equipos + instalacion + ingenieria)",
+)
+def simulacion_capex_endpoint() -> dict:
+    from .balances.simulacion_revenue import calcular_capex_piloto
+    return calcular_capex_piloto()
