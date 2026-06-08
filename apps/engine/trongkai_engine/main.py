@@ -1263,6 +1263,8 @@ def _snapshot_build() -> dict:
         "balances": _safe_balances(),
         # NUEVO v4: Simulacion operacional + revenue
         "simulacion_planta": _safe_simulacion_planta(),
+        # NUEVO v5: Sintesis inteligente cross-modular
+        "inteligencia": _safe_sintesis(),
     }
 
 
@@ -1323,6 +1325,29 @@ def _safe_variables_matrix() -> dict | None:
     try:
         from .variables_matrix import construir_matriz, stats_resumen
         return stats_resumen(construir_matriz())
+    except Exception:
+        return None
+
+
+@cached_ttl(seconds=180)
+def _safe_sintesis() -> dict | None:
+    """Resumen inteligente ligero para el snapshot."""
+    try:
+        from .balances.sintesis_inteligente import computar_sintesis
+        s = computar_sintesis()
+        return {
+            "score_global_inteligencia": s.score_global_inteligencia,
+            "insights_criticos": s.insights_criticos,
+            "insights_altos": s.insights_altos,
+            "oportunidades": s.oportunidades,
+            "amenazas": s.amenazas,
+            "resumen_ejecutivo": s.resumen_ejecutivo,
+            "top_3_insights": [
+                {"titulo": i.titulo, "severidad": i.severidad, "tipo": i.tipo,
+                 "link": i.link_ui}
+                for i in s.plan_accion_top_5[:3]
+            ],
+        }
     except Exception:
         return None
 
@@ -2764,3 +2789,37 @@ def simulacion_precios_endpoint() -> dict:
 def simulacion_capex_endpoint() -> dict:
     from .balances.simulacion_revenue import calcular_capex_piloto
     return calcular_capex_piloto()
+
+
+# =============================================================================
+# SINTESIS INTELIGENTE (capa cross-modular)
+# =============================================================================
+@app.get(
+    "/inteligencia/sintesis",
+    tags=["inteligencia"],
+    summary="Sintesis inteligente: insights cross-modulares + plan accion",
+    description="Capa que consolida TODOS los modulos y genera insights accionables.",
+)
+@cached_ttl(seconds=120)
+def inteligencia_sintesis_endpoint() -> dict:
+    from .balances.sintesis_inteligente import computar_sintesis
+    return computar_sintesis().to_dict()
+
+
+@app.get(
+    "/inteligencia/insights",
+    tags=["inteligencia"],
+    summary="Lista insights ordenados por prioridad",
+)
+def inteligencia_insights_endpoint(severidad: str | None = None, tipo: str | None = None) -> dict:
+    from .balances.sintesis_inteligente import computar_sintesis
+    s = computar_sintesis()
+    insights = s.insights
+    if severidad:
+        insights = [i for i in insights if i.severidad == severidad]
+    if tipo:
+        insights = [i for i in insights if i.tipo == tipo]
+    return {
+        "total": len(insights),
+        "insights": [i.to_dict() for i in insights],
+    }

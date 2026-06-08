@@ -22,6 +22,7 @@ const GROUPS: Group[] = [
     emoji: '📊',
     items: [
       { href: '/comando', label: 'Centro de Mando', desc: 'Cockpit ejecutivo en tiempo real' },
+      { href: '/inteligencia', label: '🧠 Inteligencia', desc: 'Síntesis cross-modular + plan acción' },
       { href: '/dashboard-directorio', label: 'Directorio', desc: 'Dashboard consolidado para board' },
       { href: '/readiness', label: 'Readiness Score', desc: 'Madurez del proyecto 0-100' },
       { href: '/salud', label: 'Salud del Sistema', desc: 'Health check técnico' },

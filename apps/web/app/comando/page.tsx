@@ -112,6 +112,9 @@ export default function ComandoPage() {
         </button>
       </header>
 
+      {/* BANNER INTELIGENCIA — síntesis cross-modular */}
+      <InteligenciaBanner />
+
       {/* HERO: Score + TIR + VAN + EV en grande */}
       <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <BigKPI label="Investment Readiness" value={`${score.toFixed(0)}`} unit="/100" tone={score >= 80 ? 'ok' : score >= 60 ? 'warn' : 'bad'} sub={snap.readiness_score?.interpretacion?.slice(0, 30)} link="/readiness" />
@@ -574,5 +577,34 @@ function SimulacionStrip() {
         </div>
       )}
     </section>
+  );
+}
+
+function InteligenciaBanner() {
+  const [s, setS] = useState<any | null>(null);
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/inteligencia/sintesis`).then((r) => r.json()).then(setS).catch(() => setS(null));
+  }, []);
+  if (!s) return null;
+  const score = s.score_global_inteligencia;
+  const color = score >= 80 ? 'from-brand to-brand-light' : score >= 60 ? 'from-yellow-500 to-yellow-400' : 'from-orange-500 to-orange-400';
+  return (
+    <Link href="/inteligencia" className={`block rounded-appleXl bg-gradient-to-br ${color} p-6 text-white hover:scale-[1.01] transition`}>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex-1">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.08em] opacity-90">
+            🧠 Inteligencia consolidada
+          </div>
+          <p className="mt-2 text-2xl font-semibold tracking-apple md:text-3xl">
+            Score {score.toFixed(0)}/100 · {s.insights_criticos} críticas · {s.oportunidades} oportunidades
+          </p>
+          <p className="mt-2 text-sm opacity-90">{s.resumen_ejecutivo}</p>
+        </div>
+        <div className="shrink-0 text-right">
+          <div className="text-5xl font-bold tabular">{score.toFixed(0)}</div>
+          <div className="text-xs opacity-80 mt-1">Ver detalle →</div>
+        </div>
+      </div>
+    </Link>
   );
 }

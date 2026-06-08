@@ -14,6 +14,7 @@ type SearchItem = {
 const ITEMS: SearchItem[] = [
   // ===== Dashboards =====
   { label: 'Centro de Mando', href: '/comando', category: 'Dashboard', icon: '⚡', keywords: ['cockpit', 'home', 'inicio', 'overview'] },
+  { label: '🧠 Inteligencia (síntesis)', href: '/inteligencia', category: 'Dashboard', icon: '🧠', keywords: ['insights', 'plan accion', 'oportunidades', 'amenazas'] },
   { label: 'Dashboard Directorio', href: '/dashboard-directorio', category: 'Dashboard', icon: '📊', keywords: ['lp', 'roadshow', 'ejecutivo'] },
   { label: 'Investment Readiness', href: '/readiness', category: 'Dashboard', icon: '💯', keywords: ['score', '84.7', 'bankable'] },
   // ===== Análisis financiero =====
