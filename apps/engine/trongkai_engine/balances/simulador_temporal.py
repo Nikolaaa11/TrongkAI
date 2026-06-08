@@ -151,6 +151,25 @@ def _detectar_bottleneck(linea: list[FichaEquipo]) -> tuple[float, str]:
     return min_cap, bottleneck_id
 
 
+def _yield_proceso_completo() -> float:
+    """Yield producto terminado / MMPP entrada (rendimiento MSF).
+
+    Usa el rendimiento MSF promedio de los SKU con proceso definido
+    (Tomasa Cold 30%, Hot 25%). Este es el yield REAL del producto
+    vendible, no el de la etapa de toma de muestras.
+    Default conservador 0.30 si falla.
+    """
+    try:
+        from .etapas import productos_seed
+        msf = [p.rendimiento_msf_pct for p in productos_seed()
+               if p.rendimiento_msf_pct > 0]
+        if msf:
+            return sum(msf) / len(msf)
+    except Exception:
+        pass
+    return 0.30
+
+
 def simular_maquina(
     ficha: FichaEquipo,
     throughput_planta_kg_h: float,
@@ -207,6 +226,7 @@ def _timeline_mensual_estacional(
     dias_mes: float,
     costo_unitario_clp_kg: float,
     mmpp_principal: str = "TOMASA",
+    yield_proceso: float = 1.0,
 ) -> list[dict]:
     """Genera 12 meses con factor estacional por MMPP."""
     factores = ESTACIONALIDAD_MMPP.get(mmpp_principal.upper(),
@@ -215,7 +235,7 @@ def _timeline_mensual_estacional(
     for i, mes in enumerate(MESES):
         factor = factores[i]
         horas_mes = horas_dia * dias_mes
-        producto_kg = throughput_max_kg_h * horas_mes * factor
+        producto_kg = throughput_max_kg_h * horas_mes * factor * yield_proceso
         costo_clp = producto_kg * costo_unitario_clp_kg
         out.append({
             "mes": mes,
@@ -258,8 +278,11 @@ def simular_planta(
                                 params, periodo)
         maquinas_sim.append(sim)
 
-    # Output planta: producto del bottleneck (limita todo)
-    producto_total = throughput_planta * horas_periodo
+    # Output planta: throughput del bottleneck x yield del proceso completo.
+    # El bottleneck define cuanta MMPP pasa por la linea, pero el producto
+    # terminado es menor por la perdida de masa (secado, separaciones, etc).
+    yield_proceso = _yield_proceso_completo()
+    producto_total = throughput_planta * horas_periodo * yield_proceso
     kwh_totales = sum(m.kwh_consumidos for m in maquinas_sim)
     costo_electrico = sum(m.costo_electrico_clp for m in maquinas_sim)
     costo_arriendo = sum(m.costo_arriendo_clp for m in maquinas_sim)
@@ -271,7 +294,7 @@ def simular_planta(
     if periodo in ("ano", "mes"):
         timeline = _timeline_mensual_estacional(
             throughput_planta, horas_operacion_dia, dias_operacion_mes,
-            costo_unitario, mmpp_principal,
+            costo_unitario, mmpp_principal, yield_proceso,
         )
 
     return SimulacionTemporal(

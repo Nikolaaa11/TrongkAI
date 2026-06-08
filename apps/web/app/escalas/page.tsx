@@ -159,13 +159,13 @@ export default function EscalasPage() {
       <section className="rounded-2xl bg-blue-50 border-l-4 border-blue-500 p-5">
         <h3 className="text-lg font-bold text-blue-900">💡 Insight estratégico</h3>
         <p className="mt-2 text-sm text-blue-900">
-          El <strong>piloto solo</strong> no es rentable: el arriendo del PEF ($18.5M/mes) y el bajo throughput (25 kg/h limitado por la prensa) generan costos altos por kg.
+          El <strong>piloto solo</strong> no es rentable: arriendo PEF ($18.5M/mes) + bajo throughput (prensa 25 kg/h) + yield real ~27.5% generan costo unitario alto.
         </p>
         <p className="mt-2 text-sm text-blue-900">
-          A partir de <strong>x10 (1.000 t/año)</strong> ya entra en márgenes positivos. A escala industrial <strong>x100 (10.000 t/año)</strong> el margen llega a 70% y payback &lt; 1 año.
+          <strong>El SKU define la rentabilidad:</strong> la harina animal ($1.400/kg) es commodity de bajo margen incluso a escala. El negocio rentable está en <strong>SKU de alto valor</strong>: ingrediente humano ($4.500/kg, rentable desde x10) y nutracéutico premium ($12.000/kg, rentable ya en piloto). Cambiá el SKU arriba para verlo.
         </p>
         <p className="mt-2 text-sm text-blue-900">
-          <strong>Camino sugerido:</strong> piloto para validar + ampliar prensa principal (cuello de botella) → ramping a industrial.
+          <strong>Camino sugerido:</strong> piloto valida calidad + foco comercial en SKU premium → ampliar prensa (cuello de botella) → ramping industrial.
         </p>
       </section>
 
