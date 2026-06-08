@@ -2204,6 +2204,12 @@ def variables_matrix_endpoint() -> dict:
 # ----- Investment Readiness Score -----
 
 
+@cached_ttl(seconds=600)  # 10 min - Monte Carlo es caro
+def _readiness_cached(n_sims_mc: int) -> dict:
+    from .readiness_score import calcular_readiness_score
+    return calcular_readiness_score(n_sims_mc=n_sims_mc).to_dict()
+
+
 @app.get(
     "/readiness/score",
     tags=["meta"],
@@ -2215,12 +2221,6 @@ def variables_matrix_endpoint() -> dict:
         "Score ≥ 80: bankable. 60-79: prometedor. 40-59: oportunidad. <40: re-think."
     ),
 )
-@cached_ttl(seconds=600)  # 10 min - Monte Carlo es caro
-def _readiness_cached(n_sims_mc: int) -> dict:
-    from .readiness_score import calcular_readiness_score
-    return calcular_readiness_score(n_sims_mc=n_sims_mc).to_dict()
-
-
 def readiness_score_endpoint(n_sims_mc: int = 500, save_history: bool = False) -> dict:
     from .readiness_history import add_snapshot
 

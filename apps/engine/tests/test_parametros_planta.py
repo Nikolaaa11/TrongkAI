@@ -194,3 +194,43 @@ def test_costeo_to_dict_serializable():
     r = computar_costeo_completo()
     s = json.dumps(r)
     assert "costos_etapas" in r
+
+
+# =========================
+# Regresion: persistencia + endpoints (bugs 2026-06)
+# =========================
+def test_regresion_persistencia_parametros(tmp_path, monkeypatch):
+    """REGRESION: actualizar_parametros debe persistir (no caer al seed).
+
+    Bug: SueldoCargo(**s) recibia campo computado costo_hora_clp -> excepcion
+    -> cargar_parametros devolvia el seed perdiendo el cambio.
+    """
+    import trongkai_engine.balances.parametros_planta as pp
+    # Redirige el storage a tmp para no tocar datos reales
+    monkeypatch.setattr(pp, "data_path", lambda f: tmp_path / f)
+    pp.actualizar_parametros({"energia": {"tarifa_energia_resto_clp_kwh": 77.0}})
+    recargado = pp.cargar_parametros()
+    assert recargado.energia.tarifa_energia_resto_clp_kwh == 77.0
+
+
+def test_regresion_sueldos_con_campos_computados(tmp_path, monkeypatch):
+    """REGRESION: cargar sueldos con costo_hora_clp en el JSON no debe romper."""
+    import trongkai_engine.balances.parametros_planta as pp
+    monkeypatch.setattr(pp, "data_path", lambda f: tmp_path / f)
+    p = pp.parametros_seed()
+    pp.guardar_parametros(p)   # to_dict agrega costo_hora_clp
+    recargado = pp.cargar_parametros()
+    assert len(recargado.sueldos) == len(p.sueldos)   # no cayo al seed por error
+
+
+def test_regresion_readiness_score_endpoint_sin_params():
+    """REGRESION: /readiness/score debe responder 200 sin query params.
+
+    Bug: @app.get decoraba _readiness_cached (n_sims_mc sin default) -> 422.
+    """
+    from fastapi.testclient import TestClient
+    from trongkai_engine.main import app
+    c = TestClient(app)
+    r = c.get("/readiness/score")
+    assert r.status_code == 200
+    assert "score_total" in r.json() or "score" in str(r.json())

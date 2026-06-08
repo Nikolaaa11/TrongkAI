@@ -253,8 +253,13 @@ def cargar_parametros() -> ParametrosPlanta:
         return parametros_seed()
     try:
         data = json.loads(p.read_text(encoding="utf-8"))
-        # Reconstruir dataclasses anidados
-        sueldos = [SueldoCargo(**s) for s in data.get("sueldos", [])]
+        # Reconstruir dataclasses anidados.
+        # Filtrar campos computados (ej: costo_hora_clp es @property, no del constructor).
+        sueldos = [
+            SueldoCargo(**{k: v for k, v in s.items()
+                           if k in SueldoCargo.__dataclass_fields__})
+            for s in data.get("sueldos", [])
+        ]
         return ParametrosPlanta(
             sueldos=sueldos or sueldos_seed(),
             energia=TarifaEnergia(**{k: v for k, v in data.get("energia", {}).items()
