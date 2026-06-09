@@ -107,53 +107,39 @@ def computar_prediccion(
 ) -> PrediccionIntervalos:
     """Monte Carlo de las predicciones clave con bandas de confianza."""
     from .simulacion_revenue import PRECIOS_VENTA_DEFAULT
-    from .simulador_temporal import _yield_proceso_completo, _equipos_linea_productiva, _detectar_bottleneck
-    from .fichas_equipos import cargar_fichas
-    from .parametros_planta import cargar_parametros
+    from .simulacion_revenue import simular_con_revenue
 
     rng = random.Random(_SEED)
-    params = cargar_parametros()
 
-    # Inputs con su valor esperado, incertidumbre y unidad
-    yield_base = _yield_proceso_completo()
-    precio_base = PRECIOS_VENTA_DEFAULT.get(sku_principal, 1400.0)
+    # ANCLA: usar el simulador real como valor esperado (coherencia total).
+    # La incertidumbre se aplica como factores relativos alrededor del ancla,
+    # no recalculando el costo con una formula propia.
+    base = simular_con_revenue(periodo="ano", sku_principal=sku_principal)
+    producto_base_kg = base.producto_total_kg
+    costo_base_total = base.costo_total_clp
+    precio_base = base.precio_venta_clp_kg
 
-    # Bottleneck capacidad (nominal -> +-10% extra por ser "referencial")
-    fichas = cargar_fichas()
-    linea = _equipos_linea_productiva(fichas)
-    cap_bottleneck, _ = _detectar_bottleneck(linea)
-    cap_bottleneck = cap_bottleneck or throughput_kg_h
+    # Drivers e incertidumbre (factor relativo sobre el ancla):
+    # - yield: PROVISORIO + clima -> afecta producto
+    # - capacidad bottleneck: nominal/referencial -> afecta producto
+    # - precio venta: PD -> afecta revenue
+    # - costo operativo (arriendo PEF PD + energia PROVISORIO): -> afecta costo
+    incert_yield = INCERTIDUMBRE_NIVEL["OK_PROVISORIO"] + 0.10
+    incert_cap = INCERTIDUMBRE_NIVEL["OK_VALIDADO"] + 0.10
+    incert_precio = INCERTIDUMBRE_NIVEL["PD"]
+    # Costo: combina arriendo PEF (PD, ~55% del costo) + energia (PROV) + resto (PROV)
+    incert_costo = INCERTIDUMBRE_NIVEL["PD"] * 0.55 + INCERTIDUMBRE_NIVEL["OK_PROVISORIO"] * 0.45
 
-    # Niveles de validacion de los drivers principales
-    # yield -> proviene de SKU (PROVISORIO), capacidad -> nominal, precio -> PD,
-    # arriendo PEF -> PD, tarifa energia -> PROVISORIO, calor residual -> PD
-    drivers_cfg = [
-        ("yield_proceso", yield_base, INCERTIDUMBRE_NIVEL["OK_PROVISORIO"] + 0.10, ""),  # +clima
-        ("capacidad_bottleneck", cap_bottleneck, INCERTIDUMBRE_NIVEL["OK_VALIDADO"] + 0.10, "kg/h"),  # nominal
-        ("precio_venta", precio_base, INCERTIDUMBRE_NIVEL["PD"], "CLP/kg"),
-        ("arriendo_pef", params.arriendos.arriendo_pef_clp_mes, INCERTIDUMBRE_NIVEL["PD"], "CLP/mes"),
-        ("tarifa_energia", params.energia.tarifa_promedio_clp_kwh, INCERTIDUMBRE_NIVEL["OK_PROVISORIO"], "CLP/kWh"),
-    ]
-
-    horas_ano = 16 * 25 * 10   # 4000 h/año
-
-    # Acumular muestras de outputs
     out_producto, out_costo_unit, out_revenue, out_margen = [], [], [], []
-    # Para drivers de incertidumbre: cuanto varia el margen por cada input
     for _ in range(n_sims):
-        y = _triangular(rng, drivers_cfg[0][1], drivers_cfg[0][2])
-        cap = _triangular(rng, drivers_cfg[1][1], drivers_cfg[1][2])
-        precio = _triangular(rng, drivers_cfg[2][1], drivers_cfg[2][2])
-        arriendo = _triangular(rng, drivers_cfg[3][1], drivers_cfg[3][2])
-        tarifa = _triangular(rng, drivers_cfg[4][1], drivers_cfg[4][2])
+        f_yield = _triangular(rng, 1.0, incert_yield)
+        f_cap = _triangular(rng, 1.0, incert_cap)
+        f_precio = _triangular(rng, 1.0, incert_precio)
+        f_costo = _triangular(rng, 1.0, incert_costo)
 
-        producto_kg = cap * horas_ano * y
-        # Costo: arriendo anual + energia (proporcional a tarifa) + base operativa
-        kwh_ano = cap * horas_ano * 0.5   # ~0.5 kWh/kg promedio linea
-        costo_energia = kwh_ano * tarifa
-        costo_arriendo = arriendo * 10    # 10 meses operativos
-        costo_base = producto_kg * 800     # MO + materiales + agua aprox CLP/kg
-        costo_total = costo_energia + costo_arriendo + costo_base
+        producto_kg = producto_base_kg * f_yield * f_cap
+        costo_total = costo_base_total * f_costo
+        precio = precio_base * f_precio
         costo_unit = costo_total / max(producto_kg, 1)
         revenue = producto_kg * precio
         margen = revenue - costo_total
@@ -163,19 +149,21 @@ def computar_prediccion(
         out_revenue.append(revenue / 1e6)          # M CLP
         out_margen.append(margen / 1e6)            # M CLP
 
+    # Valores esperados ANCLADOS al simulador (no la media del sampleo)
+    esperado_producto = producto_base_kg / 1000
+    esperado_costo_unit = costo_base_total / max(producto_base_kg, 1)
+    esperado_revenue = (producto_base_kg * precio_base) / 1e6
+    esperado_margen = (producto_base_kg * precio_base - costo_base_total) / 1e6
+
     bandas = {
         "produccion_t_ano": _banda_desde_muestras(
-            "Producción anual", out_producto,
-            sum(out_producto) / len(out_producto), "t/año").to_dict(),
+            "Producción anual", out_producto, esperado_producto, "t/año").to_dict(),
         "costo_unitario_clp_kg": _banda_desde_muestras(
-            "Costo unitario", out_costo_unit,
-            sum(out_costo_unit) / len(out_costo_unit), "CLP/kg").to_dict(),
+            "Costo unitario", out_costo_unit, esperado_costo_unit, "CLP/kg").to_dict(),
         "revenue_anual_mclp": _banda_desde_muestras(
-            "Revenue anual", out_revenue,
-            sum(out_revenue) / len(out_revenue), "M CLP").to_dict(),
+            "Revenue anual", out_revenue, esperado_revenue, "M CLP").to_dict(),
         "margen_anual_mclp": _banda_desde_muestras(
-            "Margen anual", out_margen,
-            sum(out_margen) / len(out_margen), "M CLP").to_dict(),
+            "Margen anual", out_margen, esperado_margen, "M CLP").to_dict(),
     }
 
     # Margen de error global = promedio de los margenes de error de las bandas clave
@@ -191,18 +179,16 @@ def computar_prediccion(
     except Exception:
         confianza = 64.0
 
-    # Drivers de incertidumbre: ranking por incertidumbre relativa x peso
+    # Drivers de incertidumbre: ranking por incertidumbre relativa
     drivers_rank = [
-        {"input": "Precio venta", "incertidumbre_pct": round(drivers_cfg[2][2] * 100),
+        {"input": "Precio venta", "incertidumbre_pct": round(incert_precio * 100),
          "razon": "Sin cotizaciones firmes (PD). Driver #1 del revenue."},
-        {"input": "Arriendo PEF", "incertidumbre_pct": round(drivers_cfg[3][2] * 100),
-         "razon": "Cotización final pendiente (PD). Mayor costo fijo."},
-        {"input": "Yield proceso", "incertidumbre_pct": round(drivers_cfg[0][2] * 100),
+        {"input": "Costo operativo (arriendo PEF + energía)", "incertidumbre_pct": round(incert_costo * 100),
+         "razon": "Arriendo PEF sin cotización final (PD) + tarifa energía estimada."},
+        {"input": "Yield proceso", "incertidumbre_pct": round(incert_yield * 100),
          "razon": "MSF de literatura + variabilidad por humedad/clima."},
-        {"input": "Capacidad bottleneck", "incertidumbre_pct": round(drivers_cfg[1][2] * 100),
+        {"input": "Capacidad bottleneck", "incertidumbre_pct": round(incert_cap * 100),
          "razon": "Capacidad nominal/referencial (doc Talca V2)."},
-        {"input": "Tarifa energía", "incertidumbre_pct": round(drivers_cfg[4][2] * 100),
-         "razon": "Estimación CGE, falta factura real."},
     ]
     drivers_rank.sort(key=lambda d: -d["incertidumbre_pct"])
 

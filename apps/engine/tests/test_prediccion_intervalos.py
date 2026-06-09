@@ -73,3 +73,25 @@ def test_to_dict_serializable():
     import json
     p = computar_prediccion(n_sims=500)
     json.dumps(p.to_dict())
+
+
+def test_coherencia_costo_anclado_al_simulador():
+    """REGRESION: el costo esperado de prediccion DEBE coincidir con el
+    costo del simulador_revenue (anclaje, no formula propia)."""
+    from trongkai_engine.balances.simulacion_revenue import simular_con_revenue
+    for sku in ["harina_animal_premium", "nutraceutico_premium", "ingrediente_humano"]:
+        sim = simular_con_revenue(periodo="ano", sku_principal=sku)
+        pred = computar_prediccion(sku_principal=sku, n_sims=1000)
+        cu_sim = sim.costo_unitario_clp_kg
+        cu_pred = pred.bandas["costo_unitario_clp_kg"]["esperado"]
+        assert abs(cu_sim - cu_pred) < 1.0, f"{sku}: sim={cu_sim} != pred={cu_pred}"
+
+
+def test_coherencia_producto_anclado():
+    """El producto esperado de prediccion coincide con el simulador."""
+    from trongkai_engine.balances.simulacion_revenue import simular_con_revenue
+    sim = simular_con_revenue(periodo="ano")
+    pred = computar_prediccion(n_sims=1000)
+    p_sim = sim.producto_total_kg / 1000
+    p_pred = pred.bandas["produccion_t_ano"]["esperado"]
+    assert abs(p_sim - p_pred) < 0.1
