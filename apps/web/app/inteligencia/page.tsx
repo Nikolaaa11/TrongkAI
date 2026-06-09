@@ -55,14 +55,30 @@ type Precision = {
   resumen: string;
 };
 
+type Banda = { nombre: string; esperado: number; p10: number; p50: number; p90: number; unidad: string; margen_error_pct: number };
+type Prediccion = {
+  n_simulaciones: number;
+  bandas: Record<string, Banda>;
+  margen_error_global_pct: number;
+  nivel_confianza_modelo_pct: number;
+  interpretacion: string;
+  drivers_incertidumbre: { input: string; incertidumbre_pct: number; razon: string }[];
+};
+
 export default function InteligenciaPage() {
   const [data, setData] = useState<Sintesis | null>(null);
   const [precision, setPrecision] = useState<Precision | null>(null);
+  const [prediccion, setPrediccion] = useState<Prediccion | null>(null);
+  const [skuPred, setSkuPred] = useState('nutraceutico_premium');
   const [filtroTipo, setFiltroTipo] = useState<string>('todos');
 
   useEffect(() => {
     fetch(`${ENGINE_URL}/inteligencia/precision`).then((r) => r.json()).then(setPrecision).catch(() => {});
   }, []);
+
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/inteligencia/prediccion?sku_principal=${skuPred}`).then((r) => r.json()).then(setPrediccion).catch(() => {});
+  }, [skuPred]);
 
   useEffect(() => {
     fetch(`${ENGINE_URL}/inteligencia/sintesis`).then((r) => r.json()).then(setData);
@@ -224,6 +240,78 @@ export default function InteligenciaPage() {
           ))}
         </div>
       </section>
+
+      {/* PREDICCIÓN CON BANDAS DE CONFIANZA */}
+      {prediccion && (
+        <section className="rounded-2xl border-2 border-blue-200 bg-gradient-to-br from-blue-50/40 to-white p-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold">🔮 Predicción con bandas de confianza</h2>
+              <p className="text-sm text-ink-500 mt-1">
+                {prediccion.n_simulaciones.toLocaleString()} simulaciones Monte Carlo · margen de error ±{prediccion.margen_error_global_pct.toFixed(0)}%
+              </p>
+            </div>
+            <select value={skuPred} onChange={(e) => setSkuPred(e.target.value)}
+              className="rounded border border-ink-200 px-3 py-2 text-sm">
+              <option value="harina_animal_basica">Harina animal básica</option>
+              <option value="harina_animal_premium">Harina animal premium</option>
+              <option value="ingrediente_humano">Ingrediente humano</option>
+              <option value="nutraceutico_premium">Nutracéutico premium</option>
+            </select>
+          </div>
+
+          {/* Bandas como rangos visuales */}
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            {Object.entries(prediccion.bandas).map(([k, b]) => {
+              const rango = b.p90 - b.p10;
+              const posEsperado = rango > 0 ? ((b.esperado - b.p10) / rango) * 100 : 50;
+              const fmt = (v: number) => b.unidad.includes('CLP/kg') || b.unidad.includes('M CLP')
+                ? v.toLocaleString(undefined, { maximumFractionDigits: 0 })
+                : v.toLocaleString(undefined, { maximumFractionDigits: 1 });
+              return (
+                <div key={k} className="rounded-xl border border-ink-100 bg-white p-4">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-sm font-semibold">{b.nombre}</span>
+                    <span className="text-xs text-ink-400">±{(b.margen_error_pct * 100).toFixed(0)}%</span>
+                  </div>
+                  <p className="mt-1 text-2xl font-bold tabular">
+                    {fmt(b.esperado)} <span className="text-sm font-normal text-ink-400">{b.unidad}</span>
+                  </p>
+                  {/* Barra de rango p10-p90 */}
+                  <div className="mt-3 relative h-2 rounded-full bg-gradient-to-r from-orange-200 via-yellow-200 to-brand-50">
+                    <div className="absolute top-1/2 -translate-y-1/2 w-2 h-4 rounded bg-ink" style={{ left: `calc(${Math.max(0, Math.min(100, posEsperado))}% - 4px)` }} />
+                  </div>
+                  <div className="mt-1 flex justify-between text-[10px] text-ink-400 tabular">
+                    <span>p10: {fmt(b.p10)}</span>
+                    <span>p90: {fmt(b.p90)}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Drivers de incertidumbre */}
+          <div className="mt-5">
+            <p className="text-xs font-semibold uppercase tracking-wider text-ink-500 mb-2">
+              ⚡ Qué reduce más el margen de error (validar en este orden)
+            </p>
+            <div className="space-y-1.5">
+              {prediccion.drivers_incertidumbre.slice(0, 4).map((d, i) => (
+                <div key={i} className="flex items-center gap-3 text-sm">
+                  <span className="rounded-full bg-blue-100 text-blue-700 text-xs font-bold w-6 h-6 flex items-center justify-center shrink-0">{i + 1}</span>
+                  <span className="font-medium w-40 shrink-0">{d.input}</span>
+                  <div className="flex-1 h-1.5 rounded-full bg-ink-100">
+                    <div className="h-full rounded-full bg-orange-400" style={{ width: `${Math.min(100, d.incertidumbre_pct * 2)}%` }} />
+                  </div>
+                  <span className="text-xs text-ink-400 w-12 text-right">±{d.incertidumbre_pct}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-4 text-sm text-blue-900 bg-blue-50/60 rounded-lg p-3">{prediccion.interpretacion}</p>
+        </section>
+      )}
 
       {/* Plan acción top 5 */}
       <section>

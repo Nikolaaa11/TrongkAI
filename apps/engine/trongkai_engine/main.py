@@ -2840,3 +2840,22 @@ def inteligencia_insights_endpoint(severidad: str | None = None, tipo: str | Non
 def inteligencia_precision_endpoint() -> dict:
     from .balances.precision_tracker import computar_precision
     return computar_precision().to_dict()
+
+
+@app.get(
+    "/inteligencia/prediccion",
+    tags=["inteligencia"],
+    summary="Predicción con bandas de confianza (p10/esperado/p90) + margen de error",
+    description="Monte Carlo que propaga la incertidumbre de cada input (según su "
+                "nivel de validación) a las predicciones clave. Reporta rango y margen "
+                "de error, no un número falsamente preciso.",
+)
+@cached_ttl(seconds=120)
+def inteligencia_prediccion_endpoint(
+    sku_principal: str = "harina_animal_premium",
+    n_sims: int = 3000,
+) -> dict:
+    from .balances.prediccion_intervalos import computar_prediccion
+    if n_sims < 500 or n_sims > 10000:
+        raise HTTPException(400, "n_sims debe estar entre 500 y 10000")
+    return computar_prediccion(sku_principal=sku_principal, n_sims=n_sims).to_dict()

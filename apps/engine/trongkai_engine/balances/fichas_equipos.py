@@ -181,20 +181,24 @@ def fichas_seed() -> list[FichaEquipo]:
             nivel_dato="OK_VALIDADO",
         ),
 
-        # ===== 4. SECADO =====
+        # ===== 4. SECADO (POR BATCH, no continuo - doc Talca V2) =====
         FichaEquipo(
             id="SECADOR_IKE_WRH300",
-            nombre="Secador deshidratador IKE WRH-300",
+            nombre="Secador deshidratador IKE WRH-300 (batch)",
             tipo="secador",
             etapa_asociada="E6A_DESHIDRATACION_PRINCIPAL",
             proveedor="IKE",
             modelo="WRH-300",
-            capacidad_kg_h=300.0,
-            capacidad_unidad="kg/h (0.30 ton/h)",
+            capacidad_kg_h=75.0,   # 0.30 ton/batch / ~4h ciclo = 75 kg/h equivalente
+            capacidad_unidad="0.30 ton/batch (~75 kg/h equiv. a 4h/ciclo)",
             potencia_kw=7.5,
-            notas="Deshidratador. Compatible con calor residual La Gloria.",
+            notas=(
+                "OPERA POR BATCH (doc Talca V2): 0.30 ton por carga, no flujo continuo. "
+                "Capacidad continua equivalente ~75 kg/h asumiendo ciclo 4h. "
+                "SEGUNDO cuello de botella tras la prensa. Compatible calor residual La Gloria."
+            ),
             foto_url="/equipos/Deshidratador.jpeg",
-            nivel_dato="OK_VALIDADO",
+            nivel_dato="OK_PROVISORIO",   # el tiempo de ciclo real falta validar
         ),
 
         # ===== 5. MOLIENDA =====
