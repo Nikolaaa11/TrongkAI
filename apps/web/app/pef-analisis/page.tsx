@@ -121,7 +121,8 @@ export default function PEFAnalisisPage() {
         <p className="mt-2 text-sm text-yellow-900">
           Como La Gloria entrega calor residual a precio simbólico ($5 CLP/kWh vs $110 eléctrico),
           el ahorro por reducir tiempo de secado es <strong>marginal</strong>.
-          El PEF (arriendo ~$18.5M CLP/mes) solo se justifica si genera <strong>uplift de yield</strong> y/o
+          El PEF (arriendo mensual fijo — valor vigente en <a href="/parametros" className="underline">Parámetros</a>) solo
+          se justifica si genera <strong>uplift de yield</strong> y/o
           <strong> premium price</strong> por calidad/bioactivos preservados.
         </p>
         <p className="mt-2 text-sm font-semibold text-yellow-900">

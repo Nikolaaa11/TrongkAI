@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ConectadoCon } from '@/components/ConectadoCon';
+import { CalidadDato } from '@/components/CalidadDato';
 import { useEffect, useState } from 'react';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
@@ -75,6 +76,9 @@ export default function CosteoPage() {
           MO + energía + calor residual + agua + materiales + arriendo. Usa los <Link className="text-brand underline" href="/parametros">parámetros</Link> actuales.
         </p>
       </header>
+
+      {/* Calidad del dato (FASE D super-prompt) */}
+      <CalidadDato />
 
       {/* Slider */}
       <section className="rounded-2xl border border-ink-100 bg-white p-6">

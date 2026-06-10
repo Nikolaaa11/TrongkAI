@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ConectadoCon } from '@/components/ConectadoCon';
+import { CalidadDato } from '@/components/CalidadDato';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -113,6 +114,9 @@ export default function SimulacionPage() {
         <KPI label="Costo unitario" valor={`$${data.costo_unitario_clp_kg.toLocaleString()} CLP/kg`} sub={`USD $${(data.costo_unitario_clp_kg / 920).toFixed(2)}/kg`} />
         <KPI label="kWh totales" valor={`${data.kwh_totales.toLocaleString()}`} sub={`${data.horas_totales_periodo.toLocaleString()} h operación`} />
       </div>
+
+      {/* Calidad del dato (FASE D super-prompt) */}
+      <CalidadDato />
 
       {/* Bottleneck */}
       <section className="rounded-2xl bg-orange-50 border-l-4 border-orange-500 p-5">

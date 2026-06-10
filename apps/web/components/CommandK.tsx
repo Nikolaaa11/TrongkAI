@@ -16,7 +16,7 @@ const ITEMS: SearchItem[] = [
   { label: 'Centro de Mando', href: '/comando', category: 'Dashboard', icon: '⚡', keywords: ['cockpit', 'home', 'inicio', 'overview'] },
   { label: '🧠 Inteligencia (síntesis)', href: '/inteligencia', category: 'Dashboard', icon: '🧠', keywords: ['insights', 'plan accion', 'oportunidades', 'amenazas'] },
   { label: 'Dashboard Directorio', href: '/dashboard-directorio', category: 'Dashboard', icon: '📊', keywords: ['lp', 'roadshow', 'ejecutivo'] },
-  { label: 'Investment Readiness', href: '/readiness', category: 'Dashboard', icon: '💯', keywords: ['score', '84.7', 'bankable'] },
+  { label: 'Investment Readiness', href: '/readiness', category: 'Dashboard', icon: '💯', keywords: ['score', 'madurez', 'bankable'] },
   // ===== Análisis financiero =====
   { label: 'Plan 5 años', href: '/plan', category: 'Financiero', icon: '📈', keywords: ['eerr', 'tir', 'van', 'monte carlo', 'tornado'] },
   { label: 'Sensibilidad 2D', href: '/sensitivity', category: 'Financiero', icon: '🌡', keywords: ['heatmap', 'precio', 'costo', 'breakeven'] },

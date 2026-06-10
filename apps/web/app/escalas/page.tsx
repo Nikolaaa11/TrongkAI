@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ConectadoCon } from '@/components/ConectadoCon';
+import { CalidadDato } from '@/components/CalidadDato';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -64,6 +65,9 @@ export default function EscalasPage() {
           ¿Qué pasa si la planta crece x10, x50, x100? Curva 80% costo + Williams 0.7 CAPEX.
         </p>
       </header>
+
+      {/* Calidad del dato (FASE D super-prompt) */}
+      <CalidadDato />
 
       {/* Controles */}
       <section className="rounded-2xl border border-ink-100 bg-white p-6 space-y-5">
