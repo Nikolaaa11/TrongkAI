@@ -66,3 +66,7 @@ inbox/**/*
 !inbox/**/README.md
 !inbox/_index.json
 !inbox/README.md
+
+# build artifacts
+apps/web/tsconfig.tsbuildinfo
+*.tsbuildinfo

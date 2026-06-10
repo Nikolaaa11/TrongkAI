@@ -25,8 +25,19 @@ type Sim = {
   kwh_totales: number;
   costo_electrico_total_clp: number;
   costo_arriendo_total_clp: number;
+  costo_labor_total_clp: number;
+  costo_agua_total_clp: number;
+  costo_flete_total_clp: number;
   costo_total_clp: number;
   costo_unitario_clp_kg: number;
+  mmpp_total_kg: number;
+  meses_equivalentes: number;
+  desglose_opex: {
+    energia_clp: number; arriendo_clp: number; labor_clp: number; agua_clp: number;
+    flete_mmpp_clp: number; calor_residual_clp: number; total_clp: number;
+    m3_agua: number; ton_mmpp: number; labor_headcount: number;
+    arriendo_clp_mes: number; labor_clp_mes: number;
+  };
   maquinas: Maquina[];
   timeline_mensual: { mes: string; factor_estacional: number; producto_kg: number; costo_clp: number; operativo: boolean }[];
 };
@@ -112,6 +123,53 @@ export default function SimulacionPage() {
           Todas las máquinas aguas arriba operan subutilizadas por este equipo. Ampliar capacidad acá libera el resto.
         </p>
       </section>
+
+      {/* Desglose OPEX completo */}
+      {data.desglose_opex && (
+        <section>
+          <h2 className="mb-1 text-xl font-bold">💰 Composición del costo (OPEX completo)</h2>
+          <p className="mb-4 text-sm text-ink-500">
+            {data.desglose_opex.ton_mmpp.toLocaleString()} t MMPP → {(data.producto_total_kg / 1000).toFixed(1)} t producto ·
+            {' '}{data.meses_equivalentes.toFixed(1)} meses-equivalentes · planilla {data.desglose_opex.labor_headcount} personas
+          </p>
+          <div className="rounded-xl border border-ink-100 bg-white p-5 space-y-3">
+            {([
+              ['Arriendo PEF + Tricanter', data.desglose_opex.arriendo_clp, 'bg-brand', `$${(data.desglose_opex.arriendo_clp_mes / 1e6).toFixed(1)}M/mes fijo`],
+              ['Mano de obra', data.desglose_opex.labor_clp, 'bg-blue-500', `$${(data.desglose_opex.labor_clp_mes / 1e6).toFixed(1)}M/mes · ${data.desglose_opex.labor_headcount} pers`],
+              ['Energía eléctrica', data.desglose_opex.energia_clp, 'bg-amber-500', `${data.kwh_totales.toLocaleString()} kWh`],
+              ['Agua', data.desglose_opex.agua_clp, 'bg-cyan-500', `${data.desglose_opex.m3_agua.toLocaleString()} m³`],
+              ['Flete MMPP', data.desglose_opex.flete_mmpp_clp, 'bg-purple-500', `${data.desglose_opex.ton_mmpp} t`],
+              ['Calor residual La Gloria', data.desglose_opex.calor_residual_clp, 'bg-ink-400', 'fee servicio'],
+            ] as [string, number, string, string][]).filter(([, v]) => v > 0).map(([label, val, color, hint]) => {
+              const pct = (val / data.costo_total_clp) * 100;
+              return (
+                <div key={label} className="grid grid-cols-12 items-center gap-3 text-sm">
+                  <div className="col-span-3 font-medium">{label}</div>
+                  <div className="col-span-5">
+                    <div className="h-6 overflow-hidden rounded-full bg-ink-50">
+                      <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
+                    </div>
+                  </div>
+                  <div className="col-span-1 text-right tabular font-semibold">{pct.toFixed(0)}%</div>
+                  <div className="col-span-2 text-right tabular">${(val / 1e6).toFixed(1)}M</div>
+                  <div className="col-span-1 text-right text-xs text-ink-400 truncate" title={hint}>{hint}</div>
+                </div>
+              );
+            })}
+            <div className="grid grid-cols-12 items-center gap-3 border-t border-ink-100 pt-3 text-sm">
+              <div className="col-span-3 font-bold">Total OPEX</div>
+              <div className="col-span-5" />
+              <div className="col-span-1 text-right font-bold">100%</div>
+              <div className="col-span-2 text-right tabular font-bold text-brand">${(data.costo_total_clp / 1e6).toFixed(1)}M</div>
+              <div className="col-span-1" />
+            </div>
+          </div>
+          <p className="mt-3 text-xs text-ink-400">
+            OPEX completo: arriendo + mano de obra (leyes sociales) + energía + agua + flete MMPP.
+            Editá los valores en <a href="/parametros" className="text-brand underline">Parámetros</a>.
+          </p>
+        </section>
+      )}
 
       {/* Timeline mensual */}
       {data.timeline_mensual.length > 0 && (

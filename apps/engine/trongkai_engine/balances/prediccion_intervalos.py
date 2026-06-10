@@ -183,8 +183,8 @@ def computar_prediccion(
     drivers_rank = [
         {"input": "Precio venta", "incertidumbre_pct": round(incert_precio * 100),
          "razon": "Sin cotizaciones firmes (PD). Driver #1 del revenue."},
-        {"input": "Costo operativo (arriendo PEF + energía)", "incertidumbre_pct": round(incert_costo * 100),
-         "razon": "Arriendo PEF sin cotización final (PD) + tarifa energía estimada."},
+        {"input": "Costo operativo (arriendo PEF + mano de obra + energía)", "incertidumbre_pct": round(incert_costo * 100),
+         "razon": "Arriendo PEF ~61% del costo (PD) + planilla 8 personas + energía/agua estimadas."},
         {"input": "Yield proceso", "incertidumbre_pct": round(incert_yield * 100),
          "razon": "MSF de literatura + variabilidad por humedad/clima."},
         {"input": "Capacidad bottleneck", "incertidumbre_pct": round(incert_cap * 100),

@@ -86,6 +86,13 @@ class SimulacionTemporal:
     costo_unitario_clp_kg: float
     # Por maquina
     maquinas: list[ProduccionMaquina]
+    # MMPP procesada (entrada) y OPEX completo
+    mmpp_total_kg: float = 0.0
+    costo_labor_total_clp: float = 0.0
+    costo_agua_total_clp: float = 0.0
+    costo_flete_total_clp: float = 0.0
+    meses_equivalentes: float = 0.0
+    desglose_opex: dict = field(default_factory=dict)
     # Para periodos largos: timeline mensual con estacionalidad
     timeline_mensual: list[dict] = field(default_factory=list)
 
@@ -99,11 +106,17 @@ class SimulacionTemporal:
             "bottleneck_equipo": self.bottleneck_equipo,
             "horas_totales_periodo": round(self.horas_totales_periodo, 2),
             "producto_total_kg": round(self.producto_total_kg, 2),
+            "mmpp_total_kg": round(self.mmpp_total_kg, 2),
             "kwh_totales": round(self.kwh_totales, 2),
             "costo_electrico_total_clp": round(self.costo_electrico_total_clp, 0),
             "costo_arriendo_total_clp": round(self.costo_arriendo_total_clp, 0),
+            "costo_labor_total_clp": round(self.costo_labor_total_clp, 0),
+            "costo_agua_total_clp": round(self.costo_agua_total_clp, 0),
+            "costo_flete_total_clp": round(self.costo_flete_total_clp, 0),
             "costo_total_clp": round(self.costo_total_clp, 0),
             "costo_unitario_clp_kg": round(self.costo_unitario_clp_kg, 2),
+            "meses_equivalentes": round(self.meses_equivalentes, 2),
+            "desglose_opex": self.desglose_opex,
             "maquinas": [m.to_dict() for m in self.maquinas],
             "timeline_mensual": self.timeline_mensual,
         }
@@ -247,6 +260,76 @@ def _timeline_mensual_estacional(
     return out
 
 
+# Consumo de agua fresca de la planta (proceso 3 + lavado/CIP 2, ref. balance agua).
+# Variable con las horas de operacion. m3/h promedio cuando la planta opera.
+AGUA_FRESCA_M3_H = 5.0
+# Fraccion del agua que se descarga como RILE (paga alcantarillado/tratamiento).
+FRAC_DESCARGA_RILE = 0.70
+
+
+def _opex_completo(
+    params: ParametrosPlanta,
+    producto_total_kg: float,
+    mmpp_total_kg: float,
+    costo_electrico: float,
+    horas_periodo: float,
+    meses_equivalentes: float,
+) -> dict:
+    """OPEX completo de la planta para el periodo.
+
+    Suma los 6 componentes reales de costo (no solo energia + arriendo):
+    - Energia electrica (variable, ya calculada por maquina)
+    - Arriendo PEF + Tricanter + otros (FIJO mensual, fuente unica: params.arriendos)
+    - Mano de obra: planilla completa x leyes sociales (FIJO mensual)
+    - Agua: consumo fresco x tarifa pozo industrial + tratamiento RILE (variable)
+    - Flete MMPP de entrada: ton procesadas x CLP/ton (variable)
+    El calor residual de La Gloria entra solo si tiene fee de servicio (>0).
+
+    Convencion: los costos FIJOS (arriendo, labor) se facturan por mes operativo
+    -> se escalan por `meses_equivalentes` (= horas_periodo / horas_mes_referencia),
+    que para el ano default (10 meses x 400 h) da 10 meses.
+    """
+    # --- FIJOS (por mes operativo) ---
+    arriendo_mes = params.arriendos.arriendo_total_clp_mes      # PEF + Tricanter + otros
+    labor_mes = sum(s.costo_total_clp for s in params.sueldos)  # bruto x factor leyes sociales
+    calor_fee_mes = params.calor_residual.costo_servicio_clp_mes
+
+    costo_arriendo = arriendo_mes * meses_equivalentes
+    costo_labor = labor_mes * meses_equivalentes
+    costo_calor = calor_fee_mes * meses_equivalentes
+
+    # --- VARIABLES ---
+    # Agua: m3 fresca x (tarifa pozo industrial + tratamiento de la fraccion descargada)
+    m3_agua = AGUA_FRESCA_M3_H * horas_periodo
+    costo_agua = (
+        m3_agua * params.agua.agua_industrial_clp_m3
+        + m3_agua * FRAC_DESCARGA_RILE * params.agua.alcantarillado_clp_m3
+    )
+    # Flete MMPP de entrada (campos proveedores -> planta)
+    ton_mmpp = mmpp_total_kg / 1000.0
+    costo_flete = ton_mmpp * params.flete.costo_promedio_mmpp_clp_ton
+
+    total = (
+        costo_electrico + costo_arriendo + costo_labor
+        + costo_agua + costo_flete + costo_calor
+    )
+
+    return {
+        "energia_clp": round(costo_electrico, 0),
+        "arriendo_clp": round(costo_arriendo, 0),
+        "labor_clp": round(costo_labor, 0),
+        "agua_clp": round(costo_agua, 0),
+        "flete_mmpp_clp": round(costo_flete, 0),
+        "calor_residual_clp": round(costo_calor, 0),
+        "total_clp": round(total, 0),
+        "m3_agua": round(m3_agua, 1),
+        "ton_mmpp": round(ton_mmpp, 2),
+        "labor_headcount": len(params.sueldos),
+        "arriendo_clp_mes": round(arriendo_mes, 0),
+        "labor_clp_mes": round(labor_mes, 0),
+    }
+
+
 def simular_planta(
     periodo: Periodo = "mes",
     horas_operacion_dia: float = 16.0,
@@ -282,11 +365,25 @@ def simular_planta(
     # El bottleneck define cuanta MMPP pasa por la linea, pero el producto
     # terminado es menor por la perdida de masa (secado, separaciones, etc).
     yield_proceso = _yield_proceso_completo()
-    producto_total = throughput_planta * horas_periodo * yield_proceso
+    mmpp_total = throughput_planta * horas_periodo
+    producto_total = mmpp_total * yield_proceso
     kwh_totales = sum(m.kwh_consumidos for m in maquinas_sim)
     costo_electrico = sum(m.costo_electrico_clp for m in maquinas_sim)
-    costo_arriendo = sum(m.costo_arriendo_clp for m in maquinas_sim)
-    costo_total = costo_electrico + costo_arriendo
+
+    # OPEX COMPLETO: energia + arriendo full + mano de obra + agua + flete MMPP.
+    # Fuente unica de arriendo = params.arriendos (incluye PEF + Tricanter), por eso
+    # NO se suma el arriendo prorrateado por maquina (evita doble conteo y subcuenta).
+    horas_mes_ref = max(horas_operacion_dia * dias_operacion_mes, 1.0)
+    meses_equivalentes = horas_periodo / horas_mes_ref
+    desglose = _opex_completo(
+        params, producto_total, mmpp_total, costo_electrico,
+        horas_periodo, meses_equivalentes,
+    )
+    costo_arriendo = desglose["arriendo_clp"]
+    costo_labor = desglose["labor_clp"]
+    costo_agua = desglose["agua_clp"]
+    costo_flete = desglose["flete_mmpp_clp"]
+    costo_total = desglose["total_clp"]
     costo_unitario = costo_total / max(producto_total, 1)
 
     # Timeline mensual solo para periodo "ano" o "mes"
@@ -312,6 +409,12 @@ def simular_planta(
         costo_total_clp=costo_total,
         costo_unitario_clp_kg=costo_unitario,
         maquinas=maquinas_sim,
+        mmpp_total_kg=mmpp_total,
+        costo_labor_total_clp=costo_labor,
+        costo_agua_total_clp=costo_agua,
+        costo_flete_total_clp=costo_flete,
+        meses_equivalentes=meses_equivalentes,
+        desglose_opex=desglose,
         timeline_mensual=timeline,
     )
 

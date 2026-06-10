@@ -152,3 +152,59 @@ def test_periodo_invalido_levanta():
     # La funcion no valida, devuelve 0 horas
     s = simular_planta(periodo="invalido")    # type: ignore[arg-type]
     assert s.horas_totales_periodo == 0
+
+
+# ===== OPEX COMPLETO (energia + arriendo + labor + agua + flete) =====
+
+def test_opex_incluye_todos_los_componentes():
+    """El OPEX debe incluir mano de obra, agua y flete, no solo energia+arriendo."""
+    s = simular_planta(periodo="ano")
+    assert s.costo_labor_total_clp > 0, "falta mano de obra"
+    assert s.costo_agua_total_clp > 0, "falta agua"
+    assert s.costo_flete_total_clp > 0, "falta flete MMPP"
+    assert s.costo_electrico_total_clp > 0
+    assert s.costo_arriendo_total_clp > 0
+
+
+def test_costo_total_es_suma_del_desglose():
+    """costo_total_clp == suma de los componentes del desglose OPEX."""
+    s = simular_planta(periodo="ano")
+    d = s.desglose_opex
+    suma = (d["energia_clp"] + d["arriendo_clp"] + d["labor_clp"]
+            + d["agua_clp"] + d["flete_mmpp_clp"] + d["calor_residual_clp"])
+    assert abs(suma - s.costo_total_clp) < 2.0
+    assert abs(d["total_clp"] - s.costo_total_clp) < 2.0
+
+
+def test_arriendo_es_fijo_mensual_no_prorateado_por_hora():
+    """Arriendo anual = arriendo_mes * meses_equivalentes (fijo, fuente params)."""
+    from trongkai_engine.balances.parametros_planta import cargar_parametros
+    p = cargar_parametros()
+    s = simular_planta(periodo="ano")
+    esperado = p.arriendos.arriendo_total_clp_mes * s.meses_equivalentes
+    assert abs(s.costo_arriendo_total_clp - esperado) < 2.0
+
+
+def test_labor_escala_con_planilla():
+    """Labor = suma sueldos (con leyes sociales) * meses_equivalentes."""
+    from trongkai_engine.balances.parametros_planta import cargar_parametros
+    p = cargar_parametros()
+    s = simular_planta(periodo="ano")
+    labor_mes = sum(x.costo_total_clp for x in p.sueldos)
+    assert abs(s.costo_labor_total_clp - labor_mes * s.meses_equivalentes) < 2.0
+
+
+def test_arriendo_domina_costo_en_piloto():
+    """A escala piloto el arriendo es el mayor componente del OPEX."""
+    s = simular_planta(periodo="ano")
+    d = s.desglose_opex
+    comps = {"energia": d["energia_clp"], "arriendo": d["arriendo_clp"],
+             "labor": d["labor_clp"], "agua": d["agua_clp"]}
+    assert max(comps, key=comps.get) == "arriendo"
+
+
+def test_mmpp_mayor_que_producto_por_yield():
+    """La MMPP de entrada > producto terminado (perdida de masa por yield)."""
+    s = simular_planta(periodo="ano")
+    assert s.mmpp_total_kg > s.producto_total_kg
+    assert s.producto_total_kg / s.mmpp_total_kg < 0.5   # yield ~27.5%

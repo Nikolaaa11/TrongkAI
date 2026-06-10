@@ -53,11 +53,32 @@ def test_capex_incluye_componentes():
     assert abs(c["instalacion_clp"] - c["equipos_clp"] * 0.25) < 100
 
 
-def test_payback_finito_con_sku_premium():
-    """Premium debe dar payback razonable (no infinito)."""
+def test_piloto_premium_no_rentable_con_opex_completo():
+    """Con OPEX completo (arriendo+labor+agua+flete), el PILOTO no es rentable
+    ni con el SKU premium: el piloto prueba tecnologia, la rentabilidad llega
+    a escala. Esto es el comportamiento REALISTA esperado."""
     s = simular_con_revenue(periodo="ano", sku_principal="nutraceutico_premium")
-    assert s.payback_simple_anos != float("inf")
-    assert s.payback_simple_anos > 0
+    # costo unitario realista de un piloto de ~27 t/ano con lease 22.7M/mes
+    assert s.costo_unitario_clp_kg > 10_000
+    assert s.margen_total_clp < 0          # piloto no paga
+    assert s.payback_simple_anos == float("inf")
+
+
+def test_premium_rentable_a_escala_industrial():
+    """El nutraceutico premium SI es rentable a escala industrial (x10+),
+    donde los costos fijos se diluyen sobre mucho mas volumen."""
+    r = comparar_escalas(sku_principal="nutraceutico_premium")
+    por_escala = {e["escala"]: e for e in r["escalas"]}
+    assert por_escala[1]["margen_clp"] < 0          # piloto no paga
+    assert por_escala[10]["margen_clp"] > 0         # x10 ya es rentable
+    assert por_escala[100]["margen_clp"] > por_escala[10]["margen_clp"]
+
+
+def test_harina_animal_nunca_rentable():
+    """La harina animal (commodity) no es rentable ni a escala: no es el negocio."""
+    r = comparar_escalas(sku_principal="harina_animal_premium")
+    for e in r["escalas"]:
+        assert e["margen_clp"] < 0
 
 
 def test_payback_infinito_si_margen_negativo():

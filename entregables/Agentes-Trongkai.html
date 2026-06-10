@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trongkai · Agentes Autónomos en Tiempo Real</title>
+<style>
+  /* ===== Apple-style reset ===== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #ffffff;
+    color: #1d1d1f;
+    line-height: 1.47;
+    letter-spacing: -0.022em;
+  }
+  ::selection { background: #1a8a1a; color: #fff; }
+
+  /* ===== Layout containers ===== */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 96px 0; }
+  @media (max-width: 768px) { section { padding: 64px 0; } .container { padding: 0 20px; } }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: #fff;
+    padding: 120px 0 80px;
+    text-align: center;
+    position: relative;
+  }
+  .hero .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a8a1a;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+    background: linear-gradient(180deg, #1d1d1f 0%, #515154 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero h1 span.accent {
+    background: linear-gradient(135deg, #1a8a1a 0%, #34a853 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p.lead {
+    font-size: clamp(20px, 2.4vw, 28px);
+    color: #515154;
+    max-width: 720px;
+    margin: 0 auto 56px;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  /* ===== KPI grid ===== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi {
+    background: linear-gradient(180deg, #fbfbfd 0%, #f5f5f7 100%);
+    border-radius: 22px;
+    padding: 32px 24px;
+    text-align: center;
+    border: 1px solid #f0f0f2;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .kpi:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,0.06); }
+  .kpi .num {
+    font-size: 64px;
+    font-weight: 700;
+    color: #1d1d1f;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #1a8a1a 0%, #34a853 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .kpi .label {
+    font-size: 14px;
+    color: #6e6e73;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* ===== Section heading ===== */
+  .section-head { text-align: center; margin-bottom: 64px; }
+  .section-head .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a8a1a;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    margin-bottom: 12px;
+  }
+  .section-head h2 {
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .section-head p {
+    font-size: 19px;
+    color: #6e6e73;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ===== Agent cards ===== */
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .agent-card {
+    background: #fff;
+    border: 1px solid #f0f0f2;
+    border-radius: 22px;
+    padding: 28px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .agent-card:hover {
+    transform: translateY(-3px);
+    border-color: #d2d2d7;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.08);
+  }
+  .agent-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #1a8a1a 0%, #34a853 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .agent-card:hover::before { opacity: 1; }
+  .agent-card .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .badge-auto { background: #e8f5e9; color: #1a8a1a; }
+  .badge-manual { background: #fff4e5; color: #c66200; }
+  .badge-trigger { background: #e8f0fe; color: #1967d2; }
+  .agent-card h3 {
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1d1d1f;
+    letter-spacing: -0.01em;
+  }
+  .agent-card .code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: #1a8a1a;
+    background: #f0faf0;
+    padding: 2px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .agent-card p {
+    font-size: 14px;
+    color: #515154;
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  .agent-card .meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #6e6e73;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f5f5f7;
+  }
+  .agent-card .meta strong { color: #1d1d1f; font-weight: 600; }
+
+  /* ===== Timeline ===== */
+  .timeline {
+    position: relative;
+    padding: 0;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 24px;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #1a8a1a 0%, #e0e0e0 100%);
+  }
+  .tl-item {
+    position: relative;
+    padding: 14px 0 14px 72px;
+    margin-bottom: 8px;
+  }
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 22px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #1a8a1a;
+    z-index: 1;
+  }
+  .tl-item .when {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a8a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .tl-item h4 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #1d1d1f;
+  }
+  .tl-item p {
+    font-size: 14px;
+    color: #6e6e73;
+    line-height: 1.5;
+  }
+
+  /* ===== Architecture flow ===== */
+  .arch {
+    background: linear-gradient(180deg, #fbfbfd 0%, #f5f5f7 100%);
+    border-radius: 28px;
+    padding: 56px 40px;
+    margin: 32px 0;
+  }
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    align-items: stretch;
+  }
+  .flow-step {
+    background: #fff;
+    border-radius: 18px;
+    padding: 24px 20px;
+    text-align: center;
+    border: 1px solid #ececef;
+    position: relative;
+  }
+  .flow-step .icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .flow-step .step-num {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a8a1a;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .flow-step h5 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: 6px;
+  }
+  .flow-step p {
+    font-size: 12px;
+    color: #6e6e73;
+    line-height: 1.4;
+  }
+
+  /* ===== Skills pills ===== */
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .skill-pill {
+    background: #fff;
+    border: 1px solid #d2d2d7;
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    color: #1d1d1f;
+    transition: all 0.2s ease;
+    cursor: default;
+  }
+  .skill-pill:hover {
+    background: #1a8a1a;
+    color: #fff;
+    border-color: #1a8a1a;
+    transform: scale(1.05);
+  }
+  .skill-pill .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #1a8a1a;
+    border-radius: 50%;
+    margin-right: 8px;
+    transition: background 0.2s ease;
+  }
+  .skill-pill:hover .dot { background: #fff; }
+
+  /* ===== Knowledge Builder spotlight ===== */
+  .spotlight {
+    background: #1d1d1f;
+    color: #fff;
+    border-radius: 32px;
+    padding: 64px 48px;
+    margin: 32px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at center, rgba(26, 138, 26, 0.25) 0%, transparent 50%);
+    z-index: 0;
+  }
+  .spotlight > * { position: relative; z-index: 1; }
+  .spotlight .eyebrow {
+    color: #34a853;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    margin-bottom: 16px;
+  }
+  .spotlight h2 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-bottom: 16px;
+    background: linear-gradient(180deg, #fff 0%, #c7c7cc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .spotlight p.lead {
+    font-size: 20px;
+    color: #a1a1a6;
+    max-width: 680px;
+    margin: 0 auto 48px;
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .step-pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 24px 18px;
+    backdrop-filter: blur(20px);
+  }
+  .step-pill .num {
+    font-size: 32px;
+    font-weight: 700;
+    color: #34a853;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .step-pill h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+  .step-pill p {
+    font-size: 13px;
+    color: #a1a1a6;
+    line-height: 1.4;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    background: #f5f5f7;
+    padding: 48px 0;
+    text-align: center;
+  }
+  footer p {
+    color: #6e6e73;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  footer .quote {
+    font-style: italic;
+    color: #1d1d1f;
+    font-size: 15px;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  /* ===== Live indicator ===== */
+  .live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #e8f5e9;
+    color: #1a8a1a;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .live-indicator .pulse {
+    width: 8px;
+    height: 8px;
+    background: #1a8a1a;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.2); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="container">
+    <div class="live-indicator">
+      <span class="pulse"></span>
+      <span>Sistema activo · 24/7</span>
+    </div>
+    <div class="eyebrow">Inteligencia Distribuida</div>
+    <h1>46 agentes trabajando<br /><span class="accent">por Trongkai</span> sin parar.</h1>
+    <p class="lead">
+      Cada hora, cada día, cada semana. Una red de agentes autónomos que aprende,
+      audita, optimiza y reporta — sin que nadie tenga que apretar un botón.
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="num">13</div><div class="label">Agentes Claude<br />especializados</div></div>
+      <div class="kpi"><div class="num">11</div><div class="label">Schedules<br />autónomos Windows</div></div>
+      <div class="kpi"><div class="num">10</div><div class="label">Skills<br />/trongkai:*</div></div>
+      <div class="kpi"><div class="num">12</div><div class="label">Scripts Python<br />operacionales</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AGENTES CLAUDE ===================== -->
+<section style="background: #fbfbfd;">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Capa 1 — Inteligencia</div>
+      <h2>Los 13 Agentes Claude.</h2>
+      <p>Cada uno es un especialista. Saben qué leer, qué validar, qué proponer y cuándo pedir ayuda.</p>
+    </div>
+
+    <div class="agents-grid">
+      <div class="agent-card">
+        <span class="badge badge-manual">Manual + On-demand</span>
+        <h3>Trongkai Architect</h3>
+        <div class="code">trongkai-architect</div>
+        <p>Decisiones arquitectónicas, ADRs y refactors estructurales. El cerebro de stack.</p>
+        <div class="meta"><strong>Cuándo:</strong> Cambios de arquitectura, decisiones técnicas mayores.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-auto">Auto · cada 1h</span>
+        <h3>Trongkai Improver</h3>
+        <div class="code">trongkai-improver</div>
+        <p>Refactor de lint, dead code, cobertura de tests. Mejora continua silenciosa.</p>
+        <div class="meta"><strong>Trigger:</strong> TrongkAI-Improver schedule.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-auto">Auto · Lunes 09:00</span>
+        <h3>Trongkai Supuestos</h3>
+        <div class="code">trongkai-supuestos</div>
+        <p>Detecta hardcodes y promueve PDs → OK_PROVISORIO. Sube el rigor del modelo cada semana.</p>
+        <div class="meta"><strong>Trigger:</strong> TrongkAI-SupuestosAudit.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-auto">Auto · Diario 08:00</span>
+        <h3>Trongkai QA</h3>
+        <div class="code">trongkai-qa</div>
+        <p>Test suite completa + e2e + regresiones del balance de masa. 398 tests verde como guardián.</p>
+        <div class="meta"><strong>Trigger:</strong> TrongkAI-ValidateBalance.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-trigger">CI + Manual</span>
+        <h3>Mass Balance</h3>
+        <div class="code">trongkai-mass-balance</div>
+        <p>Valida balance Sankey ±0.5% closure. La conservación de materia es inviolable.</p>
+        <div class="meta"><strong>Cuándo:</strong> En cada PR + manual operacional.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-manual">Operacional</span>
+        <h3>Bottleneck Solver</h3>
+        <div class="code">trongkai-bottleneck</div>
+        <p>Calcula cuello de botella y agenda óptima de camiones por hora.</p>
+        <div class="meta"><strong>Cuándo:</strong> Operación día a día de la planta.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-manual">Pre-directorio</span>
+        <h3>Financial Modeler</h3>
+        <div class="code">trongkai-financial</div>
+        <p>Modela escenarios, tornado de sensibilidad y stress tests. Construye el caso económico.</p>
+        <div class="meta"><strong>Cuándo:</strong> Antes de cada directorio / decisión clave.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-auto">Auto · Trimestral</span>
+        <h3>Data Hunter</h3>
+        <div class="code">trongkai-data-hunter</div>
+        <p>WebSearch trimestral de benchmarks, precios y papers científicos nuevos.</p>
+        <div class="meta"><strong>Trigger:</strong> TrongkAI-MacroRefresh + PapersRefresh.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-auto">Auto · Día 1 mensual</span>
+        <h3>ESG Analyst</h3>
+        <div class="code">trongkai-esg-analyst</div>
+        <p>Carbon footprint, LCA y revenue de créditos CO₂. Llave para LPs ESG europeos.</p>
+        <div class="meta"><strong>Trigger:</strong> TrongkAI-CarbonAudit.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-auto">Auto · Lunes 09:00</span>
+        <h3>Compliance Officer</h3>
+        <div class="code">trongkai-compliance-officer</div>
+        <p>Monitor Ley REP, hitos próximos y cambios normativos. Cero sorpresas regulatorias.</p>
+        <div class="meta"><strong>Trigger:</strong> TrongkAI-ComplianceMonitor.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-manual">Pre-pitch</span>
+        <h3>Banker Analyst</h3>
+        <div class="code">trongkai-banker</div>
+        <p>DSCR, LLCR, TIR equity, SLB y tax shield. Estructura el mix óptimo deuda/equity.</p>
+        <div class="meta"><strong>Cuándo:</strong> Antes de pitch con bancos / CORFO.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-manual">Pre-directorio</span>
+        <h3>Board Prep</h3>
+        <div class="code">trongkai-board-prep</div>
+        <p>Material completo de directorio: Excel + summary + email + análisis de riesgo.</p>
+        <div class="meta"><strong>Cuándo:</strong> Antes de cada reunión de directorio.</div>
+      </div>
+
+      <div class="agent-card">
+        <span class="badge badge-auto">Auto · cada 6h</span>
+        <h3>SRE Monitor</h3>
+        <div class="code">trongkai-monitor</div>
+        <p>Health check end-to-end de Fly.io, Vercel, Supabase. Te avisa antes que algo se caiga.</p>
+        <div class="meta"><strong>Trigger:</strong> TrongkAI-MonitorHealth.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TIMELINE SCHEDULES ===================== -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Capa 2 — Cadencia</div>
+      <h2>11 Schedules autónomos.</h2>
+      <p>Windows Task Scheduler corre estas tareas sin intervención. Tu reloj de la operación.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="when">Cada 1 hora · 24×7</div>
+        <h4>TrongkAI-Improver</h4>
+        <p>Mejora de código: lint fixes, dead code removal, cobertura tests. Nunca rompe verde.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Cada 6 horas · 24×7</div>
+        <h4>TrongkAI-MonitorHealth</h4>
+        <p>Ping a Fly.io, Vercel, Supabase. Memory check. Health probe completo.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Diario · 03:00 AM</div>
+        <h4>TrongkAI-Backup</h4>
+        <p>Snapshot completo de Postgres. Backup en almacenamiento persistente Fly volume.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Diario · 06:00 AM</div>
+        <h4>TrongkAI-MacroRefresh</h4>
+        <p>Refresh de macroeconómicos Chile (USD/CLP, UF, IPC, TPM) desde mindicador.cl.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Diario · 08:00 AM</div>
+        <h4>TrongkAI-ValidateBalance</h4>
+        <p>Suite completa: 398 tests + regresiones del balance de masa + e2e Playwright.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Diario · 09:00 AM ⭐</div>
+        <h4>TrongkAI-KnowledgeBuilder</h4>
+        <p>El agente estrella: 6 pasos en cadena que hacen que la plataforma aprenda sola.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Lunes · 09:00 AM</div>
+        <h4>TrongkAI-SupuestosAudit</h4>
+        <p>Audit semanal de PDs en el modelo. Detecta hardcodes y candidatos a validación.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Lunes · 09:00 AM</div>
+        <h4>TrongkAI-ComplianceMonitor</h4>
+        <p>Hitos REP próximos, certificaciones export y cambios normativos chilenos.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Día 1 mensual · 07:00 AM</div>
+        <h4>TrongkAI-CarbonAudit</h4>
+        <p>LCA 3 escenarios. Cuantifica footprint y revenue potencial de créditos CO₂.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Trimestral · Dom 10:00 AM</div>
+        <h4>TrongkAI-PapersRefresh</h4>
+        <p>WebSearch papers científicos últimos 90 días sobre orujo, alperujo, SCP, PEF.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when">Trimestral · Domingo</div>
+        <h4>TrongkAI-InboxProcessor</h4>
+        <p>Procesa archivos nuevos del inbox: clasifica, extrae texto, alimenta la matriz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KNOWLEDGE BUILDER SPOTLIGHT ===================== -->
+<section>
+  <div class="container">
+    <div class="spotlight">
+      <div class="eyebrow">El agente estrella</div>
+      <h2>Knowledge Builder · 09:00 AM.</h2>
+      <p class="lead">
+        Cada día, sin que nadie le diga, ejecuta 6 pasos en cadena que mantienen
+        la plataforma viva, coherente y al día.
+      </p>
+
+      <div class="steps-grid">
+        <div class="step-pill">
+          <div class="num">1</div>
+          <h4>Procesar Inbox</h4>
+          <p>Lee archivos nuevos en /data/inbox y los clasifica.</p>
+        </div>
+        <div class="step-pill">
+          <div class="num">2</div>
+          <h4>Snapshot Readiness</h4>
+          <p>Marca el score del día en el histórico para timeline.</p>
+        </div>
+        <div class="step-pill">
+          <div class="num">3</div>
+          <h4>Health Check</h4>
+          <p>Salud global del motor (engine, DB, volume, cache).</p>
+        </div>
+        <div class="step-pill">
+          <div class="num">4</div>
+          <h4>Alertas + Coherencia</h4>
+          <p>Detecta gaps nuevos y top decisiones priorizadas.</p>
+        </div>
+        <div class="step-pill">
+          <div class="num">5</div>
+          <h4>Commercial Intel</h4>
+          <p>Revenue 5y, HHI concentración, NPV tecnologías.</p>
+        </div>
+        <div class="step-pill">
+          <div class="num">6</div>
+          <h4>Audit Log</h4>
+          <p>Registra el run completo + reporte markdown del día.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SKILLS ===================== -->
+<section style="background: #fbfbfd;">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Capa 3 — Comandos</div>
+      <h2>10 Skills invocables.</h2>
+      <p>Atajos de poder. Tú los llamas con / o los llaman los agentes entre sí.</p>
+    </div>
+
+    <div class="skills">
+      <div class="skill-pill"><span class="dot"></span>/trongkai:start</div>
+      <div class="skill-pill"><span class="dot"></span>/trongkai:hunt-data</div>
+      <div class="skill-pill"><span class="dot"></span>/trongkai:macro-refresh</div>
+      <div class="skill-pill"><span class="dot"></span>/trongkai:carbon-audit</div>
+      <div class="skill-pill"><span class="dot"></span>/trongkai:compliance-check</div>
+      <div class="skill-pill"><span class="dot"></span>/trongkai:directorio-pack</div>
+      <div class="skill-pill"><span class="dot"></span>/trongkai:financial-stress</div>
+      <div class="skill-pill"><span class="dot"></span>/trongkai:papers-refresh</div>
+      <div class="skill-pill"><span class="dot"></span>/trongkai:risk-report</div>
+      <div class="skill-pill"><span class="dot"></span>/trongkai:knowledge-build</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ARCHITECTURE FLOW ===================== -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Cómo se conectan</div>
+      <h2>El flujo completo.</h2>
+      <p>De un archivo en tu inbox a una decisión en el dashboard del directorio.</p>
+    </div>
+
+    <div class="arch">
+      <div class="flow">
+        <div class="flow-step">
+          <span class="step-num">1</span>
+          <span class="icon">📥</span>
+          <h5>Inbox</h5>
+          <p>Llegan archivos (PDF, Excel, Word) al volume /data/inbox.</p>
+        </div>
+        <div class="flow-step">
+          <span class="step-num">2</span>
+          <span class="icon">🤖</span>
+          <h5>Procesador</h5>
+          <p>Clasifica, extrae texto, identifica entidades y SKUs.</p>
+        </div>
+        <div class="flow-step">
+          <span class="step-num">3</span>
+          <span class="icon">⚙️</span>
+          <h5>Engine FastAPI</h5>
+          <p>Calcula KPIs, matrices, coherencia, decisiones, scores.</p>
+        </div>
+        <div class="flow-step">
+          <span class="step-num">4</span>
+          <span class="icon">🧠</span>
+          <h5>Agentes Claude</h5>
+          <p>Auditan, proponen, validan supuestos y generan insights.</p>
+        </div>
+        <div class="flow-step">
+          <span class="step-num">5</span>
+          <span class="icon">📊</span>
+          <h5>Frontend Vercel</h5>
+          <p>39 páginas visualizan el estado en tiempo real.</p>
+        </div>
+        <div class="flow-step">
+          <span class="step-num">6</span>
+          <span class="icon">📧</span>
+          <h5>Reportes</h5>
+          <p>Logs markdown + LP Pack + Weekly Digest + Audit Trail.</p>
+        </div>
+      </div>
+    </div>
+
+    <p style="text-align: center; color: #6e6e73; font-size: 15px; margin-top: 32px; max-width: 720px; margin-left: auto; margin-right: auto;">
+      Todo persistente en volumen Fly <code style="background: #f5f5f7; padding: 2px 8px; border-radius: 6px; font-family: 'SF Mono', monospace; font-size: 13px; color: #1a8a1a;">trongkai_data</code>
+      (1GB en /data) — sobrevive deploys, redeploys y reinicios.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== STACK ===================== -->
+<section style="background: #fbfbfd;">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Infraestructura</div>
+      <h2>Dónde corre todo esto.</h2>
+    </div>
+
+    <div class="kpi-grid" style="max-width: 1100px;">
+      <div class="kpi" style="background: #fff;">
+        <div class="num" style="font-size: 28px;">Fly.io</div>
+        <div class="label" style="margin-top: 14px;">trongkai-engine.fly.dev<br /><strong>20/20 endpoints OK</strong></div>
+      </div>
+      <div class="kpi" style="background: #fff;">
+        <div class="num" style="font-size: 28px;">Vercel</div>
+        <div class="label" style="margin-top: 14px;">trongkai-web.vercel.app<br /><strong>39/39 páginas LIVE</strong></div>
+      </div>
+      <div class="kpi" style="background: #fff;">
+        <div class="num" style="font-size: 28px;">Supabase</div>
+        <div class="label" style="margin-top: 14px;">Postgres + Storage<br /><strong>Backup diario 03:00</strong></div>
+      </div>
+      <div class="kpi" style="background: #fff;">
+        <div class="num" style="font-size: 28px;">Windows</div>
+        <div class="label" style="margin-top: 14px;">Task Scheduler local<br /><strong>11 tareas activas</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="container">
+    <p class="quote">"En la naturaleza no existen los residuos, solo recursos."</p>
+    <p>Trongkai · Innovación en Nutrición Circular · 2026</p>
+    <p style="margin-top: 12px; font-size: 11px; color: #a1a1a6;">
+      Generado el 2 de junio de 2026 · 46 agentes · 398/398 tests verde · 100% salud
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
