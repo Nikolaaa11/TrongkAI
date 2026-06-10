@@ -115,6 +115,9 @@ export default function ComandoPage() {
       {/* BANNER INTELIGENCIA — síntesis cross-modular */}
       <InteligenciaBanner />
 
+      {/* QUÉ CAMBIÓ — diff vs snapshot anterior (si hay historial) */}
+      <QueCambioBanner />
+
       {/* HERO: Score + TIR + VAN + EV en grande */}
       <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <BigKPI label="Investment Readiness" value={`${score.toFixed(0)}`} unit="/100" tone={score >= 80 ? 'ok' : score >= 60 ? 'warn' : 'bad'} sub={snap.readiness_score?.interpretacion?.slice(0, 30)} link="/readiness" />
@@ -616,5 +619,41 @@ function InteligenciaBanner() {
         </div>
       </div>
     </Link>
+  );
+}
+
+// Banner "que cambio desde el ultimo snapshot" — expone /snapshot/diff.
+// Solo se muestra si hay historial (los snapshots se registran desde /readiness).
+function QueCambioBanner() {
+  const [cambios, setCambios] = useState<string[]>([]);
+  const [fechaAnterior, setFechaAnterior] = useState('');
+
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/snapshot/diff?dias_atras=7`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.diff_disponible === false) return;
+        setCambios(d?.cambios_mayores ?? []);
+        setFechaAnterior(d?.fecha_anterior ?? '');
+      })
+      .catch(() => {});
+  }, []);
+
+  if (!cambios.length) return null;
+
+  return (
+    <section className="rounded-appleXl border border-ink-100 bg-ink-50/40 px-5 py-4">
+      <div className="flex items-baseline justify-between gap-3">
+        <h3 className="text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-400">
+          🔄 Qué cambió{fechaAnterior ? ` desde ${fechaAnterior.slice(0, 10)}` : ''}
+        </h3>
+        <Link href="/audit" className="text-[11px] font-medium text-brand">Audit trail →</Link>
+      </div>
+      <ul className="mt-2 space-y-1 text-sm text-ink-700">
+        {cambios.map((c, i) => (
+          <li key={i}>• {c}</li>
+        ))}
+      </ul>
+    </section>
   );
 }

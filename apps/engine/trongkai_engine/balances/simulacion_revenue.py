@@ -286,3 +286,44 @@ def precios_venta_catalogo() -> dict:
         ],
         "fuente": "Estimacion mercado Chile 2026. Validar cotizaciones reales.",
     }
+
+
+def margen_por_sku() -> dict:
+    """La verdad estrategica en una tabla: para cada SKU, el margen del
+    piloto y la escala minima a la que se vuelve rentable (si alguna).
+
+    Responde 'el SKU define el negocio': harina animal no es rentable a
+    ninguna escala; el nutraceutico paga desde x10.
+    """
+    filas = []
+    for sku, precio in PRECIOS_VENTA_DEFAULT.items():
+        piloto = simular_con_revenue(periodo="ano", sku_principal=sku)
+        escalas = comparar_escalas(sku_principal=sku)["escalas"]
+        rentable = next((e for e in escalas if e["margen_clp"] > 0), None)
+        filas.append({
+            "sku": sku,
+            "nombre": sku.replace("_", " ").title(),
+            "precio_clp_kg": precio,
+            "margen_piloto_clp": round(piloto.margen_total_clp, 0),
+            "margen_piloto_pct": round(piloto.margen_pct, 4),
+            "escala_minima_rentable": rentable["escala"] if rentable else None,
+            "margen_en_escala_clp": round(rentable["margen_clp"], 0) if rentable else None,
+            "payback_en_escala_anos": rentable["payback_anos"] if rentable else None,
+            "veredicto": (
+                "Rentable ya en piloto" if piloto.margen_total_clp > 0
+                else f"Rentable desde x{rentable['escala']}" if rentable
+                else "No rentable a ninguna escala"
+            ),
+        })
+    # Ordenar: primero los que pagan antes (escala minima asc, None al final)
+    filas.sort(key=lambda f: (f["escala_minima_rentable"] is None,
+                              f["escala_minima_rentable"] or 0))
+    return {
+        "skus": filas,
+        "interpretacion": (
+            "El SKU define el negocio: el costo de proceso es el mismo para todos, "
+            "lo que cambia es el precio de venta. El piloto no es rentable con ningun "
+            "SKU (prueba tecnologia); la rentabilidad emerge a escala SOLO con SKU de valor."
+        ),
+        "nota_precios": "Precios PD (sin cotizacion firme). Driver #1 de incertidumbre.",
+    }

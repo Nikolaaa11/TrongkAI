@@ -2795,6 +2795,22 @@ def simulacion_capex_endpoint() -> dict:
     return calcular_capex_piloto()
 
 
+@app.get(
+    "/simulacion/margen-por-sku",
+    tags=["balances"],
+    summary="Margen del piloto y escala minima rentable POR CADA SKU",
+    description=(
+        "La verdad estrategica en una tabla: el costo de proceso es el mismo "
+        "para todos los SKU; lo que cambia es el precio. Devuelve margen piloto, "
+        "escala minima rentable y payback por SKU, ordenado por quien paga antes."
+    ),
+)
+@cached_ttl(seconds=300)
+def simulacion_margen_sku_endpoint() -> dict:
+    from .balances.simulacion_revenue import margen_por_sku
+    return margen_por_sku()
+
+
 # =============================================================================
 # SINTESIS INTELIGENTE (capa cross-modular)
 # =============================================================================

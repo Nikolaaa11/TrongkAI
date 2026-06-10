@@ -168,6 +168,9 @@ export default function EscalasPage() {
         </div>
       </section>
 
+      {/* Margen por SKU — la verdad estrategica del engine */}
+      <MargenPorSku />
+
       {/* Insights */}
       <section className="rounded-2xl bg-blue-50 border-l-4 border-blue-500 p-5">
         <h3 className="text-lg font-bold text-blue-900">💡 Insight estratégico</h3>
@@ -175,7 +178,7 @@ export default function EscalasPage() {
           El <strong>piloto solo</strong> no es rentable con ningún SKU: el OPEX completo (arriendo PEF+Tricanter + mano de obra + energía + agua + flete) sobre un throughput bajo (prensa 25 kg/h) y yield ~27.5% genera un costo unitario alto (~$13.500/kg). El piloto sirve para <strong>probar la tecnología</strong>, no para generar utilidad.
         </p>
         <p className="mt-2 text-sm text-blue-900">
-          <strong>El SKU define la rentabilidad a escala:</strong> la harina animal ($1.400/kg) es commodity de bajo margen y no es rentable a ninguna escala. El negocio rentable está en <strong>SKU de alto valor</strong>: ingrediente humano ($4.500/kg) y nutracéutico premium ($12.000/kg), rentables desde ~x10 al diluir los costos fijos. Cambiá el SKU arriba para verlo.
+          <strong>El SKU define la rentabilidad a escala:</strong> el costo de proceso es el mismo para todos los SKU — lo que cambia es el precio de venta. La tabla de arriba muestra, con el modelo en vivo, desde qué escala paga cada uno. Cambiá el SKU para ver su curva completa.
         </p>
         <p className="mt-2 text-sm text-blue-900">
           <strong>Camino sugerido:</strong> piloto valida calidad + foco comercial en SKU premium → ampliar prensa (cuello de botella) → ramping industrial.
@@ -212,5 +215,70 @@ function Slider({ label, value, min, max, onChange, unit }: { label: string; val
       <input type="range" min={min} max={max} value={value}
         onChange={(e) => onChange(+e.target.value)} className="w-full accent-brand mt-1" />
     </div>
+  );
+}
+
+type FilaMargenSku = {
+  sku: string; nombre: string; precio_clp_kg: number;
+  margen_piloto_clp: number; escala_minima_rentable: number | null;
+  margen_en_escala_clp: number | null; payback_en_escala_anos: number | null;
+  veredicto: string;
+};
+
+// La verdad estrategica del engine en una tabla: desde que escala paga cada SKU.
+function MargenPorSku() {
+  const [data, setData] = useState<{ skus: FilaMargenSku[]; interpretacion: string } | null>(null);
+
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/simulacion/margen-por-sku`)
+      .then((r) => r.json())
+      .then(setData)
+      .catch(() => {});
+  }, []);
+
+  if (!data?.skus?.length) return null;
+
+  return (
+    <section>
+      <h2 className="mb-1 text-xl font-bold">🧭 ¿Desde qué escala paga cada SKU?</h2>
+      <p className="mb-4 text-sm text-ink-500">{data.interpretacion}</p>
+      <div className="overflow-x-auto rounded-xl border border-ink-100 bg-white">
+        <table className="min-w-full text-sm">
+          <thead className="bg-ink-50/40 text-xs uppercase text-ink-500">
+            <tr>
+              <th className="px-3 py-3 text-left">SKU</th>
+              <th className="px-3 py-3 text-right">Precio</th>
+              <th className="px-3 py-3 text-right">Margen piloto</th>
+              <th className="px-3 py-3 text-right">Escala mínima</th>
+              <th className="px-3 py-3 text-right">Payback ahí</th>
+              <th className="px-3 py-3 text-left">Veredicto</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-ink-50">
+            {data.skus.map((f) => {
+              const paga = f.escala_minima_rentable !== null;
+              return (
+                <tr key={f.sku} className={paga ? '' : 'bg-orange-50/40'}>
+                  <td className="px-3 py-3 font-semibold">{f.nombre}</td>
+                  <td className="px-3 py-3 text-right tabular">${f.precio_clp_kg.toLocaleString()}/kg</td>
+                  <td className="px-3 py-3 text-right tabular text-orange-600">
+                    −${(Math.abs(f.margen_piloto_clp) / 1e6).toFixed(0)}M
+                  </td>
+                  <td className="px-3 py-3 text-right font-bold">
+                    {paga ? <span className="text-brand">x{f.escala_minima_rentable}</span> : <span className="text-orange-600">—</span>}
+                  </td>
+                  <td className="px-3 py-3 text-right tabular">
+                    {f.payback_en_escala_anos != null ? `${f.payback_en_escala_anos.toFixed(1)} años` : '∞'}
+                  </td>
+                  <td className={`px-3 py-3 text-[13px] font-medium ${paga ? 'text-brand' : 'text-orange-700'}`}>
+                    {f.veredicto}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }

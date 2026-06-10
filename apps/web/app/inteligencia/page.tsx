@@ -297,7 +297,7 @@ export default function InteligenciaPage() {
               ⚡ Qué reduce más el margen de error (validar en este orden)
             </p>
             <div className="space-y-1.5">
-              {prediccion.drivers_incertidumbre.slice(0, 4).map((d, i) => (
+              {prediccion.drivers_incertidumbre.map((d, i) => (
                 <div key={i} className="flex items-center gap-3 text-sm">
                   <span className="rounded-full bg-blue-100 text-blue-700 text-xs font-bold w-6 h-6 flex items-center justify-center shrink-0">{i + 1}</span>
                   <span className="font-medium w-40 shrink-0">{d.input}</span>

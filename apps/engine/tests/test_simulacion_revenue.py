@@ -148,3 +148,25 @@ def test_factor_aprendizaje_decreciente():
     # x1 = factor 1.0, x100 = 0.8^log2(100) ~ 0.32
     assert r["escalas"][0]["factor_aprendizaje"] == 1.0
     assert r["escalas"][-1]["factor_aprendizaje"] < 0.5
+
+
+def test_margen_por_sku_estructura():
+    """La tabla margen-por-SKU cubre los 4 SKU con veredicto."""
+    from trongkai_engine.balances.simulacion_revenue import margen_por_sku
+    r = margen_por_sku()
+    assert len(r["skus"]) == 4
+    for f in r["skus"]:
+        assert f["veredicto"]
+        assert f["margen_piloto_clp"] < 0   # piloto deficitario con todos
+
+
+def test_margen_por_sku_verdad_estrategica():
+    """Nutraceutico rentable desde x10; harina animal nunca; orden por escala."""
+    from trongkai_engine.balances.simulacion_revenue import margen_por_sku
+    r = margen_por_sku()
+    por_sku = {f["sku"]: f for f in r["skus"]}
+    assert por_sku["nutraceutico_premium"]["escala_minima_rentable"] == 10
+    assert por_sku["harina_animal_premium"]["escala_minima_rentable"] is None
+    assert por_sku["harina_animal_basica"]["escala_minima_rentable"] is None
+    # El primero de la lista es el que paga antes
+    assert r["skus"][0]["sku"] == "nutraceutico_premium"
