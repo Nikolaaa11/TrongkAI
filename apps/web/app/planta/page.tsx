@@ -221,6 +221,9 @@ export default function PlantaPage() {
         </div>
       )}
 
+      {/* CAPEX por equipo — desglose que el motor calculaba y nadie mostraba */}
+      <CapexPorEquipo fichas={fichas} />
+
       <ConectadoCon links={[
         { href: '/equipos', label: 'Fichas Equipos', razon: 'Editar specs de estas máquinas' },
         { href: '/simulacion', label: 'Simulación', razon: 'Simular la producción de esta planta' },
@@ -228,6 +231,52 @@ export default function PlantaPage() {
         { href: '/costeo', label: 'Costeo', razon: 'El costo por etapa del proceso' },
       ]} />
     </div>
+  );
+}
+
+type Capex = {
+  equipos_clp: number; instalacion_clp: number; ingenieria_clp: number;
+  total_clp: number; total_usd: number; desglose_equipos: Record<string, number>;
+};
+
+function CapexPorEquipo({ fichas }: { fichas: { id: string; nombre: string }[] }) {
+  const [capex, setCapex] = useState<Capex | null>(null);
+
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/simulacion/capex-piloto`)
+      .then((r) => r.json())
+      .then(setCapex)
+      .catch(() => {});
+  }, []);
+
+  if (!capex?.desglose_equipos) return null;
+
+  const items = Object.entries(capex.desglose_equipos).sort((a, b) => b[1] - a[1]);
+  const max = Math.max(...items.map(([, v]) => v), 1);
+  const nombre = (id: string) => fichas.find((f) => f.id === id)?.nombre ?? id.replace(/_/g, ' ');
+
+  return (
+    <section>
+      <h2 className="mb-1 text-xl font-bold">💵 CAPEX del piloto por equipo</h2>
+      <p className="mb-4 text-sm text-ink-500">
+        Total ${(capex.total_clp / 1e6).toFixed(0)}M CLP (USD ${(capex.total_usd / 1e3).toFixed(0)}k) ·
+        equipos ${(capex.equipos_clp / 1e6).toFixed(0)}M + instalación 25% + ingeniería ${(capex.ingenieria_clp / 1e6).toFixed(0)}M.
+        Equipos en arriendo (PEF, Tricanter) van por OPEX — ver <a href="/simulacion" className="text-brand underline">Simulación</a>.
+      </p>
+      <div className="rounded-xl border border-ink-100 bg-white p-5 space-y-2">
+        {items.map(([id, clp]) => (
+          <div key={id} className="grid grid-cols-12 items-center gap-3 text-sm">
+            <div className="col-span-4 truncate font-medium" title={nombre(id)}>{nombre(id)}</div>
+            <div className="col-span-6">
+              <div className="h-4 overflow-hidden rounded-full bg-ink-50">
+                <div className="h-full rounded-full bg-gradient-to-r from-brand to-brand-light" style={{ width: `${(clp / max) * 100}%` }} />
+              </div>
+            </div>
+            <div className="col-span-2 text-right tabular">${(clp / 1e6).toFixed(1)}M</div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
