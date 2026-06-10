@@ -1,12 +1,14 @@
-"""Tres escenarios estratégicos de planta — decisión de directorio.
+"""Tres escenarios estratégicos de planta INDUSTRIAL — decisión de directorio.
 
-Cada escenario tiene perfil de CapEx + volumen + ramp distinto.
+Cada escenario es una estrategia de escala INDUSTRIAL (decenas de miles de t/año),
+NO el piloto físico de 27,5 t/año (ese vive en balances/simulacion_revenue.py y no
+es rentable a escala x1). Cada uno tiene perfil de CapEx + volumen + ramp distinto.
 
-| Escenario  | Y1 vol | Y3 vol | Y5 vol | CapEx total 5y | Filosofía                              |
-|------------|--------|--------|--------|----------------|----------------------------------------|
-| PILOTO     | 5k     | 15k    | 25k    | CLP 9B         | Validar tecnología con riesgo bajo     |
-| INDUSTRIAL | 15k    | 40k    | 50k    | CLP 15B (default plan_builder)         | Plan base actual                       |
-| EXPANSION  | 20k    | 50k    | 80k    | CLP 28B        | Sobrescalar para capturar mercado      |
+| Escenario   | Y1 vol | Y3 vol | Y5 vol | CapEx total 5y | Filosofía                            |
+|-------------|--------|--------|--------|----------------|--------------------------------------|
+| CONSERVADOR | 5k     | 15k    | 25k    | CLP 9B         | Escala reducida, menor riesgo        |
+| INDUSTRIAL  | 15k    | 40k    | 50k    | CLP 15B (default plan_builder)        | Plan base actual                     |
+| EXPANSION   | 20k    | 50k    | 80k    | CLP 28B        | Sobrescalar para capturar mercado    |
 
 Output: comparación TIR/VAN/Payback de cada estrategia + recomendación.
 """
@@ -26,10 +28,11 @@ class EscenarioEstrategico:
     resumen: ResumenPlan
 
 
-def _params_piloto() -> ParametrosPlan:
-    """Estrategia conservadora: validar tecnología antes de escalar.
+def _params_conservador() -> ParametrosPlan:
+    """Estrategia conservadora INDUSTRIAL: escala reducida, menor riesgo.
 
-    - Volumen empieza chico (5k año 1) y crece a 25k al año 5 (la mitad del cap contractual).
+    NO confundir con el piloto físico (27,5 t/año). Es una planta industrial chica.
+    - Volumen empieza en 5k año 1 y crece a 25k al año 5 (la mitad del cap contractual).
     - CapEx total 9B CLP (vs 15B del industrial) — menor riesgo.
     - Renunciamos a parte del upside pero el payback es más rápido.
     """
@@ -78,7 +81,7 @@ def _params_expansion() -> ParametrosPlan:
 def comparar_escenarios_estrategicos() -> list[EscenarioEstrategico]:
     """Ejecuta los 3 escenarios y devuelve lista ordenada para tabla comparativa."""
     specs = [
-        ("PILOTO", "Validar tecnología 25k ton/año máx. Menor riesgo, payback temprano.", _params_piloto()),
+        ("CONSERVADOR", "Escala industrial reducida 25k ton/año máx. Menor riesgo, payback temprano.", _params_conservador()),
         ("INDUSTRIAL", "Plan base contractual 50k ton/año. Industria estándar.", _params_industrial()),
         ("EXPANSION", "Sobrescalar a 80k ton/año. Maximiza VAN si financiamiento disponible.", _params_expansion()),
     ]
@@ -91,19 +94,19 @@ def comparar_escenarios_estrategicos() -> list[EscenarioEstrategico]:
 def recomendacion_estrategica(escenarios: list[EscenarioEstrategico]) -> dict:
     """Aplica una heurística simple para elegir escenario por perfil de riesgo:
 
-    - Si WACC base > 0.20 → PILOTO (riesgo alto en tasa)
+    - Si WACC base > 0.20 → CONSERVADOR (riesgo alto en tasa)
     - Si VAN(EXPANSION) > 1.5× VAN(INDUSTRIAL) y VAN(EXPANSION) > 0 → EXPANSION
     - Si VAN(INDUSTRIAL) > 0 → INDUSTRIAL
-    - Else → PILOTO (bajar exposición cuando ningún escenario da VAN positivo)
+    - Else → CONSERVADOR (bajar exposición cuando ningún escenario da VAN positivo)
     """
     by_name = {e.nombre: e for e in escenarios}
     van_ind = by_name["INDUSTRIAL"].resumen.kpis.van
     van_exp = by_name["EXPANSION"].resumen.kpis.van
-    van_pil = by_name["PILOTO"].resumen.kpis.van
+    van_con = by_name["CONSERVADOR"].resumen.kpis.van
     wacc = by_name["INDUSTRIAL"].parametros.wacc_anual
 
     if wacc > 0.20:
-        choice = "PILOTO"
+        choice = "CONSERVADOR"
         reason = f"WACC {wacc:.1%} es muy alto — minimizar exposición."
     elif van_exp > 1.5 * van_ind and van_exp > 0:
         choice = "EXPANSION"
@@ -112,13 +115,13 @@ def recomendacion_estrategica(escenarios: list[EscenarioEstrategico]) -> dict:
         choice = "INDUSTRIAL"
         reason = f"VAN(INDUSTRIAL)={van_ind/1e9:.1f}B positivo y mejor risk-adjusted."
     else:
-        choice = "PILOTO"
+        choice = "CONSERVADOR"
         reason = f"VAN(INDUSTRIAL)={van_ind/1e9:.1f}B no positivo — bajar exposición."
 
     return {
         "elegido": choice,
         "razon": reason,
-        "vans_b_clp": {"PILOTO": van_pil/1e9, "INDUSTRIAL": van_ind/1e9, "EXPANSION": van_exp/1e9},
+        "vans_b_clp": {"CONSERVADOR": van_con/1e9, "INDUSTRIAL": van_ind/1e9, "EXPANSION": van_exp/1e9},
         "tirs_pct": {
             e.nombre: (e.resumen.kpis.tir_proyecto_anual * 100) if e.resumen.kpis.tir_proyecto_anual else None
             for e in escenarios

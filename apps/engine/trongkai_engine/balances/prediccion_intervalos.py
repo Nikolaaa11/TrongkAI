@@ -3,9 +3,9 @@
 Responde el pedido del usuario: "predicciones mas inteligentes sin margen
 de error o el menos posible".
 
-En vez de dar un numero unico falsamente preciso (ej: costo 6.736 CLP/kg),
+En vez de dar un numero unico falsamente preciso (ej: costo 13.458 CLP/kg),
 propaga la incertidumbre de cada input a la salida y reporta un RANGO con
-nivel de confianza (ej: 5.100 - 9.200, esperado 6.736).
+nivel de confianza (ej: 10.900 - 16.600, esperado 13.458).
 
 La incertidumbre de cada input depende de su nivel de validacion:
 - PD (sin validar):     ±35%  (placeholder, gran incertidumbre)
@@ -100,6 +100,41 @@ def _banda_desde_muestras(nombre: str, muestras: list[float], esperado: float, u
                  unidad=unidad, margen_error_pct=margen)
 
 
+# Nivel de validacion de cada componente del OPEX (para ponderar incertidumbre)
+_NIVEL_COMPONENTE_OPEX = {
+    "arriendo_clp": "PD",            # cotizacion final PEF+Tricanter pendiente
+    "labor_clp": "OK_PROVISORIO",   # sueldos benchmark, no validados con planilla real
+    "energia_clp": "OK_PROVISORIO", # tarifa estimada
+    "agua_clp": "PD",               # tarifa Essbio + caudalimetro pendiente
+    "flete_mmpp_clp": "OK_PROVISORIO",
+    "calor_residual_clp": "PD",
+}
+
+
+def _incertidumbre_costo_ponderada() -> float:
+    """Incertidumbre del costo = sum(peso_componente x incert_nivel).
+
+    Usa el desglose real del OPEX del simulador para ponderar cada componente
+    por su participacion en el costo total y su nivel de validacion. Asi, a
+    medida que se valida un input grande (ej: arriendo PD->VALIDADO), la banda
+    de costo se estrecha de forma proporcional a su peso real.
+    """
+    try:
+        from .simulador_temporal import simular_planta
+        desg = simular_planta(periodo="ano").desglose_opex
+        total = desg.get("total_clp", 0) or 0
+        if total <= 0:
+            raise ValueError
+        acc = 0.0
+        for comp, nivel in _NIVEL_COMPONENTE_OPEX.items():
+            peso = (desg.get(comp, 0) or 0) / total
+            acc += peso * INCERTIDUMBRE_NIVEL[nivel]
+        return acc
+    except Exception:
+        # Fallback al supuesto previo si el simulador no responde
+        return INCERTIDUMBRE_NIVEL["PD"] * 0.55 + INCERTIDUMBRE_NIVEL["OK_PROVISORIO"] * 0.45
+
+
 def computar_prediccion(
     throughput_kg_h: float = 25.0,   # bottleneck real (prensa)
     sku_principal: str = "harina_animal_premium",
@@ -127,8 +162,11 @@ def computar_prediccion(
     incert_yield = INCERTIDUMBRE_NIVEL["OK_PROVISORIO"] + 0.10
     incert_cap = INCERTIDUMBRE_NIVEL["OK_VALIDADO"] + 0.10
     incert_precio = INCERTIDUMBRE_NIVEL["PD"]
-    # Costo: combina arriendo PEF (PD, ~55% del costo) + energia (PROV) + resto (PROV)
-    incert_costo = INCERTIDUMBRE_NIVEL["PD"] * 0.55 + INCERTIDUMBRE_NIVEL["OK_PROVISORIO"] * 0.45
+    # Costo: incertidumbre ponderada por el PESO REAL de cada componente del OPEX
+    # (desglose del simulador) x su nivel de validacion. Mas preciso que el 55/45 fijo:
+    # arriendo (PD, ~61%), labor (PROV, ~25%), energia (PROV, ~8%), agua (PD, ~6%),
+    # flete (PROV, resto).
+    incert_costo = _incertidumbre_costo_ponderada()
 
     out_producto, out_costo_unit, out_revenue, out_margen = [], [], [], []
     for _ in range(n_sims):

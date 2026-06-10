@@ -45,13 +45,13 @@ def _stub_escenario(nombre: str, van: float, wacc: float = 0.18) -> EscenarioEst
 
 def test_tres_escenarios_se_generan():
     out = comparar_escenarios_estrategicos()
-    assert {e.nombre for e in out} == {"PILOTO", "INDUSTRIAL", "EXPANSION"}
+    assert {e.nombre for e in out} == {"CONSERVADOR", "INDUSTRIAL", "EXPANSION"}
 
 
 def test_capex_total_creciente_con_escala():
     out = comparar_escenarios_estrategicos()
     by = {e.nombre: e for e in out}
-    capex_p = sum(by["PILOTO"].resumen.capex_anuales)
+    capex_p = sum(by["CONSERVADOR"].resumen.capex_anuales)
     capex_i = sum(by["INDUSTRIAL"].resumen.capex_anuales)
     capex_e = sum(by["EXPANSION"].resumen.capex_anuales)
     assert capex_p < capex_i < capex_e
@@ -60,7 +60,7 @@ def test_capex_total_creciente_con_escala():
 def test_ingresos_ano5_crecientes_con_escala():
     out = comparar_escenarios_estrategicos()
     by = {e.nombre: e for e in out}
-    a5_p = by["PILOTO"].resumen.ingresos_anuales[4]
+    a5_p = by["CONSERVADOR"].resumen.ingresos_anuales[4]
     a5_i = by["INDUSTRIAL"].resumen.ingresos_anuales[4]
     a5_e = by["EXPANSION"].resumen.ingresos_anuales[4]
     assert a5_p < a5_i < a5_e
@@ -69,10 +69,10 @@ def test_ingresos_ano5_crecientes_con_escala():
 def test_recomendacion_tiene_estructura_esperada():
     out = comparar_escenarios_estrategicos()
     rec = recomendacion_estrategica(out)
-    assert rec["elegido"] in ("PILOTO", "INDUSTRIAL", "EXPANSION")
+    assert rec["elegido"] in ("CONSERVADOR", "INDUSTRIAL", "EXPANSION")
     assert "razon" in rec
     assert "vans_b_clp" in rec
-    assert set(rec["vans_b_clp"].keys()) == {"PILOTO", "INDUSTRIAL", "EXPANSION"}
+    assert set(rec["vans_b_clp"].keys()) == {"CONSERVADOR", "INDUSTRIAL", "EXPANSION"}
 
 
 def test_recomendacion_explica_van_relativo():
@@ -88,26 +88,26 @@ def test_recomendacion_explica_van_relativo():
 
 
 def test_recomendacion_wacc_alto_fuerza_piloto():
-    """Si WACC > 0.20, la heurística elige PILOTO sin importar los VAN."""
+    """Si WACC > 0.20, la heurística elige CONSERVADOR sin importar los VAN."""
     stubs = [
-        _stub_escenario("PILOTO", van=1e9, wacc=0.25),
+        _stub_escenario("CONSERVADOR", van=1e9, wacc=0.25),
         _stub_escenario("INDUSTRIAL", van=50e9, wacc=0.25),
         _stub_escenario("EXPANSION", van=200e9, wacc=0.25),
     ]
     rec = recomendacion_estrategica(stubs)
-    assert rec["elegido"] == "PILOTO"
+    assert rec["elegido"] == "CONSERVADOR"
     assert "WACC" in rec["razon"]
 
 
 def test_recomendacion_van_industrial_negativo_cae_a_piloto():
-    """Si ningún escenario da VAN positivo (INDUSTRIAL ≤ 0), cae a PILOTO."""
+    """Si ningún escenario da VAN positivo (INDUSTRIAL ≤ 0), cae a CONSERVADOR."""
     stubs = [
-        _stub_escenario("PILOTO", van=-1e9),
+        _stub_escenario("CONSERVADOR", van=-1e9),
         _stub_escenario("INDUSTRIAL", van=-5e9),
         _stub_escenario("EXPANSION", van=-3e9),
     ]
     rec = recomendacion_estrategica(stubs)
-    assert rec["elegido"] == "PILOTO"
+    assert rec["elegido"] == "CONSERVADOR"
     assert "no positivo" in rec["razon"]
 
 
@@ -116,13 +116,13 @@ def test_recomendacion_incluye_tirs_pct_por_escenario():
     out = comparar_escenarios_estrategicos()
     rec = recomendacion_estrategica(out)
     assert "tirs_pct" in rec
-    assert set(rec["tirs_pct"].keys()) == {"PILOTO", "INDUSTRIAL", "EXPANSION"}
+    assert set(rec["tirs_pct"].keys()) == {"CONSERVADOR", "INDUSTRIAL", "EXPANSION"}
 
 
 def test_recomendacion_expansion_cuando_van_supera_1_5x_industrial():
     """Si VAN(EXPANSION) > 1.5× VAN(INDUSTRIAL) > 0 y WACC ≤ 0.20, elige EXPANSION."""
     stubs = [
-        _stub_escenario("PILOTO", van=5e9),
+        _stub_escenario("CONSERVADOR", van=5e9),
         _stub_escenario("INDUSTRIAL", van=20e9),
         _stub_escenario("EXPANSION", van=40e9),  # 2.0× industrial
     ]

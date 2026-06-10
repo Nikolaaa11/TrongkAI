@@ -577,7 +577,7 @@ def plan_tornado_endpoint(req: PlanRequest) -> dict:
     tags=["financiero"],
     summary="3 escenarios estratégicos de planta",
     description=(
-        "Ejecuta los 3 escenarios canónicos (PILOTO 25k ton, INDUSTRIAL 50k ton, "
+        "Ejecuta los 3 escenarios canónicos (CONSERVADOR 25k ton, INDUSTRIAL 50k ton, "
         "EXPANSION 80k ton) y devuelve TIR/VAN/CapEx/Payback de cada uno + recomendación "
         "basada en heurística de risk-adjusted VAN. Pensado para decisión de directorio "
         "sobre estrategia de escalamiento."
@@ -1993,7 +1993,7 @@ def weekly_digest_endpoint() -> HTMLResponse:
     "/scenarios/compare",
     tags=["whatif"],
     summary="Compara los 3 escenarios estratégicos lado a lado",
-    description="PILOTO vs INDUSTRIAL vs EXPANSION con ranking por métrica + recomendación.",
+    description="CONSERVADOR vs INDUSTRIAL vs EXPANSION con ranking por métrica + recomendación.",
 )
 def scenarios_compare_endpoint() -> dict:
     from .scenario_comparator import comparar_estrategicos

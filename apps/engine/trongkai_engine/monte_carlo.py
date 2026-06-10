@@ -3,7 +3,7 @@
 Distribuciones (basadas en RIESGO-SUPUESTOS.md sensibilidades):
 - WACC: normal(0.18, 0.02) — fluctuación de tasa de descuento.
 - Precios SKU: lognormal con sigma 0.20 por sigma de mercado.
-- Rendimiento MMPP: normal con sigma 0.05 (planta piloto puede variar).
+- Rendimiento MMPP: normal con sigma 0.05 (planta industrial puede variar).
 - Costo MMPP: normal(30, 8) — flete + pago varía.
 - OpEx mensual: normal(80M, 15M) — costo operativo industrial real.
 

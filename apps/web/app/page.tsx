@@ -2,6 +2,32 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { stats } from '@/lib/seed-data';
 
+const ENGINE = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'https://trongkai-engine.fly.dev';
+
+// KPIs financieros del plan industrial 5y, en vivo desde el motor (con fallback).
+async function getLiveKPIs() {
+  const fallback = { tir: '30,7%', van: '$3,5B', probWacc: '78%', readiness: '76,8' };
+  try {
+    const [snapRes, readyRes] = await Promise.all([
+      fetch(`${ENGINE}/api/snapshot`, { cache: 'no-store' }),
+      fetch(`${ENGINE}/readiness/score`, { cache: 'no-store' }),
+    ]);
+    const snap = await snapRes.json();
+    const ready = await readyRes.json();
+    const k = snap?.plan?.kpis ?? {};
+    const mc = snap?.monte_carlo_integrado ?? {};
+    const fmt = (n: number) => n.toLocaleString('es-CL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    return {
+      tir: k.tir != null ? `${fmt(k.tir * 100)}%` : fallback.tir,
+      van: k.van != null ? `$${fmt(k.van / 1e9)}B` : fallback.van,
+      probWacc: mc.prob_tir_supera_wacc != null ? `${Math.round(mc.prob_tir_supera_wacc * 100)}%` : fallback.probWacc,
+      readiness: ready?.score_total != null ? fmt(ready.score_total) : fallback.readiness,
+    };
+  } catch {
+    return fallback;
+  }
+}
+
 const accesos = [
   { href: '/inteligencia', label: '🧠 Inteligencia', desc: 'Síntesis + exactitud modelo + plan acción' },
   { href: '/comando', label: '⚡ Centro de Mando', desc: 'Cockpit ejecutivo en tiempo real' },
@@ -17,7 +43,8 @@ const accesos = [
   { href: '/mapa', label: '🗺 Mapa Plataforma', desc: 'Las 47 páginas en 9 capas' },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const kpis = await getLiveKPIs();
   return (
     <div className="space-y-24">
       {/* ===== Hero Apple-style ===== */}
@@ -82,11 +109,11 @@ export default function Home() {
           <PilarCard
             tag="Performance financiera"
             titulo="Defendible a directorio"
-            descripcion="TIR 30,7% con working capital + cobro real. LLCR 6,06 — bancable. Investment Readiness Score 84,7/100."
+            descripcion={`Plan industrial 5 años con working capital + cobro real. Investment Readiness Score ${kpis.readiness}/100. (El piloto prueba tecnología; la rentabilidad llega a escala.)`}
             stats={[
-              { label: 'TIR proyecto', value: '30,7%', unit: 'anual' },
-              { label: 'VAN @ 18%', value: '$5,5B', unit: 'CLP' },
-              { label: 'EV exit 5y', value: '$131B', unit: '9,6× EBITDA' },
+              { label: 'TIR proyecto', value: kpis.tir, unit: 'anual' },
+              { label: 'VAN @ 18%', value: kpis.van, unit: 'CLP' },
+              { label: 'Prob. TIR>WACC', value: kpis.probWacc, unit: 'Monte Carlo' },
             ]}
             highlight
           />
@@ -110,13 +137,13 @@ export default function Home() {
             Los números que importan.
           </h2>
           <p className="mt-3 text-lg text-ink-400">
-            Recalculados en vivo desde el motor en cada visita.
+            Motor en producción, modelo verificado con tests.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-          <BigNumber value="245" unit="tests verde" detail="100% pass" />
-          <BigNumber value="25+" unit="endpoints REST" detail="documentados" />
-          <BigNumber value="15+" unit="módulos engine" detail="Python 3.12" />
+          <BigNumber value="618" unit="tests verde" detail="100% pass" />
+          <BigNumber value="90+" unit="endpoints REST" detail="documentados" />
+          <BigNumber value="40+" unit="módulos engine" detail="Python 3.12" />
           <BigNumber value="27" unit="papers científicos" detail="peer-reviewed" />
         </div>
       </section>

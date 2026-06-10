@@ -9,7 +9,7 @@ def test_compara_3_escenarios():
     c = comparar_estrategicos()
     assert len(c.escenarios) == 3
     nombres = {e["nombre"] for e in c.escenarios}
-    assert nombres == {"PILOTO", "INDUSTRIAL", "EXPANSION"}
+    assert nombres == {"CONSERVADOR", "INDUSTRIAL", "EXPANSION"}
 
 
 def test_cada_escenario_tiene_metricas_clave():
@@ -22,7 +22,7 @@ def test_cada_escenario_tiene_metricas_clave():
 
 def test_mejor_por_metrica_son_validos():
     c = comparar_estrategicos()
-    nombres_validos = {"PILOTO", "INDUSTRIAL", "EXPANSION"}
+    nombres_validos = {"CONSERVADOR", "INDUSTRIAL", "EXPANSION"}
     for metrica, ganador in c.mejor_por_metrica.items():
         assert ganador in nombres_validos
 
@@ -31,7 +31,7 @@ def test_recomendacion_existe():
     c = comparar_estrategicos()
     assert "elegido" in c.recomendacion
     assert "razon" in c.recomendacion
-    assert c.recomendacion["elegido"] in {"PILOTO", "INDUSTRIAL", "EXPANSION"}
+    assert c.recomendacion["elegido"] in {"CONSERVADOR", "INDUSTRIAL", "EXPANSION"}
 
 
 def test_serialize():

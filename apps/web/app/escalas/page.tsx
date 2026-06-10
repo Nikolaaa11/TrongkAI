@@ -159,10 +159,10 @@ export default function EscalasPage() {
       <section className="rounded-2xl bg-blue-50 border-l-4 border-blue-500 p-5">
         <h3 className="text-lg font-bold text-blue-900">💡 Insight estratégico</h3>
         <p className="mt-2 text-sm text-blue-900">
-          El <strong>piloto solo</strong> no es rentable: arriendo PEF ($18.5M/mes) + bajo throughput (prensa 25 kg/h) + yield real ~27.5% generan costo unitario alto.
+          El <strong>piloto solo</strong> no es rentable con ningún SKU: el OPEX completo (arriendo PEF+Tricanter + mano de obra + energía + agua + flete) sobre un throughput bajo (prensa 25 kg/h) y yield ~27.5% genera un costo unitario alto (~$13.500/kg). El piloto sirve para <strong>probar la tecnología</strong>, no para generar utilidad.
         </p>
         <p className="mt-2 text-sm text-blue-900">
-          <strong>El SKU define la rentabilidad:</strong> la harina animal ($1.400/kg) es commodity de bajo margen incluso a escala. El negocio rentable está en <strong>SKU de alto valor</strong>: ingrediente humano ($4.500/kg, rentable desde x10) y nutracéutico premium ($12.000/kg, rentable ya en piloto). Cambiá el SKU arriba para verlo.
+          <strong>El SKU define la rentabilidad a escala:</strong> la harina animal ($1.400/kg) es commodity de bajo margen y no es rentable a ninguna escala. El negocio rentable está en <strong>SKU de alto valor</strong>: ingrediente humano ($4.500/kg) y nutracéutico premium ($12.000/kg), rentables desde ~x10 al diluir los costos fijos. Cambiá el SKU arriba para verlo.
         </p>
         <p className="mt-2 text-sm text-blue-900">
           <strong>Camino sugerido:</strong> piloto valida calidad + foco comercial en SKU premium → ampliar prensa (cuello de botella) → ramping industrial.

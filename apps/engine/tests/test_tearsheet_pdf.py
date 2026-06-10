@@ -33,7 +33,7 @@ def _snapshot_minimo() -> dict:
         },
         "escenarios_estrategicos": {
             "escenarios": [
-                {"nombre": "PILOTO", "capex_total": 9e9, "tir": 0.15, "van": -0.5e9, "payback_meses": None},
+                {"nombre": "CONSERVADOR", "capex_total": 9e9, "tir": 0.15, "van": -0.5e9, "payback_meses": None},
                 {"nombre": "INDUSTRIAL", "capex_total": 15e9, "tir": 0.30, "van": 5e9, "payback_meses": 52},
                 {"nombre": "EXPANSION", "capex_total": 28e9, "tir": 0.25, "van": 3e9, "payback_meses": 57},
             ],

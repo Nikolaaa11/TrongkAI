@@ -129,54 +129,72 @@ def _insights_equipos() -> list[Insight]:
 
 
 def _insights_simulacion() -> list[Insight]:
-    """Analiza simulacion + revenue + escalas: rentabilidad."""
+    """Analiza simulacion + revenue + escalas: rentabilidad.
+
+    Con el OPEX completo el piloto (27.5 t/ano) no es rentable con ningun SKU;
+    la rentabilidad emerge a escala SOLO con SKU de valor (nutraceutico). La
+    harina animal (commodity) no es rentable a ninguna escala. Por eso la
+    oportunidad de escala se evalua sobre el SKU rentable, no el default.
+    """
     from .simulacion_revenue import comparar_escalas, simular_con_revenue
 
     out: list[Insight] = []
     try:
         s = simular_con_revenue(periodo="ano")
-        escalas = comparar_escalas()
+        # Oportunidad de escala: evaluar el SKU de valor (el que SI escala)
+        escalas_nutra = comparar_escalas(sku_principal="nutraceutico_premium")
     except Exception:
         return out
 
-    # Amenaza: piloto deficitario
+    # Amenaza: piloto deficitario (correcto con OPEX completo)
     if s.margen_total_clp < 0:
+        ratio_cost = s.costo_total_clp / max(s.revenue_total_clp, 1)
         out.append(Insight(
             titulo="Piloto deficitario en operacion anual",
             tipo="amenaza",
             severidad="critica",
             descripcion=(
                 f"Piloto produce {s.producto_total_kg/1000:.0f} t/ano por "
-                f"${s.costo_total_clp/1e6:.0f}M pero solo factura "
-                f"${s.revenue_total_clp/1e6:.0f}M. Margen: "
-                f"${s.margen_total_clp/1e6:.0f}M ({s.margen_pct*100:.0f}%)."
+                f"${s.costo_total_clp/1e6:.0f}M de OPEX completo (arriendo + mano de obra + "
+                f"energia + agua + flete) pero solo factura ${s.revenue_total_clp/1e6:.0f}M "
+                f"-> costo {ratio_cost:.1f}x el revenue. Es esperable: el piloto prueba "
+                f"tecnologia, no genera utilidad."
             ),
             impacto=f"Sin escalar, perdida anual ${abs(s.margen_total_clp)/1e6:.0f}M CLP.",
             accion_sugerida=(
-                "1) Ampliar cuello de botella (prensa) para subir throughput. "
-                "2) Validar precio premium con clientes ancla. "
-                "3) Planificar escalado x10 ASAP (rentable desde alli)."
+                "1) Usar el piloto para validar yield + premium con clientes ancla. "
+                "2) Escalar a SKU de valor (nutraceutico), rentable desde x10. "
+                "3) Harina animal commodity NO es rentable a ninguna escala: no es el negocio."
             ),
             modulos_origen=["simulacion_temporal", "simulacion_revenue", "fichas_equipos"],
             link_ui="/escalas",
             score_prioridad=95.0,
         ))
 
-    # Oportunidad: escala industrial
-    x100 = next((e for e in escalas["escalas"] if e["escala"] == 100), None)
-    if x100 and x100["margen_pct"] > 0.6:
+    # Oportunidad: escala con SKU de valor. Buscar la primera escala rentable.
+    rentable = next((e for e in escalas_nutra["escalas"]
+                     if e["escala"] > 1 and e["margen_clp"] > 0), None)
+    x100 = next((e for e in escalas_nutra["escalas"] if e["escala"] == 100), None)
+    if rentable and x100:
         out.append(Insight(
-            titulo=f"Escalado x100 alcanza margen {x100['margen_pct']*100:.0f}%",
+            titulo=f"Nutraceutico rentable desde x{rentable['escala']} (payback {rentable['payback_anos']:.1f}a)",
             tipo="oportunidad",
             severidad="alta",
             descripcion=(
-                f"A {x100['producto_t_ano']:,.0f} t/ano, costo unitario baja a "
-                f"${x100['costo_unitario_clp_kg']:,.0f} CLP/kg. Margen ${x100['margen_clp']/1e6:.0f}M CLP/ano."
+                f"Con SKU nutraceutico premium, el escalado se vuelve rentable desde "
+                f"x{rentable['escala']} ({rentable['producto_t_ano']:,.0f} t/ano, margen "
+                f"${rentable['margen_clp']/1e6:.0f}M). A x100 el costo unitario baja a "
+                f"${x100['costo_unitario_clp_kg']:,.0f} CLP/kg (curva 80%) y el margen llega a "
+                f"${x100['margen_clp']/1e6:,.0f}M CLP/ano."
             ),
-            impacto=f"Payback simple: {x100['payback_anos']:.1f} anos. CAPEX requerido: ${x100['capex_clp']/1e6:.0f}M CLP.",
+            impacto=(
+                f"Payback x{rentable['escala']}: {rentable['payback_anos']:.1f} anos "
+                f"(CAPEX ${rentable['capex_clp']/1e6:.0f}M) -> x100: {x100['payback_anos']:.1f} anos."
+            ),
             accion_sugerida=(
-                "Levantar capital para industrial. Roadmap sugerido: "
-                "piloto -> x10 (validacion mercado) -> x50/x100 (escala comercial)."
+                "Levantar capital para escala industrial con SKU de valor. Roadmap: "
+                "piloto (prueba tecnologia) -> x10 (rentabilidad + validacion mercado) -> "
+                "x50/x100 (escala comercial)."
             ),
             modulos_origen=["simulacion_revenue", "comparar_escalas"],
             link_ui="/escalas",
@@ -189,10 +207,12 @@ def _insights_simulacion() -> list[Insight]:
 def _insights_pef() -> list[Insight]:
     """Analiza si el PEF se justifica."""
     from .pef_analisis import analizar_pef_vs_sin_pef
+    from .parametros_planta import cargar_parametros
 
     out: list[Insight] = []
     try:
         a = analizar_pef_vs_sin_pef()
+        arriendo_pef_m = cargar_parametros().arriendos.arriendo_pef_clp_mes / 1e6
     except Exception:
         return out
 
@@ -222,7 +242,7 @@ def _insights_pef() -> list[Insight]:
             severidad="alta",
             descripcion=(
                 "Con calor residual La Gloria a costo casi cero, el ahorro en secado por "
-                "PEF no compensa su arriendo ($18.5M/mes)."
+                f"PEF no compensa su arriendo (${arriendo_pef_m:.1f}M/mes)."
             ),
             impacto=f"Diferencia margen: ${diff:,.0f} CLP/h. PEF debe justificarse via uplift de yield + premium price.",
             accion_sugerida=(

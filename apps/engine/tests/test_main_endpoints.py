@@ -38,7 +38,7 @@ def test_escenarios_estrategicos_devuelve_3_escenarios_y_recomendacion(monkeypat
 
     nombres = {e["nombre"] for e in body["escenarios"]}
     # Los 3 escenarios canónicos del SUPER_PROMPT
-    assert nombres == {"PILOTO", "INDUSTRIAL", "EXPANSION"}
+    assert nombres == {"CONSERVADOR", "INDUSTRIAL", "EXPANSION"}
 
     # Shape mínimo por escenario — lo que consume el dashboard
     for e in body["escenarios"]:

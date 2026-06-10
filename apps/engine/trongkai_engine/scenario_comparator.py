@@ -37,7 +37,7 @@ class ComparacionEscenarios:
 
 
 def comparar_estrategicos() -> ComparacionEscenarios:
-    """Compara PILOTO / INDUSTRIAL / EXPANSION en múltiples dimensiones."""
+    """Compara CONSERVADOR / INDUSTRIAL / EXPANSION en múltiples dimensiones."""
     estrategicos = comparar_escenarios_estrategicos()
 
     escenarios_data = []

@@ -60,7 +60,7 @@ export default function ComparadorPage() {
         <div className="flex-1">
           <h1 className="font-serif text-3xl text-ink">Comparador de Escenarios</h1>
           <p className="mt-2 text-sm text-ink-400">
-            PILOTO vs INDUSTRIAL vs EXPANSION lado a lado. 9 métricas, ranking por cada una,
+            CONSERVADOR vs INDUSTRIAL vs EXPANSION lado a lado. 9 métricas, ranking por cada una,
             recomendación final del comparador.
           </p>
         </div>
