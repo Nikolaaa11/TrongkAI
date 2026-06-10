@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ConectadoCon } from '@/components/ConectadoCon';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -249,6 +250,13 @@ export default function SimulacionPage() {
           </table>
         </div>
       </section>
+
+      <ConectadoCon links={[
+        { href: '/parametros', label: 'Parámetros', razon: 'Supuestos que alimentan este OPEX' },
+        { href: '/costeo', label: 'Costeo', razon: 'Desglose CLP/kg por etapa y SKU' },
+        { href: '/escalas', label: 'Escalas', razon: 'Este motor escalado x10–x100' },
+        { href: '/planta', label: 'Planta Visual', razon: 'Las máquinas que se simulan acá' },
+      ]} />
     </div>
   );
 }

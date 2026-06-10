@@ -29,7 +29,7 @@ type Snap = {
   carbon_footprint: { baseline: { emisiones_netas_5y_ton: number; es_carbono_negativo: boolean } };
   compliance_rep: { vigentes: number; total_hitos: number; cercanas: number };
   macro_chile: { dolar_clp?: number; uf_clp?: number; tpm_pct?: number };
-  monte_carlo_integrado: { prob_tir_supera_wacc: number };
+  monte_carlo_integrado: { prob_tir_supera_wacc: number; tir_p5?: number; tir_p50?: number; tir_p95?: number };
 };
 
 const NIVEL_COLOR: Record<string, string> = {
@@ -309,8 +309,15 @@ export default function ComandoPage() {
             <div className="tabular text-4xl font-semibold text-ink">{probWacc.toFixed(0)}%</div>
             <div className="text-sm text-ink-400">prob. TIR &gt; WACC</div>
           </div>
+          {snap.monte_carlo_integrado?.tir_p5 != null && (
+            <div className="mt-2 flex gap-4 text-sm tabular">
+              <span className="text-orange-600">P5 {((snap.monte_carlo_integrado.tir_p5 ?? 0) * 100).toFixed(0)}%</span>
+              <span className="font-semibold text-ink">P50 {((snap.monte_carlo_integrado.tir_p50 ?? 0) * 100).toFixed(0)}%</span>
+              <span className="text-brand">P95 {((snap.monte_carlo_integrado.tir_p95 ?? 0) * 100).toFixed(0)}%</span>
+            </div>
+          )}
           <p className="mt-2 text-sm text-ink-600">Basado en 300 simulaciones con riesgo climático.</p>
-          <Link href="/plan" className="mt-3 inline-block text-xs font-medium text-brand">Ver Monte Carlo →</Link>
+          <Link href="/riesgo" className="mt-3 inline-block text-xs font-medium text-brand">Ver riesgo integrado →</Link>
         </div>
       </section>
 
@@ -337,6 +344,9 @@ export default function ComandoPage() {
           >
             📄 Solo PDF
           </a>
+          <Link href="/dashboard-directorio" className="btn-apple btn-apple-ghost text-sm">
+            🖨 Board Pack imprimible
+          </Link>
         </div>
       </section>
     </div>

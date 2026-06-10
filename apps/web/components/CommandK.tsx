@@ -28,11 +28,11 @@ const ITEMS: SearchItem[] = [
   // ===== Inteligencia =====
   { label: 'Decision Engine', href: '/decisiones', category: 'Inteligencia', icon: '🎯', keywords: ['top 5', 'acciones', 'prioridad'] },
   { label: 'Coherencia Cross-Matriz', href: '/coherencia', category: 'Inteligencia', icon: '🔗', keywords: ['gaps', 'sinergia'] },
-  { label: 'Red Inteligente', href: '/red', category: 'Inteligencia', icon: '🕸', keywords: ['network graph', 'dependencias', 'modulos'] },
+  { label: 'Roadmap de Hitos', href: '/roadmap', category: 'Inteligencia', icon: '🗓', keywords: ['timeline', 'hitos', 'compliance', 'certificaciones'] },
   // ===== Datos =====
-  { label: 'Matriz Variables', href: '/variables', category: 'Datos', icon: '📑', keywords: ['165 celdas', 'pd', 'ok', 'excel original'] },
-  { label: 'Datos faltantes', href: '/datos', category: 'Datos', icon: '📋', keywords: ['equipo', 'pendiente', 'pd'] },
+  { label: 'Matriz Variables', href: '/variables', category: 'Datos', icon: '📑', keywords: ['165 celdas', 'pd', 'ok', 'excel original', 'datos faltantes'] },
   { label: 'Data Room DD', href: '/data-room', category: 'Datos', icon: '🗂', keywords: ['due diligence', '41 items', 'lp'] },
+  { label: 'Inbox de archivos', href: '/inbox', category: 'Datos', icon: '📥', keywords: ['archivos', 'equipo', 'clasificacion', 'pendientes'] },
   // ===== Operacional =====
   { label: 'Balance de Masa', href: '/balance', category: 'Operacional', icon: '⚖️', keywords: ['sankey', 'mmpp', 'rendimiento'] },
   { label: 'Planta Visual (fotos)', href: '/planta', category: 'Operacional', icon: '🏭', keywords: ['layout', 'fotos', 'equipos', 'visual'] },
@@ -54,11 +54,17 @@ const ITEMS: SearchItem[] = [
   { label: 'Pipeline LP', href: '/pipeline-lp', category: 'Roadshow', icon: '💼', keywords: ['crm', 'kanban', 'bid', 'family office', 'dfi'] },
   { label: 'LP Pack', href: '/lp-pack', category: 'Roadshow', icon: '📦', keywords: ['zip', 'tearsheet', 'pdf'] },
   { label: 'Equipo y Directorio', href: '/equipo', category: 'Roadshow', icon: '👥', keywords: ['fundadores', 'advisors', 'alianzas'] },
+  // ===== Comercial =====
+  { label: 'Clientes Reales', href: '/clientes-reales', category: 'Comercial', icon: '🤝', keywords: ['iansa', 'sugal', 'agrozzi', 'catalogo', 'benchmarks'] },
+  { label: 'Commercial Intelligence', href: '/commercial', category: 'Comercial', icon: '📊', keywords: ['pricing', 'hhi', 'concentracion', 'tech roi'] },
+  { label: 'Nutrientes por SKU', href: '/nutrientes', category: 'Comercial', icon: '🥗', keywords: ['perfil', 'proteina', 'polifenoles', 'tam'] },
+  { label: 'Tech Stack', href: '/tecnologias', category: 'Comercial', icon: '🔬', keywords: ['opticept', 'pef', 'micromolienda', 'trl'] },
   // ===== Sistema =====
   { label: 'Audit Trail', href: '/audit', category: 'Sistema', icon: '📝', keywords: ['historial', 'cambios', 'dd'] },
-  { label: 'Riesgo Integrado', href: '/riesgo', category: 'Sistema', icon: '⚠️', keywords: ['clima', 'financiero', 'regulatorio'] },
+  { label: 'Riesgo Integrado', href: '/riesgo', category: 'Sistema', icon: '⚠️', keywords: ['clima', 'financiero', 'regulatorio', 'monte carlo'] },
   { label: 'Macro Chile', href: '/macro', category: 'Sistema', icon: '🇨🇱', keywords: ['banco central', 'usd', 'uf', 'tpm', 'ipc'] },
   { label: 'Mapa Plataforma', href: '/mapa', category: 'Sistema', icon: '🗺', keywords: ['arquitectura', 'todas paginas', 'sitemap', 'navegacion'] },
+  { label: 'Salud del Sistema', href: '/salud', category: 'Sistema', icon: '🩺', keywords: ['health', 'cache', 'latencia', 'engine'] },
   { label: 'Investigación', href: '/investigacion', category: 'Sistema', icon: '📚', keywords: ['papers', 'cientificos', 'damodaran'] },
 ];
 

@@ -9,100 +9,83 @@ type Item = { href: string; label: string; desc?: string };
 type Group = { id: string; label: string; emoji?: string; items: Item[] };
 
 /**
- * Menu reorganizado por categoria ejecutiva.
- * Apple-style: nav slim + mega-dropdowns con blur + descripcion por item.
- * Items accesibles via Cmd+K pero fuera del menu principal:
- * /api (developer), /agenda, /balance (mass balance original), /riesgo.
- * Eliminados (depurados): /whatif (duplicado), /supuestos, /digest, /about.
+ * Menu organizado por PERSONA DE USUARIO (no por capas tecnicas):
+ * Directorio (board) / Operacion (planta) / Inversionista (LP) / Analisis (financiero)
+ * + Sistema (admin tecnico).
+ * Las paginas que salieron del menu siguen vivas via Cmd+K y cross-links:
+ * /dashboard-directorio (board pack imprimible, link desde /comando),
+ * /balance /balance-energia /balance-agua (links desde /balance-integral),
+ * /productos-etapas /pef-analisis (links desde balances), /coherencia (link
+ * desde /decisiones), /investigacion /clientes-reales /commercial /nutrientes
+ * /tecnologias (links desde /lp-pack y Cmd+K).
  */
 const GROUPS: Group[] = [
   {
-    id: 'estado',
-    label: 'Estado',
-    emoji: '📊',
+    id: 'directorio',
+    label: 'Directorio',
+    emoji: '🎯',
     items: [
       { href: '/comando', label: 'Centro de Mando', desc: 'Cockpit ejecutivo en tiempo real' },
       { href: '/inteligencia', label: '🧠 Inteligencia', desc: 'Síntesis cross-modular + plan acción' },
-      { href: '/mapa', label: '🗺 Mapa Plataforma', desc: 'Las 48 páginas en 9 capas interconectadas' },
-      { href: '/dashboard-directorio', label: 'Directorio', desc: 'Dashboard consolidado para board' },
-      { href: '/readiness', label: 'Readiness Score', desc: 'Madurez del proyecto 0-100' },
-      { href: '/salud', label: 'Salud del Sistema', desc: 'Health check técnico' },
-      { href: '/audit', label: 'Audit Trail', desc: 'Historial de cambios' },
+      { href: '/plan', label: 'Plan 5 años', desc: 'EERR mensual + TIR/VAN + tornado' },
+      { href: '/comparador', label: 'Escenarios', desc: 'CONSERVADOR vs INDUSTRIAL vs EXPANSION' },
+      { href: '/riesgo', label: 'Riesgo Integrado', desc: 'Monte Carlo + clima + regulatorio' },
+      { href: '/decisiones', label: 'Decision Engine', desc: 'Top 5 acciones priorizadas' },
+      { href: '/roadmap', label: 'Roadmap', desc: 'Timeline de hitos' },
     ],
   },
   {
-    id: 'datos',
-    label: 'Datos',
-    emoji: '📥',
+    id: 'operacion',
+    label: 'Operación',
+    emoji: '🏭',
     items: [
-      { href: '/inbox', label: 'Inbox', desc: 'Archivos nuevos pendientes' },
-      { href: '/datos', label: 'Datos faltantes', desc: 'Checklist visual de gaps' },
-      { href: '/variables', label: 'Matriz Variables', desc: 'PD / OK_PROVISORIO / OK_VALIDADO' },
-      { href: '/coherencia', label: 'Coherencia', desc: 'Gaps entre matrices' },
-      { href: '/red', label: 'Red de Matrices', desc: 'Grafo de dependencias' },
-      { href: '/data-room', label: 'Data Room', desc: 'Checklist DD para LPs' },
-      { href: '/investigacion', label: 'Research', desc: 'Literatura científica' },
+      { href: '/planta', label: 'Planta (visual)', desc: 'Layout con fotos reales de equipos' },
+      { href: '/simulacion', label: '⏱ Simulación', desc: 'Producción + OPEX completo por periodo' },
+      { href: '/balance-integral', label: '⚖️ Balances', desc: 'Producto, energía, agua, RRHH en uno' },
+      { href: '/balance-etapas', label: 'Por Etapas', desc: '11 etapas reales Agrosphere · dinámico' },
+      { href: '/costeo', label: '💰 Costeo', desc: 'Costo por etapa y SKU (CLP/kg, USD/kg)' },
+      { href: '/parametros', label: '⚙️ Parámetros', desc: 'Sueldos, energía, agua, flete editables' },
+      { href: '/equipos', label: 'Equipos', desc: 'Fichas técnicas editables' },
     ],
   },
   {
-    id: 'comercial',
-    label: 'Comercial',
+    id: 'inversionista',
+    label: 'Inversionista',
     emoji: '💼',
     items: [
-      { href: '/clientes-reales', label: 'Clientes', desc: 'Catálogo real (Iansa, Sugal, etc)' },
-      { href: '/commercial', label: 'Commercial Intel', desc: 'Pricing + HHI + tech ROI' },
-      { href: '/nutrientes', label: 'Nutrientes', desc: 'Perfil científico por SKU' },
-      { href: '/tecnologias', label: 'Tech Stack', desc: 'Opticept, PEF, Micromolienda' },
-      { href: '/pipeline-lp', label: 'Pipeline LP', desc: 'CRM de inversionistas' },
-      { href: '/lp-pack', label: 'LP Pack', desc: 'Entregables descargables' },
+      { href: '/readiness', label: 'Readiness Score', desc: 'Madurez del proyecto 0-100' },
+      { href: '/data-room', label: 'Data Room', desc: 'Checklist DD para LPs' },
+      { href: '/lp-pack', label: 'LP Pack', desc: 'Tearsheet + entregables descargables' },
+      { href: '/pipeline-lp', label: 'Pipeline LP', desc: 'CRM de inversionistas en roadshow' },
+      { href: '/carbono', label: 'Carbono / ESG', desc: 'LCA + créditos CO₂' },
+      { href: '/compliance', label: 'Compliance', desc: 'Ley REP + normativa' },
       { href: '/equipo', label: 'Equipo', desc: 'Directorio + advisors' },
     ],
   },
   {
-    id: 'modelo',
-    label: 'Modelo',
+    id: 'analisis',
+    label: 'Análisis',
     emoji: '📈',
     items: [
-      { href: '/plan', label: 'Plan 5 años', desc: 'EERR mensual + KPIs' },
-      { href: '/sensitivity', label: 'Sensibilidad', desc: 'Tornado + heatmap 2D/3D' },
-      { href: '/comparador', label: 'Comparador', desc: 'PILOTO vs INDUSTRIAL vs EXPANSION' },
-      { href: '/whatif-live', label: 'What-if Live', desc: 'Sliders en vivo' },
+      { href: '/whatif-live', label: 'What-if Live', desc: 'Sliders en vivo → TIR/VAN' },
+      { href: '/sensitivity', label: 'Sensibilidad', desc: 'Heatmap + breakeven + curvas' },
       { href: '/stress', label: 'Stress Test', desc: 'Triple negativo' },
+      { href: '/escalas', label: 'Escalas', desc: 'Piloto vs industrial (x10, x50, x100)' },
       { href: '/financiamiento', label: 'Financiamiento', desc: 'Deuda/equity + DSCR' },
       { href: '/slb', label: 'SLB Calculator', desc: 'Sustainability-Linked Bonds' },
+      { href: '/macro', label: 'Macro Chile', desc: 'USD/CLP, UF, TPM en vivo' },
     ],
   },
   {
-    id: 'balances',
-    label: 'Balances',
-    emoji: '⚖️',
+    id: 'sistema',
+    label: 'Sistema',
+    emoji: '🔧',
     items: [
-      { href: '/balance-integral', label: 'Vista Integral', desc: 'Los 4 balances en uno + score global' },
-      { href: '/planta', label: '🏭 Planta (visual)', desc: 'Layout planta con fotos reales de equipos' },
-      { href: '/simulacion', label: '⏱ Simulación', desc: 'Producción + costos por hora/día/mes/año' },
-      { href: '/escalas', label: '📈 Escalas', desc: 'Piloto vs Industrial (x10, x50, x100)' },
-      { href: '/balance-etapas', label: '⚙️ Por Etapas', desc: '11 etapas reales Agrosphere · dinámico' },
-      { href: '/productos-etapas', label: '🧬 Productos × Etapas', desc: 'Matriz MMPP por etapa + yield MSF' },
-      { href: '/costeo', label: '💰 Costeo', desc: 'Costo por etapa y SKU (CLP/kg, USD/kg)' },
-      { href: '/pef-analisis', label: '⚡ PEF A/B', desc: '¿Justifica económicamente el PEF? Comparativo' },
-      { href: '/equipos', label: '🏗 Equipos', desc: 'Fichas técnicas de cada equipo (alimentar)' },
-      { href: '/parametros', label: '⚙️ Parámetros', desc: 'Sueldos, energía, agua, calor, flete editables' },
-      { href: '/balance', label: 'Producto (masa)', desc: 'Closure ±0.5% por SKU' },
-      { href: '/balance-energia', label: 'Energía', desc: 'kWh + mix renovable + FP' },
-      { href: '/balance-agua', label: 'Agua', desc: 'Consumo + recirculación + DGA' },
-      { href: '/balance-rrhh', label: 'RRHH ⚠️', desc: 'Horas + alarmas extras CT Chile' },
-    ],
-  },
-  {
-    id: 'decisiones',
-    label: 'Decisiones',
-    emoji: '🎯',
-    items: [
-      { href: '/decisiones', label: 'Decision Engine', desc: 'Top 5 priorizadas' },
-      { href: '/roadmap', label: 'Roadmap', desc: 'Timeline de hitos' },
-      { href: '/compliance', label: 'Compliance', desc: 'Ley REP + normativa' },
-      { href: '/carbono', label: 'Carbono', desc: 'LCA + créditos CO₂' },
-      { href: '/macro', label: 'Macro Chile', desc: 'USD/CLP, UF, TPM' },
+      { href: '/variables', label: 'Matriz Variables', desc: 'PD / OK_PROVISORIO / OK_VALIDADO' },
+      { href: '/inbox', label: 'Inbox', desc: 'Archivos nuevos del equipo' },
+      { href: '/audit', label: 'Audit Trail', desc: 'Historial de cambios al modelo' },
+      { href: '/salud', label: 'Salud del Sistema', desc: 'Health check técnico' },
+      { href: '/mapa', label: '🗺 Mapa Plataforma', desc: 'Todas las páginas y su flujo' },
     ],
   },
 ];

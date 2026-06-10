@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ConectadoCon } from '@/components/ConectadoCon';
 import { useEffect, useState } from 'react';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
@@ -197,6 +198,13 @@ export default function CosteoPage() {
           → Editar valores en <Link href="/parametros" className="text-brand underline">/parametros</Link>
         </p>
       </section>
+
+      <ConectadoCon links={[
+        { href: '/parametros', label: 'Parámetros', razon: 'Los valores editables detrás del costo' },
+        { href: '/balance-etapas', label: 'Por Etapas', razon: 'El flujo másico de cada etapa' },
+        { href: '/simulacion', label: 'Simulación', razon: 'El costo en el tiempo (OPEX completo)' },
+        { href: '/escalas', label: 'Escalas', razon: 'Cómo baja el costo unitario al escalar' },
+      ]} />
     </div>
   );
 }

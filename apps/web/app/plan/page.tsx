@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ConectadoCon } from '@/components/ConectadoCon';
 import { TornadoChart, type TornadoEntry } from '@/components/TornadoChart';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
@@ -412,6 +413,13 @@ export default function PlanPage() {
           </section>
         </>
       )}
+
+      <ConectadoCon links={[
+        { href: '/riesgo', label: 'Riesgo Integrado', razon: 'Monte Carlo + clima sobre este plan' },
+        { href: '/sensitivity', label: 'Sensibilidad', razon: 'Los drivers de esta TIR' },
+        { href: '/financiamiento', label: 'Financiamiento', razon: 'Deuda/equity sobre este CAPEX' },
+        { href: '/escalas', label: 'Escalas', razon: 'El puente piloto → industrial' },
+      ]} />
     </div>
   );
 }

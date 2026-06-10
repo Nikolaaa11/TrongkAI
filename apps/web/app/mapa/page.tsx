@@ -34,9 +34,7 @@ const ARQUITECTURA: Capa[] = [
     paginas: [
       { href: '/inbox', label: 'Inbox', desc: 'Archivos nuevos clasificados automáticamente' },
       { href: '/variables', label: 'Matriz Variables', desc: 'Todos los supuestos PD / OK_PROVISORIO / OK_VALIDADO' },
-      { href: '/datos', label: 'Datos faltantes', desc: 'Checklist visual de gaps por módulo' },
       { href: '/coherencia', label: 'Coherencia', desc: 'Gaps entre matrices del modelo' },
-      { href: '/red', label: 'Red Inteligente', desc: 'Grafo de dependencias entre módulos' },
       { href: '/data-room', label: 'Data Room DD', desc: 'Checklist due-diligence para LPs' },
       { href: '/investigacion', label: 'Investigación', desc: 'Papers científicos y benchmarks' },
     ],
@@ -90,6 +88,7 @@ const ARQUITECTURA: Capa[] = [
       { href: '/comparador', label: 'Comparador Escenarios', desc: 'PILOTO vs INDUSTRIAL vs EXPANSION' },
       { href: '/whatif-live', label: 'What-if Live', desc: 'Sliders en vivo' },
       { href: '/stress', label: 'Stress Test', desc: 'Triple negativo' },
+      { href: '/riesgo', label: 'Riesgo Integrado', desc: 'Monte Carlo + clima + regulatorio lado a lado' },
       { href: '/financiamiento', label: 'Financiamiento', desc: 'Mix deuda/equity + DSCR' },
       { href: '/slb', label: 'SLB Calculator', desc: 'Sustainability-Linked Bonds' },
     ],
@@ -244,7 +243,7 @@ export default function MapaPage() {
           Apretá <kbd className="rounded bg-white/20 px-2 py-0.5 text-xs">⌘K</kbd> en cualquier momento para buscar en toda la plataforma.
         </p>
         <p className="text-xs opacity-70 mt-2">
-          Engine: 90+ endpoints REST · Frontend: {totalPaginas} páginas · Tests: 581/581 verde
+          Engine: 90+ endpoints REST · Frontend: {totalPaginas} páginas · Tests: 618/618 verde
         </p>
       </section>
     </div>

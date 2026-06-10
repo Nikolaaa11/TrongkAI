@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ConectadoCon } from '@/components/ConectadoCon';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -219,6 +220,13 @@ export default function PlantaPage() {
           </div>
         </div>
       )}
+
+      <ConectadoCon links={[
+        { href: '/equipos', label: 'Fichas Equipos', razon: 'Editar specs de estas máquinas' },
+        { href: '/simulacion', label: 'Simulación', razon: 'Simular la producción de esta planta' },
+        { href: '/balance-integral', label: 'Balances', razon: 'Energía, agua y RRHH de la operación' },
+        { href: '/costeo', label: 'Costeo', razon: 'El costo por etapa del proceso' },
+      ]} />
     </div>
   );
 }

@@ -83,12 +83,12 @@ export default function InboxPage() {
       <section className="rounded-appleXl bg-brand-50 p-6 ring-1 ring-brand/20">
         <h2 className="text-lg font-semibold text-ink">📂 Cómo subir información</h2>
         <p className="mt-2 text-sm text-ink-600">
-          Coloca cualquier archivo (PDF, Excel, Word, imagen) en la carpeta correcta de{' '}
-          <code className="rounded bg-white px-1 text-xs">inbox/</code> y ejecuta:
+          Coloca cualquier archivo (PDF, Excel, Word, imagen) en la carpeta{' '}
+          <code className="rounded bg-white px-1 text-xs">inbox/</code> del repositorio
+          y ejecuta el procesador desde la raíz del proyecto:
         </p>
         <pre className="mt-3 overflow-x-auto rounded-lg bg-ink text-white p-3 text-xs">
-{`cd "C:\\Users\\nicol\\OneDrive\\Documentos\\0.1.1 TrongkAI\\trongkai-platform"
-python scripts/procesar_inbox.py`}
+{`python scripts/procesar_inbox.py`}
         </pre>
         <p className="mt-3 text-xs text-ink-600">
           El sistema clasifica automáticamente · sugiere qué celdas de matriz actualizar · registra en audit trail · sube el Investment Readiness Score.

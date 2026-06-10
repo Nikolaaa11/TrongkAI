@@ -28,19 +28,40 @@ async function getLiveKPIs() {
   }
 }
 
-const accesos = [
-  { href: '/inteligencia', label: '🧠 Inteligencia', desc: 'Síntesis + exactitud modelo + plan acción' },
-  { href: '/comando', label: '⚡ Centro de Mando', desc: 'Cockpit ejecutivo en tiempo real' },
-  { href: '/planta', label: '🏭 Planta Visual', desc: 'Equipos reales con fotos + flujo' },
-  { href: '/simulacion', label: '⏱ Simulación', desc: 'Producción + costos hora/día/mes/año' },
-  { href: '/escalas', label: '📈 Escalas', desc: 'Piloto vs industrial (x10, x50, x100)' },
-  { href: '/costeo', label: '💰 Costeo', desc: 'Costo CLP/kg y USD/kg por SKU' },
-  { href: '/balance-integral', label: '⚖️ Balances', desc: '4 balances + alarmas en vivo' },
-  { href: '/plan', label: 'Plan 5 años', desc: 'EERR + KPIs + Monte Carlo + tornado' },
-  { href: '/readiness', label: 'Investment Readiness', desc: 'Score 0-100 de madurez' },
-  { href: '/compliance', label: 'Compliance Ley REP', desc: '8 hitos regulatorios' },
-  { href: '/macro', label: 'Macro Chile', desc: 'Banco Central en vivo' },
-  { href: '/mapa', label: '🗺 Mapa Plataforma', desc: 'Las 47 páginas en 9 capas' },
+// Accesos balanceados por persona de usuario (3 por persona).
+const accesosPorPersona: { persona: string; emoji: string; items: { href: string; label: string; desc: string }[] }[] = [
+  {
+    persona: 'Para el directorio', emoji: '🎯',
+    items: [
+      { href: '/comando', label: 'Centro de Mando', desc: 'Cockpit ejecutivo en tiempo real' },
+      { href: '/plan', label: 'Plan 5 años', desc: 'EERR + TIR/VAN + Monte Carlo + tornado' },
+      { href: '/riesgo', label: 'Riesgo Integrado', desc: 'Clima + financiero + regulatorio' },
+    ],
+  },
+  {
+    persona: 'Para la planta', emoji: '🏭',
+    items: [
+      { href: '/planta', label: 'Planta Visual', desc: 'Equipos reales con fotos + flujo' },
+      { href: '/simulacion', label: 'Simulación', desc: 'Producción + OPEX completo por periodo' },
+      { href: '/balance-integral', label: 'Balances', desc: '4 balances + alarmas en vivo' },
+    ],
+  },
+  {
+    persona: 'Para inversionistas', emoji: '💼',
+    items: [
+      { href: '/readiness', label: 'Investment Readiness', desc: 'Score 0-100 de madurez' },
+      { href: '/data-room', label: 'Data Room', desc: 'Checklist DD con avance en vivo' },
+      { href: '/carbono', label: 'Carbono / ESG', desc: 'LCA + créditos CO₂' },
+    ],
+  },
+  {
+    persona: 'Para análisis', emoji: '📈',
+    items: [
+      { href: '/whatif-live', label: 'What-if Live', desc: 'Sliders en vivo → TIR/VAN' },
+      { href: '/sensitivity', label: 'Sensibilidad', desc: 'Heatmap + breakeven por driver' },
+      { href: '/escalas', label: 'Escalas', desc: 'Piloto vs industrial (x10, x50, x100)' },
+    ],
+  },
 ];
 
 export default async function Home() {
@@ -70,8 +91,8 @@ export default async function Home() {
             ESG y compliance integrado.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/dashboard-directorio" className="btn-apple">
-              Ver Dashboard Directorio
+            <Link href="/comando" className="btn-apple">
+              Ver Centro de Mando
             </Link>
             <Link href="/readiness" className="btn-apple btn-apple-ghost">
               Investment Readiness Score
@@ -148,33 +169,46 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ===== Secciones ===== */}
+      {/* ===== Accesos por persona ===== */}
       <section>
         <div className="mb-10">
           <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] font-semibold tracking-apple text-ink">
-            Todas las herramientas.
+            Una herramienta para cada rol.
           </h2>
           <p className="mt-2 text-lg text-ink-400">
-            Navegación rápida a las 12 áreas de la plataforma.
+            Directorio, planta, inversionistas y análisis — cada uno con su vista.
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {accesos.map((a) => (
-            <Link
-              key={a.href}
-              href={a.href}
-              className="apple-card group flex items-center justify-between"
-            >
-              <div>
-                <div className="font-semibold text-ink">{a.label}</div>
-                <div className="mt-1 text-[13px] text-ink-400">{a.desc}</div>
+        <div className="space-y-8">
+          {accesosPorPersona.map((grupo) => (
+            <div key={grupo.persona}>
+              <div className="mb-3 text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-400">
+                {grupo.emoji} {grupo.persona}
               </div>
-              <span className="ml-4 text-ink-200 transition-transform group-hover:translate-x-1 group-hover:text-brand">
-                →
-              </span>
-            </Link>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {grupo.items.map((a) => (
+                  <Link
+                    key={a.href}
+                    href={a.href}
+                    className="apple-card group flex items-center justify-between"
+                  >
+                    <div>
+                      <div className="font-semibold text-ink">{a.label}</div>
+                      <div className="mt-1 text-[13px] text-ink-400">{a.desc}</div>
+                    </div>
+                    <span className="ml-4 text-ink-200 transition-transform group-hover:translate-x-1 group-hover:text-brand">
+                      →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
+        <p className="mt-6 text-[13px] text-ink-400">
+          ¿Buscás otra página? Presioná <kbd className="rounded border border-ink-100 bg-ink-50 px-1.5 py-0.5 text-[11px] font-semibold">⌘K</kbd> para buscar entre todas, o mirá el{' '}
+          <Link href="/mapa" className="text-brand underline">mapa de la plataforma</Link>.
+        </p>
       </section>
 
       {/* ===== CTA final ===== */}
@@ -202,12 +236,14 @@ export default async function Home() {
           >
             📄 Solo PDF tearsheet
           </a>
-          <Link
-            href="/api"
+          <a
+            href={`${process.env.NEXT_PUBLIC_ENGINE_URL ?? 'https://trongkai-engine.fly.dev'}/docs`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-full border border-white/30 px-5 py-2.5 text-[14px] font-medium text-white transition hover:bg-white/10"
           >
-            Explorar API
-          </Link>
+            Explorar API (docs)
+          </a>
         </div>
       </section>
     </div>

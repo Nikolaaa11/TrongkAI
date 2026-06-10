@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ConectadoCon } from '@/components/ConectadoCon';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -218,6 +219,13 @@ export default function ParametrosPage() {
         <Field group="" k="perdida_mmpp_global_pct" label="Pérdida MMPP global (5%)" value={data.perdida_mmpp_global_pct} suffix="" step={0.01} />
         <Field group="" k="usd_clp_referencia" label="USD/CLP referencia" value={data.usd_clp_referencia} suffix="CLP" />
       </Card>
+
+      <ConectadoCon links={[
+        { href: '/simulacion', label: 'Simulación', razon: 'Recalcula el OPEX con estos valores' },
+        { href: '/costeo', label: 'Costeo', razon: 'Recalcula CLP/kg con estos valores' },
+        { href: '/balance-etapas', label: 'Por Etapas', razon: 'Las etapas que parametriza' },
+        { href: '/inteligencia', label: 'Inteligencia', razon: 'Impacto en la exactitud del modelo' },
+      ]} />
     </div>
   );
 }

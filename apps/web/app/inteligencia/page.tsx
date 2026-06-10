@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ConectadoCon } from '@/components/ConectadoCon';
 import { useEffect, useState } from 'react';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
@@ -390,6 +391,13 @@ export default function InteligenciaPage() {
           </ol>
         </section>
       )}
+
+      <ConectadoCon links={[
+        { href: '/variables', label: 'Matriz Variables', razon: 'Celdas PD que bajan la exactitud' },
+        { href: '/parametros', label: 'Parámetros', razon: 'Validar los inputs PD detectados' },
+        { href: '/simulacion', label: 'Simulación', razon: 'El motor detrás de la predicción' },
+        { href: '/decisiones', label: 'Decision Engine', razon: 'Plan de acción ejecutable' },
+      ]} />
     </div>
   );
 }

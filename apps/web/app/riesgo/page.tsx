@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ConectadoCon } from '@/components/ConectadoCon';
 import { HistogramaChart } from '@/components/HistogramaChart';
 import { TornadoChart } from '@/components/TornadoChart';
 import {
@@ -200,6 +201,13 @@ export default function RiesgoPage() {
           </div>
         </div>
       </section>
+
+      <ConectadoCon links={[
+        { href: '/plan', label: 'Plan 5 años', razon: 'El plan base que se estresa' },
+        { href: '/stress', label: 'Stress Test', razon: 'Triple-negativo interactivo' },
+        { href: '/sensitivity', label: 'Sensibilidad', razon: 'Breakeven por driver' },
+        { href: '/compliance', label: 'Compliance', razon: 'El riesgo regulatorio REP en detalle' },
+      ]} />
     </div>
   );
 }

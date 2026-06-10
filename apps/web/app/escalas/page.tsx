@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ConectadoCon } from '@/components/ConectadoCon';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -26,20 +27,24 @@ type Resp = {
   supuestos: { curva_aprendizaje_exp: number; capex_williams_exp: number; nota: string };
 };
 
-const SKUS = [
-  { id: 'harina_animal_basica', label: 'Harina animal básica', precio: 850 },
-  { id: 'harina_animal_premium', label: 'Harina animal premium (PEF)', precio: 1400 },
-  { id: 'ingrediente_humano', label: 'Ingrediente humano', precio: 4500 },
-  { id: 'nutraceutico_premium', label: 'Nutracéutico premium', precio: 12000 },
-];
+type SkuPrecio = { id: string; nombre: string; precio_clp_kg: number; precio_usd_kg: number };
 
 export default function EscalasPage() {
   const [data, setData] = useState<Resp | null>(null);
+  // Precios desde el engine (fuente unica), no hardcodeados.
+  const [skus, setSkus] = useState<SkuPrecio[]>([]);
   const [horas, setHoras] = useState(16);
   const [dias, setDias] = useState(25);
   const [meses, setMeses] = useState(10);
   const [mmpp, setMmpp] = useState('TOMASA');
   const [sku, setSku] = useState('harina_animal_premium');
+
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/simulacion/precios-sku`)
+      .then((r) => r.json())
+      .then((d) => setSkus(d.skus ?? []))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const url = `${ENGINE_URL}/simulacion/escalas?horas_dia=${horas}&dias_mes=${dias}&meses_ano=${meses}&mmpp_principal=${mmpp}&sku_principal=${sku}`;
@@ -79,7 +84,11 @@ export default function EscalasPage() {
             <label className="text-xs text-ink-500">SKU principal (precio venta)</label>
             <select value={sku} onChange={(e) => setSku(e.target.value)}
               className="w-full mt-1 rounded border border-ink-200 px-3 py-2 text-sm">
-              {SKUS.map((s) => <option key={s.id} value={s.id}>{s.label} (${s.precio.toLocaleString()} CLP/kg)</option>)}
+              {(skus.length ? skus : [{ id: sku, nombre: 'Cargando precios…', precio_clp_kg: 0, precio_usd_kg: 0 }]).map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.nombre}{s.precio_clp_kg > 0 ? ` ($${s.precio_clp_kg.toLocaleString()} CLP/kg)` : ''}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -178,6 +187,13 @@ export default function EscalasPage() {
           <p>• Operación intensiva: {horas}h/día × {dias}d/mes × {meses}meses/año = {(horas * dias * meses).toLocaleString()} h/año.</p>
         </div>
       </section>
+
+      <ConectadoCon links={[
+        { href: '/simulacion', label: 'Simulación', razon: 'La base piloto (escala x1)' },
+        { href: '/plan', label: 'Plan 5 años', razon: 'El escenario industrial completo' },
+        { href: '/costeo', label: 'Costeo', razon: 'Costo unitario por SKU' },
+        { href: '/inteligencia', label: 'Inteligencia', razon: 'Banda de confianza del costo' },
+      ]} />
     </div>
   );
 }

@@ -99,7 +99,7 @@ export default function LPPackPage() {
   const [scoreLive, setScoreLive] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch(`${ENGINE_URL}/readiness/score?n_sims_mc=200`)
+    fetch(`${ENGINE_URL}/readiness/score?n_sims_mc=500`)
       .then((r) => r.json())
       .then((d) => setScoreLive(d.score_total))
       .catch(() => {});

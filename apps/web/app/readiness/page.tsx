@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { ConectadoCon } from '@/components/ConectadoCon';
 import { useEffect, useState } from 'react';
 import { ReadinessHistoryChart, type HistoryPoint } from '@/components/ReadinessHistoryChart';
 
@@ -273,6 +274,13 @@ export default function ReadinessPage() {
           </section>
         </>
       )}
+
+      <ConectadoCon links={[
+        { href: '/variables', label: 'Matriz Variables', razon: 'La dimensión que más pesa en el score' },
+        { href: '/data-room', label: 'Data Room', razon: 'Checklist DD pendiente' },
+        { href: '/decisiones', label: 'Decision Engine', razon: 'Acciones que suben el score' },
+        { href: '/lp-pack', label: 'LP Pack', razon: 'Empaquetar todo para LPs' },
+      ]} />
     </div>
   );
 }
