@@ -237,11 +237,18 @@ def _timeline_mensual_estacional(
     throughput_max_kg_h: float,
     horas_dia: float,
     dias_mes: float,
-    costo_unitario_clp_kg: float,
+    costo_variable_clp_kg: float,
     mmpp_principal: str = "TOMASA",
     yield_proceso: float = 1.0,
+    fijos_clp_mes: float = 0.0,
 ) -> list[dict]:
-    """Genera 12 meses con factor estacional por MMPP."""
+    """Genera 12 meses con factor estacional por MMPP.
+
+    Costo mensual REALISTA = fijos calendario (arriendo + planilla, constantes
+    aunque la planta pare) + variable proporcional al producto. Antes todo el
+    costo se prorrateaba por producto, lo que ocultaba que los meses de baja
+    estacionalidad pierden plata por los fijos.
+    """
     factores = ESTACIONALIDAD_MMPP.get(mmpp_principal.upper(),
                                           [1.0] * 12)  # default sin estacionalidad
     out = []
@@ -249,11 +256,14 @@ def _timeline_mensual_estacional(
         factor = factores[i]
         horas_mes = horas_dia * dias_mes
         producto_kg = throughput_max_kg_h * horas_mes * factor * yield_proceso
-        costo_clp = producto_kg * costo_unitario_clp_kg
+        costo_variable = producto_kg * costo_variable_clp_kg
+        costo_clp = fijos_clp_mes + costo_variable
         out.append({
             "mes": mes,
             "factor_estacional": round(factor, 3),
             "producto_kg": round(producto_kg, 0),
+            "costo_fijo_clp": round(fijos_clp_mes, 0),
+            "costo_variable_clp": round(costo_variable, 0),
             "costo_clp": round(costo_clp, 0),
             "operativo": factor > 0.0,
         })
@@ -274,6 +284,7 @@ def _opex_completo(
     costo_electrico: float,
     horas_periodo: float,
     meses_equivalentes: float,
+    meses_fijos: float | None = None,
 ) -> dict:
     """OPEX completo de la planta para el periodo.
 
@@ -285,18 +296,23 @@ def _opex_completo(
     - Flete MMPP de entrada: ton procesadas x CLP/ton (variable)
     El calor residual de La Gloria entra solo si tiene fee de servicio (>0).
 
-    Convencion: los costos FIJOS (arriendo, labor) se facturan por mes operativo
-    -> se escalan por `meses_equivalentes` (= horas_periodo / horas_mes_referencia),
-    que para el ano default (10 meses x 400 h) da 10 meses.
+    Convencion de FIJOS (arriendo, labor): se facturan por MES CALENDARIO, no
+    por mes operativo. Un lease y una planilla corren los 12 meses aunque la
+    planta pare 2 por estacionalidad. `meses_fijos` lo fija el caller
+    (12.0 para el periodo anual); si es None se prorratea por meses_equivalentes
+    (correcto para hora/dia/mes, donde el costo atribuible es proporcional).
     """
-    # --- FIJOS (por mes operativo) ---
+    if meses_fijos is None:
+        meses_fijos = meses_equivalentes
+
+    # --- FIJOS (por mes calendario) ---
     arriendo_mes = params.arriendos.arriendo_total_clp_mes      # PEF + Tricanter + otros
     labor_mes = sum(s.costo_total_clp for s in params.sueldos)  # bruto x factor leyes sociales
     calor_fee_mes = params.calor_residual.costo_servicio_clp_mes
 
-    costo_arriendo = arriendo_mes * meses_equivalentes
-    costo_labor = labor_mes * meses_equivalentes
-    costo_calor = calor_fee_mes * meses_equivalentes
+    costo_arriendo = arriendo_mes * meses_fijos
+    costo_labor = labor_mes * meses_fijos
+    costo_calor = calor_fee_mes * meses_fijos
 
     # --- VARIABLES ---
     # Agua: m3 fresca x (tarifa pozo industrial + tratamiento de la fraccion descargada)
@@ -327,6 +343,13 @@ def _opex_completo(
         "labor_headcount": len(params.sueldos),
         "arriendo_clp_mes": round(arriendo_mes, 0),
         "labor_clp_mes": round(labor_mes, 0),
+        "meses_fijos": round(meses_fijos, 2),
+        "fijos_clp_mes": round(arriendo_mes + labor_mes + calor_fee_mes, 0),
+        "variable_clp": round(costo_electrico + costo_agua + costo_flete, 0),
+        "nota_fijos": (
+            "Arriendo y planilla corren por mes CALENDARIO (12/ano), "
+            "aunque la planta opere menos meses por estacionalidad."
+        ),
     }
 
 
@@ -375,9 +398,12 @@ def simular_planta(
     # NO se suma el arriendo prorrateado por maquina (evita doble conteo y subcuenta).
     horas_mes_ref = max(horas_operacion_dia * dias_operacion_mes, 1.0)
     meses_equivalentes = horas_periodo / horas_mes_ref
+    # Fijos por mes CALENDARIO: en el periodo anual el lease y la planilla
+    # corren los 12 meses aunque la planta opere menos (estacionalidad).
+    meses_fijos = 12.0 if periodo == "ano" else None
     desglose = _opex_completo(
         params, producto_total, mmpp_total, costo_electrico,
-        horas_periodo, meses_equivalentes,
+        horas_periodo, meses_equivalentes, meses_fijos=meses_fijos,
     )
     costo_arriendo = desglose["arriendo_clp"]
     costo_labor = desglose["labor_clp"]
@@ -386,12 +412,19 @@ def simular_planta(
     costo_total = desglose["total_clp"]
     costo_unitario = costo_total / max(producto_total, 1)
 
-    # Timeline mensual solo para periodo "ano" o "mes"
+    # Timeline mensual solo para periodo "ano" o "mes".
+    # Costo mensual = fijos calendario (constantes) + variable proporcional,
+    # asi los meses parados muestran la perdida real por fijos.
     timeline = []
     if periodo in ("ano", "mes"):
+        variable_unitario = (
+            desglose["variable_clp"] / max(producto_total, 1)
+            if producto_total > 0 else 0.0
+        )
         timeline = _timeline_mensual_estacional(
             throughput_planta, horas_operacion_dia, dias_operacion_mes,
-            costo_unitario, mmpp_principal, yield_proceso,
+            variable_unitario, mmpp_principal, yield_proceso,
+            fijos_clp_mes=desglose["fijos_clp_mes"],
         )
 
     return SimulacionTemporal(

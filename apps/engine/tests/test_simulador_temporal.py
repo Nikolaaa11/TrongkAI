@@ -176,22 +176,51 @@ def test_costo_total_es_suma_del_desglose():
     assert abs(d["total_clp"] - s.costo_total_clp) < 2.0
 
 
-def test_arriendo_es_fijo_mensual_no_prorateado_por_hora():
-    """Arriendo anual = arriendo_mes * meses_equivalentes (fijo, fuente params)."""
+def test_arriendo_anual_corre_12_meses_calendario():
+    """REALISMO: el lease (PEF+Tricanter) se paga los 12 meses calendario,
+    aunque la planta opere 10 por estacionalidad."""
     from trongkai_engine.balances.parametros_planta import cargar_parametros
     p = cargar_parametros()
     s = simular_planta(periodo="ano")
-    esperado = p.arriendos.arriendo_total_clp_mes * s.meses_equivalentes
+    esperado = p.arriendos.arriendo_total_clp_mes * 12.0
     assert abs(s.costo_arriendo_total_clp - esperado) < 2.0
+    assert s.desglose_opex["meses_fijos"] == 12.0
 
 
-def test_labor_escala_con_planilla():
-    """Labor = suma sueldos (con leyes sociales) * meses_equivalentes."""
+def test_labor_anual_corre_12_meses_calendario():
+    """La planilla se paga los 12 meses (no se despide al equipo 2 meses)."""
     from trongkai_engine.balances.parametros_planta import cargar_parametros
     p = cargar_parametros()
     s = simular_planta(periodo="ano")
     labor_mes = sum(x.costo_total_clp for x in p.sueldos)
-    assert abs(s.costo_labor_total_clp - labor_mes * s.meses_equivalentes) < 2.0
+    assert abs(s.costo_labor_total_clp - labor_mes * 12.0) < 2.0
+
+
+def test_fijos_mensuales_prorrateados_en_periodos_cortos():
+    """Para periodo 'mes' los fijos son 1 mes (prorrateo normal)."""
+    from trongkai_engine.balances.parametros_planta import cargar_parametros
+    p = cargar_parametros()
+    s = simular_planta(periodo="mes")
+    esperado = p.arriendos.arriendo_total_clp_mes * s.meses_equivalentes
+    assert abs(s.costo_arriendo_total_clp - esperado) < 2.0
+
+
+def test_timeline_mes_parado_paga_fijos():
+    """Un mes no operativo (factor 0) tiene costo > 0: los fijos no paran."""
+    s = simular_planta(periodo="ano", mmpp_principal="ALPERUJO")  # estacional dura
+    parados = [m for m in s.timeline_mensual if not m["operativo"]]
+    assert parados, "ALPERUJO debe tener meses no operativos"
+    for m in parados:
+        assert m["costo_fijo_clp"] > 0
+        assert m["costo_variable_clp"] == 0
+        assert m["costo_clp"] == m["costo_fijo_clp"]
+
+
+def test_timeline_separa_fijo_y_variable():
+    """costo_clp de cada mes = fijo + variable."""
+    s = simular_planta(periodo="ano")
+    for m in s.timeline_mensual:
+        assert abs(m["costo_clp"] - (m["costo_fijo_clp"] + m["costo_variable_clp"])) < 2.0
 
 
 def test_arriendo_domina_costo_en_piloto():

@@ -202,7 +202,8 @@ export default function SimulacionPage() {
               })}
             </div>
             <p className="mt-4 text-xs text-ink-400">
-              Factor estacional según disponibilidad de {mmpp}. 0% = mes no operativo.
+              Factor estacional según disponibilidad de {mmpp}. Los meses no operativos igual pagan los costos fijos
+              (arriendo + planilla corren los 12 meses calendario) — por eso muestran costo sin producción.
             </p>
           </div>
         </section>
