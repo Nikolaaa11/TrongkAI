@@ -11,17 +11,18 @@
 - Repo: github.com/Nikolaaa11/TrongkAI (branch main)
 - Tests: **623 verde** (pytest, apps/engine) · tsc strict verde
 - Deploy: `flyctl deploy --remote-only` (apps/engine) + `npx vercel deploy --prod --yes` (apps/web)
-- ⚠️ ESTADO: token Fly EXPIRADO 2026-06-12 → backend en commit `e2fe8c9`;
-  el afinamiento `b953b0c` (fijos 12 meses) espera `flyctl auth login` + deploy.
+- Token Fly: NO lo lee del config.yml → exportar `FLY_API_TOKEN` con el
+  access_token de `C:\Users\nicol\.fly\config.yml` antes de `flyctl deploy`.
+- ✅ ESTADO 2026-06-12: backend en `b953b0c` desplegado y verificado live
+  (costo unitario 15.771 confirmado en producción).
 
 ## Modelo de costos — DOS universos (no mezclar)
 
 ### PILOTO (27,5 t/año producto · 100 t MMPP · `balances/`)
 Cadena anclada: `simulador_temporal → simulacion_revenue → prediccion_intervalos`
 (los 3 dan EXACTAMENTE el mismo costo).
-- OPEX completo anual (código b953b0c, post-afinamiento): **433,7M CLP**
-  → costo unitario **15.771 CLP/kg**
-  (mientras Fly sirva e2fe8c9 el live muestra 370,1M / 13.458 — NO es bug, es deploy pendiente)
+- OPEX completo anual (live, post-afinamiento): **433,7M CLP**
+  → costo unitario **15.771 CLP/kg** (confirmado en producción)
 - Composición: arriendo PEF+Tricanter 272,4M (12 meses calendario) ·
   labor 109,2M (8 personas ×1,35) · energía 31,1M · agua 20,4M · flete 0,6M
 - Fijos: 31,8M/mes calendario (corren aunque la planta pare) · variable ~52M/año
@@ -61,7 +62,6 @@ Fuente live: `GET /simulacion/margen-por-sku`.
 - Snapshots de readiness: POST `/readiness/snapshot` (alimenta el diff de /comando)
 
 ## Pendientes de humano (no automatizables)
-- `flyctl auth login` → luego deploy backend (publica b953b0c)
 - Completar /equipo (placeholders "Por definir" visibles a LPs)
-- Cotizaciones firmes: precio SKU + arriendo PEF
+- Cotizaciones firmes: precio SKU + arriendo PEF (suben la exactitud 62,5%→)
 - Subir docs del equipo a inbox/
