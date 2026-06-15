@@ -41,7 +41,7 @@ type Sim = {
     arriendo_clp_mes: number; labor_clp_mes: number;
   };
   maquinas: Maquina[];
-  timeline_mensual: { mes: string; factor_estacional: number; producto_kg: number; costo_clp: number; operativo: boolean }[];
+  timeline_mensual: { mes: string; factor_estacional: number; producto_kg: number; costo_clp: number; costo_fijo_clp?: number; costo_variable_clp?: number; operativo: boolean }[];
 };
 
 const MMPP_OPTIONS = ['TOMASA', 'ORUJO', 'ALPERUJO', 'POMASA'];
@@ -184,10 +184,14 @@ export default function SimulacionPage() {
             <div className="space-y-2">
               {data.timeline_mensual.map((m) => {
                 const pct = (m.producto_kg / maxTimeline) * 100;
+                const fijo = m.costo_fijo_clp ?? 0;
+                const variable = m.costo_variable_clp ?? 0;
+                const total = m.costo_clp || 1;
+                const pctFijo = (fijo / total) * 100;
                 return (
                   <div key={m.mes} className="grid grid-cols-12 items-center gap-3 text-sm">
                     <div className="col-span-1 font-semibold">{m.mes}</div>
-                    <div className="col-span-7">
+                    <div className="col-span-5">
                       <div className="h-5 overflow-hidden rounded-full bg-ink-50">
                         <div
                           className={`h-full rounded-full ${m.operativo ? 'bg-gradient-to-r from-brand to-brand-light' : 'bg-ink-200'}`}
@@ -196,13 +200,26 @@ export default function SimulacionPage() {
                       </div>
                     </div>
                     <div className="col-span-2 text-right tabular">{(m.producto_kg / 1000).toFixed(2)} t</div>
-                    <div className="col-span-2 text-right tabular text-ink-500">${(m.costo_clp / 1e6).toFixed(1)}M</div>
+                    {/* Barra costo: fijo (ámbar, constante) + variable (verde) */}
+                    <div className="col-span-2" title={`Fijo $${(fijo / 1e6).toFixed(1)}M + variable $${(variable / 1e6).toFixed(1)}M`}>
+                      <div className="flex h-3 overflow-hidden rounded-full bg-ink-50">
+                        <div className="h-full bg-amber-400" style={{ width: `${pctFijo}%` }} />
+                        <div className="h-full bg-brand" style={{ width: `${100 - pctFijo}%` }} />
+                      </div>
+                    </div>
+                    <div className={`col-span-2 text-right tabular ${m.operativo ? 'text-ink-500' : 'text-orange-600'}`}>
+                      ${(m.costo_clp / 1e6).toFixed(1)}M{!m.operativo && ' ⚠'}
+                    </div>
                   </div>
                 );
               })}
             </div>
-            <p className="mt-4 text-xs text-ink-400">
-              Factor estacional según disponibilidad de {mmpp}. Los meses no operativos igual pagan los costos fijos
+            <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-ink-400">
+              <span className="inline-flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-400" /> Costo fijo (arriendo + planilla, constante)</span>
+              <span className="inline-flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-full bg-brand" /> Costo variable (energía, agua, flete)</span>
+            </div>
+            <p className="mt-2 text-xs text-ink-400">
+              Factor estacional según disponibilidad de {mmpp}. Los meses no operativos (⚠) igual pagan los costos fijos
               (arriendo + planilla corren los 12 meses calendario) — por eso muestran costo sin producción.
             </p>
           </div>
