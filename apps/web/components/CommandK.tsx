@@ -13,6 +13,7 @@ type SearchItem = {
 
 const ITEMS: SearchItem[] = [
   // ===== Dashboards =====
+  { label: '📖 Guía de uso', href: '/guia', category: 'Ayuda', icon: '📖', keywords: ['guia', 'ayuda', 'help', 'tutorial', 'como usar', 'manual', 'onboarding'] },
   { label: 'Centro de Mando', href: '/comando', category: 'Dashboard', icon: '⚡', keywords: ['cockpit', 'home', 'inicio', 'overview'] },
   { label: '🧠 Inteligencia (síntesis)', href: '/inteligencia', category: 'Dashboard', icon: '🧠', keywords: ['insights', 'plan accion', 'oportunidades', 'amenazas'] },
   { label: 'Dashboard Directorio', href: '/dashboard-directorio', category: 'Dashboard', icon: '📊', keywords: ['lp', 'roadshow', 'ejecutivo'] },

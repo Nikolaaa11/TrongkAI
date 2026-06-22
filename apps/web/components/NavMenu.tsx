@@ -81,6 +81,7 @@ const GROUPS: Group[] = [
     label: 'Sistema',
     emoji: '🔧',
     items: [
+      { href: '/guia', label: '📖 Guía de uso', desc: 'Cómo usar cada sección · con preview en vivo' },
       { href: '/variables', label: 'Matriz Variables', desc: 'PD / OK_PROVISORIO / OK_VALIDADO' },
       { href: '/inbox', label: 'Inbox', desc: 'Archivos nuevos del equipo' },
       { href: '/audit', label: 'Audit Trail', desc: 'Historial de cambios al modelo' },
