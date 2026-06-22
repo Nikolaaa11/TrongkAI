@@ -13,6 +13,8 @@ type Seccion = {
   funciones: string[];
   pasos: string[];
   parametros: Param[];
+  fuente: string;     // de dónde saca los datos (endpoint / módulo / cálculo)
+  reemplazar: string; // cómo se reemplazan por datos reales
 };
 
 type Grupo = {
@@ -56,6 +58,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Parámetros de planta (arriendo, sueldos, energía…)', donde: '/parametros', efecto: 'Cambian el costo del piloto que aparece en la simulación del cockpit.' },
           { nombre: 'Estado de validación de inputs (PD→VALIDADO)', donde: '/variables · /parametros', efecto: 'Sube el Investment Readiness y baja las alertas de datos.' },
         ],
+        fuente: 'GET /api/snapshot — agrega TODO el modelo (plan, valuación, Monte Carlo, balances, simulación, readiness, alertas), cacheado 60s.',
+        reemplazar: 'No se edita acá. Cambiá los datos en sus páginas de origen (/parametros, /equipos, /variables, /plan) y el cockpit los toma en el próximo refresh.',
       },
       {
         href: '/plan', titulo: 'Plan 5 años', icono: '📈',
@@ -79,6 +83,8 @@ const GUIA: Grupo[] = [
           { nombre: 'OpEx mensual y CapEx anual', donde: 'modelo industrial', efecto: 'Determinan EBITDA, margen y payback.' },
           { nombre: 'WACC (18%)', donde: '/financiamiento', efecto: 'Tasa de descuento: mueve el VAN y el hurdle de la TIR.' },
         ],
+        fuente: 'POST /plan — modelo industrial (módulo plan_builder) con supuestos a 5 años (volumen 50k ton/año, OpEx, CapEx, WACC). Es el universo INDUSTRIAL, distinto del piloto.',
+        reemplazar: 'Los supuestos del plan industrial viven en el motor (código). Explorá variantes sin tocar nada en /whatif-live; para valores de mercado reales, el data-hunter (viernes) los propone con fuente para validarlos.',
       },
       {
         href: '/dashboard-directorio', titulo: 'Board Pack', icono: '🖨',
@@ -99,6 +105,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Mismos del Plan 5 años', donde: '/plan · /financiamiento', efecto: 'El board pack es solo-lectura del snapshot; cambia cuando cambia el plan.' },
           { nombre: 'Múltiplo EBITDA de salida', donde: 'modelo de valuación', efecto: 'Define el rango de EV exit (low/base/high).' },
         ],
+        fuente: 'GET /api/snapshot — exactamente la misma fuente que el Centro de Mando (garantiza que los números coincidan).',
+        reemplazar: 'Solo-lectura. Se actualiza al cambiar el plan (/plan), el financiamiento o los parámetros.',
       },
       {
         href: '/riesgo', titulo: 'Riesgo Integrado', icono: '⚠️',
@@ -118,6 +126,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Volatilidades (σ de precio, rendimiento, costo MMPP, OpEx, WACC)', donde: 'config Monte Carlo', efecto: 'Ensanchan o estrechan las bandas P5–P95.' },
           { nombre: 'Escenarios climáticos (prob. e impacto de sequía/granizada/helada)', donde: 'módulo clima', efecto: 'Bajan el rendimiento esperado y la TIR con clima.' },
         ],
+        fuente: 'POST /plan/monte-carlo-integrado (financiero + clima) y el calendario de /compliance/rep-calendar. Las distribuciones son supuestos del modelo de riesgo.',
+        reemplazar: 'Ajustá volatilidades y escenarios climáticos en los controles de la página; el plan base que se estresa sale de /plan.',
       },
       {
         href: '/decisiones', titulo: 'Decision Engine', icono: '🧭',
@@ -137,6 +147,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Celdas PD de la matriz', donde: '/variables', efecto: 'Cada celda PD pendiente genera/prioriza una acción.' },
           { nombre: 'Ítems pendientes del data room', donde: '/data-room', efecto: 'Los gaps de DD entran al ranking de acciones.' },
         ],
+        fuente: 'GET /decisiones/top — el motor cruza el estado de la matriz de variables, el data room y el break-even para priorizar.',
+        reemplazar: 'No se edita: cambia solo cuando validás inputs o completás ítems de DD. El ranking se recalcula con cada cambio.',
       },
     ],
   },
@@ -165,6 +177,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Capacidad y potencia de cada equipo', donde: '/equipos', efecto: 'La capacidad define el cuello de botella; la potencia, el consumo eléctrico.' },
           { nombre: 'CAPEX y modalidad (propio vs arriendo)', donde: '/equipos', efecto: 'Los equipos propios suman al CAPEX; los de arriendo (PEF, Tricanter) van por OPEX.' },
         ],
+        fuente: 'GET /equipos/fichas (fichas técnicas) + GET /simulacion/capex-piloto. Las fichas y fotos provienen del documento técnico real de la planta de Talca.',
+        reemplazar: 'Editá specs, CAPEX y fotos en /equipos; se reflejan acá al instante. Las fotos viven en /public/equipos.',
       },
       {
         href: '/simulacion', titulo: 'Simulación', icono: '⏱',
@@ -194,6 +208,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Tarifa eléctrica / agua / flete', donde: '/parametros', efecto: 'Costos variables: escalan con horas y toneladas procesadas.' },
           { nombre: 'Capacidad del cuello de botella (prensa) y yield del proceso', donde: '/equipos · /balance-etapas', efecto: 'Definen cuánto producto terminado sale por período.' },
         ],
+        fuente: 'GET /simulacion/planta — combina las fichas de equipos, los parámetros de planta (parametros-planta.json) y la estacionalidad por MMPP. El OPEX se calcula con los 6 componentes reales.',
+        reemplazar: 'Los costos se editan en /parametros y las capacidades en /equipos (persisten en el volumen). Los sliders y el selector de esta página son escenarios temporales: NO cambian los datos guardados.',
       },
       {
         href: '/balance-integral', titulo: 'Balances', icono: '⚖️',
@@ -216,6 +232,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Mix renovable y factor de potencia', donde: '/parametros (energía)', efecto: 'Ajustan el balance energético y su costo.' },
           { nombre: 'Horas asignadas por trabajador', donde: '/balance-rrhh (editable)', efecto: 'Si superan el límite legal, salta la alarma de horas extra.' },
         ],
+        fuente: 'GET /balance/integrado — consolida los 4 balances (módulos mass_balance, energia, agua, rrhh) con sus cross-checks.',
+        reemplazar: 'RRHH es editable (asignar horas) en /balance-rrhh. Energía/agua/masa salen de /parametros y de los rendimientos por etapa.',
       },
       {
         href: '/balance-etapas', titulo: 'Proceso por Etapas', icono: '⚙️',
@@ -235,6 +253,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Capacidad de cada equipo por etapa', donde: '/equipos', efecto: 'La etapa más lenta define el throughput de toda la planta.' },
           { nombre: 'Humedad de la MMPP', donde: '/parametros (humedades)', efecto: 'Afecta el rendimiento del secado y el yield final.' },
         ],
+        fuente: 'GET /balance/etapas — las 11 etapas con datos del Excel "Etapas X Costeo Agrosphere" + capacidades de las fichas de equipos.',
+        reemplazar: 'Cambiás capacidades en /equipos y humedades en /parametros; el throughput y el cuello de botella se recalculan.',
       },
       {
         href: '/costeo', titulo: 'Costeo', icono: '💰',
@@ -254,6 +274,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Todos los parámetros de planta', donde: '/parametros', efecto: 'Sueldos, energía, agua, flete y arriendos arman el costo CLP/kg.' },
           { nombre: 'USD/CLP de referencia', donde: '/parametros', efecto: 'Convierte el costo a USD/kg.' },
         ],
+        fuente: 'GET /costeo/etapas — calcula el costo con parametros-planta.json. Misma base que la simulación (coherencia garantizada).',
+        reemplazar: 'Editá cualquier tarifa o sueldo en /parametros y el costeo se recalcula al instante.',
       },
       {
         href: '/parametros', titulo: 'Parámetros', icono: '🎛',
@@ -280,6 +302,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Energía / agua / flete', donde: 'esta página', efecto: 'Costos variables del proceso.' },
           { nombre: 'Nivel de cada dato (PD/PROV/VALIDADO)', donde: 'esta página', efecto: 'Sube la exactitud del modelo y estrecha las bandas de predicción.' },
         ],
+        fuente: 'GET /parametros — los valores se guardan en parametros-planta.json, persistido en el volumen de Fly (/data). Los valores iniciales (seed) son estimaciones de mercado (PD) hasta validarse.',
+        reemplazar: 'ACÁ se reemplazan los datos del piloto, sin tocar código: editás el valor, "Guardar" lo escribe en el volumen, y marcás su nivel (PD/PROVISORIO/VALIDADO según el respaldo).',
       },
       {
         href: '/equipos', titulo: 'Fichas de Equipos', icono: '🏗',
@@ -300,6 +324,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Potencia (kW)', donde: 'esta página', efecto: 'Define el consumo eléctrico y el costo de energía.' },
           { nombre: 'Arriendo mensual (si OPEX)', donde: 'esta página', efecto: 'Alimenta el costo fijo de arriendo del OPEX.' },
         ],
+        fuente: 'GET /equipos/fichas — guardado en fichas-equipos.json (volumen Fly). Cargado del documento técnico real de la planta piloto de Talca.',
+        reemplazar: 'Editás cada ficha en esta página y "Guardar" lo persiste en el volumen. A medida que el equipo manda specs reales, las actualizás acá.',
       },
     ],
   },
@@ -328,6 +354,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Avance del data room', donde: '/data-room', efecto: 'Completar ítems sube la dimensión de DD.' },
           { nombre: 'KPIs financieros', donde: '/plan', efecto: 'TIR/VAN/DSCR alimentan la dimensión de retorno y bancabilidad.' },
         ],
+        fuente: 'GET /readiness/score — 10 dimensiones ponderadas (retorno, datos, DD, ESG, compliance…). El histórico sale de los snapshots (POST /readiness/snapshot del pulso diario).',
+        reemplazar: 'No se edita directo: sube al validar inputs (/parametros, /variables) y completar el data room. El pulso diario registra un snapshot para el histórico.',
       },
       {
         href: '/data-room', titulo: 'Data Room', icono: '🗂',
@@ -345,6 +373,8 @@ const GUIA: Grupo[] = [
         parametros: [
           { nombre: 'Estado de cada ítem (completo/pendiente)', donde: 'esta página · inbox/', efecto: 'Sube el % de avance y, con él, el readiness.' },
         ],
+        fuente: 'GET /data-room/checklist — la lista de 41 ítems DD definida en el motor; el estado se actualiza al procesar documentos.',
+        reemplazar: 'Completás ítems subiendo los documentos a la carpeta inbox/ del repo y corriendo el clasificador (python scripts/procesar_inbox.py); marca los ítems cubiertos.',
       },
       {
         href: '/carbono', titulo: 'Carbono / ESG', icono: '🌿',
@@ -364,6 +394,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Volumen procesado', donde: '/plan (volumen)', efecto: 'A más toneladas, más emisión evitada.' },
           { nombre: 'Precio de la tonelada de CO₂', donde: 'módulo carbono', efecto: 'Define el revenue por créditos.' },
         ],
+        fuente: 'Módulo carbon_footprint — LCA con factores de emisión de literatura científica (referenciada en /investigacion) y el volumen del plan.',
+        reemplazar: 'El volumen sale de /plan; el precio del crédito de CO₂ y los factores LCA se ajustan en el módulo (el agente esg-analyst los mantiene).',
       },
       {
         href: '/compliance', titulo: 'Compliance REP', icono: '📜',
@@ -382,6 +414,8 @@ const GUIA: Grupo[] = [
         parametros: [
           { nombre: 'Fechas y metas de valorización', donde: 'agente compliance-officer', efecto: 'El agente actualiza el calendario ante cambios normativos.' },
         ],
+        fuente: 'GET /compliance/rep-calendar — calendario de la Ley REP y la Hoja de Ruta Circular 2040 (normativa chilena vigente, módulo compliance_rep).',
+        reemplazar: 'El agente compliance-officer refresca el calendario cuando cambia la normativa; las fechas y metas se editan en el módulo.',
       },
       {
         href: '/lp-pack', titulo: 'LP Pack', icono: '📦',
@@ -400,6 +434,8 @@ const GUIA: Grupo[] = [
         parametros: [
           { nombre: 'Todo el snapshot', donde: 'se genera en vivo', efecto: 'El contenido refleja el estado actual de TODO el modelo.' },
         ],
+        fuente: 'GET /api/lp-pack.zip y /api/tearsheet.pdf — se generan en vivo desde el snapshot al momento de la descarga.',
+        reemplazar: 'No se edita: el contenido refleja automáticamente lo que esté cargado en todo el modelo. Para mejorarlo, mejorá los datos fuente.',
       },
       {
         href: '/pipeline-lp', titulo: 'Pipeline LP', icono: '🤝',
@@ -418,6 +454,8 @@ const GUIA: Grupo[] = [
         parametros: [
           { nombre: 'Datos de cada LP', donde: 'esta página (editable)', efecto: 'Alimentan el monto ponderado del pipeline.' },
         ],
+        fuente: 'GET /lp/pipeline — CRM persistido en el motor (lp-pipeline.json en el volumen).',
+        reemplazar: 'Editás cada LP directamente en la página (alta/edición/baja); los cambios se guardan vía POST /lp/upsert.',
       },
     ],
   },
@@ -448,6 +486,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Costo base del piloto', donde: '/parametros', efecto: 'Es el punto x1; baja con la curva 80% al escalar.' },
           { nombre: 'Curva de aprendizaje 80% y Williams 0.7', donde: 'modelo de escalas', efecto: 'Definen cómo bajan el costo unitario y el CAPEX al crecer.' },
         ],
+        fuente: 'GET /simulacion/escalas + /simulacion/precios-sku + /simulacion/margen-por-sku. El costo base x1 viene del piloto real; los precios SKU son estimaciones de mercado (PD).',
+        reemplazar: 'El costo base se cambia en /parametros. Los precios de venta por SKU hoy viven en el motor; el data-hunter (viernes) busca precios de mercado reales con fuente para que los valides.',
       },
       {
         href: '/whatif-live', titulo: 'What-if Live', icono: '🎚',
@@ -465,6 +505,8 @@ const GUIA: Grupo[] = [
         parametros: [
           { nombre: 'Precio · costo · WACC · OpEx (los 4 sliders)', donde: 'esta página', efecto: 'Cada uno recalcula TIR y VAN en vivo, sin tocar el modelo guardado.' },
         ],
+        fuente: 'POST /whatif — corre el modelo financiero con los overrides de los sliders sobre el plan base.',
+        reemplazar: 'Los sliders son temporales (no guardan nada). Para fijar un cambio de verdad, editá el parámetro real en /parametros o el supuesto en /plan.',
       },
       {
         href: '/sensitivity', titulo: 'Sensibilidad', icono: '🌡',
@@ -483,6 +525,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Rangos de precio y costo', donde: 'controles de esta página', efecto: 'Definen los ejes del heatmap.' },
           { nombre: 'WACC objetivo (hurdle)', donde: '/financiamiento', efecto: 'Es el umbral verde/rojo y el punto de break-even.' },
         ],
+        fuente: 'GET /sensitivity/heatmap, /sensitivity/curves y /sensitivity/breakeven — recalculan el plan variando cada driver dentro de los rangos definidos.',
+        reemplazar: 'Definís los rangos en los controles de la página; el WACC objetivo sale de /financiamiento.',
       },
       {
         href: '/inteligencia', titulo: 'Inteligencia', icono: '🧠',
@@ -502,6 +546,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Nivel de validación de cada input', donde: '/parametros · /variables', efecto: 'Sube la exactitud y estrecha las bandas p10–p90.' },
           { nombre: 'Peso de cada componente del costo', donde: 'desglose OPEX', efecto: 'Pondera cuánto pesa cada incertidumbre en la banda final.' },
         ],
+        fuente: 'GET /inteligencia/sintesis, /inteligencia/precision y /inteligencia/prediccion. La predicción está anclada al simulador real (mismo costo) y la incertidumbre se pondera por el nivel PD/PROV/VALIDADO de cada input.',
+        reemplazar: 'La exactitud sube sola al validar inputs PD en /parametros y /variables. No hay nada que editar acá: es el termómetro del modelo.',
       },
       {
         href: '/financiamiento', titulo: 'Financiamiento', icono: '🏦',
@@ -522,6 +568,8 @@ const GUIA: Grupo[] = [
           { nombre: 'Tasa de impuesto', donde: 'controles de esta página', efecto: 'Determina el escudo fiscal por intereses.' },
           { nombre: 'CAPEX a financiar', donde: '/plan', efecto: 'Es la base sobre la que se arma el mix.' },
         ],
+        fuente: 'POST /plan/financing — arma el mix sobre el CAPEX del plan con los supuestos de deuda que definís.',
+        reemplazar: 'Ajustás mix, tasa, plazo y gracia en los controles de la página; el CAPEX base sale de /plan.',
       },
     ],
   },
@@ -532,6 +580,24 @@ const COMO_FUNCIONA = [
   { icono: '⌘', titulo: 'Buscá con ⌘K', texto: 'Presioná ⌘K (Mac) o Ctrl+K (Windows) en cualquier momento para saltar a cualquier página escribiendo su nombre.' },
   { icono: '◍', titulo: 'Confiá en los datos', texto: 'Los números clave muestran su calidad: PD (sin validar), PROVISORIO o VALIDADO. El badge de "exactitud del modelo" te dice qué tan firme es cada predicción.' },
   { icono: '🔗', titulo: 'Seguí los hilos', texto: 'Al pie de cada página, el bloque "Conectado con" te lleva del número a sus supuestos, su desglose y su banda de confianza en un click.' },
+];
+
+const FUENTES = [
+  {
+    icono: '🎛', titulo: 'Datos de planta (editables sin código)',
+    texto: 'Sueldos, tarifas (energía, agua, flete), arriendos, humedades y las fichas de equipos. Viven en parametros-planta.json y fichas-equipos.json, persistidos en el volumen de Fly.',
+    comoReemplazar: 'Se editan desde la app en /parametros y /equipos. Guardás y queda — no se toca código.',
+  },
+  {
+    icono: '🏭', titulo: 'Supuestos del plan industrial y precios SKU',
+    texto: 'Volumen 50k ton/año, OpEx/CapEx industrial, WACC y los precios de venta por SKU. Hoy viven en el motor (código), como estimaciones de mercado.',
+    comoReemplazar: 'Se exploran sin riesgo en /whatif-live. Para fijar valores reales, el data-hunter (schedule viernes) los busca con fuente y los deja listos para validar.',
+  },
+  {
+    icono: '🌐', titulo: 'Datos externos (macro, papers, normativa)',
+    texto: 'Tipo de cambio y tasas del Banco Central, literatura científica (rendimientos, LCA) y el calendario de la Ley REP.',
+    comoReemplazar: 'Se refrescan solos por los agentes y schedules (macro-refresh, papers-refresh, compliance-officer).',
+  },
 ];
 
 export default function GuiaPage() {
@@ -550,7 +616,9 @@ export default function GuiaPage() {
           s.queEs.toLowerCase().includes(t) ||
           s.paraQue.toLowerCase().includes(t) ||
           s.funciones.some((f) => f.toLowerCase().includes(t)) ||
-          s.parametros.some((p) => p.nombre.toLowerCase().includes(t) || p.efecto.toLowerCase().includes(t)),
+          s.parametros.some((p) => p.nombre.toLowerCase().includes(t) || p.efecto.toLowerCase().includes(t)) ||
+          s.fuente.toLowerCase().includes(t) ||
+          s.reemplazar.toLowerCase().includes(t),
       ),
     })).filter((g) => g.secciones.length > 0);
   }, [q]);
@@ -564,14 +632,14 @@ export default function GuiaPage() {
           Dominá la plataforma
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-lg text-ink-400">
-          Cada sección con TODAS sus funciones, qué parámetros la influyen y cómo se trabajan — más una
-          vista previa en vivo de cada pantalla. Para que cualquiera del equipo tenga dominio total.
+          Cada sección con sus funciones, qué parámetros la influyen, <strong>de dónde salen los datos y cómo
+          reemplazarlos</strong> — más una vista previa en vivo. Para que cualquiera del equipo tenga dominio total.
         </p>
         <div className="mx-auto mt-6 max-w-md">
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Buscar función o parámetro… (ej: arriendo, TIR, yield)"
+            placeholder="Buscar función, parámetro o fuente… (ej: arriendo, snapshot, TIR)"
             className="w-full rounded-full border border-ink-200 px-5 py-2.5 text-sm focus:border-brand focus:outline-none"
           />
         </div>
@@ -591,31 +659,33 @@ export default function GuiaPage() {
         </div>
       </section>
 
-      {/* Cómo fluyen los parámetros */}
+      {/* De dónde vienen los datos */}
       <section className="rounded-appleXl border border-brand/20 bg-brand-50/40 p-8">
-        <h2 className="text-2xl font-semibold tracking-apple text-ink">🔄 Cómo fluyen los parámetros</h2>
+        <h2 className="text-2xl font-semibold tracking-apple text-ink">📡 De dónde vienen los datos · cómo reemplazarlos</h2>
         <p className="mt-2 max-w-3xl text-ink-600">
-          La plataforma tiene <strong>una sola fuente de verdad por número</strong>. Editás un parámetro en su
-          página de origen y el motor recalcula TODO lo que depende de él, en cascada:
+          Todo número de la plataforma sale de una de estas 3 fuentes. Cada sección, más abajo, dice exactamente
+          de cuál saca los suyos y cómo cambiarlos por datos reales.
         </p>
-        <div className="mt-5 grid grid-cols-1 gap-3 text-sm md:grid-cols-5 md:items-center">
-          {[
-            { t: '1 · Editás', d: 'Parámetros de planta, fichas de equipos o supuestos del plan.', c: 'bg-white' },
-            { t: '→', d: '', c: 'bg-transparent text-center text-2xl text-brand' },
-            { t: '2 · Recalcula el motor', d: 'Simulación, costeo, escalas, balances y predicción.', c: 'bg-white' },
-            { t: '→', d: '', c: 'bg-transparent text-center text-2xl text-brand' },
-            { t: '3 · Se refleja', d: 'Cockpit, board pack, readiness, LP pack — coherentes.', c: 'bg-white' },
-          ].map((s, i) => (
-            <div key={i} className={`rounded-xl p-4 ${s.c}`}>
-              <div className="font-semibold text-ink">{s.t}</div>
-              {s.d && <div className="mt-1 text-[13px] text-ink-500">{s.d}</div>}
+        <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {FUENTES.map((f) => (
+            <div key={f.titulo} className="rounded-xl bg-white p-5">
+              <div className="text-3xl">{f.icono}</div>
+              <h3 className="mt-2 font-semibold text-ink">{f.titulo}</h3>
+              <p className="mt-1 text-[13px] leading-relaxed text-ink-500">{f.texto}</p>
+              <p className="mt-2 text-[13px] leading-relaxed text-brand">
+                <span className="font-semibold">Reemplazar: </span>{f.comoReemplazar}
+              </p>
             </div>
           ))}
         </div>
-        <p className="mt-4 text-[13px] text-ink-500">
-          Por eso, en cada sección de abajo verás el bloque <strong>"Parámetros que influyen"</strong>: te dice
-          exactamente qué dato cambia esa pantalla, dónde editarlo y qué efecto tiene.
-        </p>
+        <div className="mt-5 rounded-xl bg-white p-4 text-[13px] text-ink-600">
+          <span className="font-semibold text-ink">🔄 Cascada: </span>
+          editás en su origen (/parametros, /equipos, /plan) → el motor recalcula simulación, costeo, escalas,
+          balances y predicción → se refleja coherente en cockpit, board pack, readiness y LP pack.
+          Cada dato lleva su nivel: <span className="font-semibold">PD</span> (estimación) ·
+          <span className="font-semibold"> PROVISORIO</span> (con respaldo) ·
+          <span className="font-semibold"> VALIDADO</span> (cotización/medición real).
+        </div>
       </section>
 
       {/* Secciones por persona */}
@@ -705,6 +775,17 @@ export default function GuiaPage() {
                           </div>
                         </div>
 
+                        {/* De dónde salen los datos · cómo reemplazarlos */}
+                        <div className="rounded-xl border border-brand/15 bg-brand-50/30 p-4">
+                          <p className="text-[12px] font-semibold uppercase tracking-wide text-brand">📡 De dónde salen los datos · cómo reemplazarlos</p>
+                          <p className="mt-2 text-[13px] leading-relaxed text-ink-700">
+                            <span className="font-semibold text-ink">Fuente: </span>{s.fuente}
+                          </p>
+                          <p className="mt-1.5 text-[13px] leading-relaxed text-ink-700">
+                            <span className="font-semibold text-ink">Reemplazar: </span>{s.reemplazar}
+                          </p>
+                        </div>
+
                         <div className="flex gap-2">
                           <Link href={s.href} className="btn-apple text-sm">Abrir sección →</Link>
                           <button
@@ -761,7 +842,7 @@ export default function GuiaPage() {
       <section className="rounded-appleXl bg-brand px-6 py-14 text-center text-white">
         <h2 className="text-2xl font-semibold tracking-apple">¿Listo para empezar?</h2>
         <p className="mx-auto mt-2 max-w-xl text-white/85">
-          Abrí el Centro de Mando para ver el estado del negocio, o presioná ⌘K para buscar cualquier sección.
+          Abrí el Centro de Mando para ver el estado del negocio, o andá a Parámetros para cargar datos reales.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Link href="/comando" className="rounded-full bg-white px-5 py-2.5 text-[14px] font-medium text-brand transition hover:scale-105">
