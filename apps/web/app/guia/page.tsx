@@ -715,6 +715,31 @@ const FUENTES = [
   },
 ];
 
+const GLOSARIO: { t: string; d: string }[] = [
+  { t: 'TIR', d: 'Tasa Interna de Retorno: la rentabilidad anual del proyecto. Se compara contra el WACC; si TIR > WACC, crea valor.' },
+  { t: 'VAN', d: 'Valor Actual Neto: la suma de los flujos futuros traídos a hoy (descontados al WACC). Positivo = el proyecto vale la pena.' },
+  { t: 'WACC', d: 'Costo de capital (tasa de descuento). En el modelo es 18%; es el "mínimo a superar" (hurdle) de la TIR.' },
+  { t: 'Payback', d: 'Cuántos meses/años tarda en recuperarse la inversión, sin descontar.' },
+  { t: 'MOIC', d: 'Multiple On Invested Capital: cuántas veces se multiplica el capital al salir (ej. 9× = se recupera 9 veces).' },
+  { t: 'EBITDA', d: 'Resultado operativo antes de intereses, impuestos y depreciación. Aproxima la caja que genera la operación.' },
+  { t: 'OPEX', d: 'Costos de operación recurrentes: arriendo, mano de obra, energía, agua, flete. (En TrongkAI, el OPEX completo del piloto.)' },
+  { t: 'CAPEX', d: 'Inversión en activos: equipos, instalación, ingeniería. Se paga una vez (no recurrente).' },
+  { t: 'Costo fijo vs variable', d: 'Fijo = se paga aunque la planta pare (arriendo, planilla, 12 meses). Variable = escala con la producción (energía, agua, flete).' },
+  { t: 'Yield / Rendimiento', d: 'Cuánto producto terminado sale por kilo de materia prima. En el piloto ≈27,5% (el resto es pérdida de masa: secado, separaciones).' },
+  { t: 'Cuello de botella', d: 'El equipo más lento de la línea; limita cuánto puede producir toda la planta (hoy: la prensa, 25 kg/h).' },
+  { t: 'MMPP', d: 'Materia Prima: el subproducto agroindustrial que entra (Tomasa, Orujo, Alperujo, Pomasa).' },
+  { t: 'SKU', d: 'Cada producto vendible: harina animal básica/premium, ingrediente humano, nutracéutico. Mismo costo de proceso, distinto precio.' },
+  { t: 'PD / PROVISORIO / VALIDADO', d: 'Nivel de un dato: PD = estimación sin respaldo · PROVISORIO = con benchmark · VALIDADO = cotización o medición real.' },
+  { t: 'DSCR / LLCR', d: 'Ratios de bancabilidad: capacidad de pagar la deuda. DSCR > 1,3 = bancable para un banco.' },
+  { t: 'LCA', d: 'Life Cycle Assessment: análisis de huella de carbono de todo el ciclo de vida (base del ESG y los créditos CO₂).' },
+  { t: 'Ley REP', d: 'Responsabilidad Extendida del Productor: normativa chilena de economía circular con hitos y metas de valorización.' },
+  { t: 'Monte Carlo', d: 'Simulación de miles de escenarios aleatorios para estimar el rango probable de la TIR/VAN, no un solo número.' },
+  { t: 'Banda de confianza (p10/p50/p90)', d: 'El rango de un resultado: p50 = valor esperado; p10–p90 = el 80% de los escenarios caen ahí.' },
+  { t: 'Exactitud del modelo', d: 'Qué tan firmes son los datos que alimentan el modelo (hoy ~62%). Sube al validar inputs PD; estrecha las bandas.' },
+  { t: 'Snapshot', d: 'La foto completa del estado del modelo en un momento, que alimenta el cockpit, el board pack y el LP pack (coherentes).' },
+  { t: 'Piloto vs Industrial', d: 'Piloto = la planta real chica (27,5 t/año, prueba tecnología, deficitaria). Industrial = el plan a escala (50k t/año, rentable).' },
+];
+
 export default function GuiaPage() {
   const [q, setQ] = useState('');
   const [preview, setPreview] = useState<string | null>('/simulacion');
@@ -972,6 +997,24 @@ export default function GuiaPage() {
       {grupos.length === 0 && (
         <p className="text-center text-ink-400">Sin resultados para "{q}". Probá otro término.</p>
       )}
+
+      {/* Glosario */}
+      <section>
+        <h2 className="mb-1 text-2xl font-semibold tracking-apple text-ink">📖 Glosario</h2>
+        <p className="mb-5 text-ink-400">Los términos del modelo en palabras simples — para que nadie se pierda con la jerga financiera o técnica.</p>
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          {GLOSARIO.filter((g) => {
+            if (!q.trim()) return true;
+            const t = q.toLowerCase();
+            return g.t.toLowerCase().includes(t) || g.d.toLowerCase().includes(t);
+          }).map((g) => (
+            <div key={g.t} className="rounded-xl border border-ink-100 bg-white p-4">
+              <div className="text-[14px] font-bold text-brand">{g.t}</div>
+              <div className="mt-1 text-[13px] leading-relaxed text-ink-600">{g.d}</div>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* CTA final */}
       <section className="rounded-appleXl bg-brand px-6 py-14 text-center text-white">
