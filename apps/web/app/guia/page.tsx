@@ -682,6 +682,14 @@ const GUIA: Grupo[] = [
   },
 ];
 
+const PRIMEROS_PASOS = [
+  { persona: 'Soy del Directorio', emoji: '🎯', href: '/comando', label: 'Empezá en Centro de Mando', desc: 'El estado del negocio en una pantalla.' },
+  { persona: 'Soy de Operación', emoji: '🏭', href: '/simulacion', label: 'Empezá en Simulación', desc: 'Cuánto produce y cuesta la planta.' },
+  { persona: 'Soy Inversionista', emoji: '💼', href: '/readiness', label: 'Empezá en Readiness', desc: 'Madurez del proyecto y data room.' },
+  { persona: 'Soy de Análisis', emoji: '📊', href: '/whatif-live', label: 'Empezá en What-if Live', desc: 'Jugá con los supuestos en vivo.' },
+  { persona: 'Cargo datos reales', emoji: '🎛', href: '/parametros', label: 'Empezá en Parámetros', desc: 'El origen: editás y todo recalcula.' },
+];
+
 const COMO_FUNCIONA = [
   { icono: '🧭', titulo: 'Navegá por tu rol', texto: 'El menú de arriba está organizado por persona: Directorio, Operación, Inversionista, Análisis y Sistema. Buscá tu grupo y vas directo a lo tuyo.' },
   { icono: '⌘', titulo: 'Buscá con ⌘K', texto: 'Presioná ⌘K (Mac) o Ctrl+K (Windows) en cualquier momento para saltar a cualquier página escribiendo su nombre.' },
@@ -751,6 +759,22 @@ export default function GuiaPage() {
           />
         </div>
       </header>
+
+      {/* Primeros pasos — onboarding por rol */}
+      <section>
+        <h2 className="mb-1 text-center text-2xl font-semibold tracking-apple text-ink">¿Primera vez? Empezá por tu rol</h2>
+        <p className="mb-6 text-center text-ink-400">Un punto de entrada por persona. En 1 click estás trabajando.</p>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          {PRIMEROS_PASOS.map((p) => (
+            <Link key={p.href} href={p.href} className="apple-card group flex flex-col items-start transition hover:border-brand/30">
+              <span className="text-3xl">{p.emoji}</span>
+              <span className="mt-2 text-[12px] font-semibold uppercase tracking-wide text-ink-400">{p.persona}</span>
+              <span className="mt-1 font-semibold text-ink group-hover:text-brand">{p.label} →</span>
+              <span className="mt-1 text-[13px] text-ink-400">{p.desc}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* Cómo funciona */}
       <section className="rounded-appleXl bg-ink-50 p-8">
