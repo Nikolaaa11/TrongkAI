@@ -744,6 +744,15 @@ export default function GuiaPage() {
   const [q, setQ] = useState('');
   const [preview, setPreview] = useState<string | null>('/simulacion');
   const [abierta, setAbierta] = useState<string | null>('/simulacion');
+  const [printMode, setPrintMode] = useState(false);
+
+  function imprimir() {
+    setPrintMode(true);
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => setPrintMode(false), 500);
+    }, 400);
+  }
 
   const grupos = useMemo(() => {
     if (!q.trim()) return GUIA;
@@ -775,14 +784,20 @@ export default function GuiaPage() {
           Cada sección con sus funciones, qué parámetros la influyen, <strong>de dónde salen los datos y cómo
           reemplazarlos</strong> — más una vista previa en vivo. Para que cualquiera del equipo tenga dominio total.
         </p>
-        <div className="mx-auto mt-6 max-w-md">
+        <div className="mx-auto mt-6 flex max-w-xl flex-col items-center gap-3 print:hidden sm:flex-row sm:justify-center">
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Buscar función, parámetro o fuente… (ej: arriendo, snapshot, TIR)"
             className="w-full rounded-full border border-ink-200 px-5 py-2.5 text-sm focus:border-brand focus:outline-none"
           />
+          <button onClick={imprimir} className="btn-apple shrink-0 text-sm whitespace-nowrap">
+            📄 Descargar guía (PDF)
+          </button>
         </div>
+        <p className="mt-2 text-[12px] text-ink-400 print:hidden">
+          "Descargar guía (PDF)" abre el diálogo de impresión con todas las secciones expandidas — elegí "Guardar como PDF".
+        </p>
       </header>
 
       {/* Primeros pasos — onboarding por rol */}
@@ -855,7 +870,7 @@ export default function GuiaPage() {
 
           <div className="space-y-4">
             {g.secciones.map((s) => {
-              const open = abierta === s.href || !!q.trim();
+              const open = printMode || abierta === s.href || !!q.trim();
               return (
                 <div key={s.href} className="overflow-hidden rounded-2xl border border-ink-100 bg-white">
                   {/* Cabecera clickable */}
@@ -875,7 +890,7 @@ export default function GuiaPage() {
                       </div>
                       <p className="mt-0.5 text-[13px] text-ink-400">{s.queEs}</p>
                     </div>
-                    <span className={`text-ink-300 transition-transform ${open ? 'rotate-180' : ''}`}>▾</span>
+                    <span className={`text-ink-300 transition-transform print:hidden ${open ? 'rotate-180' : ''}`}>▾</span>
                   </button>
 
                   {open && (
@@ -957,8 +972,8 @@ export default function GuiaPage() {
                         </div>
                       </div>
 
-                      {/* Columna derecha: preview en vivo */}
-                      <div className="min-h-[260px] rounded-xl border border-ink-100 bg-ink-50/40">
+                      {/* Columna derecha: preview en vivo (no se imprime) */}
+                      <div className="min-h-[260px] rounded-xl border border-ink-100 bg-ink-50/40 print:hidden">
                         {preview === s.href ? (
                           <div className="relative h-[360px] overflow-hidden rounded-xl">
                             <iframe
