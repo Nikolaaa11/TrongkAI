@@ -573,6 +573,113 @@ const GUIA: Grupo[] = [
       },
     ],
   },
+  {
+    persona: 'Sistema',
+    emoji: '🔧',
+    color: 'text-ink-600',
+    intro: 'Las herramientas internas: la matriz de supuestos, el buzón de datos, la trazabilidad, la salud técnica y el mapa.',
+    secciones: [
+      {
+        href: '/variables', titulo: 'Matriz de Variables', icono: '🗃',
+        queEs: 'La matriz canónica de TODOS los supuestos del modelo (≈165 celdas) con su nivel de validación PD / OK_PROVISORIO / OK_VALIDADO.',
+        paraQue: 'Para ver de un vistazo qué datos están firmes y cuáles son estimaciones, y subir la exactitud del modelo validando.',
+        funciones: [
+          'Las ≈165 celdas del modelo con su valor y nivel de validación.',
+          '% de cobertura (cuántas están validadas vs PD).',
+          'Variables Intelligence: auto-validación y sugerencias para celdas PD.',
+          'Filtro por estado y por módulo.',
+        ],
+        pasos: [
+          'Filtrá por celdas PD (las que más bajan la exactitud).',
+          'Conseguí el dato real y cargalo en su página fuente (/parametros, /equipos).',
+          'Subí el nivel a PROVISORIO o VALIDADO según el respaldo.',
+        ],
+        parametros: [
+          { nombre: 'Nivel de cada celda (PD/PROVISORIO/VALIDADO)', donde: 'esta página · /parametros', efecto: 'La cobertura validada sube la exactitud del modelo y el readiness.' },
+        ],
+        fuente: 'GET /variables/matrix + /variables/intelligence — el estado canónico de los supuestos, derivado del Excel original y los parámetros cargados.',
+        reemplazar: 'El valor se cambia en su página de origen (/parametros, /equipos); acá se gestiona el NIVEL de validación de cada uno.',
+      },
+      {
+        href: '/inbox', titulo: 'Inbox de Datos', icono: '📥',
+        queEs: 'El buzón donde el equipo deja documentos (PDF, Excel, Word, fotos) que el sistema clasifica y conecta con la matriz.',
+        paraQue: 'Para incorporar información nueva del equipo sin tocar la app: la dejás en una carpeta y el clasificador la procesa.',
+        funciones: [
+          'Estado del buzón: archivos indexados, sugerencias detectadas, categorías.',
+          'Clasificación automática por tipo y subcategoría.',
+          'Sugerencias de qué celda de la matriz actualizar con cada archivo.',
+          'Registro en el audit trail de lo incorporado.',
+        ],
+        pasos: [
+          'Dejá los archivos en la carpeta inbox/ del repositorio.',
+          'Ejecutá el procesador: python scripts/procesar_inbox.py.',
+          'Revisá las sugerencias y validá los datos en su página fuente.',
+        ],
+        parametros: [
+          { nombre: 'Archivos en la carpeta inbox/', donde: 'repo · script procesar_inbox', efecto: 'Cada archivo clasificado sugiere actualizaciones a la matriz y al data room.' },
+        ],
+        fuente: 'GET /inbox/status — índice de los archivos procesados por el clasificador (scripts/procesar_inbox.py).',
+        reemplazar: 'Agregás información dejando archivos en inbox/ y corriendo el procesador; el clasificador los indexa y sugiere dónde aplican.',
+      },
+      {
+        href: '/audit', titulo: 'Audit Trail', icono: '📝',
+        queEs: 'El historial inmutable de todos los cambios al modelo: qué cambió, cuándo y con qué valor.',
+        paraQue: 'Para trazabilidad y defensa en due diligence — un LP puede ver cómo evolucionó cada supuesto.',
+        funciones: [
+          'Registro cronológico de cambios al modelo.',
+          'Quién/qué originó el cambio y el valor anterior vs nuevo.',
+          'Base de evidencia para due diligence.',
+        ],
+        pasos: [
+          'Revisá los cambios recientes ordenados por fecha.',
+          'Usalo como respaldo cuando un LP pregunte por la evolución de un dato.',
+        ],
+        parametros: [
+          { nombre: 'Eventos de cambio del modelo', donde: 'se registran solos', efecto: 'Cada edición de parámetros/fichas/validación queda asentada automáticamente.' },
+        ],
+        fuente: 'GET /audit/trail — registro append-only que el motor escribe ante cada cambio relevante.',
+        reemplazar: 'No se edita (es inmutable por diseño): se llena solo a medida que se trabaja el modelo.',
+      },
+      {
+        href: '/salud', titulo: 'Salud del Sistema', icono: '🩺',
+        queEs: 'El panel técnico: estado del motor (engine), latencias, cache y checks de cada endpoint.',
+        paraQue: 'Para verificar que la plataforma está sana — útil si algo se ve raro o lento.',
+        funciones: [
+          'Health checks del engine y de cada endpoint clave.',
+          'Latencias de respuesta y estado de la cache.',
+          'Botón para limpiar la cache.',
+        ],
+        pasos: [
+          'Mirá que todos los checks estén en verde.',
+          'Si un dato no se actualiza, limpiá la cache y refrescá.',
+        ],
+        parametros: [
+          { nombre: 'TTL de la cache (60s snapshot)', donde: 'motor', efecto: 'Define cada cuánto se recalcula el snapshot que alimenta el cockpit.' },
+        ],
+        fuente: 'GET /health/full + /cache/stats — estado en vivo del backend en Fly.io.',
+        reemplazar: 'No se edita: es monitoreo. El schedule trongkai-daily-pulse revisa esto cada mañana.',
+      },
+      {
+        href: '/mapa', titulo: 'Mapa de la Plataforma', icono: '🗺',
+        queEs: 'El sitemap completo: todas las páginas y cómo se conectan, para onboarding y navegación.',
+        paraQue: 'Para tener la foto completa de la plataforma y encontrar cualquier sección.',
+        funciones: [
+          'Todas las páginas agrupadas por capa/función.',
+          'Mini-diagrama del flujo de información (datos → planta → modelo → entregables).',
+          'Acceso directo a cada sección.',
+        ],
+        pasos: [
+          'Usalo como índice cuando no sabés dónde está algo.',
+          'Para buscar más rápido, presioná ⌘K.',
+        ],
+        parametros: [
+          { nombre: 'Estructura de páginas', donde: 'código del frontend', efecto: 'Refleja las rutas reales de la plataforma.' },
+        ],
+        fuente: 'Estático en el frontend + GET /inteligencia/sintesis para el resumen de estado.',
+        reemplazar: 'Se actualiza al agregar/quitar páginas (lo hace el equipo de desarrollo o el improver).',
+      },
+    ],
+  },
 ];
 
 const COMO_FUNCIONA = [
