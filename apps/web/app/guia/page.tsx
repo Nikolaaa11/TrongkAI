@@ -717,7 +717,7 @@ const FUENTES = [
 
 export default function GuiaPage() {
   const [q, setQ] = useState('');
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>('/simulacion');
   const [abierta, setAbierta] = useState<string | null>('/simulacion');
 
   const grupos = useMemo(() => {
@@ -835,7 +835,11 @@ export default function GuiaPage() {
                 <div key={s.href} className="overflow-hidden rounded-2xl border border-ink-100 bg-white">
                   {/* Cabecera clickable */}
                   <button
-                    onClick={() => setAbierta(abierta === s.href ? null : s.href)}
+                    onClick={() => {
+                      const next = abierta === s.href ? null : s.href;
+                      setAbierta(next);
+                      setPreview(next); // mostrar la imagen (preview en vivo) al abrir
+                    }}
                     className="flex w-full items-center gap-3 p-5 text-left transition hover:bg-ink-50/40"
                   >
                     <span className="text-2xl">{s.icono}</span>
