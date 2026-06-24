@@ -740,9 +740,16 @@ const GLOSARIO: { t: string; d: string }[] = [
   { t: 'Piloto vs Industrial', d: 'Piloto = la planta real chica (27,5 t/año, prueba tecnología, deficitaria). Industrial = el plan a escala (50k t/año, rentable).' },
 ];
 
+// Secciones con screenshot real capturado (en /public/guia/<seccion>.png).
+const SCREENSHOTS = new Set<string>([
+  '/comando', '/plan', '/simulacion', '/escalas', '/costeo', '/planta',
+  '/parametros', '/readiness', '/riesgo', '/inteligencia', '/financiamiento',
+  '/dashboard-directorio',
+]);
+
 export default function GuiaPage() {
   const [q, setQ] = useState('');
-  const [preview, setPreview] = useState<string | null>('/simulacion');
+  const [preview, setPreview] = useState<string | null>(null);
   const [abierta, setAbierta] = useState<string | null>('/simulacion');
   const [printMode, setPrintMode] = useState(false);
 
@@ -878,7 +885,7 @@ export default function GuiaPage() {
                     onClick={() => {
                       const next = abierta === s.href ? null : s.href;
                       setAbierta(next);
-                      setPreview(next); // mostrar la imagen (preview en vivo) al abrir
+                      setPreview(null); // al abrir se ve la imagen estatica; "Ver en vivo" carga el iframe
                     }}
                     className="flex w-full items-center gap-3 p-5 text-left transition hover:bg-ink-50/40"
                   >
@@ -972,9 +979,9 @@ export default function GuiaPage() {
                         </div>
                       </div>
 
-                      {/* Columna derecha: preview en vivo (no se imprime) */}
-                      <div className="min-h-[260px] rounded-xl border border-ink-100 bg-ink-50/40 print:hidden">
-                        {preview === s.href ? (
+                      {/* Columna derecha: imagen estática (instantánea) o preview en vivo */}
+                      <div className="min-h-[260px] overflow-hidden rounded-xl border border-ink-100 bg-ink-50/40">
+                        {preview === s.href && !printMode ? (
                           <div className="relative h-[360px] overflow-hidden rounded-xl">
                             <iframe
                               src={s.href}
@@ -985,15 +992,31 @@ export default function GuiaPage() {
                             />
                             <Link
                               href={s.href}
-                              className="absolute bottom-3 right-3 rounded-full bg-ink/90 px-3 py-1.5 text-[12px] font-medium text-white backdrop-blur transition hover:bg-ink"
+                              className="absolute bottom-3 right-3 rounded-full bg-ink/90 px-3 py-1.5 text-[12px] font-medium text-white backdrop-blur transition hover:bg-ink print:hidden"
                             >
                               Abrir página completa →
                             </Link>
                           </div>
+                        ) : SCREENSHOTS.has(s.href) ? (
+                          <div className="relative">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={`/guia${s.href}.png`}
+                              alt={`Captura de ${s.titulo}`}
+                              className="w-full rounded-xl border-b border-ink-100"
+                              loading="lazy"
+                            />
+                            <button
+                              onClick={() => setPreview(s.href)}
+                              className="absolute bottom-3 right-3 rounded-full bg-ink/90 px-3 py-1.5 text-[12px] font-medium text-white backdrop-blur transition hover:bg-ink print:hidden"
+                            >
+                              ▶ Ver en vivo
+                            </button>
+                          </div>
                         ) : (
                           <button
                             onClick={() => setPreview(s.href)}
-                            className="flex h-full min-h-[260px] w-full flex-col items-center justify-center gap-2 text-ink-300 transition hover:text-brand"
+                            className="flex h-full min-h-[260px] w-full flex-col items-center justify-center gap-2 text-ink-300 transition hover:text-brand print:hidden"
                           >
                             <span className="text-4xl">{s.icono}</span>
                             <span className="text-sm font-medium">Ver vista previa en vivo</span>
