@@ -741,10 +741,15 @@ const GLOSARIO: { t: string; d: string }[] = [
 ];
 
 // Secciones con screenshot real capturado (en /public/guia/<seccion>.png).
+// Cobertura total: las 28 secciones tienen captura real.
+// Regenerar con:  cd apps/web && node scripts/capturar-guia.mjs
 const SCREENSHOTS = new Set<string>([
-  '/comando', '/plan', '/simulacion', '/escalas', '/costeo', '/planta',
-  '/parametros', '/readiness', '/riesgo', '/inteligencia', '/financiamiento',
-  '/dashboard-directorio',
+  '/comando', '/plan', '/dashboard-directorio', '/riesgo', '/decisiones',
+  '/planta', '/simulacion', '/balance-integral', '/balance-etapas', '/costeo',
+  '/parametros', '/equipos', '/readiness', '/data-room', '/carbono',
+  '/compliance', '/lp-pack', '/pipeline-lp', '/escalas', '/whatif-live',
+  '/sensitivity', '/inteligencia', '/financiamiento', '/variables', '/inbox',
+  '/audit', '/salud', '/mapa',
 ]);
 
 export default function GuiaPage() {
