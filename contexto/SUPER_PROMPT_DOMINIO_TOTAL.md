@@ -49,13 +49,14 @@ Toda entrada de GUIA debe tener, sin excepción:
   194.723/77.938 CLP/ton MP seca — ver [[SUPER_PROMPT_COSTOS_PROCESOS_V3]]).
 - Capturas de /guia frescas tras cada cambio visual (script `apps/web/scripts/capturar-guia.mjs`).
 
-## 5. Roadmap de utilidad real (olas siguientes, en orden de ROI)
+## 5. Roadmap de utilidad real — ESTADO 03-jul-2026
 
-1. **Provenance por número** (badge nivel de dato PD/PROVISORIO/VALIDADO junto a cada KPI
-   crítico, no solo global) — extiende CalidadDato.
-2. **Acciones sugeridas por pantalla** ("con este dato, lo siguiente es…" → link).
-3. **Tour de primer uso** (3 pasos por página usando los `pasos[]` ya existentes).
-4. **Telemetría de secciones** (qué pantallas nadie abre → candidatas a fusionar/matar).
+1. ✅ **Provenance por número** — `components/NivelDato.tsx` en /simulacion, /costeo, /plan
+   (derivado en vivo de GET /parametros; peor driver manda).
+2. ✅ **Acciones sugeridas por pantalla** — `SIGUIENTES` en guia-data (56 acciones, 28 secciones),
+   bloque "¿Y ahora qué?" en el panel de ayuda.
+3. ✅ **Tour de primer uso** — "▶ Tour guiado" recorre los `pasos[]` sobre la página real.
+4. ⏳ **Telemetría de secciones** (qué pantallas nadie abre) — pendiente, requiere usuarios activos.
 
 ## 6. Definition of done de esta ola
 

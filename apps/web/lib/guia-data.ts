@@ -261,6 +261,8 @@ export const GUIA: Grupo[] = [
         funciones: [
           'Costo unitario CLP/kg y USD/kg por SKU.',
           'Desglose por concepto (energía, mano de obra, agua, flete, arriendo).',
+          'Comparativo de 5 rutas saco vs maxisaco (canon del equipo 03-jul-2026): el maxisaco ahorra ~90M CLP/mes.',
+          'Chip de nivel de dato (PD/PROVISORIO) junto al costo unitario — click lleva a /variables.',
           'Flete de MMPP de entrada y de despacho de salida.',
           'Costo por etapa del proceso.',
         ],
@@ -271,8 +273,9 @@ export const GUIA: Grupo[] = [
         parametros: [
           { nombre: 'Todos los parámetros de planta', donde: '/parametros', efecto: 'Sueldos, energía, agua, flete y arriendos arman el costo CLP/kg.' },
           { nombre: 'USD/CLP de referencia', donde: '/parametros', efecto: 'Convierte el costo a USD/kg.' },
+          { nombre: 'Packaging (saco 3.000 vs maxisaco 10.000 CLP)', donde: 'what-if en GET /costos/procesos', efecto: 'El saco 25 kg es el 69% del costo de su ruta: decisión comercial n.°1.' },
         ],
-        fuente: 'GET /costeo/etapas — calcula el costo con parametros-planta.json. Misma base que la simulación (coherencia garantizada).',
+        fuente: 'GET /costeo/etapas (parámetros vivos) + GET /costos/procesos (réplica canónica del Excel del equipo, 12 etapas y rutas saco/maxisaco).',
         reemplazar: 'Editá cualquier tarifa o sueldo en /parametros y el costeo se recalcula al instante.',
       },
       {
