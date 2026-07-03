@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import NivelDato from '@/components/NivelDato';
 import { ConectadoCon } from '@/components/ConectadoCon';
 import { TornadoChart, type TornadoEntry } from '@/components/TornadoChart';
 
@@ -207,8 +208,8 @@ export default function PlanPage() {
       {data && (
         <>
           <section className="grid grid-cols-2 gap-3 md:grid-cols-5">
-            <KpiCard label="TIR proyecto anual" value={pct(data.kpis.tir_proyecto_anual)} />
-            <KpiCard label="VAN" value={`$${fmt(data.kpis.van)}`} />
+            <KpiCard label="TIR proyecto anual" value={pct(data.kpis.tir_proyecto_anual)} badge={<NivelDato kpi="tir_van" />} />
+            <KpiCard label="VAN" value={`$${fmt(data.kpis.van)}`} badge={<NivelDato kpi="tir_van" />} />
             <KpiCard
               label="Payback descontado"
               value={data.kpis.payback_meses ? `${data.kpis.payback_meses} meses` : '—'}
@@ -424,10 +425,10 @@ export default function PlanPage() {
   );
 }
 
-function KpiCard({ label, value }: { label: string; value: string }) {
+function KpiCard({ label, value, badge }: { label: string; value: string; badge?: React.ReactNode }) {
   return (
     <div className="rounded-lg border border-oliva/10 bg-white p-4 shadow-sm">
-      <div className="text-xs uppercase tracking-wide text-oliva-600">{label}</div>
+      <div className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-oliva-600">{label}{badge}</div>
       <div className="mt-1 text-xl font-semibold text-oliva-900">{value}</div>
     </div>
   );

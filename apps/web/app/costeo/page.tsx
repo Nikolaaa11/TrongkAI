@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ConectadoCon } from '@/components/ConectadoCon';
 import { CalidadDato } from '@/components/CalidadDato';
 import { useEffect, useState } from 'react';
+import NivelDato from '@/components/NivelDato';
 
 const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL ?? 'http://localhost:8000';
 
@@ -122,7 +123,7 @@ export default function CosteoPage() {
       {/* KPIs */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <KPI label="Costo total/hora" valor={`$${(data.costo_total_clp_h / 1000).toFixed(0)}k CLP`} sub="planta operando" />
-        <KPI label="Costo unitario" valor={`$${data.costo_total_clp_kg_output.toFixed(0)} CLP/kg`} sub="producto final" />
+        <KPI label="Costo unitario" valor={`$${data.costo_total_clp_kg_output.toFixed(0)} CLP/kg`} sub="producto final" badge={<NivelDato kpi="costo_piloto" />} />
         <KPI label="Costo USD" valor={`$${data.costo_total_usd_kg_output.toFixed(2)} USD/kg`} sub="referencia internacional" />
         <KPI label="Throughput producto" valor={`${(data.masa_output_total_kg_h / 1000).toFixed(2)} t/h`} sub="output final" />
       </div>
@@ -131,7 +132,7 @@ export default function CosteoPage() {
       {v3 && (
         <section className="rounded-2xl border border-ink-100 bg-white p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 className="text-xl font-bold">📦 Costos por procesos — canon del equipo</h2>
+            <h2 className="flex items-center gap-2 text-xl font-bold">📦 Costos por procesos — canon del equipo <NivelDato kpi="costos_procesos" /></h2>
             <p className="text-[11px] text-ink-400">{v3.fuente} · costo variable por ton de materia seca</p>
           </div>
           <div className="mt-4 overflow-x-auto">
@@ -274,10 +275,10 @@ export default function CosteoPage() {
   );
 }
 
-function KPI({ label, valor, sub }: { label: string; valor: string; sub?: string }) {
+function KPI({ label, valor, sub, badge }: { label: string; valor: string; sub?: string; badge?: React.ReactNode }) {
   return (
     <div className="rounded-xl border border-ink-100 bg-white p-4">
-      <p className="text-[11px] uppercase text-ink-400">{label}</p>
+      <p className="flex items-center gap-1.5 text-[11px] uppercase text-ink-400">{label}{badge}</p>
       <p className="mt-1 text-xl font-bold tabular">{valor}</p>
       {sub && <p className="text-xs text-ink-400">{sub}</p>}
     </div>

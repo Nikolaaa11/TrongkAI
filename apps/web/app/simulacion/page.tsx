@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import NivelDato from '@/components/NivelDato';
 import { ConectadoCon } from '@/components/ConectadoCon';
 import { CalidadDato } from '@/components/CalidadDato';
 
@@ -110,8 +111,8 @@ export default function SimulacionPage() {
       {/* KPIs principales */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <KPI label="Producto total" valor={`${(data.producto_total_kg / 1000).toFixed(2)} t`} sub={`${data.producto_total_kg.toLocaleString()} kg`} tono="ok" />
-        <KPI label="Costo total" valor={`$${(data.costo_total_clp / 1e6).toFixed(1)}M CLP`} sub={`USD $${(data.costo_total_clp / 920 / 1e3).toFixed(0)}k`} />
-        <KPI label="Costo unitario" valor={`$${data.costo_unitario_clp_kg.toLocaleString()} CLP/kg`} sub={`USD $${(data.costo_unitario_clp_kg / 920).toFixed(2)}/kg`} />
+        <KPI label="Costo total" valor={`$${(data.costo_total_clp / 1e6).toFixed(1)}M CLP`} sub={`USD $${(data.costo_total_clp / 920 / 1e3).toFixed(0)}k`} badge={<NivelDato kpi="costo_piloto" />} />
+        <KPI label="Costo unitario" valor={`$${data.costo_unitario_clp_kg.toLocaleString()} CLP/kg`} sub={`USD $${(data.costo_unitario_clp_kg / 920).toFixed(2)}/kg`} badge={<NivelDato kpi="costo_piloto" />} />
         <KPI label="kWh totales" valor={`${data.kwh_totales.toLocaleString()}`} sub={`${data.horas_totales_periodo.toLocaleString()} h operación`} />
       </div>
 
@@ -296,11 +297,11 @@ function Slider({ label, value, min, max, step, onChange, unit }: { label: strin
   );
 }
 
-function KPI({ label, valor, sub, tono }: { label: string; valor: string; sub?: string; tono?: 'ok' }) {
+function KPI({ label, valor, sub, tono, badge }: { label: string; valor: string; sub?: string; tono?: 'ok'; badge?: React.ReactNode }) {
   const cls = tono === 'ok' ? 'text-brand' : 'text-ink';
   return (
     <div className="rounded-xl border border-ink-100 bg-white p-4">
-      <p className="text-[11px] uppercase text-ink-400">{label}</p>
+      <p className="flex items-center gap-1.5 text-[11px] uppercase text-ink-400">{label}{badge}</p>
       <p className={`mt-1 text-xl font-bold tabular ${cls}`}>{valor}</p>
       {sub && <p className="text-xs text-ink-400">{sub}</p>}
     </div>
