@@ -42,9 +42,11 @@ def test_sueldo_costo_hora_incluye_leyes_sociales():
 
 
 def test_tarifa_energia_promedio_ponderada():
+    # Canon equipo 03-jul-2026: tarifa flat 270 CLP/kWh (punta == resto == promedio).
     t = TarifaEnergia()
     promedio = t.tarifa_promedio_clp_kwh
-    assert t.tarifa_energia_resto_clp_kwh < promedio < t.tarifa_energia_punta_clp_kwh
+    assert t.tarifa_energia_resto_clp_kwh <= promedio <= t.tarifa_energia_punta_clp_kwh
+    assert promedio == 270.0
 
 
 def test_calor_residual_la_gloria_bajo_costo():
@@ -54,9 +56,10 @@ def test_calor_residual_la_gloria_bajo_costo():
 
 
 def test_tarifa_agua_industrial_mucho_mas_barata():
-    """Pozo propio mucho mas barato que red."""
+    """Pozo propio mucho mas barato que red (llave + alcantarillado)."""
     a = TarifaAgua()
-    assert a.agua_industrial_clp_m3 < a.agua_llave_clp_m3 / 5
+    red_total = a.agua_llave_clp_m3 + a.alcantarillado_clp_m3   # 1.750 canon
+    assert a.agua_industrial_clp_m3 < red_total / 5
 
 
 def test_flete_costos_calculados():

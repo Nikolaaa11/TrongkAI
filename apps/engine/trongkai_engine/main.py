@@ -2582,6 +2582,35 @@ def costeo_etapas_endpoint(
     )
 
 
+@app.get(
+    "/costos/procesos",
+    tags=["balances"],
+    summary="Costos por procesos V3 - replica canonica del Excel del equipo (03-jul-2026)",
+    description="12 etapas + rutas saco/maxisaco + CLP/ton MP seca. Costo VARIABLE de "
+                "procesamiento (sin arriendos/leyes sociales/fletes). Overrides via query "
+                "para what-if: tarifa_clp_kwh, saco_25kg_clp, camiones_dia, etc.",
+)
+@cached_ttl(seconds=300)
+def costos_procesos_endpoint(
+    tarifa_clp_kwh: float | None = None,
+    agua_clp_m3: float | None = None,
+    saco_25kg_clp: float | None = None,
+    maxisaco_800kg_clp: float | None = None,
+    camiones_dia: float | None = None,
+) -> dict:
+    from .balances.costos_procesos import calcular
+    overrides = {
+        k: v for k, v in {
+            "tarifa_clp_kwh": tarifa_clp_kwh,
+            "agua_clp_m3": agua_clp_m3,
+            "saco_25kg_clp": saco_25kg_clp,
+            "maxisaco_800kg_clp": maxisaco_800kg_clp,
+            "camiones_dia": camiones_dia,
+        }.items() if v is not None
+    }
+    return calcular(**overrides)
+
+
 # =============================================================================
 # ANALISIS PEF (responde la pregunta 3 del usuario)
 # =============================================================================

@@ -51,14 +51,15 @@ class SueldoCargo:
 class TarifaEnergia:
     """Tarifa electrica industrial Chile (CGE/Enel/cooperativa rural)."""
     proveedor: str = "CGE Distribucion (BT4-3)"
-    tarifa_energia_clp_kwh: float = 110.0    # punta alta (P) y baja (Resto)
-    tarifa_energia_punta_clp_kwh: float = 165.0
-    tarifa_energia_resto_clp_kwh: float = 95.0
+    tarifa_energia_clp_kwh: float = 270.0    # canon equipo 03-jul-2026 (Excel costos v3)
+    tarifa_energia_punta_clp_kwh: float = 270.0
+    tarifa_energia_resto_clp_kwh: float = 270.0
     cargo_potencia_clp_kw_mes: float = 7500.0
     cargo_fijo_clp_mes: float = 12000.0
     pct_horas_punta: float = 0.20             # 18:00-23:00 invierno
     factor_potencia_objetivo: float = 0.94
-    notas: str = "Tarifa BT-4-3 estimada Parral 2026. Validar con factura real."
+    notas: str = ("270 CLP/kWh flat segun Excel equipo 03-jul-2026 "
+                  "(SUPER_PROMPT_COSTOS_PROCESOS_V3). Validar si incluye potencia/cargos.")
 
     @property
     def tarifa_promedio_clp_kwh(self) -> float:
@@ -106,17 +107,18 @@ class CalorResidualLaGloria:
 @dataclass
 class TarifaAgua:
     """Tarifas agua diferenciadas por origen."""
-    # Agua de red (Essbio Parral)
-    agua_llave_clp_m3: float = 1_450.0       # tarifa industrial 2026 estimada
+    # Agua de red (Essbio Parral) - canon equipo 03-jul-2026
+    agua_llave_clp_m3: float = 800.0
     cargo_fijo_llave_clp_mes: float = 6_000.0
-    alcantarillado_clp_m3: float = 1_200.0
+    alcantarillado_clp_m3: float = 950.0     # por validar si aplica
     # Agua industrial (pozo propio - solo costo bombeo)
     agua_industrial_clp_m3: float = 180.0     # electricidad bombeo + mantencion
     derecho_dga_l_s: float = 5.0
     # Agua recirculada
     agua_recirculada_clp_m3: float = 45.0     # tratamiento basico
-    nivel_dato: Literal["PD", "OK_PROVISORIO", "OK_VALIDADO"] = "PD"
-    notas: str = "Validar tarifa Essbio + caudalimetro instalado en Pozo 1."
+    nivel_dato: Literal["PD", "OK_PROVISORIO", "OK_VALIDADO"] = "OK_PROVISORIO"
+    notas: str = ("Agua 800 CLP/m3 canon equipo 03-jul-2026. "
+                  "Alcantarillado 950: validar si se paga. Caudalimetro Pozo 1 pendiente.")
 
     @property
     def agua_llave_usd_m3(self) -> float:
@@ -197,8 +199,8 @@ class ParametrosPlanta:
     flete: TarifaFlete = field(default_factory=TarifaFlete)
     arriendos: ArriendoEquipos = field(default_factory=ArriendoEquipos)
     perdida_mmpp_global_pct: float = 0.05      # 5% global segun conversacion
-    usd_clp_referencia: float = USD_CLP_DEFAULT
-    fecha_actualizacion: str = "2026-06-04"
+    usd_clp_referencia: float = 900.0          # canon equipo 03-jul-2026
+    fecha_actualizacion: str = "2026-07-03"
 
     def to_dict(self) -> dict:
         return {
@@ -223,18 +225,19 @@ class ParametrosPlanta:
 
 
 def sueldos_seed() -> list[SueldoCargo]:
-    """Sueldos brutos referencia agroindustria centro-sur Chile 2026.
+    """Sueldos brutos canon equipo 03-jul-2026 (Excel costos por procesos v3).
 
-    Calibrados con benchmarks Indeed/Computrabajo + estimacion sector.
+    Excel: Laboratorista/Supervisor 1,5M - Recepcionista/Operario 1,0M (160h/mes).
+    Jefe Planta se mantiene como overhead (no aparece en el Excel de procesos).
     """
     return [
-        SueldoCargo(cargo="Laboratorista (QC)", sueldo_bruto_clp=780_000),
-        SueldoCargo(cargo="Encargado Recepcion", sueldo_bruto_clp=620_000),
-        SueldoCargo(cargo="Encargado Proceso", sueldo_bruto_clp=680_000),
-        SueldoCargo(cargo="Encargado Secado", sueldo_bruto_clp=720_000),
-        SueldoCargo(cargo="Operario Limpieza", sueldo_bruto_clp=540_000),
-        SueldoCargo(cargo="Gruero Horquilla", sueldo_bruto_clp=650_000),
-        SueldoCargo(cargo="Supervisor Turno", sueldo_bruto_clp=950_000),
+        SueldoCargo(cargo="Laboratorista (QC)", sueldo_bruto_clp=1_500_000),
+        SueldoCargo(cargo="Encargado Recepcion", sueldo_bruto_clp=1_000_000),
+        SueldoCargo(cargo="Encargado Proceso", sueldo_bruto_clp=1_000_000),
+        SueldoCargo(cargo="Encargado Secado", sueldo_bruto_clp=1_000_000),
+        SueldoCargo(cargo="Operario Limpieza", sueldo_bruto_clp=1_000_000),
+        SueldoCargo(cargo="Gruero Horquilla", sueldo_bruto_clp=1_000_000),
+        SueldoCargo(cargo="Supervisor Turno", sueldo_bruto_clp=1_500_000),
         SueldoCargo(cargo="Jefe Planta", sueldo_bruto_clp=1_800_000),
     ]
 

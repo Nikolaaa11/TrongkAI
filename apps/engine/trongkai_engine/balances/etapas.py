@@ -253,7 +253,7 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         ),
         masa_input_kg_h=throughput_kg_h * 0.990,
         yield_pct=1.00,
-        perdidas_pct=0.0,
+        perdidas_pct=0.005,   # canon equipo 03-jul-2026: 0,5% uniforme por etapa
         humedad_post_etapa=(0.75, 0.80),
         energia_kwh_por_kg=0.13,
         agua_l_por_kg=0.5,
@@ -443,7 +443,7 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         ),
         masa_input_kg_h=throughput_kg_h * 0.25,
         yield_pct=0.99,
-        perdidas_pct=0.010,
+        perdidas_pct=0.005,   # canon equipo 03-jul-2026: 0,5% uniforme por etapa
         humedad_post_etapa=(0.08, 0.10),     # 8-10% segun conversacion
         energia_kwh_por_kg=0.020,             # solo movimiento
         agua_l_por_kg=0.0,
@@ -479,7 +479,7 @@ def etapas_seed(throughput_kg_h: float = 2000.0, incluir_respaldo: bool = False)
         ),
         masa_input_kg_h=throughput_kg_h * 0.245,
         yield_pct=0.995,
-        perdidas_pct=0.003,
+        perdidas_pct=0.005,   # canon equipo 03-jul-2026: 0,5% uniforme por etapa
         humedad_post_etapa=(0.08, 0.10),
         energia_kwh_por_kg=0.030,
         agua_l_por_kg=0.0,
