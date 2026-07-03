@@ -691,3 +691,121 @@ export const SCREENSHOTS = new Set<string>([
   '/sensitivity', '/inteligencia', '/financiamiento', '/variables', '/inbox',
   '/audit', '/salud', '/mapa',
 ]);
+
+// Acciones sugeridas por pantalla (Ola 3 dominio-total): "con este dato, lo siguiente es..."
+// Se muestran en el panel de ayuda contextual. Solo rutas reales de la app.
+export type Siguiente = { texto: string; href: string };
+export const SIGUIENTES: Record<string, Siguiente[]> = {
+  '/comando': [
+    { texto: 'Profundizá en la síntesis cross-modular', href: '/inteligencia' },
+    { texto: 'Mirá las 5 acciones priorizadas', href: '/decisiones' },
+  ],
+  '/plan': [
+    { texto: 'Estresá esta TIR con los drivers', href: '/sensitivity' },
+    { texto: 'Compará escenarios estratégicos', href: '/comparador' },
+  ],
+  '/dashboard-directorio': [
+    { texto: 'Volvé al cockpit en vivo', href: '/comando' },
+    { texto: 'Revisá el riesgo integrado antes de presentar', href: '/riesgo' },
+  ],
+  '/riesgo': [
+    { texto: 'Probá el triple negativo', href: '/stress' },
+    { texto: 'Jugá los supuestos en vivo', href: '/whatif-live' },
+  ],
+  '/decisiones': [
+    { texto: 'Ejecutá la acción n.°1 en su pantalla', href: '/comando' },
+    { texto: 'Validá el dato que la sustenta', href: '/variables' },
+  ],
+  '/planta': [
+    { texto: 'Simulá cuánto produce esta planta', href: '/simulacion' },
+    { texto: 'Editá las fichas de los equipos', href: '/equipos' },
+  ],
+  '/simulacion': [
+    { texto: 'Mirá qué SKU deja margen a escala', href: '/escalas' },
+    { texto: 'Ajustá tarifas y sueldos (recalcula todo)', href: '/parametros' },
+  ],
+  '/balance-integral': [
+    { texto: 'Bajá al detalle por etapa', href: '/balance-etapas' },
+    { texto: 'Convertí estos flujos en costos', href: '/costeo' },
+  ],
+  '/balance-etapas': [
+    { texto: 'Mirá el costo de cada etapa', href: '/costeo' },
+    { texto: 'Cambiá los parámetros de proceso', href: '/parametros' },
+  ],
+  '/costeo': [
+    { texto: 'Decidí el packaging (saco vs maxisaco)', href: '/escalas' },
+    { texto: 'Validá los supuestos del canon V3', href: '/variables' },
+  ],
+  '/parametros': [
+    { texto: 'Mirá el efecto en la simulación', href: '/simulacion' },
+    { texto: 'Chequeá qué nivel de dato quedó', href: '/variables' },
+  ],
+  '/equipos': [
+    { texto: 'Vé estos equipos en el layout real', href: '/planta' },
+    { texto: 'Su consumo vive en la simulación', href: '/simulacion' },
+  ],
+  '/readiness': [
+    { texto: 'Cerrá los gaps del data room', href: '/data-room' },
+    { texto: 'Subí el score validando variables', href: '/variables' },
+  ],
+  '/data-room': [
+    { texto: 'Armá el paquete descargable para el LP', href: '/lp-pack' },
+    { texto: 'Mirá cómo impacta en el readiness', href: '/readiness' },
+  ],
+  '/carbono': [
+    { texto: 'Sumá los créditos CO2 al plan', href: '/plan' },
+    { texto: 'Úsalo en el pack para LPs ESG', href: '/lp-pack' },
+  ],
+  '/compliance': [
+    { texto: 'Agendá los hitos en el roadmap', href: '/roadmap' },
+    { texto: 'Documentalo para due diligence', href: '/data-room' },
+  ],
+  '/lp-pack': [
+    { texto: 'Trackeá a quién se lo mandaste', href: '/pipeline-lp' },
+    { texto: 'Refrescá el readiness antes de enviar', href: '/readiness' },
+  ],
+  '/pipeline-lp': [
+    { texto: 'Prepará el material para el próximo LP', href: '/lp-pack' },
+    { texto: 'Refrescá los números del pitch', href: '/comando' },
+  ],
+  '/escalas': [
+    { texto: 'Armá el plan a 5 años de la escala elegida', href: '/plan' },
+    { texto: 'Mirá el financiamiento que requiere', href: '/financiamiento' },
+  ],
+  '/whatif-live': [
+    { texto: 'Formalizá el escenario en el plan', href: '/plan' },
+    { texto: 'Mirá el heatmap completo de drivers', href: '/sensitivity' },
+  ],
+  '/sensitivity': [
+    { texto: 'Probá el peor caso combinado', href: '/stress' },
+    { texto: 'Validá el driver más sensible', href: '/variables' },
+  ],
+  '/inteligencia': [
+    { texto: 'Convertí el insight en acción', href: '/decisiones' },
+    { texto: 'Validá lo que el modelo pide primero', href: '/variables' },
+  ],
+  '/financiamiento': [
+    { texto: 'Simulá bonos ligados a sostenibilidad', href: '/slb' },
+    { texto: 'Mirá el DSCR bajo estrés', href: '/stress' },
+  ],
+  '/variables': [
+    { texto: 'Cargá el dato real que falta', href: '/inbox' },
+    { texto: 'Mirá cuánto sube el readiness', href: '/readiness' },
+  ],
+  '/inbox': [
+    { texto: 'Verificá que la matriz tomó el dato', href: '/variables' },
+    { texto: 'Mirá el efecto en el modelo', href: '/inteligencia' },
+  ],
+  '/audit': [
+    { texto: 'Compará snapshots antes/después', href: '/comando' },
+    { texto: 'Revisá la salud del sistema', href: '/salud' },
+  ],
+  '/salud': [
+    { texto: 'Mirá el mapa completo de la plataforma', href: '/mapa' },
+    { texto: 'Revisá el historial de cambios', href: '/audit' },
+  ],
+  '/mapa': [
+    { texto: 'Empezá por el Centro de Mando', href: '/comando' },
+    { texto: 'Leé la guía de cada sección', href: '/guia' },
+  ],
+};

@@ -11,11 +11,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import { GUIA, SCREENSHOTS, type Seccion } from '@/lib/guia-data';
+import { GUIA, SCREENSHOTS, SIGUIENTES, type Seccion } from '@/lib/guia-data';
 
 export default function AyudaSeccion() {
   const pathname = usePathname();
   const [abierto, setAbierto] = useState(false);
+  const [tourPaso, setTourPaso] = useState<number | null>(null); // null = tour off
 
   const hit = useMemo(() => {
     for (const g of GUIA) {
@@ -26,15 +27,19 @@ export default function AyudaSeccion() {
   }, [pathname]);
 
   // Cerrar al navegar y con ESC
-  useEffect(() => setAbierto(false), [pathname]);
+  useEffect(() => { setAbierto(false); setTourPaso(null); }, [pathname]);
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setAbierto(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setAbierto(false); setTourPaso(null); }
+    };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, []);
 
   if (!hit) return null;
   const { grupo, seccion: s } = hit;
+  const siguientes = SIGUIENTES[s.href] ?? [];
+  const enTour = tourPaso !== null && s.pasos.length > 0;
 
   return (
     <>
@@ -111,7 +116,15 @@ export default function AyudaSeccion() {
 
               {s.pasos.length > 0 && (
                 <section>
-                  <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-ink-400">Cómo usarla</h3>
+                  <div className="mb-2 flex items-center justify-between">
+                    <h3 className="text-[11px] font-semibold uppercase tracking-wider text-ink-400">Cómo usarla</h3>
+                    <button
+                      onClick={() => { setAbierto(false); setTourPaso(0); }}
+                      className="rounded-full bg-brand/10 px-2.5 py-1 text-[11px] font-semibold text-brand transition hover:bg-brand/20"
+                    >
+                      ▶ Tour guiado
+                    </button>
+                  </div>
                   <ol className="space-y-1.5">
                     {s.pasos.map((p, i) => (
                       <li key={p} className="flex gap-2">
@@ -151,6 +164,26 @@ export default function AyudaSeccion() {
                 <p><span className="font-medium text-ink">Fuente:</span> {s.fuente}</p>
                 <p className="mt-1.5"><span className="font-medium text-ink">Reemplazar:</span> {s.reemplazar}</p>
               </section>
+
+              {siguientes.length > 0 && (
+                <section>
+                  <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-ink-400">
+                    🧭 ¿Y ahora qué?
+                  </h3>
+                  <div className="space-y-2">
+                    {siguientes.map((sig) => (
+                      <Link
+                        key={sig.href + sig.texto}
+                        href={sig.href}
+                        className="flex items-center justify-between rounded-xl border border-ink-100 px-3 py-2.5 transition hover:border-brand/40 hover:bg-brand/5"
+                      >
+                        <span className="text-[13px] font-medium text-ink">{sig.texto}</span>
+                        <span className="text-brand">→</span>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              )}
             </div>
 
             <div className="sticky bottom-0 mt-auto border-t border-ink-100 bg-white/95 px-6 py-3 backdrop-blur">
@@ -162,6 +195,64 @@ export default function AyudaSeccion() {
               </div>
             </div>
           </aside>
+        </div>
+      )}
+
+      {/* Tour guiado: recorre los pasos de la seccion SOBRE la pagina real */}
+      {enTour && (
+        <div className="fixed inset-x-0 bottom-6 z-[70] flex justify-center px-4 print:hidden">
+          <div className="w-full max-w-xl rounded-2xl border border-ink-100 bg-white p-5 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-brand">
+                Tour · {s.icono} {s.titulo} — paso {(tourPaso ?? 0) + 1} de {s.pasos.length}
+              </p>
+              <button
+                onClick={() => setTourPaso(null)}
+                aria-label="Salir del tour"
+                className="rounded-full p-1.5 text-ink-400 transition hover:bg-ink-50 hover:text-ink"
+              >
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                  <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+            <p className="mt-2 text-[14px] leading-relaxed text-ink">{s.pasos[tourPaso ?? 0]}</p>
+            <div className="mt-3 flex items-center justify-between">
+              <div className="flex gap-1">
+                {s.pasos.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`h-1.5 rounded-full transition-all ${i === tourPaso ? 'w-5 bg-brand' : 'w-1.5 bg-ink-100'}`}
+                  />
+                ))}
+              </div>
+              <div className="flex gap-2">
+                {(tourPaso ?? 0) > 0 && (
+                  <button
+                    onClick={() => setTourPaso((p) => Math.max(0, (p ?? 0) - 1))}
+                    className="rounded-full border border-ink-100 px-3.5 py-1.5 text-[12px] font-medium text-ink-600 transition hover:bg-ink-50"
+                  >
+                    ← Anterior
+                  </button>
+                )}
+                {(tourPaso ?? 0) < s.pasos.length - 1 ? (
+                  <button
+                    onClick={() => setTourPaso((p) => Math.min(s.pasos.length - 1, (p ?? 0) + 1))}
+                    className="rounded-full bg-ink px-3.5 py-1.5 text-[12px] font-medium text-white transition hover:bg-ink-700"
+                  >
+                    Siguiente →
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setTourPaso(null)}
+                    className="rounded-full bg-brand px-3.5 py-1.5 text-[12px] font-medium text-white transition hover:opacity-90"
+                  >
+                    ✓ Listo
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </>
