@@ -49,8 +49,26 @@ type Costeo = {
   desglose_costos_clp_h: { mo: number; energia: number; calor: number; agua: number; materiales: number; arriendos: number };
 };
 
+type RutaV3 = { etapas: string[]; total_dia_clp: number; clp_ton_mp_seca: number; clp_kg_mp_seca: number; total_mes_clp: number };
+type CostosV3 = {
+  fuente: string;
+  rutas: Record<string, RutaV3>;
+  decision_packaging: { ahorro_maxisaco_clp_mes: number; factor: number; mensaje: string };
+  mp_seca_final_ton_dia: number;
+  por_validar: string[];
+};
+
+const RUTA_LABELS: Record<string, string> = {
+  saco_base: 'SACO 25 kg (Excel equipo)',
+  maxisaco_base: 'MAXISACO 800 kg (Excel equipo)',
+  saco_calor_residual: 'Saco + calor residual La Gloria',
+  maxisaco_calor_residual: 'Maxisaco + calor residual',
+  maxisaco_tricanter_residual: 'Maxisaco + tricanter + residual (más barata)',
+};
+
 export default function CosteoPage() {
   const [data, setData] = useState<Costeo | null>(null);
+  const [v3, setV3] = useState<CostosV3 | null>(null);
   const [throughput, setThroughput] = useState(2000);
   const [respaldo, setRespaldo] = useState(false);
 
@@ -58,6 +76,11 @@ export default function CosteoPage() {
     fetch(`${ENGINE_URL}/costeo/etapas?throughput_kg_h=${throughput}&incluir_respaldo=${respaldo}`)
       .then((r) => r.json()).then(setData);
   }, [throughput, respaldo]);
+
+  useEffect(() => {
+    fetch(`${ENGINE_URL}/costos/procesos`)
+      .then((r) => r.json()).then(setV3).catch(() => setV3(null));
+  }, []);
 
   if (!data) return <p className="text-ink-400">Calculando costeo…</p>;
 
@@ -103,6 +126,44 @@ export default function CosteoPage() {
         <KPI label="Costo USD" valor={`$${data.costo_total_usd_kg_output.toFixed(2)} USD/kg`} sub="referencia internacional" />
         <KPI label="Throughput producto" valor={`${(data.masa_output_total_kg_h / 1000).toFixed(2)} t/h`} sub="output final" />
       </div>
+
+      {/* Costos por procesos V3 — canon Excel equipo 03-jul-2026 */}
+      {v3 && (
+        <section className="rounded-2xl border border-ink-100 bg-white p-6">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 className="text-xl font-bold">📦 Costos por procesos — canon del equipo</h2>
+            <p className="text-[11px] text-ink-400">{v3.fuente} · costo variable por ton de materia seca</p>
+          </div>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-sm tabular-nums">
+              <thead>
+                <tr className="border-b border-ink-100 text-left text-[11px] uppercase tracking-wider text-ink-400">
+                  <th className="py-2 pr-4">Ruta</th>
+                  <th className="py-2 pr-4 text-right">CLP/día</th>
+                  <th className="py-2 pr-4 text-right">CLP/ton MP seca</th>
+                  <th className="py-2 text-right">CLP/mes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(v3.rutas).map(([k, r]) => (
+                  <tr key={k} className={`border-b border-ink-50 ${k === 'maxisaco_base' ? 'bg-green-50/60 font-semibold' : ''}`}>
+                    <td className="py-2 pr-4">{RUTA_LABELS[k] ?? k}</td>
+                    <td className="py-2 pr-4 text-right">${r.total_dia_clp.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</td>
+                    <td className="py-2 pr-4 text-right">${r.clp_ton_mp_seca.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</td>
+                    <td className="py-2 text-right">${(r.total_mes_clp / 1e6).toFixed(1)}M</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 rounded-xl bg-ink-50/70 p-3 text-[13px] text-ink-600">
+            💡 <strong>{v3.decision_packaging.mensaje}</strong>{' '}
+            Ahorro maxisaco: ${(v3.decision_packaging.ahorro_maxisaco_clp_mes / 1e6).toFixed(1)}M CLP/mes
+            (factor {v3.decision_packaging.factor}x). {v3.por_validar.length} supuestos por validar — ver Excel
+            &quot;Costos-Por-Procesos-v3&quot; en entregables.
+          </p>
+        </section>
+      )}
 
       {/* Desglose por concepto */}
       <section>
