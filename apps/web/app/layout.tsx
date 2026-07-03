@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import AyudaSeccion from '@/components/AyudaSeccion';
 import { CommandK } from '@/components/CommandK';
 import NavMenu from '@/components/NavMenu';
 import './globals.css';
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className="bg-white font-sans text-ink antialiased">
         <CommandK />
         <NavMenu />
+        <AyudaSeccion />
 
         <main className="mx-auto max-w-7xl px-6 py-12">{children}</main>
 
